@@ -91,7 +91,7 @@ function Addtab(tabsID) {
             ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
 
     // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
-    $('div.tab-content div:last-child').after(
+    $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' +
             (tabsID.length + 1) +
             '"><textarea class="txtTab form-control" id="msg' +
@@ -111,26 +111,32 @@ function removeTab(tabsID, liElem) { // FunÃ§Ã£o que remove separador com o 
     });
     // TambÃ©m apaga o <div>(pÃ¡gina) correta dentro de <div class="tab-content">
     $('div.tab-content div#page' + liElem).remove();
-    
-    // Seleciona todos os <li> excepto o Ãºltimo (que Ã© o "+ PÃ¡g.") e sem o que foi apagado
-    $('ul#tabs > li').not('#last').not('#li' + liElem).each(function (i) {
-        
-        // ObtÃ©m-se o atributo <li> div (numero)
-        var getAttr = $(this).attr('id').split('li');
-        
-        // We change the div attribute of all <li>: the first is 1, then 2, then 3...    
-        $('ul#tabs li#li' + getAttr[1]).attr('id', 'li' + (i + 1));
-        var tabContent = 'Página ' + (getAttr + 1); // 
-        
-        tabContent += ' <button type="button" class="btn btn-warning btn-xs xtab" id=' + (tabsID.length + 1) + '><span >x</span></button>';
-        
-        // tabContent variable, inside the <li>. We change the number also, 1, then 2, then3...
-        $('#tabs a[href="#page' + getAttr[1] + '"]').html(tabContent).attr('href', '#page' + (i + 1));
-        
-        // We do the same for all <div> from <div class="tab-content">: we change the number: 1, then 2, then 3...    
-        $('div.tab-content div#page' + getAttr[1]).html('<textarea class="form-control" id="msg' + (i + 1) + '" rows=15>').attr('id', 'page' + (i + 1));
-    });
-    delete tabsID[tabsID.indexOf("msg" + liElem)];
+          var i=1;
+
+        $('#tabs').children('li').each(function () {   
+
+           if($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id') ){
+                $(this).attr('id', "li"+i);  
+                $(this).children('a').attr('href', "#page"+i); 
+
+                var button = $(this).children('a').children();           
+                $(this).children('a').text('Pagina '+i +" ").append(button);  
+                $(this).children('a').children('button').attr('id',i);
+                i++;
+            }
+            
+        });   
+        var i=0;
+         $('.tab-content').children('div').each(function () {
+
+             if( $(this).attr('id') !=  $('div.tab-content div#page' + liElem)){
+                $(this).attr('id',"page"+(i+1));
+                $(this).children('textarea').attr('id',"msg"+(i+1));
+                 i++;
+             }
+        }); 
+
+       delete tabsID[tabsID.indexOf("msg"+liElem)];
 }
 /**
  * Faz o calculo para de uma cor em RGB 
