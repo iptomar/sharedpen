@@ -34,11 +34,4 @@ function Client(pai, user, port, socketid) {
             "color": "rgb(" + hexToRgb(this.color, this.socketid, this.user) + ")"
         });
     };
-
-    this.setPosition = function (x, y) {
-        this.pai.css({
-            "top": y - 10,
-            "left": x + 10
-        });
-    };
 }

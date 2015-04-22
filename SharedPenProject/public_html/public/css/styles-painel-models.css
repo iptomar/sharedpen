@@ -1,0 +1,82 @@
+#colorpicker {
+    position: fixed;
+    left: 88%;
+    top: 1%;
+    height: 30px;
+    width: 150px;
+}
+
+#divchangemodel { 
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+#divchangemodel:before {
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;   
+    background-color: black;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;   
+}
+
+#divchangemodel > div {
+    position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
+    z-index: 10;
+    width: 40%;
+    height: 60%;
+    left: 30%;
+    top: 20%;
+    background-color: bisque;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    -moz-box-shadow:    inset 0 0 20px #000000;
+    -webkit-box-shadow: inset 0 0 30px #000000;
+    box-shadow:         inset 0 0 30px #000000;
+    padding: 30px;
+}
+
+.btnmodels {
+    -moz-box-shadow:     0 0 10px #000000;
+    -webkit-box-shadow:  0 0 10px #000000;
+    box-shadow:          0 0 10px #000000;
+}
+.btnmodels:hover {
+    -moz-box-shadow:     3px 3px 5px #000000;
+    -webkit-box-shadow:  3px 3px 5px #000000;
+    box-shadow:          3px 3px 5px #000000;
+}
+.btnmodels:active {
+    -moz-box-shadow:     -3px -3px 10px #000000;
+    -webkit-box-shadow:  -3px -3px 10px #000000;
+    box-shadow:          -3px -3px 10px #000000;
+}
+
+figure {
+    margin: 25px;
+    float: left;
+}
+
+figcaption {
+    text-align: center
+}
+
+#divchangemodel > div > div > input {
+    position: fixed;
+    top: 22%;
+}
+
+.txtTab {
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: white;
+}

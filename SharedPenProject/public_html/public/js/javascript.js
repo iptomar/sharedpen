@@ -73,7 +73,7 @@ function actulizaTabs(tabsTxt, tabsID) {
         $(idd).val(tabsTxt[i]);
     }
 }
-function Addtab(tabsID) {
+function Addtab(tabsID, html) {
 
     // Conta quantos <li>(separadores) hÃ¡ (menos 1 por causa do separador "+ PÃ¡g")
     tabsID.length = ($('ul#tabs li').length) - 1;
@@ -90,19 +90,42 @@ function Addtab(tabsID) {
             (tabsID.length + 1) +
             ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
 
+    var idNum = (tabsID.length + 1);
     // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
-            '<div class="tab-pane fade" id="page' +
-            (tabsID.length + 1) +
-            '"><textarea class="txtTab form-control" id="msg' +
-            (tabsID.length + 1) +
-            '" rows=15></textarea></div>');
+            '<div class="tab-pane fade" id="page' + idNum +
+            '"><div class="txtTab txtTab' + idNum + '"></div>' +
+            '</div>');
 
-    $("#msg" + (tabsID.length + 1)).css({
+    refactorTab(html, idNum);
+
+    $(".txtTab" + idNum).css({
         height: $("#contentor").height() * 0.82
     });
 
     return tabsID[tabsID.length] = "msg" + (tabsID.length + 1);
+}
+
+function refactorTab(html, idNum) {
+    var newElem = "";
+    $.get("./html_models/" + html, function (data) {
+        var a = data.split("\n");
+        $.each(a, function () {
+            if (this.indexOf("id=") >= 0) {
+                newElem += [this.slice(0, this.indexOf('"') + 1), "tab" + idNum + "-", this.slice(this.indexOf('"') + 1)].join('');
+            } else {
+                newElem += this;
+            }
+        });
+
+        $(".txtTab" + idNum).html(newElem);
+        drawimg = new Draw($(".txtTab" + idNum), "tab1-canvas1");
+        drawimg.init();
+    });
+}
+var drawimg;
+function getDrawObj () {
+    return drawimg;
 }
 
 function removeTab(tabsID, liElem) { // FunÃ§Ã£o que remove separador com o numero de <li>
@@ -111,32 +134,32 @@ function removeTab(tabsID, liElem) { // FunÃ§Ã£o que remove separador com o 
     });
     // TambÃ©m apaga o <div>(pÃ¡gina) correta dentro de <div class="tab-content">
     $('div.tab-content div#page' + liElem).remove();
-          var i=1;
+    var i = 1;
 
-        $('#tabs').children('li').each(function () {   
+    $('#tabs').children('li').each(function () {
 
-           if($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id') ){
-                $(this).attr('id', "li"+i);  
-                $(this).children('a').attr('href', "#page"+i); 
+        if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
+            $(this).attr('id', "li" + i);
+            $(this).children('a').attr('href', "#page" + i);
 
-                var button = $(this).children('a').children();           
-                $(this).children('a').text('Pagina '+i +" ").append(button);  
-                $(this).children('a').children('button').attr('id',i);
-                i++;
-            }
-            
-        });   
-        var i=0;
-         $('.tab-content').children('div').each(function () {
+            var button = $(this).children('a').children();
+            $(this).children('a').text('Pagina ' + i + " ").append(button);
+            $(this).children('a').children('button').attr('id', i);
+            i++;
+        }
 
-             if( $(this).attr('id') !=  $('div.tab-content div#page' + liElem)){
-                $(this).attr('id',"page"+(i+1));
-                $(this).children('textarea').attr('id',"msg"+(i+1));
-                 i++;
-             }
-        }); 
+    });
+    var i = 0;
+    $('.tab-content').children('div').each(function () {
 
-       delete tabsID[tabsID.indexOf("msg"+liElem)];
+        if ($(this).attr('id') != $('div.tab-content div#page' + liElem)) {
+            $(this).attr('id', "page" + (i + 1));
+            $(this).children('textarea').attr('id', "msg" + (i + 1));
+            i++;
+        }
+    });
+
+    delete tabsID[tabsID.indexOf("msg" + liElem)];
 }
 /**
  * Faz o calculo para de uma cor em RGB 
@@ -160,3 +183,126 @@ function hexToRgb(hex, s, n) {
     return r + "," + g + "," + b;
 }
 
+function changecolordraw(id){
+    drawimg.color(id);
+}
+
+//var canvas,
+//        ctx,
+//        flag = false,
+//        prevX = 0,
+//        currX = 0,
+//        prevY = 0,
+//        currY = 0,
+//        dot_flag = false;
+//
+//var x = "black",
+//        y = 2;
+//
+//function init(id) {
+////    canvas = $(document.body).find(id);
+//    canvas = document.getElementById(id);
+//    ctx = canvas.getContext('2d');
+//    w = canvas.width;
+//    h = canvas.height;
+//
+//    canvas.addEventListener("mousemove", function (e) {
+//        findxy('move', e);
+//    }, false);
+//    canvas.addEventListener("mousedown", function (e) {
+//        findxy('down', e);
+//    }, false);
+//    canvas.addEventListener("mouseup", function (e) {
+//        findxy('up', e);
+//    }, false);
+//    canvas.addEventListener("mouseout", function (e) {
+//        findxy('out', e);
+//    }, false);
+//}
+//
+//function color(obj) {
+//    switch (obj) {
+//        case "green":
+//            x = "green";
+//            break;
+//        case "blue":
+//            x = "blue";
+//            break;
+//        case "red":
+//            x = "red";
+//            break;
+//        case "yellow":
+//            x = "yellow";
+//            break;
+//        case "orange":
+//            x = "orange";
+//            break;
+//        case "black":
+//            x = "black";
+//            break;
+//        case "white":
+//            x = "white";
+//            break;
+//    }
+//    if (x == "white")
+//        y = 14;
+//    else
+//        y = 2;
+//
+//}
+//
+//function draw() {
+//    ctx.beginPath();
+//    ctx.moveTo(prevX, prevY);
+//    ctx.lineTo(currX, currY);
+//    ctx.strokeStyle = x;
+//    ctx.lineWidth = y;
+//    ctx.stroke();
+//    ctx.closePath();
+//}
+//
+//function erase() {
+//    var m = confirm("Want to clear");
+//    if (m) {
+//        ctx.clearRect(0, 0, w, h);
+////        document.getElementById("canvasimg").style.display = "none";
+//    }
+//}
+//
+//function save() {
+//    document.getElementById("canvasimg").style.border = "2px solid";
+//    var dataURL = canvas.toDataURL();
+//    document.getElementById("canvasimg").src = dataURL;
+//    document.getElementById("canvasimg").style.display = "inline";
+//}
+//
+//function findxy(res, e) {
+//    if (res === 'down') {
+//        prevX = currX;
+//        prevY = currY;
+//        currX = e.clientX - canvas.offsetLeft;
+//        currY = e.clientY - canvas.offsetTop;
+//
+//        flag = true;
+//        dot_flag = true;
+//        if (dot_flag) {
+//            ctx.beginPath();
+//            ctx.fillStyle = x;
+//            ctx.fillRect(currX, currY, 2, 2);
+//            ctx.closePath();
+//            dot_flag = false;
+//        }
+//    }
+//    if (res == 'up' || res == "out") {
+//        flag = false;
+//    }
+//    if (res == 'move') {
+//        if (flag) {
+//            prevX = currX;
+//            prevY = currY;
+//            currX = e.clientX - canvas.offsetLeft;
+//            currY = e.clientY - canvas.offsetTop;
+//            draw();
+//        }
+//    }
+//}
