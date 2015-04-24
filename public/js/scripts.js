@@ -171,8 +171,8 @@ $(document).ready(function () {
                     objectCanvas.drawpbj.setPalletOff();
                     $("body").find("#toolbar").remove();
                 } else if ($(this).attr("id") === "sizecur") {
-                    objectCanvas.drawpbj.setSizePensil($("#sizecur option:selected" ).text());
-                
+                    objectCanvas.drawpbj.setSizePensil($("#sizecur option:selected").text());
+
 //                    $("body").find("#toolbar").remove();
                 }
 
@@ -387,9 +387,24 @@ $(document).ready(function () {
 // Conta quantos <li>(separadores) hÃ¡ (menos 1 por causa do separador "+ PÃ¡g")
 // Conta quantos <li>(separadores) hÃ¡ (menos 1 por causa do separador "+ PÃ¡g")
 
-        $.get("../html/painel-models.html", function (data) {
-            $("body").append(data);
+        $.ajax({
+            url: "/models", // this is just a url that is responsible to return files list 
+            success: function (data) {
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div>";
+
+                for (var i = 0, max = data.length; i < max; i++) {
+                    var file = data[i];
+                    htmlModel += "<figure>" +
+                            "<img class='btnmodels' alt='Capa' src='../img/" + file.split(".")[0] + ".png' data-model='" + file + "'/>" +
+                            "<figcaption> " + file.split(".")[0] + " </figcaption>" +
+                            "</figure>";
+                }
+                htmlModel += "</div></div></div>";
+                $("body").append(htmlModel);
+            }
         });
+
     });
     $(document.body).on('click', '#btncancelmodels', function () {
         $(document.body).find("#divchangemodel").remove();
