@@ -1,0 +1,66 @@
+.tabpage {
+    border: 1px solid black;
+    width: 210mm;
+    height: 297mm;
+    padding: 20px;
+    margin: auto;
+}
+
+.tabpage > input {
+    height: 40px;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 50px;
+}
+
+.tabpage > img {
+    height: 50%;
+    margin-top: 50px;
+}
+
+.tabpage > input, .tabpage > img, .tabpagedraw > input {
+    width: 100%;
+    border: 1px solid black;                
+    -moz-box-shadow:    inset 0 0 5px #000000;
+    -webkit-box-shadow: inset 0 0 5px #000000;
+    box-shadow:         inset 0 0 5px #000000;
+}
+
+.tabpage2 > input{
+    width: 95%; 
+    margin:2.5%; 
+    text-align: center; 
+    font-family: 'Helvetica', Arial, Lucida Grande, sans-serif;
+}
+
+.tabpage2 > textarea {
+    width: 100%;
+    height: 400px;
+    margin-top: 5%;
+    resize: none;
+	border: 1px solid black;
+}
+
+.tabpage2 > img {
+    margin: auto
+}		
+
+.tabpagedraw {
+    border: 1px solid black;
+    width: 210mm;
+    height: 297mm;
+    padding: 20px;
+    margin: auto;
+}
+.tabpagedraw > input {
+    height: 40px;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 50px;
+}
+.tabpagedraw > canvas {
+    border: 1px solid black;
+    width: 100%;
+    height: 700px;
+    margin-top: 30px;
+}

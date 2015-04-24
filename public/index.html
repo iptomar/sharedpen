@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>SheredPen</title>
+        <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+        
+        <!-- Bootstrap js -->
+        <script src="./lib/jquery-1.11.2.js"></script>
+        <script src="./lib/bootstrap.js"></script>
+        <script src="./lib/bootstrap.min.js"></script>
+        <script src="./lib/toastr.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script src="./js/scripts.js"></script>
+        <script src="./js/Client.js"></script>
+        <script src="./js/Draw.js"></script>
+        <script src="./js/javascript.js"></script>
+
+        <!-- Bootstrap css -->
+        <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" media="screen" />
+
+        <link rel="stylesheet" type="text/css"  href="./css/toastr.css"  />
+
+        <link rel="stylesheet" href="./css/styles.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="./css/styles-models.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="./css/styles-painel-models.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="./css/pallet.css" type="text/css" media="screen" />
+
+    </head>
+    <body>
+        <div id="div-login">
+            <div class="form-signin" >
+                <h1>Texto Colaborativo</h1>
+                <label for="inputEmail" class="sr-only">Utilizador</label>
+                <input id="username" class="form-control" placeholder="Username" autofocus="">
+                <input id="startlogin" type="button" class="btn btn-lg btn-primary btn-block" value="Login">
+                <h3 id="erro_name"></h3>
+            </div>                        
+        </div>
+        <div class="container-fluid">
+            <!--Navigation bar-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Texto Colaborativo</h1> 
+                    <select id="colorpicker" class="selectpicker show-tick"></select>
+                </div>
+            </div>
+            <div class="row" id="contentor">
+                <div class="col-lg-9">
+                    <h3 id="atualuser"></h3>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <!-- Nav tabs -->
+                        <ul id="tabs" class="nav nav-tabs">
+                            <li id="li-last"><a href="#add-page" data-toggle="tab">+ Pág.</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">                    
+                        </div>
+                    </div>
+                    <!-- <textarea  class="form-control" rows="20" id="msg"></textarea> -->
+                </div>
+                <div id="divUsers" class="col-lg-3">
+                    <div class="well" id="contentorListaUsers">
+                        <h4>Utilizadores</h4>
+                        <div id="listaUsers"></div>
+                    </div>
+                    <div class="well" id="contentorChat">
+                        <h4>Chat</h4>
+                        <div  id="panelChat" class="form-control"></div>
+                        <br />
+                        <div class="form-group">
+                            <input id="msgChat" type="text" name="msgChat" class="form-control">
+                            <button id="btnSendChat" type="button" class="btn btn-default">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
