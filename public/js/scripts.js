@@ -4,12 +4,13 @@
  */
 
 
-var users = [];
+var users = [];             // array com os clientes ligado
 var numUsers = 0;
-var socket = "";
-var username = "";
-var objectCanvas = null;
-var listaColor = [
+var socket = "";            // socket de comunicacao
+var username = "";          // nome do utilizador ligado
+var objectCanvas = null;    // canvas atual em utilizacao
+var canvasObj = [];         // array com os carios canvas
+var listaColor = [          // array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
     ["white", "Branco"],
     ["red", "Vermelho"],
@@ -24,6 +25,9 @@ var tabsTxt = [];
 
 $(document).ready(function () {
 
+    /**
+     * Configuracao das opcoes do popup de online / offline de novos clientes
+     */
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -40,10 +44,13 @@ $(document).ready(function () {
     };
     // cria a ligação com o servidor que disponibiliza o socket
     socket = io.connect(window.location.href);
+
     // Carrega o dropdown com a liosta das cores
     $('#colorpicker').addAllColors(listaColor);
+
     // coloca o cursor para introduzir o nome do utilizador
     $("#username").focus();
+
     // ao carregar em enter no nome do utilizador carrega no button
     $("#username").keydown(function (event) {
         if (event.keyCode === 13) {
@@ -119,31 +126,33 @@ $(document).ready(function () {
 
 
 
-    
+
     /**
      * Funções relacionadas com o desenho -------------------------------------------------------------------------
      */
-        $(document.body).on('click', '#closePallet', function () {
-        var idToll = $(document.body).find("#toolbar").attr("data-idPai");
+    $("body").on('click', '#closePallet', function () {
+        var idToll = $("body").find("#toolbar").attr("data-idPai");
         if (objectCanvas === null) {
-            objectCanvas = getArrayDrawObj(idToll);
+            objectCanvas = getArrayDrawObj(canvasObj, idToll);
         } else {
             if (objectCanvas.id === idToll) {
                 objectCanvas.drawpbj.setPalletOff();
-                $(document.body).find("#toolbar").remove();
+                $("body").find("#toolbar").remove();
             }
             else {
-                objectCanvas = getArrayDrawObj(idToll);
+                objectCanvas = getArrayDrawObj(canvasObj, idToll);
 
             }
         }
     });
 
-
-        $(document.body).on('click', '.color_canvas', function (e) {
+    /**
+     * Evento de selecao da cor para desenhar no canvas
+     */
+    $("body").on('click', '.color_canvas', function () {
         var idToll = $("body").find("#toolbar").attr("data-idPai");
         if (objectCanvas === null) {
-            objectCanvas = getArrayDrawObj(idToll);
+            objectCanvas = getArrayDrawObj(canvasObj, idToll);
         } else {
             if (objectCanvas.id === idToll) {
                 if ($(this).attr("id") !== "sizecur") {
@@ -158,30 +167,36 @@ $(document).ready(function () {
 
             }
             else {
-                objectCanvas = getArrayDrawObj(idToll);
+                objectCanvas = getArrayDrawObj(canvasObj, idToll);
             }
         }
     });
-    
+
+    /**
+     * evento do socket para desenhar o que recebe pelo socket
+     */
     socket.on('draw', function (data) {
         if (objectCanvas === null) {
-            objectCanvas = getArrayDrawObj(this.id);
+            objectCanvas = getArrayDrawObj(canvasObj, this.id);
         } else {
             if (objectCanvas.id === data.id) {
                 console.log(" X: " + data.x + " Y: " + data.y + " type: " + data.type);
                 objectCanvas.drawpbj.draw(data.x, data.y, data.type);
             } else {
-                objectCanvas = getArrayDrawObj(this.id);
+                objectCanvas = getArrayDrawObj(canvasObj, this.id);
             }
         }
     });
     
-        $(document.body).on('mousedown mousemove mouseup', "canvas", function (e) {
+    /**
+     * Eventos do mouse para desenhar no canvas
+     */
+    $("body").on('mousedown mousemove mouseup', "canvas", function (e) {
         $(this).on("contextmenu", function () {
             return false;
         });
         if (objectCanvas === null) {
-            objectCanvas = getArrayDrawObj(this.id);
+            objectCanvas = getArrayDrawObj(canvasObj, this.id);
         } else {
             if (objectCanvas.id === this.id) {
                 switch (event.which) {
@@ -216,12 +231,12 @@ $(document).ready(function () {
                 }
 
             } else {
-                objectCanvas = getArrayDrawObj(this.id);
+                objectCanvas = getArrayDrawObj(canvasObj, this.id);
             }
         }
     });
 
-    
+
 
 
 
@@ -232,15 +247,15 @@ $(document).ready(function () {
      * Funçoes relacionadas com as cores --------------------------------------------------------------------------------
      */
 
-     /**
-      * Evento onChange a cor de fundo
-      */
+    /**
+     * Evento onChange da cor de fundo
+     */
     $("#colorpicker").change(function () {
         socket.emit('setcolor', {
             cor: $(this).find('option:selected').val()
         });
     });
-    
+
     /**
      * Evento gerado quando recebe uma alteraçao de cores
      */
@@ -266,17 +281,272 @@ $(document).ready(function () {
         $("#colorpicker").val(data.cor);
     });
 
-     /*
+    /*
      * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
      */
-    
-    function actulizaTabs(tabsTxt, tabsID) {
+
+    // *******************************************************************
+    // dados recebidos pelo socket para o browser
+    // *******************************************************************
+    // recebe o codigo ASCII da tecla recebida, converte-a para
+    // carater e adiciona-o na posicao coreta
+    socket.on('msgappend', function (data) {
+        var id = data.id;
+        var posactual = $(id).getCursorPosition();
+        var str = $(id).val();
+        var str1 = "";
+        if (data.char === 8 /* backspace*/
+                || data.char === 46 /* delete */) {
+            if (data.char === 8) {
+                if (data.pos > 0) {
+                    str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
+                } else {
+                    str1 = str.slice(data.pos);
+                }
+            } else if (data.data === 46) {
+                str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
+            }
+        } else {
+            str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
+        }
+        $(id).val(str1);
+        if (posactual < data.pos) {
+            $(id).selectRange(posactual);
+        } else {
+            $(id).selectRange(posactual - 1);
+        }
+    });
+    /**
+     * Evento gerado quando um utilizador se connecta, coloca as tabs
+     */
+    socket.on('NewTabs', function (data) {
+        tabsID = data.id;
+        tabsTxt = data.txt;
+        actulizaTabs(tabsTxt, tabsID);
+    });
+
+    /**
+     *  envia o codigo ASCII do backspace e do delete
+     */
+
+    // *******************************************************************
+    // dados enviadas pelo socket para o servidor
+    // *******************************************************************
+    // envia o codigo ASCII do backspace e do delete
+    $("body").on('keydown', '.txtTab', function (event) {
+        if (event.which === 8 || event.which === 46) {
+            socket.emit('msgappend', {
+                'data': event.which,
+                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
+                'id': "#" + $(this).attr('id')
+            });
+        }
+    });
+    // envia o codigo ASCII das teclas carregadas
+    $("body").on('keypress', '.txtTab', function (event) {
+        socket.emit('msgappend', {
+            'char': event.which,
+            'pos': $("#" + $(this).attr('id')).getCursorPosition(),
+            'id': "#" + $(this).attr('id')
+        });
+    });
+
+    /**
+     * Evento gerado quando ha alteraçoes nas tabs
+     */
+    socket.on("TabsChanged", function (data) {
+        if ($.trim(username) !== "") {
+            if (data.op === "remover") {
+                removeTab(tabsID, data.id);
+            } else {
+                Addtab(tabsID, data.id);
+            }
+        }
+    });
+
+    /**
+     * Recebe as Tabs quando se connecta
+     */
+    socket.on('Tabs', function (data) {
+        tabsID = data.id;
+        tabsTxt = data.txt;
+        actulizaTabs(tabsTxt, tabsID);
+    });
+
+    /**
+     * Evento que determina qual e o modelo escolhido
+     */
+    $("body").on('click', ".btnmodels", function () {
+        Addtab(tabsID, $(this).data('model'));
+        $("#li-last").attr('class', '');
+        socket.emit('TabsChanged', {
+            //remover ou adicionar
+            op: "adicionar",
+            //id
+            id: "msg" + (tabsID.length),
+            pos: tabsID.length
+        });
+        $("body").find("#divchangemodel").remove();
+        // Foco na ultima pagina adicionada
+        $("body").find("a[href^='#page']:last").click();
+    });
+
+    /**
+     * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
+     */
+    $('#tabs a[href="#add-page"]').on('click', function () {
+        $.ajax({
+            url: "/models", // this is just a url that is responsible to return files list 
+            success: function (data) {
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div>";
+
+                for (var i = 0, max = data.length; i < max; i++) {
+                    var file = data[i];
+                    htmlModel += "<figure>" +
+                            "<img class='btnmodels' alt='Capa' src='../img/" + file.split(".")[0] + ".png' data-model='" + file + "'/>" +
+                            "<figcaption> " + file.split(".")[0] + " </figcaption>" +
+                            "</figure>";
+                }
+                htmlModel += "</div></div></div>";
+                $("body").append(htmlModel);
+            }
+        });
+    });
+
+    /**
+     * Funçao que remove tabs
+     */
+    $("body").on('click', '.xtab', function (event) {
+        liElem = $(this).attr('id');
+        // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
+        if (confirm("Tem a certeza que quer apagar?")) {
+            removeTab(tabsID, liElem);
+            socket.emit('TabsChanged', {
+                //remover ou adicionar
+                op: "remover",
+                //id
+                id: liElem
+            });
+        }
+        return false;
+    });
+
+    $("body").on('click', '#btncancelmodels', function () {
+        $("body").find("#divchangemodel").remove();
+    });
+    /*
+     * Fim Funções relacionas com as Tabs ----------------------------------------------------------------------------------
+     */
+
+    /*
+     * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Evento gerado quando um utilizador manda mensagem no chat
+     */
+    socket.on('message', function (data) {
+        $('#panelChat').addNewText(data.user, data.data);
+        $('#panelChat').animate({
+            scrollTop: $('#panelChat').prop("scrollHeight")
+        }, 500);
+    });
+    /**
+     * Função para enviar uma mensagem no chat
+     */
+    $('#btnSendChat').click(function () {
+        var chatMessage = $('#msgChat').val();
+        //limpa input
+        if (chatMessage !== "")
+            socket.emit('message', {
+                'data': chatMessage,
+                'user': username
+            });
+        $('#msgChat').val('');
+    });
+    /**
+     * Função para enviar mensagem com o enter
+     */
+    $('#msgChat').keydown(function (e) {
+        if (e.keyCode === 13) {
+            $('#btnSendChat').click();
+        }
+    });
+    /**
+     * Evento gerado quando um utilizador se liga, recebe todas as mensagens do chat
+     */
+    socket.on("OldmsgChat", function (data) {
+        $("#panelChat").html("");
+        var aux = data.split(",");
+        if (typeof aux[0] !== "undefined" && aux.length > 0) {
+            for (var i = 0, max = aux.length; i < max; i++) {
+                var aux2 = aux[i].split(":");
+                if (typeof aux2[1] !== "undefined") {
+                    $('#panelChat').addNewText(aux2[0], aux2[1].replace(",", ""));
+                }
+            }
+        }
+        $('#panelChat').animate({
+            scrollTop: $('#panelChat').prop("scrollHeight")
+        }, 500);
+    });
+
+    /*
+     * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Funçoes de logout -----------------------------------------------------------------------------------------------
+     */
+    /**
+     * recebe o evento do socket com o socket id do cliente que se desligou
+     */
+    socket.on('diconnected', function (socketid) {
+        for (var item in users) {
+            if (users[item].getSocketId() === socketid) {
+                var numid = users[item].getdivid();
+                toastr.warning(users[item].getUsername(), 'Offline');
+                users.splice(users[item], 1);
+                $("." + numid).remove();
+            }
+        }
+    });
+    /**
+     * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
+     */
+
+});
+
+
+$(window).resize(function () {
+    ajustElements();
+});
+
+/*
+ * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
+ */
+/**
+ * 
+ 
+ * @param {type} tabsTxt
+ * @param {type} tabsID
+ * @returns {undefined} */
+function actulizaTabs(tabsTxt, tabsID) {
     var tamanho = tabsID.length;
     for (i = 0; i < tamanho; i++) {
         var idd = "#" + Addtab(tabsID);
         $(idd).val(tabsTxt[i]);
     }
 }
+
+/**
+ * 
+ 
+ * @param {type} tabsID
+ * @param {type} html
+ * @returns {Addtab.tabsID|String} */
 function Addtab(tabsID, html) {
 
     // Conta quantos <li>(separadores) hÃ¡ (menos 1 por causa do separador "+ PÃ¡g")
@@ -310,6 +580,13 @@ function Addtab(tabsID, html) {
     return tabsID[tabsID.length] = "msg" + (tabsID.length + 1);
 }
 
+/**
+ * Função que carrega o modelo para a tab e altera os id's de toda a tab 
+ * para id's relacionados com o numero da tab
+ 
+ * @param {type} html   pagina html a ser carregada
+ * @param {type} idNum  numeor da tab para alterar os id's da tab
+ * @returns {undefined} */
 function refactorTab(html, idNum) {
     $.get("./html_models/" + html, function (data) {
         $(".txtTab" + idNum).html(data);
@@ -332,12 +609,19 @@ function refactorTab(html, idNum) {
     });
 }
 
-function removeTab(tabsID, liElem) { // FunÃ§Ã£o que remove separador com o numero de <li>
+/**
+ * Funcao que remove separador com o numero de <li>
+ 
+ * @param {type} tabsID
+ * @param {type} liElem
+ * @returns {undefined} */
+function removeTab(tabsID, liElem) {
 
     $('ul#tabs > li#li' + liElem).fadeOut(1000, function () {
-        $(this).remove(); // Apaga o <li></li>(separador) com um efeito fadeout
+        // Apaga o <li></li>(separador) com um efeito fadeout
+        $(this).remove();
     });
-    // TambÃ©m apaga o <div>(pÃ¡gina) correta dentro de <div class="tab-content">
+    // Tambem apaga o <div>(pagina) correta dentro de <div class="tab-content">
     $('div.tab-content div#page' + liElem).remove();
     var i = 1;
 
@@ -367,244 +651,35 @@ function removeTab(tabsID, liElem) { // FunÃ§Ã£o que remove separador com o 
 
     // activa a tab anterior no caso de a actual ser eliminada
     if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
-        $(document.body).find("a[href='#page" + (liElem - 1) + "']:last").click();
+        $("body").find("a[href='#page" + (liElem - 1) + "']:last").click();
     }
 
     delete tabsID[tabsID.indexOf("msg" + liElem)];
 }
-    
-    
-    // *******************************************************************
-    // dados recebidos pelo socket para o browser
-    // *******************************************************************
-    // recebe o codigo ASCII da tecla recebida, converte-a para
-    // carater e adiciona-o na posicao coreta
-    socket.on('msgappend', function (data) {
-        var id = data.id;
-        var posactual = $(id).getCursorPosition();
-        var str = $(id).val();
-        var str1 = "";
-        if (data.char === 8 /* backspace*/
-                || data.char === 46 /* delete */) {
-            if (data.char === 8) {
-                if (data.pos > 0) {
-                    str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
-                } else {
-                    str1 = str.slice(data.pos);
-                }
-            } else if (data.data === 46) {
-                str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
-            }
-        } else {
-            str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
-        }
-        $(id).val(str1);
-        if (posactual < data.pos) {
-            $(id).selectRange(posactual);
-        } else {
-            $(id).selectRange(posactual - 1);
-        }
-    });
+
 /**
- * Evento gerado quando um utilizador se connecta, coloca as tabs
- */
-    socket.on('NewTabs', function (data) {
-        tabsID = data.id;
-        tabsTxt = data.txt;
-        actulizaTabs(tabsTxt, tabsID);
+ * Função que recebe um array a uma chave e devolve o objeto dessa posição se 
+ * existir e não nulkl
+ 
+ * @param {type} array  array para a pesquisa
+ * @param {type} id     valor a ser encontrado
+ * @returns {value} */
+function getArrayDrawObj(array, id) {
+    var a = null;
+    $.each(array, function (index, value) {
+        if (value.id === id) {
+            a = value;
+        }
     });
-    
-    /**
-     *  envia o codigo ASCII do backspace e do delete
-     */
+    return a;
+}
 
-    // *******************************************************************
-    // dados enviadas pelo socket para o servidor
-    // *******************************************************************
-    // envia o codigo ASCII do backspace e do delete
-    $(document.body).on('keydown', '.txtTab', function (event) {
-        if (event.which === 8 || event.which === 46) {
-            socket.emit('msgappend', {
-                'data': event.which,
-                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-                'id': "#" + $(this).attr('id')
-            });
-        }
-    });
-    // envia o codigo ASCII das teclas carregadas
-    $(document.body).on('keypress', '.txtTab', function (event) {
-        socket.emit('msgappend', {
-            'char': event.which,
-            'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-            'id': "#" + $(this).attr('id')
-        });
-    });
-    
-    /**
-     * Evento gerado quando ha alteraçoes nas tabs
-     */
-    socket.on("TabsChanged", function (data) {
-        if ($.trim(username) !== "") {
-            if (data.op === "remover") {
-                removeTab(tabsID, data.id);
-            } else {
-                Addtab(tabsID, data.id);
-            }
-        }
-    });
-    
-   /**
-    * Recebe as Tabs quando se connecta
-    */ 
-    socket.on('Tabs', function (data) {
-        tabsID = data.id;
-        tabsTxt = data.txt;
-        actulizaTabs(tabsTxt, tabsID);
-    });
-    
-    /**
-     * Evento que determina qual e o modelo escolhido
-     */
-    $(document.body).on('click', ".btnmodels", function () {
-        Addtab(tabsID, $(this).data('model'));
-        $("#li-last").attr('class', '');
-        socket.emit('TabsChanged', {
-            //remover ou adicionar
-            op: "adicionar",
-            //id
-            id: "msg" + (tabsID.length),
-            pos: tabsID.length
-        });
-        $(document.body).find("#divchangemodel").remove();
-        // Foco na ultima pagina adicionada
-        $(document.body).find("a[href^='#page']:last").click();
-    });
-    
-    /**
-     * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
-     */
-    $('#tabs a[href="#add-page"]').on('click', function () {
-        $.ajax({
-            url: "/models", // this is just a url that is responsible to return files list 
-            success: function (data) {
-                var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div>";
+/**
+* Ajusta os elementos do ecram principal
 
-                for (var i = 0, max = data.length; i < max; i++) {
-                    var file = data[i];
-                    htmlModel += "<figure>" +
-                            "<img class='btnmodels' alt='Capa' src='../img/" + file.split(".")[0] + ".png' data-model='" + file + "'/>" +
-                            "<figcaption> " + file.split(".")[0] + " </figcaption>" +
-                            "</figure>";
-                }
-                htmlModel += "</div></div></div>";
-                $("body").append(htmlModel);
-            }
-        });
+ * @returns {undefined} */
+function ajustElements() {
+    $("#contentor").css({
+        height: $(window).height() * 0.90
     });
-
-    /**
-     * Funçao que remove tabs
-     */
-    $(document.body).on('click', '.xtab', function (event) {
-        liElem = $(this).attr('id');
-        // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
-        if (confirm("Tem a certeza que quer apagar?")) { 
-            removeTab(tabsID, liElem);
-            socket.emit('TabsChanged', {
-                //remover ou adicionar
-                op: "remover",
-                //id
-                id: liElem
-            });
-        }
-        return false;
-    });
-    
-    $(document.body).on('click', '#btncancelmodels', function () {
-        $(document.body).find("#divchangemodel").remove();
-    });
-     /*
-     * Fim Funções relacionas com as Tabs ----------------------------------------------------------------------------------
-     */   
-    
-    /*
-     * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
-     */
-    
-    /**
-     * Evento gerado quando um utilizador manda mensagem no chat
-     */
-    socket.on('message', function (data) {
-        $('#panelChat').addNewText(data.user, data.data);
-        $('#panelChat').animate({
-            scrollTop: $('#panelChat').prop("scrollHeight")
-        }, 500);
-    });
-    /**
-     * Função para enviar uma mensagem no chat
-     */
-     $('#btnSendChat').click(function () {
-        var chatMessage = $('#msgChat').val();
-        //limpa input
-        if (chatMessage !== "")
-            socket.emit('message', {
-                'data': chatMessage,
-                'user': username
-            });
-        $('#msgChat').val('');
-    });
-    /**
-     * Função para enviar mensagem com o enter
-     */
-    $('#msgChat').keydown(function (e) {
-        if (e.keyCode === 13) {
-            $('#btnSendChat').click();
-        }
-    });   
-    /**
-     * Evento gerado quando um utilizador se liga, recebe todas as mensagens do chat
-     */
-    socket.on("OldmsgChat", function (data) {
-        $("#panelChat").html("");
-        var aux = data.split(",");
-        if (typeof aux[0] !== "undefined" && aux.length > 0) {
-            for (var i = 0, max = aux.length; i < max; i++) {
-                var aux2 = aux[i].split(":");
-                if (typeof aux2[1] !== "undefined") {
-                    $('#panelChat').addNewText(aux2[0], aux2[1].replace(",", ""));
-                }
-            }
-        }
-        $('#panelChat').animate({
-            scrollTop: $('#panelChat').prop("scrollHeight")
-        }, 500);
-    });
-    
-     /*
-     * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
-     */  
-    
-    
-    /**
-     * Funçoes de logout -----------------------------------------------------------------------------------------------
-     */
-    socket.on('diconnected', function (socketid) {
-        for (var item in users) {
-            if (users[item].getSocketId() === socketid) {
-                var numid = users[item].getdivid();
-                toastr.warning(users[item].getUsername(), 'Offline');
-                users.splice(users[item], 1);
-                $("." + numid).remove();
-            }
-        }
-    });
-    /**
-     * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
-     */  
-    
-});
-
-$(window).resize(function () {
-    ajustElements();
-});
+}
