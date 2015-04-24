@@ -65,67 +65,6 @@ function ajustElements() {
     });
 }
 
-function actulizaTabs(tabsTxt, tabsID) {
-    var tamanho = tabsID.length;
-    for (i = 0; i < tamanho; i++) {
-        var idd = "#" + Addtab(tabsID);
-        $(idd).val(tabsTxt[i]);
-    }
-}
-function Addtab(tabsID, html) {
-
-    // Conta quantos <li>(separadores) hÃ¡ (menos 1 por causa do separador "+ PÃ¡g")
-    tabsID.length = ($('ul#tabs li').length) - 1;
-
-    // Adiciona um separador antes do Ãºltimo (linha <li></li> antes do last-child)
-    $('ul#tabs li:last-child').before(
-            '<li id="li' +
-            (tabsID.length + 1) +
-            '"><a href="#page' +
-            (tabsID.length + 1) +
-            '" role="tab" data-toggle="tab">Página ' +
-            (tabsID.length + 1) +
-            ' <button type="button" id=' +
-            (tabsID.length + 1) +
-            ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
-
-    var idNum = (tabsID.length + 1);
-    // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
-    $('div.tab-content').append(
-            '<div class="tab-pane fade" id="page' + idNum +
-            '"><div class="txtTab txtTab' + idNum + '"></div>' +
-            '</div>');
-
-    refactorTab(html, idNum);
-
-    $(".txtTab" + idNum).css({
-        height: $("#contentor").height() * 0.82
-    });
-
-    return tabsID[tabsID.length] = "msg" + (tabsID.length + 1);
-}
-
-function refactorTab(html, idNum) {
-    $.get("./html_models/" + html, function (data) {
-        $(".txtTab" + idNum).html(data);
-
-        $(".txtTab" + idNum).children('div').each(function () {
-            $(this).attr("id", "tab" + idNum + "-" + this.id);
-            $(this).children().each(function () {
-                $(this).attr("id", "tab" + idNum + "-" + this.id);
-                if ($(this).get(0).tagName === "CANVAS") {
-                    var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
-                    drawimg.init();
-                    var obj = {
-                        id: this.id,
-                        drawpbj: drawimg
-                    };
-                    canvasObj.push(obj);
-                }
-            });
-        });
-    });
-}
 
 function getArrayDrawObj(id) {
     var a = null;
@@ -137,46 +76,7 @@ function getArrayDrawObj(id) {
     return a;
 }
 
-function removeTab(tabsID, liElem) { // FunÃ§Ã£o que remove separador com o numero de <li>
 
-    $('ul#tabs > li#li' + liElem).fadeOut(1000, function () {
-        $(this).remove(); // Apaga o <li></li>(separador) com um efeito fadeout
-    });
-    // TambÃ©m apaga o <div>(pÃ¡gina) correta dentro de <div class="tab-content">
-    $('div.tab-content div#page' + liElem).remove();
-    var i = 1;
-
-    $('#tabs').children('li').each(function () {
-
-        if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
-            $(this).attr('id', "li" + i);
-            $(this).children('a').attr('href', "#page" + i);
-
-            var button = $(this).children('a').children();
-            $(this).children('a').text('Pagina ' + i + " ").append(button);
-            $(this).children('a').children('button').attr('id', i);
-            i++;
-        }
-
-    });
-    var i = 0;
-    $('.tab-content').children('div').each(function () {
-
-        if ($(this).attr('id') != $('div.tab-content div#page' + liElem)) {
-            $(this).attr('id', "page" + (i + 1));
-            $(this).children('textarea').attr('id', "msg" + (i + 1));
-            i++;
-        }
-    });
-
-
-    // activa a tab anterior no caso de a actual ser eliminada
-    if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
-        $(document.body).find("a[href='#page" + (liElem - 1) + "']:last").click();
-    }
-
-    delete tabsID[tabsID.indexOf("msg" + liElem)];
-}
 /**
  * Faz o calculo para de uma cor em RGB 
  * @param {type} hex
