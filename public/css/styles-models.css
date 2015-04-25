@@ -6,7 +6,7 @@
     margin: auto;
 }
 
-.tabpage > input {
+.tabpage > textarea {
     height: 40px;
     text-align: center;
     font-size: xx-large;
@@ -18,7 +18,7 @@
     margin-top: 50px;
 }
 
-.tabpage > input, .tabpage > img, .tabpagedraw > input {
+.tabpage > textarea, .tabpage > img, .tabpagedraw > input {
     width: 100%;
     border: 1px solid black;                
     -moz-box-shadow:    inset 0 0 5px #000000;
@@ -26,7 +26,7 @@
     box-shadow:         inset 0 0 5px #000000;
 }
 
-.tabpage2 > input{
+.tabpage2 > textarea{
     width: 95%; 
     margin:2.5%; 
     text-align: center; 
