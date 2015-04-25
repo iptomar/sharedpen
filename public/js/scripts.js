@@ -20,8 +20,8 @@ var listaColor = [          // array com as corres disponiveis para alterar o fu
     ["green", "Verde"]
 ];
 
-var tabsID = [];
-var tabsTxt = [];
+var hash = {};
+var tabTest;
 
 $(document).ready(function () {
 
@@ -114,17 +114,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -297,7 +286,9 @@ $(document).ready(function () {
         var str1 = "";
         if (data.char === 8 /* backspace*/
                 || data.char === 46 /* delete */) {
+            
             if (data.char === 8) {
+                
                 if (data.pos > 0) {
                     str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
                 } else {
@@ -320,9 +311,8 @@ $(document).ready(function () {
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-        tabsID = data.id;
-        tabsTxt = data.txt;
-        actulizaTabs(tabsTxt, tabsID);
+        hash =  data.tabsHash;
+        actulizaTabs();
     });
 
     /**
@@ -333,21 +323,23 @@ $(document).ready(function () {
     // dados enviadas pelo socket para o servidor
     // *******************************************************************
     // envia o codigo ASCII do backspace e do delete
-    $("body").on('keydown', '.txtTab', function (event) {
+    $("body").on('keydown', '.editable', function (event) {
         if (event.which === 8 || event.which === 46) {
             socket.emit('msgappend', {
-                'data': event.which,
+                'char': event.which,
                 'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-                'id': "#" + $(this).attr('id')
+                'id': "#" + $(this).attr('id'),
+                'parent' : $(this).parent().parent().attr('class').split(' ')[1]
             });
         }
     });
     // envia o codigo ASCII das teclas carregadas
-    $("body").on('keypress', '.txtTab', function (event) {
+    $("body").on('keypress', '.editable', function (event) {
         socket.emit('msgappend', {
             'char': event.which,
             'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-            'id': "#" + $(this).attr('id')
+            'id': "#" + $(this).attr('id'),
+            'parent' : $(this).parent().parent().attr('class').split(' ')[1]
         });
     });
 
@@ -357,38 +349,42 @@ $(document).ready(function () {
     socket.on("TabsChanged", function (data) {
         if ($.trim(username) !== "") {
             if (data.op === "remover") {
-                removeTab(tabsID, data.id);
+                removeTab(data.id);
             } else {
-                Addtab(tabsID, data.id);
+                
+                Addtab(data.modelo,data.pos);
+            defer.done(function (){   
+                addtohash((Object.keys(hash).length + 1));
+            });
             }
         }
     });
-
-    /**
-     * Recebe as Tabs quando se connecta
-     */
-    socket.on('Tabs', function (data) {
-        tabsID = data.id;
-        tabsTxt = data.txt;
-        actulizaTabs(tabsTxt, tabsID);
-    });
-
     /**
      * Evento que determina qual e o modelo escolhido
      */
     $("body").on('click', ".btnmodels", function () {
-        Addtab(tabsID, $(this).data('model'));
-        $("#li-last").attr('class', '');
-        socket.emit('TabsChanged', {
-            //remover ou adicionar
-            op: "adicionar",
-            //id
-            id: "msg" + (tabsID.length),
-            pos: tabsID.length
+        var modelo = $(this).data('model');
+        //cria uma nova tab e adaciona-a ao array    
+         Addtab($(this).data('model'),(Object.keys(hash).length + 1));     
+        defer.done(function () {
+            
+            addtohash((Object.keys(hash).length + 1));
+            socket.emit('TabsChanged', {
+                //remover ou adicionar
+                op: "adicionar",
+                //tab
+                tab: tabTest,
+                //posiçao
+                pos: (Object.keys(hash).length),
+                //modelo
+                modelo: modelo,
+                //numero de elementos do modelo
+                noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length
+            });
+            $("body").find("#divchangemodel").remove();
+            // Foco na ultima pagina adicionada
+            $("body").find("a[href^='#page']:last").click();
         });
-        $("body").find("#divchangemodel").remove();
-        // Foco na ultima pagina adicionada
-        $("body").find("a[href^='#page']:last").click();
     });
 
     /**
@@ -421,7 +417,7 @@ $(document).ready(function () {
         liElem = $(this).attr('id');
         // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
         if (confirm("Tem a certeza que quer apagar?")) {
-            removeTab(tabsID, liElem);
+            removeTab(liElem);
             socket.emit('TabsChanged', {
                 //remover ou adicionar
                 op: "remover",
@@ -435,9 +431,6 @@ $(document).ready(function () {
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
-    /*
-     * Fim Funções relacionas com as Tabs ----------------------------------------------------------------------------------
-     */
 
     /*
      * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
@@ -527,44 +520,41 @@ $(window).resize(function () {
 /*
  * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
  */
-/**
- * 
- 
- * @param {type} tabsTxt
- * @param {type} tabsID
- * @returns {undefined} */
-function actulizaTabs(tabsTxt, tabsID) {
-    var tamanho = tabsID.length;
-    for (i = 0; i < tamanho; i++) {
-        var idd = "#" + Addtab(tabsID);
-        $(idd).val(tabsTxt[i]);
+
+
+function actulizaTabs() {
+
+    var i = 0;
+    for (var key in hash) {
+        i++;
+        Addtab(hash[key].nomeModelo, i);
+        defer.done(function () {
+            for (var elemento in hash[key].modelo.arrayElem) {
+                $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
+            }
+        });
     }
 }
 
 /**
  * 
- 
- * @param {type} tabsID
  * @param {type} html
  * @returns {Addtab.tabsID|String} */
-function Addtab(tabsID, html) {
+function Addtab(html,idNum) {
 
-    // Conta quantos <li>(separadores) hÃ¡ (menos 1 por causa do separador "+ PÃ¡g")
-    tabsID.length = ($('ul#tabs li').length) - 1;
-
+    //var idNum = (Object.keys(hash).length + 1);
     // Adiciona um separador antes do Ãºltimo (linha <li></li> antes do last-child)
     $('ul#tabs li:last-child').before(
             '<li id="li' +
-            (tabsID.length + 1) +
+            (idNum ) +
             '"><a href="#page' +
-            (tabsID.length + 1) +
+            (idNum ) +
             '" role="tab" data-toggle="tab">Página ' +
-            (tabsID.length + 1) +
+            (idNum ) +
             ' <button type="button" id=' +
-            (tabsID.length + 1) +
+            (idNum ) +
             ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
 
-    var idNum = (tabsID.length + 1);
     // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' + idNum +
@@ -572,12 +562,6 @@ function Addtab(tabsID, html) {
             '</div>');
 
     refactorTab(html, idNum);
-
-    $(".txtTab" + idNum).css({
-        height: $("#contentor").height() * 0.82
-    });
-
-    return tabsID[tabsID.length] = "msg" + (tabsID.length + 1);
 }
 
 /**
@@ -588,25 +572,53 @@ function Addtab(tabsID, html) {
  * @param {type} idNum  numeor da tab para alterar os id's da tab
  * @returns {undefined} */
 function refactorTab(html, idNum) {
+    defer = $.when(         
     $.get("./html_models/" + html, function (data) {
         $(".txtTab" + idNum).html(data);
+        //depois de carregar o html, vai buscar o numero de filhos q a div tem
+        var numElements = $(".txtTab" + (idNum)).children('div').children().length;
+        //cria tab no array
+        tabTest = new Tab(".txtTab" + (idNum), numElements, html);
+        var i=0;
+        $(".txtTab" + idNum).children('div').children().each(function () {
 
-        $(".txtTab" + idNum).children('div').each(function () {
             $(this).attr("id", "tab" + idNum + "-" + this.id);
-            $(this).children().each(function () {
-                $(this).attr("id", "tab" + idNum + "-" + this.id);
-                if ($(this).get(0).tagName === "CANVAS") {
-                    var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
-                    drawimg.init();
-                    var obj = {
-                        id: this.id,
-                        drawpbj: drawimg
-                    };
-                    canvasObj.push(obj);
-                }
-            });
+ 
+            if ($(this).get(0).tagName === "CANVAS") {
+                var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
+                drawimg.init();
+                var obj = {
+                    id: this.id,
+                    drawpbj: drawimg
+                };
+                canvasObj.push(obj);
+            }
+            i++;
         });
-    });
+
+        $(".txtTab" + idNum).css({
+            height: $("#contentor").height() * 0.82
+        });
+    })
+    );
+}
+
+/**
+* 
+
+ * @param {type} idNum
+ * @returns {undefined} */
+function addtohash(idNum){
+    
+        $(".txtTab" + idNum).children('div').children().each(function () {  
+            
+            //vai buscar id atribuido
+            var thID = $(this).attr("id");           
+            tabTest.modelo.arrayElem[thID] = new Element(thID) ;
+        });   
+        
+        hash[tabTest.id] = tabTest;
+        console.log("init"+tabTest.modelo.arrayElem);
 }
 
 /**
@@ -615,7 +627,7 @@ function refactorTab(html, idNum) {
  * @param {type} tabsID
  * @param {type} liElem
  * @returns {undefined} */
-function removeTab(tabsID, liElem) {
+function removeTab(liElem) {
 
     $('ul#tabs > li#li' + liElem).fadeOut(1000, function () {
         // Apaga o <li></li>(separador) com um efeito fadeout
@@ -625,6 +637,7 @@ function removeTab(tabsID, liElem) {
     $('div.tab-content div#page' + liElem).remove();
     var i = 1;
 
+    //para renomear Li
     $('#tabs').children('li').each(function () {
 
         if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
@@ -638,14 +651,26 @@ function removeTab(tabsID, liElem) {
         }
 
     });
+    //para renomear o conteudo
     var i = 0;
     $('.tab-content').children('div').each(function () {
-
         if ($(this).attr('id') != $('div.tab-content div#page' + liElem)) {
             $(this).attr('id', "page" + (i + 1));
+            
+            $(this).children('div').children('div').find('*').each(function () {
+              var id = $(this).attr('id').match(/\d+/);
+              //alert(id);
+            });
+            
+            
+            
+            
             $(this).children('textarea').attr('id', "msg" + (i + 1));
             i++;
         }
+        
+        
+        
     });
 
 
@@ -653,8 +678,8 @@ function removeTab(tabsID, liElem) {
     if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
         $("body").find("a[href='#page" + (liElem - 1) + "']:last").click();
     }
-
-    delete tabsID[tabsID.indexOf("msg" + liElem)];
+    //elimina do hash
+    delete hash[".txtTab"+liElem];
 }
 
 /**
