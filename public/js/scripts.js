@@ -305,6 +305,7 @@ $(document).ready(function () {
      */
     socket.on('NewTabs', function (data) {
         hash = data.tabsHash;
+
         var i = 0;
         for (var key in hash) {
             i++;
@@ -354,6 +355,7 @@ $(document).ready(function () {
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
                     refactorTab(data.modelo, data.pos);
                     addtohash(data.pos);
+
                 });
             }
         }
@@ -372,6 +374,7 @@ $(document).ready(function () {
 
             refactorTab(modelo, idNum);
             addtohash(idNum);
+
             socket.emit('TabsChanged', {
                 //remover ou adicionar
                 op: "adicionar",
@@ -577,7 +580,6 @@ function Addtab(html, idNum) {
  * @returns {undefined} */
 
 function refactorTab(html, idNum) {
-
     //depois de carregar o html, vai buscar o numero de filhos q a div tem
     var numElements = $(".txtTab" + (idNum)).children('div').children().length;
     //cria tab no array
@@ -617,8 +619,8 @@ function addtohash(idNum) {
         var thID = $(this).attr("id");
         tabTest.modelo.arrayElem[thID] = new Element(thID);
     });
-    console.log(tabTest);
     hash[tabTest.id] = tabTest;
+
 }
 
 /**
@@ -668,6 +670,7 @@ function removeTab(liElem) {
             $(this).children('textarea').attr('id', "msg" + (i + 1));
             i++;
         }
+
     });
 
     // activa a tab anterior no caso de a actual ser eliminada
@@ -675,6 +678,7 @@ function removeTab(liElem) {
         $("body").find("a[href='#page" + (liElem - 1) + "']:last").click();
     }
     refactorHash(liElem);
+
 }
 
 
