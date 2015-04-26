@@ -10,7 +10,7 @@ var socket = "";            // socket de comunicacao
 var username = "";          // nome do utilizador ligado
 var objectCanvas = null;    // canvas atual em utilizacao
 var canvasObj = [];         // array com os carios canvas
-var listaColor = [          // array com as corres disponiveis para alterar o fundo
+var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
     ["white", "Branco"],
     ["red", "Vermelho"],
@@ -176,7 +176,7 @@ $(document).ready(function () {
             }
         }
     });
-    
+
     /**
      * Eventos do mouse para desenhar no canvas
      */
@@ -224,13 +224,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
-
-
-
-
-
 
     /*
      * Funçoes relacionadas com as cores --------------------------------------------------------------------------------
@@ -286,9 +279,9 @@ $(document).ready(function () {
         var str1 = "";
         if (data.char === 8 /* backspace*/
                 || data.char === 46 /* delete */) {
-            
+
             if (data.char === 8) {
-                
+
                 if (data.pos > 0) {
                     str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
                 } else {
@@ -311,8 +304,14 @@ $(document).ready(function () {
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-        hash =  data.tabsHash;
-        actulizaTabs();
+        hash = data.tabsHash;
+        var i = 0;
+        for (var key in hash) {
+            i++;
+            Addtab(hash[key].nomeModelo, i);
+
+            updateTab(i, key);
+        }
     });
 
     /**
@@ -329,7 +328,7 @@ $(document).ready(function () {
                 'char': event.which,
                 'pos': $("#" + $(this).attr('id')).getCursorPosition(),
                 'id': "#" + $(this).attr('id'),
-                'parent' : $(this).parent().parent().attr('class').split(' ')[1]
+                'parent': $(this).parent().parent().attr('class').split(' ')[1]
             });
         }
     });
@@ -339,7 +338,7 @@ $(document).ready(function () {
             'char': event.which,
             'pos': $("#" + $(this).attr('id')).getCursorPosition(),
             'id': "#" + $(this).attr('id'),
-            'parent' : $(this).parent().parent().attr('class').split(' ')[1]
+            'parent': $(this).parent().parent().attr('class').split(' ')[1]
         });
     });
 
@@ -351,11 +350,11 @@ $(document).ready(function () {
             if (data.op === "remover") {
                 removeTab(data.id);
             } else {
-                
-                Addtab(data.modelo,data.pos);
-            defer.done(function (){   
-                addtohash((Object.keys(hash).length + 1));
-            });
+                Addtab(data.modelo, data.pos);
+                $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
+                    refactorTab(data.modelo, data.pos);
+                    addtohash(data.pos);
+                });
             }
         }
     });
@@ -363,12 +362,16 @@ $(document).ready(function () {
      * Evento que determina qual e o modelo escolhido
      */
     $("body").on('click', ".btnmodels", function () {
+
         var modelo = $(this).data('model');
-        //cria uma nova tab e adaciona-a ao array    
-         Addtab($(this).data('model'),(Object.keys(hash).length + 1));     
-        defer.done(function () {
-            
-            addtohash((Object.keys(hash).length + 1));
+        var idNum = (Object.keys(hash).length + 1);
+        //cria uma nova tab e adaciona-a ao array       
+        Addtab(modelo, idNum);
+
+        $(".txtTab" + idNum).load("./html_models/" + modelo, function () {
+
+            refactorTab(modelo, idNum);
+            addtohash(idNum);
             socket.emit('TabsChanged', {
                 //remover ou adicionar
                 op: "adicionar",
@@ -421,7 +424,7 @@ $(document).ready(function () {
             socket.emit('TabsChanged', {
                 //remover ou adicionar
                 op: "remover",
-                //id
+                //id (Numero)
                 id: liElem
             });
         }
@@ -521,38 +524,39 @@ $(window).resize(function () {
  * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
  */
 
+/**
+* Poe o modelo no Html
 
-function actulizaTabs() {
-
-    var i = 0;
-    for (var key in hash) {
-        i++;
-        Addtab(hash[key].nomeModelo, i);
-        defer.done(function () {
-            for (var elemento in hash[key].modelo.arrayElem) {
-                $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
-            }
-        });
-    }
+ * @param {type} i
+ * @param {type} key
+ * @returns {undefined} */
+function updateTab(i, key) {
+    $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
+        refactorTab(hash[key].nomeModelo, i);
+        for (var elemento in hash[key].modelo.arrayElem) {
+            $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
+        }
+    });
 }
 
-/**
- * 
- * @param {type} html
- * @returns {Addtab.tabsID|String} */
-function Addtab(html,idNum) {
 
+/**
+*  Adiciona a tab ao Html
+ * @param {type} html
+ * @param {type} idNum
+ * @returns {undefined} */
+function Addtab(html, idNum) {
     //var idNum = (Object.keys(hash).length + 1);
     // Adiciona um separador antes do Ãºltimo (linha <li></li> antes do last-child)
     $('ul#tabs li:last-child').before(
             '<li id="li' +
-            (idNum ) +
+            (idNum) +
             '"><a href="#page' +
-            (idNum ) +
+            (idNum) +
             '" role="tab" data-toggle="tab">Página ' +
-            (idNum ) +
+            (idNum) +
             ' <button type="button" id=' +
-            (idNum ) +
+            (idNum) +
             ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
 
     // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
@@ -561,7 +565,7 @@ function Addtab(html,idNum) {
             '"><div class="txtTab txtTab' + idNum + '"></div>' +
             '</div>');
 
-    refactorTab(html, idNum);
+    // refactorTab(html, idNum);
 }
 
 /**
@@ -571,60 +575,55 @@ function Addtab(html,idNum) {
  * @param {type} html   pagina html a ser carregada
  * @param {type} idNum  numeor da tab para alterar os id's da tab
  * @returns {undefined} */
+
 function refactorTab(html, idNum) {
-    defer = $.when(         
-    $.get("./html_models/" + html, function (data) {
-        $(".txtTab" + idNum).html(data);
-        //depois de carregar o html, vai buscar o numero de filhos q a div tem
-        var numElements = $(".txtTab" + (idNum)).children('div').children().length;
-        //cria tab no array
-        tabTest = new Tab(".txtTab" + (idNum), numElements, html);
-        var i=0;
-        $(".txtTab" + idNum).children('div').children().each(function () {
 
-            $(this).attr("id", "tab" + idNum + "-" + this.id);
- 
-            if ($(this).get(0).tagName === "CANVAS") {
-                var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
-                drawimg.init();
-                var obj = {
-                    id: this.id,
-                    drawpbj: drawimg
-                };
-                canvasObj.push(obj);
-            }
-            i++;
-        });
+    //depois de carregar o html, vai buscar o numero de filhos q a div tem
+    var numElements = $(".txtTab" + (idNum)).children('div').children().length;
+    //cria tab no array
+    tabTest = new Tab(".txtTab" + (idNum), numElements, html);
+    var i = 0;
+    $(".txtTab" + idNum).children('div').children().each(function () {
 
-        $(".txtTab" + idNum).css({
-            height: $("#contentor").height() * 0.82
-        });
-    })
-    );
+        $(this).attr("id", "tab" + idNum + "-" + this.id);
+
+        if ($(this).get(0).tagName === "CANVAS") {
+            var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
+            drawimg.init();
+            var obj = {
+                id: this.id,
+                drawpbj: drawimg
+            };
+            canvasObj.push(obj);
+        }
+        i++;
+    });
+    $(".txtTab" + idNum).css({
+        height: $("#contentor").height() * 0.82
+    });
+
 }
 
 /**
-* 
-
+ * Adiciona o a tab ao hash
+ * 
  * @param {type} idNum
  * @returns {undefined} */
-function addtohash(idNum){
-    
-        $(".txtTab" + idNum).children('div').children().each(function () {  
-            
-            //vai buscar id atribuido
-            var thID = $(this).attr("id");           
-            tabTest.modelo.arrayElem[thID] = new Element(thID) ;
-        });   
-        
-        hash[tabTest.id] = tabTest;
-        console.log("init"+tabTest.modelo.arrayElem);
+function addtohash(idNum) {
+
+    $(".txtTab" + idNum).children('div').children().each(function () {
+
+        //vai buscar id atribuido
+        var thID = $(this).attr("id");
+        tabTest.modelo.arrayElem[thID] = new Element(thID);
+    });
+    console.log(tabTest);
+    hash[tabTest.id] = tabTest;
 }
 
 /**
- * Funcao que remove separador com o numero de <li>
- 
- * @param {type} tabsID
+* Remove a tab correspondente ao <li>
+
  * @param {type} liElem
  * @returns {undefined} */
 function removeTab(liElem) {
@@ -649,39 +648,72 @@ function removeTab(liElem) {
             $(this).children('a').children('button').attr('id', i);
             i++;
         }
-
     });
     //para renomear o conteudo
     var i = 0;
     $('.tab-content').children('div').each(function () {
-        if ($(this).attr('id') != $('div.tab-content div#page' + liElem)) {
+        if ($(this).attr('id') !== $('div.tab-content div#page' + liElem)) {
             $(this).attr('id', "page" + (i + 1));
-            
-            $(this).children('div').children('div').find('*').each(function () {
-              var id = $(this).attr('id').match(/\d+/);
-              //alert(id);
+
+            var classs = $(this).children('div').attr('class').replace(/[0-9]/, (i + 1));
+            ;
+            $(this).children('div').attr('class', classs);
+            $(this).children('div').children().find('*').each(function () {
+                //muda o id
+                var id = $(this).attr('id').replace(/[0-9]/, (i + 1));
+                //coloca outro id
+                $(this).attr('id', id);
+
             });
-            
-            
-            
-            
             $(this).children('textarea').attr('id', "msg" + (i + 1));
             i++;
         }
-        
-        
-        
     });
-
 
     // activa a tab anterior no caso de a actual ser eliminada
     if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
         $("body").find("a[href='#page" + (liElem - 1) + "']:last").click();
     }
-    //elimina do hash
-    delete hash[".txtTab"+liElem];
+    refactorHash(liElem);
 }
 
+
+/**
+* Função para reorganizar o hash
+
+ * @param {type} liElem
+ * @returns {undefined} */
+function refactorHash(liElem) {
+    //elimina do hash
+    delete hash[".txtTab" + liElem];
+    var id = liElem;
+    //refactor array
+    var i = 0;
+    //cria array auxiliar
+    var hash1 = {};
+    //percorre todas as keys do array
+    for (var key in hash) {
+        var newId = key.replace(/[0-9]/, (i + 1));
+        hash1[newId] = hash[key];
+        hash1[newId].id = newId;
+
+        for (var elemento in hash[key].modelo.arrayElem) {
+            var idd = elemento.replace(/[0-9]/, (i + 1));
+
+            hash1[newId].modelo.arrayElem[idd] = hash[key].modelo.arrayElem[elemento];
+
+            hash1[newId].modelo.arrayElem[idd].id = hash[key].modelo.arrayElem[elemento].id.replace(/[0-9]/, (i + 1));
+            hash1[newId].modelo.arrayElem[idd].conteudo = hash[key].modelo.arrayElem[elemento].conteudo;
+            if ((i + 1) >= id)
+                delete hash1[newId].modelo.arrayElem[elemento];
+        }
+        i++;
+    }
+    hash = hash1;
+    for (var key in hash) {
+        console.log(hash[key].modelo.arrayElem);
+    }
+}
 /**
  * Função que recebe um array a uma chave e devolve o objeto dessa posição se 
  * existir e não nulkl
@@ -700,8 +732,8 @@ function getArrayDrawObj(array, id) {
 }
 
 /**
-* Ajusta os elementos do ecram principal
-
+ * Ajusta os elementos do ecram principal
+ 
  * @returns {undefined} */
 function ajustElements() {
     $("#contentor").css({
