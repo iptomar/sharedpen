@@ -658,6 +658,8 @@ function Addtab(html, idNum) {
             '"><div class="txtTab txtTab' + idNum + '"></div>' +
             '</div>');
 
+
+
     // refactorTab(html, idNum);
 }
 
@@ -695,7 +697,11 @@ function refactorTab(html, idNum) {
     $(".txtTab" + idNum).css({
         height: $("#contentor").height() * 0.82
     });
-
+      //  TinyMCE -- Incialização
+    tinymce.init({
+        selector: "div#tab"+idNum+"-tabpage",
+        menubar:false
+ }); 
 }
 
 /**
