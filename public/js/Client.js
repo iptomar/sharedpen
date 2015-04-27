@@ -5,33 +5,33 @@
  * @param {type} socketid id do socket de comunicacao
  * @returns {PopupMouse}
  */
-function Client(pai, user, port, socketid) {
+var Client = function (pai, user, port, socketid) {
     this.pai = pai;
     this.user = user;
     this.port = port;
     this.color = port * 10;
     this.socketid = socketid;
-
-    this.getUsername = function () {
-        return this.user;
-    };
-
-    this.getSocketId = function () {
-        return  this.socketid;
-    };
-
-    this.setSocketId = function (val) {
-        this.socketid = val;
-    };
-
-    this.getdivid = function () {
-        return this.socketid;
-    };
-
-    this.setName = function (nane) {
-        this.pai.find(".name-user").html(nane);
-        this.pai.find(".name-user").css({
-            "color": "rgb(" + hexToRgb(this.color, this.socketid, this.user) + ")"
-        });
-    };
 }
+
+Client.prototype.getUsername = function () {
+    return this.user;
+};
+
+Client.prototype.getSocketId = function () {
+    return  this.socketid;
+};
+
+Client.prototype.setSocketId = function (val) {
+    this.socketid = val;
+};
+
+Client.prototype.getdivid = function () {
+    return this.socketid;
+};
+
+Client.prototype.setName = function (nane) {
+    this.pai.find(".name-user").html(nane);
+    this.pai.find(".name-user").css({
+        "color": "rgb(" + hexToRgb(this.color, this.socketid, this.user) + ")"
+    });
+};
