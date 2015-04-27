@@ -175,7 +175,8 @@ $(document).ready(function () {
                         data.data.sizeCursor,
                         data.data.x,
                         data.data.y,
-                        data.data.type);
+                        data.data.type,
+                        data.socket);
             } else {
                 objectCanvas = getArrayDrawObj(canvasObj, data.data.id);
             }
@@ -278,31 +279,38 @@ $(document).ready(function () {
     // recebe o codigo ASCII da tecla recebida, converte-a para
     // carater e adiciona-o na posicao coreta
     socket.on('msgappend', function (data) {
-        var id = data.id;
-        var posactual = $(id).getCursorPosition();
-        var str = $(id).val();
-        var str1 = "";
-        if (data.char === 8 /* backspace*/
-                || data.char === 46 /* delete */) {
 
-            if (data.char === 8) {
+        switch (data.tipo) {
+            case "IMG":
+                $("body").find('#' + data.id).attr('src', data.imageData);
+                break;
+            default :
+                var id = data.id;
+                var str = $(id).val();
+                var str1 = "";
+                var posactual = $(id).getCursorPosition();
+                if (data.char === 8 /* backspace*/
+                        || data.char === 46 /* delete */) {
 
-                if (data.pos > 0) {
-                    str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
+                    if (data.char === 8) {
+
+                        if (data.pos > 0) {
+                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
+                        } else {
+                            str1 = str.slice(data.pos);
+                        }
+                    } else if (data.data === 46) {
+                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
+                    }
                 } else {
-                    str1 = str.slice(data.pos);
+                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
                 }
-            } else if (data.data === 46) {
-                str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
-            }
-        } else {
-            str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
-        }
-        $(id).val(str1);
-        if (posactual < data.pos) {
-            $(id).selectRange(posactual);
-        } else {
-            $(id).selectRange(posactual - 1);
+                $(id).val(str1);
+                if (posactual < data.pos) {
+                    $(id).selectRange(posactual);
+                } else {
+                    $(id).selectRange(posactual - 1);
+                }
         }
     });
     /**
@@ -512,10 +520,13 @@ $(document).ready(function () {
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
             // envia as informacoes da nova imagem para os outros clientes
-            socket.emit('user image', {
+            socket.emit('msgappend', {
                 id: imgId,
                 name: file.name,
-                'imageData': evt.target.result
+                'imageData': evt.target.result,
+                'tipo': $("body").find('#' + imgId).prop("tagName"),
+                'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
+
             });
         };
         reader.readAsDataURL(file);
@@ -569,11 +580,26 @@ $(document).ready(function () {
             var reader = new FileReader(file);
             reader.onload = function (evt) {
                 // envia as informacoes da nova imagem para os outros clientes
-                socket.emit('user image', {
+                socket.emit('msgappend', {
                     id: idImg,
                     name: file.name,
-                    'imageData': evt.target.result
+                    'imageData': evt.target.result,
+                    'tipo': $("body").find('#' + idImg).prop("tagName"),
+                    'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
                 });
+
+
+//                'char': event.which,
+//                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
+//                'id': "#" + $(this).attr('id'),
+//                'parent': $(this).parent().parent().attr('class').split(' ')[1]
+
+
+//                socket.emit('user image', {
+//                    id: idImg,
+//                    name: file.name,
+//                    'imageData': evt.target.result
+//                });
                 $("body").find('#' + idImg).attr('src', evt.target.result);
             };
             reader.readAsDataURL(file);
@@ -626,8 +652,19 @@ $(window).resize(function () {
 function updateTab(i, key) {
     $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
         refactorTab(hash[key].nomeModelo, i);
+
         for (var elemento in hash[key].modelo.arrayElem) {
-            $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
+           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
+            switch (hash[key].modelo.arrayElem[elemento].elementType) {
+                case "IMG":
+                    console.log( hash[key].modelo.arrayElem[elemento]);
+                    $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
+                    break;
+                default:
+                    $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
+                    break;
+            }
+
         }
     });
 }
@@ -709,7 +746,8 @@ function addtohash(idNum) {
 
         //vai buscar id atribuido
         var thID = $(this).attr("id");
-        tabTest.modelo.arrayElem[thID] = new Element(thID);
+        var thType = $(this).prop("tagName");
+        tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
     });
     hash[tabTest.id] = tabTest;
 

@@ -1,18 +1,16 @@
-var Tab = function(id,noElement,nomeModelo) {
+var Tab = function (id, noElement, nomeModelo) {
     this.id = id;
-    this.modelo = new  Modelo(noElement);
+    this.modelo = new Modelo(noElement);
     this.nomeModelo = nomeModelo;
-}
+};
 
-var Modelo = function(noElement) {
-    
-this.arrayElem = {};  
-this.noElement = noElement;
-    
-}
+var Modelo = function (noElement) {
+    this.arrayElem = {};
+    this.noElement = noElement;
+};
 
-var Element = function(id){
-    this.id=id;
-    this.conteudo="";     
-}
-
+var Element = function (id, elementType) {
+    this.id = id;
+    this.elementType = elementType;
+    this.conteudo = "";
+};
