@@ -165,14 +165,19 @@ $(document).ready(function () {
      * evento do socket para desenhar o que recebe pelo socket
      */
     socket.on('draw', function (data) {
+
         if (objectCanvas === null) {
-            objectCanvas = getArrayDrawObj(canvasObj, this.id);
+            objectCanvas = getArrayDrawObj(canvasObj, data.data.id);
         } else {
-            if (objectCanvas.id === data.id) {
-                console.log(" X: " + data.x + " Y: " + data.y + " type: " + data.type);
-                objectCanvas.drawpbj.draw(data.x, data.y, data.type);
+            if (objectCanvas.id === data.data.id) {
+                objectCanvas.drawpbj.drawOtherUser(
+                        data.data.color,
+                        data.data.sizeCursor,
+                        data.data.x,
+                        data.data.y,
+                        data.data.type);
             } else {
-                objectCanvas = getArrayDrawObj(canvasObj, this.id);
+                objectCanvas = getArrayDrawObj(canvasObj, data.data.id);
             }
         }
     });
@@ -198,14 +203,14 @@ $(document).ready(function () {
                         x = e.offsetX;
                         y = e.offsetY;
                         objectCanvas.drawpbj.draw(x, y, type);
-                        if (objectCanvas.drawpbj.getFlag()) {
-                            socket.emit('drawClick', {
-                                id: this.id,
-                                x: x,
-                                y: y,
-                                type: type
-                            });
-                        }
+                        socket.emit('drawClick', {
+                            id: this.id,
+                            x: x,
+                            y: y,
+                            type: type,
+                            color: objectCanvas.drawpbj.getColor(),
+                            sizeCursor: objectCanvas.drawpbj.getSizeCursor()
+                        });
 //                        alert('Left Mouse button pressed.');
                         break;
                     case 2:
@@ -497,6 +502,91 @@ $(document).ready(function () {
 
 
     /**
+     * Funcoes para drag and drop de imagens -----------------------------------------
+     */
+
+    $("body").on('change', 'input[type=file]', function (e) {
+        var imgId = $(this).next().attr("id");
+        var file = e.originalEvent.target.files[0],
+                reader = new FileReader(file);
+        reader.onload = function (evt) {
+            $("body").find('#' + imgId).attr('src', evt.target.result);
+            // envia as informacoes da nova imagem para os outros clientes
+            socket.emit('user image', {
+                id: imgId,
+                name: file.name,
+                'imageData': evt.target.result
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+
+    $("body").on('dragenter', ".dragandrophandler", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).css('border', '2px solid #0B85A1');
+    });
+
+    $("body").on('dragover', ".dragandrophandler", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    });
+
+    $("body").on('click', ".dragandrophandler", function (e) {
+        var obj = $(this);
+        obj.prev('input[type=file]').click();
+    });
+
+    $("body").on('drop', ".dragandrophandler", function (e) {
+        var idImg = this.id;
+        $(this).css('border', '2px dotted #0B85A1');
+        e.preventDefault();
+        var files = e.originalEvent.dataTransfer.files;
+
+        var errMessage = 0;
+        $.each(files, function (index, file) {
+            // Some error messaging
+            if (!files[index].type.match('image.*')) {
+                if (errMessage == 0) {
+                    alert('Hey! Images only');
+                    ++errMessage
+                }
+                else if (errMessage == 1) {
+                    alert('Stop it! Images only!');
+                    ++errMessage
+                }
+                else if (errMessage == 2) {
+                    alert("Can't you read?! Images only!");
+                    ++errMessage
+                }
+                else if (errMessage == 3) {
+                    alert("Fine! Keep dropping non-images.");
+                    errMessage = 0;
+                }
+                return false;
+            }
+
+            var reader = new FileReader(file);
+            reader.onload = function (evt) {
+                // envia as informacoes da nova imagem para os outros clientes
+                socket.emit('user image', {
+                    id: idImg,
+                    name: file.name,
+                    'imageData': evt.target.result
+                });
+                $("body").find('#' + idImg).attr('src', evt.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // recebe a imagem e coloca-a de acordo com o id recebido
+    socket.on('user image', function (data) {
+        $("body").find('#' + data.id).attr("src", data.imageData);
+    });
+
+
+    /**
      * Funçoes de logout -----------------------------------------------------------------------------------------------
      */
     /**
@@ -528,8 +618,8 @@ $(window).resize(function () {
  */
 
 /**
-* Poe o modelo no Html
-
+ * Poe o modelo no Html
+ 
  * @param {type} i
  * @param {type} key
  * @returns {undefined} */
@@ -544,7 +634,7 @@ function updateTab(i, key) {
 
 
 /**
-*  Adiciona a tab ao Html
+ *  Adiciona a tab ao Html
  * @param {type} html
  * @param {type} idNum
  * @returns {undefined} */
@@ -585,6 +675,8 @@ function refactorTab(html, idNum) {
     //cria tab no array
     tabTest = new Tab(".txtTab" + (idNum), numElements, html);
     var i = 0;
+    $(".txtTab" + idNum).children('div').attr("id", "tab" + idNum + "-" + $(".txtTab" + idNum).children('div').attr('id'));
+
     $(".txtTab" + idNum).children('div').children().each(function () {
 
         $(this).attr("id", "tab" + idNum + "-" + this.id);
@@ -624,8 +716,8 @@ function addtohash(idNum) {
 }
 
 /**
-* Remove a tab correspondente ao <li>
-
+ * Remove a tab correspondente ao <li>
+ 
  * @param {type} liElem
  * @returns {undefined} */
 function removeTab(liElem) {
@@ -683,8 +775,8 @@ function removeTab(liElem) {
 
 
 /**
-* Função para reorganizar o hash
-
+ * Função para reorganizar o hash
+ 
  * @param {type} liElem
  * @returns {undefined} */
 function refactorHash(liElem) {

@@ -38,7 +38,7 @@
     height: 400px;
     margin-top: 5%;
     resize: none;
-	border: 1px solid black;
+    border: 1px solid black;
 }
 
 .tabpage2 > img {
@@ -63,4 +63,18 @@
     width: 100%;
     height: 700px;
     margin-top: 30px;
+}
+
+input[type=file] {
+    display: none;
+}
+
+.dragandrophandler {
+    border:2px dotted #0B85A1;
+    width:400px;
+    color:#92AAB0;
+    text-align:left;vertical-align:middle;
+    padding: 10px 10px 10px 10px;
+    margin-bottom:10px;
+    font-size:200%;
 }
