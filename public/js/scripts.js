@@ -588,18 +588,6 @@ $(document).ready(function () {
                     'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
                 });
 
-
-//                'char': event.which,
-//                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-//                'id': "#" + $(this).attr('id'),
-//                'parent': $(this).parent().parent().attr('class').split(' ')[1]
-
-
-//                socket.emit('user image', {
-//                    id: idImg,
-//                    name: file.name,
-//                    'imageData': evt.target.result
-//                });
                 $("body").find('#' + idImg).attr('src', evt.target.result);
             };
             reader.readAsDataURL(file);
@@ -654,10 +642,10 @@ function updateTab(i, key) {
         refactorTab(hash[key].nomeModelo, i);
 
         for (var elemento in hash[key].modelo.arrayElem) {
-           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
+//           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
             switch (hash[key].modelo.arrayElem[elemento].elementType) {
                 case "IMG":
-                    console.log( hash[key].modelo.arrayElem[elemento]);
+//                    console.log( hash[key].modelo.arrayElem[elemento]);
                     $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
                     break;
                 default:
@@ -734,11 +722,14 @@ function refactorTab(html, idNum) {
     $(".txtTab" + idNum).css({
         height: $("#contentor").height() * 0.82
     });
-      //  TinyMCE -- Incialização
-    tinymce.init({
-        selector: "div#tab"+idNum+"-tabpage",
-        menubar:false
- }); 
+    //  TinyMCE -- Incialização
+//    tinymce.init({
+//        
+//        selector: "textarea",
+//        image_advtab: true,
+//        menubar: false,
+//        statusbar: false
+//    });
 }
 
 /**
