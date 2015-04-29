@@ -12,7 +12,7 @@ this.noElement = noElement;
     
 }
 
-var Element = function(id){
+var Element = function(id,elementType){
     this.id=id;
     this.conteudo="";  
     this.elementType = elementType;
