@@ -5303,7 +5303,7 @@ firepad.Firepad = (function(global) {
       this.firepadWrapper_.className += ' firepad-richtext firepad-with-toolbar';
     }
 
-    this.addPoweredByLogo_();
+//    this.addPoweredByLogo_();
 
     // Now that we've mucked with CodeMirror, refresh it.
     if (this.codeMirror_)
@@ -5673,7 +5673,7 @@ firepad.Firepad = (function(global) {
     this.toolbar.on('indent-increase', this.indent, this);
     this.toolbar.on('indent-decrease', this.unindent, this);
     this.toolbar.on('insert-image', this.makeImageDialog_, this);
-
+    
     this.firepadWrapper_.insertBefore(this.toolbar.element(), this.firepadWrapper_.firstChild);
   };
 

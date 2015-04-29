@@ -176,8 +176,8 @@ $(document).ready(function () {
                         data.data.x,
                         data.data.y,
                         data.data.type,
-                        data.data.socket                     
-                );
+                        data.data.socket
+                        );
 
             } else {
                 objectCanvas = getArrayDrawObj(canvasObj, data.data.id);
@@ -196,7 +196,7 @@ $(document).ready(function () {
             objectCanvas = getArrayDrawObj(canvasObj, this.id);
         } else {
             if (objectCanvas.id === this.id) {
-                
+
                 switch (event.which) {
                     case 1:
                         var offset, type, x, y;
@@ -207,12 +207,12 @@ $(document).ready(function () {
                         x = e.offsetX;
                         y = e.offsetY;
                         objectCanvas.drawpbj.draw(x, y, type);
-                        
-                        
-                       
-                       // var ctx = c.getContext('2d');
+
+
+
+                        // var ctx = c.getContext('2d');
                         //var img = ctx.getImageData
-                        
+
                         socket.emit('drawClick', {
                             id: this.id,
                             x: x,
@@ -221,7 +221,7 @@ $(document).ready(function () {
                             color: objectCanvas.drawpbj.getColor(),
                             sizeCursor: objectCanvas.drawpbj.getSizeCursor(),
                             socket: socket.id,
-                            canvas : objectCanvas.drawpbj.getCanvas().toDataURL(),
+                            canvas: objectCanvas.drawpbj.getCanvas().toDataURL(),
                             parent: $(this).parent().parent().attr('class').split(' ')[1]
                         });
 //                        alert('Left Mouse button pressed.');
@@ -349,7 +349,7 @@ $(document).ready(function () {
     // dados enviadas pelo socket para o servidor
     // *******************************************************************
     // envia o codigo ASCII do backspace e do delete
-    $("body").on('keydown', '.editable', function (event) {
+    $("body").on('keydown', '.editablee', function (event) {
         if (event.which === 8 || event.which === 46) {
             socket.emit('msgappend', {
                 'char': event.which,
@@ -360,7 +360,7 @@ $(document).ready(function () {
         }
     });
     // envia o codigo ASCII das teclas carregadas
-    $("body").on('keypress', '.editable', function (event) {
+    $("body").on('keypress', '.editablee', function (event) {
         socket.emit('msgappend', {
             'char': event.which,
             'pos': $("#" + $(this).attr('id')).getCursorPosition(),
@@ -378,9 +378,11 @@ $(document).ready(function () {
                 removeTab(data.id);
             } else {
                 Addtab(data.modelo, data.pos);
+                hash[".txtTab" + data.pos] = data.tab;
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
-                    refactorTab(data.modelo, data.pos);
-                    addtohash(data.pos);
+                    updateTab(data.pos, ".txtTab" + data.pos);
+                    //refactorTab(data.modelo, data.pos);
+                    //addtohash(data.pos, true);
                 });
             }
         }
@@ -398,7 +400,7 @@ $(document).ready(function () {
         $(".txtTab" + idNum).load("./html_models/" + modelo, function () {
 
             refactorTab(modelo, idNum);
-            addtohash(idNum);
+            var firepadID = addtohash(idNum, false);
 
             socket.emit('TabsChanged', {
                 //remover ou adicionar
@@ -628,31 +630,31 @@ $(document).ready(function () {
             }
         }
     });
-    
-    
-      
+
+
+
     // *******************************************************************
     // botao chat
     // *******************************************************************
-   var cont = 0;
-    
- $('#bt_Chat').click(function () {
-     
-        
+    var cont = 0;
+
+    $('#bt_Chat').click(function () {
+
+
         if (cont == 0) {
-            
-            $("#divUsers").css({'visibility' : "hidden" });
-              $(".col-lg-9").animate({'width' : "+=25%" });           
-               
-                    cont++;
-          } else {
-    	      $(".col-lg-9").animate({'width':"-=25%"});
-                $("#divUsers").css({'visibility' : "visible" });
-				    cont--;	
-								}
-     
-      });
-    
+
+            $("#divUsers").css({'visibility': "hidden"});
+            $(".col-lg-9").animate({'width': "+=25%"});
+
+            cont++;
+        } else {
+            $(".col-lg-9").animate({'width': "-=25%"});
+            $("#divUsers").css({'visibility': "visible"});
+            cont--;
+        }
+
+    });
+
     /**
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -678,27 +680,31 @@ function updateTab(i, key) {
     $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
         refactorTab(hash[key].nomeModelo, i);
 
-        
+
         for (var elemento in hash[key].modelo.arrayElem) {
-            
-            if(typeof hash[key].modelo.arrayElem[elemento].canvas == "undefined" ){
+
+            if (typeof hash[key].modelo.arrayElem[elemento].canvas == "undefined") {
                 //           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
                 switch (hash[key].modelo.arrayElem[elemento].elementType) {
                     case "IMG":
-    //                    console.log( hash[key].modelo.arrayElem[elemento]);
+                        //                    console.log( hash[key].modelo.arrayElem[elemento]);
                         $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
                         break;
                     default:
+                        if ($("#" + elemento).attr('class').match('editable')) {
+                            var txtedit = new TextEditor(elemento, hash[key].modelo.arrayElem[elemento].keyEditor);
+                            txtedit.init();
+                        }
                         $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                         break;
                 }
             }
-            else{
-                var cmv =  $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
-                var ctx = cmv.getContext('2d');    
-                var img= document.createElement('img');
-                img.src=hash[key].modelo.arrayElem[elemento].canvas;
-                ctx.drawImage(img,0,0);
+            else {
+                var cmv = $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
+                var ctx = cmv.getContext('2d');
+                var img = document.createElement('img');
+                img.src = hash[key].modelo.arrayElem[elemento].canvas;
+                ctx.drawImage(img, 0, 0);
             }
         }
     });
@@ -753,7 +759,7 @@ function refactorTab(html, idNum) {
 
         $(this).attr("id", "tab" + idNum + "-" + this.id);
         if ($(this).get(0).tagName === "CANVAS") {
-            var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);          
+            var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
             drawimg.init();
             var obj = {
                 id: this.id,
@@ -790,7 +796,7 @@ function addtohash(idNum) {
         }
     });
     hash[tabTest.id] = tabTest;
-
+    return
 }
 
 /**
