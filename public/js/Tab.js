@@ -14,5 +14,6 @@ this.noElement = noElement;
 var Element = function(id){
     this.id=id;
     this.conteudo="";     
+    this.Canvas;
 }
 
