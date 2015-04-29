@@ -722,14 +722,6 @@ function refactorTab(html, idNum) {
     $(".txtTab" + idNum).css({
         height: $("#contentor").height() * 0.82
     });
-    //  TinyMCE -- Incialização
-//    tinymce.init({
-//        
-//        selector: "textarea",
-//        image_advtab: true,
-//        menubar: false,
-//        statusbar: false
-//    });
 }
 
 /**
@@ -744,7 +736,14 @@ function addtohash(idNum) {
         //vai buscar id atribuido
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
-        tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
+
+        if ($(this).attr("class").match("editable")) {
+            var txtedit = new TextEditor($(this).attr("id"), "");
+            txtedit.init();
+            tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
+        } else {
+            tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
+        }
     });
     hash[tabTest.id] = tabTest;
 

@@ -9,8 +9,9 @@ var Modelo = function (noElement) {
     this.noElement = noElement;
 };
 
-var Element = function (id, elementType) {
+var Element = function (id, elementType, keyEditor) {
     this.id = id;
     this.elementType = elementType;
     this.conteudo = "";
+    this.keyEditor = keyEditor;
 };
