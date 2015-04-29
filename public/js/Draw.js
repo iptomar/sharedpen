@@ -9,6 +9,8 @@ var Draw = function (tabClass, page, id) {
     this.resizeCanvas = false;
     this.canvas = document.getElementById(this.id);
     this.crx;
+    
+    this.ArrayCanvasClients = [];
 };
 
 Draw.prototype.init = function () {
@@ -17,8 +19,22 @@ Draw.prototype.init = function () {
     this.ctx.strokeStyle = this.color;
     this.ctx.lineWidth = this.curSize;
     this.ctx.lineCap = "round";
-    this.canvas.width = this.canvas.clientWidth;
-    this.canvas.height = this.canvas.clientHeight;
+    this.canvas.width = 700;
+    this.canvas.height = 700;
+    
+    this.ArrayCanvasClients = {};
+    
+};
+
+Draw.prototype.VerificaUser = function (socket) {
+    if(typeof this.ArrayCanvasClients[socket] === "undefined"){
+        
+        var cnv = document.createElement("canvas");
+        cnv.width = this.canvas.width;
+        cnv.height = this.canvas.height
+        this.ArrayCanvasClients[socket] = cnv;   
+    }
+    return  this.ArrayCanvasClients[socket];
 };
 
 Draw.prototype.getColor = function () {
@@ -27,6 +43,9 @@ Draw.prototype.getColor = function () {
 
 Draw.prototype.getSizeCursor = function () {
     return this.curSize;
+};
+Draw.prototype.getCanvas = function () {
+    return this.canvas;
 };
 
 Draw.prototype.resize = function () {
@@ -39,7 +58,7 @@ Draw.prototype.resize = function () {
 
 Draw.prototype.draw = function (x, y, type) {
     if (type === "mousedown") {
-        this.resize();
+        //this.resize();
         this.ctx.beginPath();
         this.flag = true;
         this.ctx.moveTo(x, y);
@@ -52,22 +71,42 @@ Draw.prototype.draw = function (x, y, type) {
     }
 };
 
-Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type) {
-    this.resize();
+Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket) {
+
+    var canvas2 = this.VerificaUser(socket);
+    var ctx2 = canvas2.getContext('2d');
+
+    ctx2.fillStyle = "solid";
+    ctx2.strokeStyle = cor;
+    ctx2.lineWidth = sizecur;
+    ctx2.lineCap = "round";
+
+
+   // this.resize();
+    
     var corline = this.getColor();
     var cur = this.getSizeCursor();
     this.setColor(cor);
     this.setSizePensil(sizecur);
+    
 
     if (type === "mousedown") {
-        this.ctx.beginPath();
-        this.ctx.moveTo(x, y);
+        canvas2.width = 700;
+        canvas2.height = 700;
+        ctx2.beginPath();
+        ctx2.moveTo(x, y);
+        
     } else if (type === "mousemove") {
-        this.ctx.lineTo(x, y);
-        this.ctx.stroke();
+        ctx2.lineTo(x, y);
+        ctx2.stroke();
+        
     } else {
-        this.ctx.closePath();
+        ctx2.closePath();
     }
+    
+    this.ctx.drawImage(canvas2,0,0);
+    
+
     this.setColor(corline);
     this.setSizePensil(cur);
 

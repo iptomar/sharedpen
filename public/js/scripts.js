@@ -176,7 +176,9 @@ $(document).ready(function () {
                         data.data.x,
                         data.data.y,
                         data.data.type,
-                        data.socket);
+                        data.data.socket                     
+                );
+
             } else {
                 objectCanvas = getArrayDrawObj(canvasObj, data.data.id);
             }
@@ -194,6 +196,7 @@ $(document).ready(function () {
             objectCanvas = getArrayDrawObj(canvasObj, this.id);
         } else {
             if (objectCanvas.id === this.id) {
+                
                 switch (event.which) {
                     case 1:
                         var offset, type, x, y;
@@ -204,13 +207,22 @@ $(document).ready(function () {
                         x = e.offsetX;
                         y = e.offsetY;
                         objectCanvas.drawpbj.draw(x, y, type);
+                        
+                        
+                       
+                       // var ctx = c.getContext('2d');
+                        //var img = ctx.getImageData
+                        
                         socket.emit('drawClick', {
                             id: this.id,
                             x: x,
                             y: y,
                             type: type,
                             color: objectCanvas.drawpbj.getColor(),
-                            sizeCursor: objectCanvas.drawpbj.getSizeCursor()
+                            sizeCursor: objectCanvas.drawpbj.getSizeCursor(),
+                            socket: socket.id,
+                            canvas : objectCanvas.drawpbj.getCanvas().toDataURL(),
+                            parent: $(this).parent().parent().attr('class').split(' ')[1]
                         });
 //                        alert('Left Mouse button pressed.');
                         break;
@@ -232,7 +244,7 @@ $(document).ready(function () {
     });
 
     /*
-     * Funçoes relacionadas com as cores --------------------------------------------------------------------------------
+     * Funçoes relacionadas com as cores ----------------------------------------------------------------------
      */
 
     /**
@@ -323,9 +335,10 @@ $(document).ready(function () {
         for (var key in hash) {
             i++;
             Addtab(hash[key].nomeModelo, i);
-
             updateTab(i, key);
+
         }
+
     });
 
     /**
@@ -368,7 +381,6 @@ $(document).ready(function () {
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
                     refactorTab(data.modelo, data.pos);
                     addtohash(data.pos);
-
                 });
             }
         }
@@ -641,18 +653,28 @@ function updateTab(i, key) {
     $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
         refactorTab(hash[key].nomeModelo, i);
 
+        
         for (var elemento in hash[key].modelo.arrayElem) {
-//           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
-            switch (hash[key].modelo.arrayElem[elemento].elementType) {
-                case "IMG":
-//                    console.log( hash[key].modelo.arrayElem[elemento]);
-                    $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
-                    break;
-                default:
-                    $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
-                    break;
+            
+            if(typeof hash[key].modelo.arrayElem[elemento].canvas == "undefined" ){
+                //           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
+                switch (hash[key].modelo.arrayElem[elemento].elementType) {
+                    case "IMG":
+    //                    console.log( hash[key].modelo.arrayElem[elemento]);
+                        $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
+                        break;
+                    default:
+                        $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
+                        break;
+                }
             }
-
+            else{
+                var cmv =  $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
+                var ctx = cmv.getContext('2d');    
+                var img= document.createElement('img');
+                img.src=hash[key].modelo.arrayElem[elemento].canvas;
+                ctx.drawImage(img,0,0);
+            }
         }
     });
 }
@@ -683,9 +705,6 @@ function Addtab(html, idNum) {
             '"><div class="txtTab txtTab' + idNum + '"></div>' +
             '</div>');
 
-
-
-    // refactorTab(html, idNum);
 }
 
 /**
@@ -697,6 +716,7 @@ function Addtab(html, idNum) {
  * @returns {undefined} */
 
 function refactorTab(html, idNum) {
+
     //depois de carregar o html, vai buscar o numero de filhos q a div tem
     var numElements = $(".txtTab" + (idNum)).children('div').children().length;
     //cria tab no array
@@ -707,9 +727,8 @@ function refactorTab(html, idNum) {
     $(".txtTab" + idNum).children('div').children().each(function () {
 
         $(this).attr("id", "tab" + idNum + "-" + this.id);
-
         if ($(this).get(0).tagName === "CANVAS") {
-            var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
+            var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);          
             drawimg.init();
             var obj = {
                 id: this.id,
@@ -840,9 +859,6 @@ function refactorHash(liElem) {
         i++;
     }
     hash = hash1;
-    for (var key in hash) {
-        console.log(hash[key].modelo.arrayElem);
-    }
 }
 /**
  * Função que recebe um array a uma chave e devolve o objeto dessa posição se 
