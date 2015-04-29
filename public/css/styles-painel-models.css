@@ -80,3 +80,11 @@ figcaption {
     overflow-y: scroll;
     background-color: white;
 }
+
+.menu_BT{
+ position: fixed;
+    left: 80%;
+    top: 1%;
+    height: auto;
+    width: auto;
+}
