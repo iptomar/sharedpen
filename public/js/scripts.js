@@ -628,6 +628,31 @@ $(document).ready(function () {
             }
         }
     });
+    
+    
+      
+    // *******************************************************************
+    // botao chat
+    // *******************************************************************
+   var cont = 0;
+    
+ $('#bt_Chat').click(function () {
+     
+        
+        if (cont == 0) {
+            
+            $("#divUsers").css({'visibility' : "hidden" });
+              $(".col-lg-9").animate({'width' : "+=25%" });           
+               
+                    cont++;
+          } else {
+    	      $(".col-lg-9").animate({'width':"-=25%"});
+                $("#divUsers").css({'visibility' : "visible" });
+				    cont--;	
+								}
+     
+      });
+    
     /**
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
