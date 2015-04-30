@@ -473,11 +473,18 @@ $(document).ready(function () {
     /**
      * Evento gerado quando um utilizador manda mensagem no chat
      */
+    var countMsg = 0;
     socket.on('message', function (data) {
         $('#panelChat').addNewText(data.user, data.data);
         $('#panelChat').animate({
             scrollTop: $('#panelChat').prop("scrollHeight")
         }, 500);
+        if ($("#divUsers").css("visibility") === "hidden") {
+            $("#numMsg").html(++countMsg);
+            $("#numMsg").css({
+                visibility: "visible"
+            });
+        }
     });
     /**
      * Função para enviar uma mensagem no chat
@@ -511,6 +518,12 @@ $(document).ready(function () {
                 var aux2 = aux[i].split(":");
                 if (typeof aux2[1] !== "undefined") {
                     $('#panelChat').addNewText(aux2[0], aux2[1].replace(",", ""));
+                    if ($("#divUsers").css("visibility") === "hidden") {
+                        $("#numMsg").html(++countMsg);
+                        $("#numMsg").css({
+                            visibility: "visible"
+                        });
+                    }
                 }
             }
         }
@@ -642,6 +655,15 @@ $(document).ready(function () {
             $("#divUsers").css({'visibility': "visible"});
             $("#divUsers").animate({
                 "margin-left": "75%"
+            });
+            $("#numMsg").animate({
+                opacity: 0
+            }, 500, function () {
+                $("#numMsg").css({
+                    visibility: "hidden",
+                    opacity: 1
+                });
+                countMsg = 0;
             });
         } else {
             $("#divUsers").animate({

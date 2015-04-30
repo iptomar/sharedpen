@@ -1,5 +1,3 @@
-
-
 body, #div-login{ 
     background: url(../img/bg.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
@@ -66,6 +64,24 @@ h1, #erro_name {
     z-index: 100;
 }
 
+#numMsg {
+    visibility: hidden;
+    background-color: cadetblue;
+    margin-left: 1%;
+    width: 35px;
+    height: 20px;
+    z-index: 110;
+    position: relative;
+    padding-left: 2px;
+    padding-top: 1px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-weight: 900;
+    color: white;
+    opacity: 1;
+    text-align: center;
+}
+
 #contentorListaUsers{
     font-size: 1.3vmax;
     height: 50%;
@@ -74,7 +90,7 @@ h1, #erro_name {
 }
 
 #contentorChat {
-    height: 44%;
+    height: 41%;
 }
 #panelChat {
     height: 53%;
