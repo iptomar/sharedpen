@@ -1,35 +1,46 @@
 var TextEditor = function (idpai, key) {
     this.idpai = idpai;
     this.key = key;
+    this.firepadRef;
+    this.codeMirror;
+    this.firepad;
+    this.toolbarShow = false;
 };
 
 TextEditor.prototype.init = function () {
     //// Initialize Firebase.
-    var firepadRef = this.getExampleRef();
+    this.firepadRef = this.getExampleRef();
     // TODO: Replace above line with:
     // var firepadRef = new Firebase('<YOUR FIREBASE URL>');
 
     //// Create CodeMirror (with lineWrapping on).
-    var codeMirror = CodeMirror(document.getElementById(this.idpai), {
+    this.codeMirror = CodeMirror(document.getElementById(this.idpai), {
         lineWrapping: true
     });
 
     //// Create Firepad (with rich text toolbar and shortcuts enabled).
-    var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror, {
+    this.firepad = Firepad.fromCodeMirror(this.firepadRef, this.codeMirror, {
         richTextToolbar: true,
         richTextShortcuts: true
     });
 
+//    Available Options:
+//    richTextToolbar (default: false) - Adds a toolbar with buttons for bold, italic, etc.
+//    richTextShortcuts (default: false) - Maps Ctrl-B to bold, etc.
+//    userId (default: random) - The user ID for the person editing.
+//    userColor (default: generated from userId) - A css color (e.g. "#ccc") for this user's cursor.
+//    defaultText (default: null) - Text to initialize the Firepad with if history is empty.
+
 
     //// Initialize contents.
-    firepad.on('ready', function () {
-        if (firepad.isHistoryEmpty()) {
-            firepad.setHtml('');
-        }
+    this.firepad.on('ready', function () {
+//        if (this.firepad.isHistoryEmpty()) {
+//            this.firepad.setHtml('');
+//        }
     });
 
     // An example of a complex custom entity.
-    firepad.registerEntity('checkbox', {
+    this.firepad.registerEntity('checkbox', {
         render: function (info, entityHandler) {
             var inputElement = document.createElement('input');
             inputElement.setAttribute('type', 'checkbox');
