@@ -8,6 +8,7 @@ var users = [];             // array com os clientes ligado
 var numUsers = 0;
 var socket = "";            // socket de comunicacao
 var username = "";          // nome do utilizador ligado
+var allTextEditor = [];     // array com todos os editores de texto
 var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
     ["white", "Branco"],
@@ -515,11 +516,18 @@ $(document).ready(function () {
     /**
      * Evento gerado quando um utilizador manda mensagem no chat
      */
+    var countMsg = 0;
     socket.on('message', function (data) {
         $('#panelChat').addNewText(data.user, data.data);
         $('#panelChat').animate({
             scrollTop: $('#panelChat').prop("scrollHeight")
         }, 500);
+        if ($("#divUsers").css("visibility") === "hidden") {
+            $("#numMsg").html(++countMsg);
+            $("#numMsg").css({
+                visibility: "visible"
+            });
+        }
     });
     /**
      * Função para enviar uma mensagem no chat
@@ -553,6 +561,12 @@ $(document).ready(function () {
                 var aux2 = aux[i].split(":");
                 if (typeof aux2[1] !== "undefined") {
                     $('#panelChat').addNewText(aux2[0], aux2[1].replace(",", ""));
+                    if ($("#divUsers").css("visibility") === "hidden") {
+                        $("#numMsg").html(++countMsg);
+                        $("#numMsg").css({
+                            visibility: "visible"
+                        });
+                    }
                 }
             }
         }
@@ -679,21 +693,27 @@ $(document).ready(function () {
     // *******************************************************************
     // botao chat
     // *******************************************************************
-    var cont = 0;
-
     $('#bt_Chat').click(function () {
-
-
-        if (cont == 0) {
-
-            $("#divUsers").css({'visibility': "hidden"});
-            $(".col-lg-9").animate({'width': "+=25%"});
-
-            cont++;
-        } else {
-            $(".col-lg-9").animate({'width': "-=25%"});
+        if ($("#divUsers").css("visibility") === "hidden") {
             $("#divUsers").css({'visibility': "visible"});
-            cont--;
+            $("#divUsers").animate({
+                "margin-left": "75%"
+            });
+            $("#numMsg").animate({
+                opacity: 0
+            }, 500, function () {
+                $("#numMsg").css({
+                    visibility: "hidden",
+                    opacity: 1
+                });
+                countMsg = 0;
+            });
+        } else {
+            $("#divUsers").animate({
+                "margin-left": "100%"
+            }, function () {
+                $("#divUsers").css({'visibility': "hidden"});
+            });
         }
 
     });
@@ -845,6 +865,11 @@ function addtohash(idNum) {
             var txtedit = new TextEditor($(this).attr("id"), "");
             txtedit.init();
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
+            var editTxt = {
+                id: $(this).attr("id"),
+                txtObjEditor: txtedit
+            };
+            allTextEditor.push(editTxt);
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
@@ -963,7 +988,7 @@ function GetImgCanvas(){
  * @param {type} array  array para a pesquisa
  * @param {type} id     valor a ser encontrado
  * @returns {value} */
-function getArrayDrawObj(array, id) {
+function getArrayElementObj(array, id) {
     var a = null;
     $.each(array, function (index, value) {
         if (value.id === id) {

@@ -1,11 +1,3 @@
-#colorpicker {
-    position: fixed;
-    left: 88%;
-    top: 1%;
-    height: 30px;
-    width: 150px;
-}
-
 #divchangemodel { 
     position: absolute;
     width: 100%;

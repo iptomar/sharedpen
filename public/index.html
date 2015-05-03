@@ -3,7 +3,7 @@
     <head>
         <title>SharedPen</title>
         <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-                
+
         <!-- Firebase -->
         <script src="./lib/firebase.js"></script>
 
@@ -14,7 +14,7 @@
         <!-- Firepad -->
         <link rel="stylesheet" href="./css/firepad.css" />
         <script src="./lib/firepad.js"></script>
-        
+
         <!-- Bootstrap css -->
         <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" media="screen" />
 
@@ -39,7 +39,7 @@
         <script src="./js/javascript.js"></script>
         <script src="./js/Tab.js"></script>
         <script src="./js/TextEditor.js"></script>
-                
+
     </head>
     <body>
         <div id="div-login">
@@ -57,14 +57,13 @@
                 <div class="col-lg-12">
                     <h1>Texto Colaborativo</h1> 
                     <div class="menu_BT">
-                                <button type="button" id="bt_PDF"  >PDF</button>
-                                <button type="button" id="bt_Chat"  >Chat</button>
-                                 <select id="colorpicker" class="selectpicker show-tick"></select>
-                        </div>
+                        <button type="button" id="bt_PDF"  >PDF</button>
+                        <select id="colorpicker" class="selectpicker show-tick"></select>
+                    </div>
                 </div>
             </div>
             <div class="row" id="contentor">
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <h3 id="atualuser"></h3>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -76,8 +75,8 @@
                         <div class="tab-content">                    
                         </div>
                     </div>
-                    <!-- <textarea  class="form-control" rows="20" id="msg"></textarea> -->
                 </div>
+                <div id="bt_Chat"><div id="numMsg">0</div></div>
                 <div id="divUsers" class="col-lg-3">
                     <div class="well" id="contentorListaUsers">
                         <h4>Utilizadores</h4>
