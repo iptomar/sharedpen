@@ -1,3 +1,5 @@
+
+
 var Draw = function (tabClass, page, id) {
     this.tabClass = tabClass;
     this.page = page;
@@ -7,20 +9,21 @@ var Draw = function (tabClass, page, id) {
     this.curSize = 1;
     this.pallet = false;
     this.resizeCanvas = false;
-    this.canvas = document.getElementById(this.id);
-    this.crx;
+    //this.canvas = document.getElementById(this.id);
     
     this.ArrayCanvasClients = [];
 };
 
 Draw.prototype.init = function () {
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.fillStyle = "solid";
-    this.ctx.strokeStyle = this.color;
-    this.ctx.lineWidth = this.curSize;
-    this.ctx.lineCap = "round";
-    this.canvas.width = 700;
-    this.canvas.height = 700;
+    var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "solid";
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.curSize;
+    ctx.lineCap = "round";
+    
+    canvas.width = 700;
+    canvas.height = 700;
     
     this.ArrayCanvasClients = {};
     
@@ -28,10 +31,12 @@ Draw.prototype.init = function () {
 
 Draw.prototype.VerificaUser = function (socket) {
     if(typeof this.ArrayCanvasClients[socket] === "undefined"){
+        var canvas = document.getElementById(this.id);
+        //var ctx = canvas.getContext("2d");
         
         var cnv = document.createElement("canvas");
-        cnv.width = this.canvas.width;
-        cnv.height = this.canvas.height
+        cnv.width = canvas.width;
+        cnv.height = canvas.height
         this.ArrayCanvasClients[socket] = cnv;   
     }
     return  this.ArrayCanvasClients[socket];
@@ -45,7 +50,8 @@ Draw.prototype.getSizeCursor = function () {
     return this.curSize;
 };
 Draw.prototype.getCanvas = function () {
-    return this.canvas;
+    var canvas = document.getElementById(this.id);
+    return canvas;
 };
 
 Draw.prototype.resize = function () {
@@ -57,22 +63,27 @@ Draw.prototype.resize = function () {
 };
 
 Draw.prototype.draw = function (x, y, type) {
+    var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
+    
     if (type === "mousedown") {
-        //this.resize();
-        this.ctx.beginPath();
+        ctx.beginPath();
         this.flag = true;
-        this.ctx.moveTo(x, y);
+        ctx.moveTo(x, y);
     } else if (type === "mousemove" && this.flag) {
-        this.ctx.lineTo(x, y);
-        this.ctx.stroke();
+        ctx.lineTo(x, y);
+        ctx.stroke();
     } else {
         this.flag = false;
-        this.ctx.closePath();
+        ctx.closePath();
     }
 };
 
-Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket) {
-
+Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket,image) {
+    alert();
+    var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
+    
     var canvas2 = this.VerificaUser(socket);
     var ctx2 = canvas2.getContext('2d');
 
@@ -100,17 +111,20 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket) {
         ctx2.lineTo(x, y);
         ctx2.stroke();
         
-    } else {
+    } else if (type === "mouseup"){
         ctx2.closePath();
+    } else if (type === "backgoundImage"){
+        imageCanvas(image,this.id);
     }
     
-    this.ctx.drawImage(canvas2,0,0);
+    ctx.drawImage(canvas2,0,0);
     
 
     this.setColor(corline);
     this.setSizePensil(cur);
 
 };
+
 
 Draw.prototype.setPallet = function (x, y, id) {
     if (!this.pallet) {
@@ -131,8 +145,10 @@ Draw.prototype.setPalletOff = function () {
 };
 
 Draw.prototype.setSizePensil = function (val) {
+        var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
     this.curSize = val;
-    this.ctx.lineWidth = val;
+    ctx.lineWidth = val;
 };
 
 Draw.prototype.setColor = function (obj) {
@@ -160,5 +176,7 @@ Draw.prototype.setColor = function (obj) {
             break;
         default :
     }
-    this.ctx.strokeStyle = this.color;
+        var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
+    ctx.strokeStyle = this.color;
 };

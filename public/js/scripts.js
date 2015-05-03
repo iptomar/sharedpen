@@ -8,8 +8,6 @@ var users = [];             // array com os clientes ligado
 var numUsers = 0;
 var socket = "";            // socket de comunicacao
 var username = "";          // nome do utilizador ligado
-var objectCanvas = null;    // canvas atual em utilizacao
-var canvasObj = [];         // array com os carios canvas
 var allTextEditor = [];     // array com todos os editores de texto
 var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
@@ -121,45 +119,36 @@ $(document).ready(function () {
      * Funções relacionadas com o desenho -------------------------------------------------------------------------
      */
     $("body").on('click', '#closePallet', function () {
-        var idToll = $("body").find("#toolbar").attr("data-idPai");
-        if (objectCanvas === null) {
-            objectCanvas = getArrayElementObj(canvasObj, idToll);
-        } else {
-            if (objectCanvas.id === idToll) {
-                objectCanvas.drawpbj.setPalletOff();
+       var thisId = $("body").find("#toolbar").attr("data-idPai");    
+        var tabNumber = $("body").find("#toolbar").attr("data-idPai").match(/^\d+|\d+\b|\d+(?=\w)/);
+        var idToll = ".txtTab"+tabNumber;
+                hash[idToll].modelo.arrayElem[thisId].drawObj.setPalletOff();
                 $("body").find("#toolbar").remove();
-            }
-            else {
-                objectCanvas = getArrayElementObj(canvasObj, idToll);
 
-            }
-        }
     });
 
     /**
      * Evento de selecao da cor para desenhar no canvas
      */
     $("body").on('click', '.color_canvas', function () {
-        var idToll = $("body").find("#toolbar").attr("data-idPai");
-        if (objectCanvas === null) {
-            objectCanvas = getArrayElementObj(canvasObj, idToll);
-        } else {
-            if (objectCanvas.id === idToll) {
+       var thisId = $("body").find("#toolbar").attr("data-idPai");   
+       if(typeof $("body").find("#toolbar").attr("data-idPai") !== "undefined"){
+        var tabNumber = $("body").find("#toolbar").attr("data-idPai").match(/^\d+|\d+\b|\d+(?=\w)/);
+        var idToll = ".txtTab"+tabNumber;
+         
+
                 if ($(this).attr("id") !== "sizecur") {
-                    objectCanvas.drawpbj.setColor($(this).attr("id"));
-                    objectCanvas.drawpbj.setPalletOff();
+                    hash[idToll].modelo.arrayElem[thisId].drawObj.setColor($(this).attr("id"));
+                    hash[idToll].modelo.arrayElem[thisId].drawObj.setPalletOff();
                     $("body").find("#toolbar").remove();
                 } else if ($(this).attr("id") === "sizecur") {
-                    objectCanvas.drawpbj.setSizePensil($("#sizecur option:selected").text());
-
-//                    $("body").find("#toolbar").remove();
+                    hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil($("#sizecur option:selected").text());
+                    $("body").find("#toolbar").remove();
                 }
 
-            }
-            else {
-                objectCanvas = getArrayElementObj(canvasObj, idToll);
-            }
         }
+
+        
     });
 
     /**
@@ -167,23 +156,17 @@ $(document).ready(function () {
      */
     socket.on('draw', function (data) {
 
-        if (objectCanvas === null) {
-            objectCanvas = getArrayElementObj(canvasObj, data.data.id);
-        } else {
-            if (objectCanvas.id === data.data.id) {
-                objectCanvas.drawpbj.drawOtherUser(
+       var cmvv = hash["."+data.data.parent].modelo.arrayElem[data.data.id].drawObj;
+               cmvv.drawOtherUser(
                         data.data.color,
                         data.data.sizeCursor,
                         data.data.x,
                         data.data.y,
                         data.data.type,
-                        data.data.socket
+                        data.data.socket,
+                        //envia a imagem 
+                        data.data.image
                         );
-
-            } else {
-                objectCanvas = getArrayElementObj(canvasObj, data.data.id);
-            }
-        }
     });
 
     /**
@@ -192,12 +175,10 @@ $(document).ready(function () {
     $("body").on('mousedown mousemove mouseup', "canvas", function (e) {
         $(this).on("contextmenu", function () {
             return false;
-        });
-        if (objectCanvas === null) {
-            objectCanvas = getArrayElementObj(canvasObj, this.id);
-        } else {
-            if (objectCanvas.id === this.id) {
 
+        });
+        var idToll = "."+ $(this).parent().parent().attr('class').split(' ')[1];
+        var thisId = $(this).attr('id');      
                 switch (event.which) {
                     case 1:
                         var offset, type, x, y;
@@ -207,7 +188,8 @@ $(document).ready(function () {
                         e.offsetY = e.clientY - offset.top;
                         x = e.offsetX;
                         y = e.offsetY;
-                        objectCanvas.drawpbj.draw(x, y, type);
+                        var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
+                        cmv.draw(x, y, type);
 
 
 
@@ -219,10 +201,10 @@ $(document).ready(function () {
                             x: x,
                             y: y,
                             type: type,
-                            color: objectCanvas.drawpbj.getColor(),
-                            sizeCursor: objectCanvas.drawpbj.getSizeCursor(),
+                            color: hash[idToll].modelo.arrayElem[thisId].drawObj.getColor(),
+                            sizeCursor: hash[idToll].modelo.arrayElem[thisId].drawObj.getSizeCursor(),
                             socket: socket.id,
-                            canvas: objectCanvas.drawpbj.getCanvas().toDataURL(),
+                            canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
                             parent: $(this).parent().parent().attr('class').split(' ')[1]
                         });
 //                        alert('Left Mouse button pressed.');
@@ -231,19 +213,51 @@ $(document).ready(function () {
 //                        alert('Middle Mouse button pressed.');
                         break;
                     case 3:
-                        objectCanvas.drawpbj.setPallet(e.pageX, e.pageY, this.id);
+                        hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(e.pageX, e.pageY, this.id);
 //                        alert('Right Mouse button pressed.');
                         break;
                     default:
 //                        alert('You have a strange Mouse!');
                 }
 
-            } else {
-                objectCanvas = getArrayElementObj(canvasObj, this.id);
-            }
-        }
     });
 
+
+
+
+    $("body").on('change', '#LoadImageCanvas', function (e) {
+
+        
+        var Thid =  $("#LoadImageCanvas").parent().attr('data-idpai');
+        var parent = "txtTab"+Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function(){
+            var dataURL = reader.result;
+   
+            imageCanvas(dataURL,Thid);
+            
+             socket.emit('drawClick', {
+                id: Thid,
+                type: "backgoundImage",
+                color: hash["."+parent].modelo.arrayElem[Thid].drawObj.getColor(),
+                sizeCursor: hash["."+parent].modelo.arrayElem[Thid].drawObj.getSizeCursor(),
+                socket: socket.id,
+                canvas: hash["."+parent].modelo.arrayElem[Thid].drawObj.getCanvas().toDataURL(),
+                parent: parent,
+                image: dataURL
+            });
+            
+            
+        };
+        reader.readAsDataURL(input.files[0]);
+
+
+
+    });
+    
+   
     /*
      * Funçoes relacionadas com as cores ----------------------------------------------------------------------
      */
@@ -330,16 +344,18 @@ $(document).ready(function () {
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-        hash = data.tabsHash;
+        var newHash = {};
+        for(var item in data.tabsHash){
+            newHash[item] = castTab(data.tabsHash[item]);
+        }
+        hash= newHash;
 
         var i = 0;
         for (var key in hash) {
             i++;
             Addtab(hash[key].nomeModelo, i);
             updateTab(i, key);
-
         }
-
     });
 
     /**
@@ -378,12 +394,11 @@ $(document).ready(function () {
             if (data.op === "remover") {
                 removeTab(data.id);
             } else {
-                Addtab(data.modelo, data.pos);
-                hash[".txtTab" + data.pos] = data.tab;
+                Addtab(data.modelo, data.pos);                      
+                hash[".txtTab" + data.pos] =  castTab(data.tab);              
+                
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
                     updateTab(data.pos, ".txtTab" + data.pos);
-                    //refactorTab(data.modelo, data.pos);
-                    //addtohash(data.pos, true);
                 });
             }
         }
@@ -402,7 +417,6 @@ $(document).ready(function () {
 
             refactorTab(modelo, idNum);
             var firepadID = addtohash(idNum, false);
-
             socket.emit('TabsChanged', {
                 //remover ou adicionar
                 op: "adicionar",
@@ -541,7 +555,7 @@ $(document).ready(function () {
      * Funcoes para drag and drop de imagens -----------------------------------------
      */
 
-    $("body").on('change', 'input[type=file]', function (e) {
+    $(".container-fluid").on('change', 'input[type=file]', function (e) {
         var imgId = $(this).next().attr("id");
         var file = e.originalEvent.target.files[0],
                 reader = new FileReader(file);
@@ -690,6 +704,21 @@ $(window).resize(function () {
  * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
  */
 
+
+function castTab(tabToCast){
+    //Faz o cast da Tab, e todos os seus elementos
+    var tab = $.extend(new Tab(),tabToCast);
+    tab.modelo = $.extend(new Modelo(), tabToCast.modelo );
+    for(var item in tabToCast.modelo.arrayElem){
+        tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
+        if(tab.modelo.arrayElem[item].elementType === "CANVAS"){
+            tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(),tabToCast.modelo.arrayElem[item].drawObj);
+        }
+    }   
+    return tab;
+}
+
+
 /**
  * Poe o modelo no Html
  
@@ -702,13 +731,19 @@ function updateTab(i, key) {
 
 
         for (var elemento in hash[key].modelo.arrayElem) {
-
-            if (typeof hash[key].modelo.arrayElem[elemento].canvas == "undefined") {
-                //           console.log( hash[key].modelo.arrayElem[elemento].elementType);         
+       
                 switch (hash[key].modelo.arrayElem[elemento].elementType) {
                     case "IMG":
-                        //                    console.log( hash[key].modelo.arrayElem[elemento]);
                         $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
+                        break;
+                   case "CANVAS":
+                        var cmv = $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
+                        var ctx = cmv.getContext('2d');
+                        var img = document.createElement('img');
+                        hash[key].modelo.arrayElem[elemento].drawObj.init();
+                        if(typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined")
+                            img.src = hash[key].modelo.arrayElem[elemento].canvas;
+                        ctx.drawImage(img, 0, 0);
                         break;
                     default:
                         if ($("#" + elemento).attr('class').match('editable')) {
@@ -718,14 +753,7 @@ function updateTab(i, key) {
                         $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                         break;
                 }
-            }
-            else {
-                var cmv = $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
-                var ctx = cmv.getContext('2d');
-                var img = document.createElement('img');
-                img.src = hash[key].modelo.arrayElem[elemento].canvas;
-                ctx.drawImage(img, 0, 0);
-            }
+
         }
     });
 }
@@ -778,15 +806,7 @@ function refactorTab(html, idNum) {
     $(".txtTab" + idNum).children('div').children().each(function () {
 
         $(this).attr("id", "tab" + idNum + "-" + this.id);
-        if ($(this).get(0).tagName === "CANVAS") {
-            var drawimg = new Draw(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
-            drawimg.init();
-            var obj = {
-                id: this.id,
-                drawpbj: drawimg
-            };
-            canvasObj.push(obj);
-        }
+        
         i++;
     });
     $(".txtTab" + idNum).css({
@@ -807,7 +827,12 @@ function addtohash(idNum) {
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
 
-        if ($(this).attr("class").match("editable")) {
+        if(thType === 'CANVAS'){
+            tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
+            tabTest.modelo.arrayElem[thID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
+            tabTest.modelo.arrayElem[thID].drawObj.init();
+            
+        } else if ($(this).attr("class").match("editable")) {
             var txtedit = new TextEditor($(this).attr("id"), "");
             txtedit.init();
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
@@ -821,7 +846,6 @@ function addtohash(idNum) {
         }
     });
     hash[tabTest.id] = tabTest;
-    return
 }
 
 /**
@@ -859,14 +883,15 @@ function removeTab(liElem) {
             $(this).attr('id', "page" + (i + 1));
 
             var classs = $(this).children('div').attr('class').replace(/[0-9]/, (i + 1));
-            ;
+            
             $(this).children('div').attr('class', classs);
             $(this).children('div').children().find('*').each(function () {
                 //muda o id
-                var id = $(this).attr('id').replace(/[0-9]/, (i + 1));
+                if(typeof $(this).attr('id') !== "undefined"){
+                    var id = $(this).attr('id').replace(/[0-9]/, (i + 1));
                 //coloca outro id
                 $(this).attr('id', id);
-
+                }
             });
             $(this).children('textarea').attr('id', "msg" + (i + 1));
             i++;
@@ -909,6 +934,11 @@ function refactorHash(liElem) {
 
             hash1[newId].modelo.arrayElem[idd].id = hash[key].modelo.arrayElem[elemento].id.replace(/[0-9]/, (i + 1));
             hash1[newId].modelo.arrayElem[idd].conteudo = hash[key].modelo.arrayElem[elemento].conteudo;
+            if(hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {              
+                hash1[newId].modelo.arrayElem[idd].drawObj.tabClass = hash[key].modelo.arrayElem[elemento].drawObj.tabClass.replace(/[0-9]/, (i + 1));
+                hash1[newId].modelo.arrayElem[idd].drawObj.page = hash[key].modelo.arrayElem[elemento].drawObj.page.replace(/[0-9]/, (i + 1));
+                hash1[newId].modelo.arrayElem[idd].drawObj.id = hash[key].modelo.arrayElem[elemento].drawObj.id.replace(/[0-9]/, (i + 1));
+            }
             if ((i + 1) >= id)
                 delete hash1[newId].modelo.arrayElem[elemento];
         }
@@ -916,6 +946,55 @@ function refactorHash(liElem) {
     }
     hash = hash1;
 }
+
+function GetImgCanvas(){
+ $("#LoadImageCanvas").click();   
+}
+
+
+function imageCanvas(dataURL,Thid){
+        var img = document.createElement('img');
+        img.src = dataURL;
+
+
+        var cmv = document.getElementById(Thid);
+        var ctx = cmv.getContext("2d");
+
+
+        var maxWidth = cmv.width; // Max width for the image
+        var maxHeight = cmv.height;    // Max height for the image
+        var ratio = 0;  // Used for aspect ratio
+        var width = img.width;    // Current image width
+        var height = img.height;  // Current image height
+        var nWidth;
+        var nHeigth;
+        // Check if the current width is larger than the max
+        if(width > maxWidth){
+            ratio = maxWidth / width;   // get ratio for scaling image
+            $(this).css("width", maxWidth); // Set new width
+            $(this).css("height", height * ratio);  // Scale height based on ratio
+            height = height * ratio;    // Reset height to match scaled image
+            nHeigth = height * ratio;
+            nWidth = maxWidth;
+        }
+
+        var width = img.width;    // Current image width
+        var height = img.height;  // Current image height
+
+        // Check if current height is larger than max
+        if(height > maxHeight){
+            ratio = maxHeight / height; // get ratio for scaling image
+            $(this).css("height", maxHeight);   // Set new height
+            $(this).css("width", width * ratio);    // Scale width based on ratio
+            width = width * ratio;    // Reset width to match scaled image
+            nWidth = width * ratio; 
+            nHeigth = maxHeight;
+        }
+
+        ctx.drawImage(img,0,0,nWidth,nHeigth);            
+}
+
+
 /**
  * Função que recebe um array a uma chave e devolve o objeto dessa posição se 
  * existir e não nulkl
