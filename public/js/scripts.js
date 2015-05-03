@@ -75,7 +75,7 @@ $(document).ready(function () {
                 display: "block"
             });
             $("#atualuser").html(
-                    "Utilizador <u><i><b>" +
+                    "<u><i><b>" +
                     username +
                     "</b></i></u>");
             socket.emit("myname", username);
@@ -262,7 +262,7 @@ $(document).ready(function () {
      */
     socket.on('getcolor', function (data) {
         if (data.cor === "default") {
-            $('body').css('background-image', 'url(../img/bg.jpg)');
+            $('body').css('background-image', 'url(../img/background.png)');
         } else {
             $("body").css('background-image', 'none');
             switch (data.cor) {
@@ -654,7 +654,7 @@ $(document).ready(function () {
         if ($("#divUsers").css("visibility") === "hidden") {
             $("#divUsers").css({'visibility': "visible"});
             $("#divUsers").animate({
-                "margin-left": "75%"
+                "left": "74%"
             });
             $("#numMsg").animate({
                 opacity: 0
@@ -667,7 +667,7 @@ $(document).ready(function () {
             });
         } else {
             $("#divUsers").animate({
-                "margin-left": "100%"
+                "left": "100%"
             }, function () {
                 $("#divUsers").css({'visibility': "hidden"});
             });
@@ -939,6 +939,6 @@ function getArrayElementObj(array, id) {
  * @returns {undefined} */
 function ajustElements() {
     $("#contentor").css({
-        height: $(window).height() * 0.90
+        height: $(window).height() * 0.91
     });
 }

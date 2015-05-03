@@ -7,8 +7,13 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies":{
-      "socket.io":"*",
-      "express":"*"
+  "dependencies": {
+    "express": "*",
+    "firebase": "^2.2.4",
+    "socket.io": "*",
+	"firepad": "0.1.4"
+  },
+  "devDependencies": {
+    "firebase-server": "^0.1.0"
   }
 }
