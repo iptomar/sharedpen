@@ -163,7 +163,9 @@ $(document).ready(function () {
                         data.data.x,
                         data.data.y,
                         data.data.type,
-                        data.data.socket
+                        data.data.socket,
+                        //envia a imagem 
+                        data.data.image
                         );
     });
 
@@ -225,66 +227,35 @@ $(document).ready(function () {
 
     $("body").on('change', '#LoadImageCanvas', function (e) {
 
-        var img = document.createElement('img');
-
+        
+        var Thid =  $("#LoadImageCanvas").parent().attr('data-idpai');
+        var parent = "txtTab"+Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
         var input = event.target;
 
         var reader = new FileReader();
         reader.onload = function(){
             var dataURL = reader.result;
-            //var output = document.getElementById('output');
-            img.src = dataURL;
-            var parent =  $("#LoadImageCanvas").parent().attr('data-idpai');
-            var cmv = document.getElementById(parent);
-            var ctx = cmv.getContext("2d");
-
-
-            var maxWidth = cmv.width; // Max width for the image
-            var maxHeight = cmv.height;    // Max height for the image
-            var ratio = 0;  // Used for aspect ratio
-            var width = img.width;    // Current image width
-            var height = img.height;  // Current image height
-            var nWidth;
-            var nHeigth;
-            // Check if the current width is larger than the max
-            if(width > maxWidth){
-                ratio = maxWidth / width;   // get ratio for scaling image
-                $(this).css("width", maxWidth); // Set new width
-                $(this).css("height", height * ratio);  // Scale height based on ratio
-                height = height * ratio;    // Reset height to match scaled image
-                nHeigth = height * ratio;
-                nWidth = maxWidth;
-            }
-
-            var width = img.width;    // Current image width
-            var height = img.height;  // Current image height
-
-            // Check if current height is larger than max
-            if(height > maxHeight){
-                ratio = maxHeight / height; // get ratio for scaling image
-                $(this).css("height", maxHeight);   // Set new height
-                $(this).css("width", width * ratio);    // Scale width based on ratio
-                width = width * ratio;    // Reset width to match scaled image
-                nWidth = width * ratio; 
-                nHeigth = maxHeight;
-            }
-
-            ctx.drawImage(img,0,0,nWidth,nHeigth);            
-
+   
+            imageCanvas(dataURL,Thid);
+            
+             socket.emit('drawClick', {
+                id: Thid,
+                type: "backgoundImage",
+                color: hash["."+parent].modelo.arrayElem[Thid].drawObj.getColor(),
+                sizeCursor: hash["."+parent].modelo.arrayElem[Thid].drawObj.getSizeCursor(),
+                socket: socket.id,
+                canvas: hash["."+parent].modelo.arrayElem[Thid].drawObj.getCanvas().toDataURL(),
+                parent: parent,
+                image: dataURL
+            });
+            
+            
         };
         reader.readAsDataURL(input.files[0]);
 
 
 
     });
-    
-    
-    
-    
-    
-    
-    
-    
     
    
     /*
@@ -978,6 +949,49 @@ function refactorHash(liElem) {
 
 function GetImgCanvas(){
  $("#LoadImageCanvas").click();   
+}
+
+
+function imageCanvas(dataURL,Thid){
+        var img = document.createElement('img');
+        img.src = dataURL;
+
+
+        var cmv = document.getElementById(Thid);
+        var ctx = cmv.getContext("2d");
+
+
+        var maxWidth = cmv.width; // Max width for the image
+        var maxHeight = cmv.height;    // Max height for the image
+        var ratio = 0;  // Used for aspect ratio
+        var width = img.width;    // Current image width
+        var height = img.height;  // Current image height
+        var nWidth;
+        var nHeigth;
+        // Check if the current width is larger than the max
+        if(width > maxWidth){
+            ratio = maxWidth / width;   // get ratio for scaling image
+            $(this).css("width", maxWidth); // Set new width
+            $(this).css("height", height * ratio);  // Scale height based on ratio
+            height = height * ratio;    // Reset height to match scaled image
+            nHeigth = height * ratio;
+            nWidth = maxWidth;
+        }
+
+        var width = img.width;    // Current image width
+        var height = img.height;  // Current image height
+
+        // Check if current height is larger than max
+        if(height > maxHeight){
+            ratio = maxHeight / height; // get ratio for scaling image
+            $(this).css("height", maxHeight);   // Set new height
+            $(this).css("width", width * ratio);    // Scale width based on ratio
+            width = width * ratio;    // Reset width to match scaled image
+            nWidth = width * ratio; 
+            nHeigth = maxHeight;
+        }
+
+        ctx.drawImage(img,0,0,nWidth,nHeigth);            
 }
 
 

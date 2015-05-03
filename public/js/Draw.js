@@ -79,8 +79,8 @@ Draw.prototype.draw = function (x, y, type) {
     }
 };
 
-Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket) {
-
+Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket,image) {
+    alert();
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     
@@ -111,8 +111,10 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket) {
         ctx2.lineTo(x, y);
         ctx2.stroke();
         
-    } else {
+    } else if (type === "mouseup"){
         ctx2.closePath();
+    } else if (type === "backgoundImage"){
+        imageCanvas(image,this.id);
     }
     
     ctx.drawImage(canvas2,0,0);
