@@ -40,6 +40,14 @@
         <script src="./js/javascript.js"></script>
         <script src="./js/Tab.js"></script>
         <script src="./js/TextEditor.js"></script>
+        
+        
+         <!-- pdf ------------------------------------>
+        <script type="text/javascript" src="./lib/jspdf.js"></script>	
+        <script type="text/javascript" src="./lib/FileSaver.js"></script>
+        <script type="text/javascript" src="./lib/jspdf.plugin.standard_fonts_metrics.js"></script>
+        <script type="text/javascript" src="./lib/jspdf.plugin.split_text_to_size.js"></script>
+        <script type="text/javascript" src="./lib/jspdf.plugin.from_html.js"></script>
 
     </head>
     <body>
@@ -59,8 +67,8 @@
                 <div class="col-xs-2 col-sm-2 col-md-2 text-right"><img alt="" src="./img/caneta-logo2_48.png"> </div>
                 <div data-layout="MenuPrincipal.html" class="col-xs-1 col-sm-1 col-md-1 text-right image menuBar"><img alt="" src="./img/home_48.png"></div>
                 <div class="col-xs-1 col-sm-1 col-md-1 text-right"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1 text-right"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1 text-right"></div>
+                <div class="col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PRE" >Pre-Visualizacao</button>    </div>                
+                <div class="col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PDF" >PDF</button></div>
                 <div class="col-xs-1 col-sm-1 col-md-1 text-right"><select id="colorpicker" class="selectpicker show-tick"></select></div>                 
                 <div class="col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/email_48.png"></div>
                 <div class="col-xs-1 col-sm-1 col-md-1 image"><img alt="" src="./img/search_48.png"></div>
