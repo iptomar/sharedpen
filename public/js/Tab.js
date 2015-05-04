@@ -2,6 +2,7 @@ var Tab = function (id, noElement, nomeModelo) {
     this.id = id;
     this.modelo = new Modelo(noElement);
     this.nomeModelo = nomeModelo;
+    
 };
 
 var Modelo = function(noElement) {

@@ -113,22 +113,29 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
     } else if (type === "mouseup") {
         ctx2.closePath();
     } else if (type === "backgoundImage") {
-        imageCanvas(image, this.id);
+        this.imageCanvas(image);
     }
 
     ctx.drawImage(canvas2, 0, 0);
-
 
     this.setColor(corline);
     this.setSizePensil(cur);
 
 };
 
+Draw.prototype.imageCanvas = function (dataURL) {
+       $("#" + this.id).css({
+        "background": "url(" + dataURL + ")  no-repeat center center",
+        "background-size": "100% auto"
+    });
+};
 
-Draw.prototype.setPallet = function (id) {
+
+Draw.prototype.setPallet = function (id, cnv) {
     $.get("./../html/pallet.html", function (data) {
         $(document.body).append(data);
         $("#LoadImageCanvas").attr('data-idPai', id);
+        $("#LoadImageCanvas").attr('data-idcnv', cnv);
     });
 };
 

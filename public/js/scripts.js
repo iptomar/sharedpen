@@ -143,7 +143,7 @@ $(document).ready(function () {
     $("body").on('mousedown mousemove mouseup', "canvas", function (e) {
         var idToll = "." + $(this).parent().parent().attr('class').split(' ')[1];
         var thisId = $(this).attr('id');
-        switch (event.which) {
+        switch (e.which) {
             case 1:
                 var offset, type, x, y;
                 type = e.handleObj.type;
@@ -196,7 +196,7 @@ $(document).ready(function () {
                     }
                 });
 
-                hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(this.id);
+                hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
 //                        alert('Right Mouse button pressed.');
                 break;
             default:
@@ -208,20 +208,22 @@ $(document).ready(function () {
     $("body").on('change', '#LoadImageCanvas', function (e) {
         var Thid = $("#LoadImageCanvas").attr('data-idpai');
         var parent = "txtTab" + Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
-        var input = event.target;
+        var cnv = $("#LoadImageCanvas").attr('data-idcnv');
+        var input = e.target;
 
         var reader = new FileReader();
         reader.onload = function () {
             var dataURL = reader.result;
-            imageCanvas(dataURL, Thid);
+            hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(dataURL);
+//            imageCanvas(dataURL, Thid);
             socket.emit('drawClick', {
-                id: Thid,
+                id: cnv,
                 type: "backgoundImage",
-                color: hash["." + parent].modelo.arrayElem[Thid].drawObj.getColor(),
-                sizeCursor: hash["." + parent].modelo.arrayElem[Thid].drawObj.getSizeCursor(),
+                color: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getColor(),
+                sizeCursor: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getSizeCursor(),
                 socket: socket.id,
-                canvas: hash["." + parent].modelo.arrayElem[Thid].drawObj.getCanvas().toDataURL(),
-                parent: parent,
+                canvas: dataURL,
+                parent: Thid,
                 image: dataURL
             });
         };
@@ -722,8 +724,9 @@ function updateTab(i, key) {
                     var ctx = cmv.getContext('2d');
                     var img = document.createElement('img');
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
-                    if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined")
+                    if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined") {
                         img.src = hash[key].modelo.arrayElem[elemento].canvas;
+                    }
                     ctx.drawImage(img, 0, 0);
                     break;
                 default:
@@ -927,54 +930,6 @@ function refactorHash(liElem) {
     }
     hash = hash1;
 }
-
-//function GetImgCanvas() {
-//    $("#LoadImageCanvas").click();
-//}
-
-
-function imageCanvas(dataURL, Thid) {
-    var img = document.createElement('img');
-    img.src = dataURL;
-
-
-    var cmv = document.getElementById(Thid);
-    var ctx = cmv.getContext("2d");
-
-
-    var maxWidth = cmv.width; // Max width for the image
-    var maxHeight = cmv.height;    // Max height for the image
-    var ratio = 0;  // Used for aspect ratio
-    var width = img.width;    // Current image width
-    var height = img.height;  // Current image height
-    var nWidth;
-    var nHeigth;
-    // Check if the current width is larger than the max
-    if (width > maxWidth) {
-        ratio = maxWidth / width;   // get ratio for scaling image
-        $(this).css("width", maxWidth); // Set new width
-        $(this).css("height", height * ratio);  // Scale height based on ratio
-        height = height * ratio;    // Reset height to match scaled image
-        nHeigth = height * ratio;
-        nWidth = maxWidth;
-    }
-
-    var width = img.width;    // Current image width
-    var height = img.height;  // Current image height
-
-    // Check if current height is larger than max
-    if (height > maxHeight) {
-        ratio = maxHeight / height; // get ratio for scaling image
-        $(this).css("height", maxHeight);   // Set new height
-        $(this).css("width", width * ratio);    // Scale width based on ratio
-        width = width * ratio;    // Reset width to match scaled image
-        nWidth = width * ratio;
-        nHeigth = maxHeight;
-    }
-
-    ctx.drawImage(img, 0, 0, nWidth, nHeigth);
-}
-
 
 /**
  * Função que recebe um array a uma chave e devolve o objeto dessa posição se 
