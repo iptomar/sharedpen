@@ -7,10 +7,9 @@ var Draw = function (tabClass, page, id) {
     this.flag = false;
     this.color = "black";
     this.curSize = 1;
-    this.pallet = false;
     this.resizeCanvas = false;
     //this.canvas = document.getElementById(this.id);
-    
+
     this.ArrayCanvasClients = [];
 };
 
@@ -21,23 +20,23 @@ Draw.prototype.init = function () {
     ctx.strokeStyle = this.color;
     ctx.lineWidth = this.curSize;
     ctx.lineCap = "round";
-    
+
     canvas.width = 700;
     canvas.height = 700;
-    
+
     this.ArrayCanvasClients = {};
-    
+
 };
 
 Draw.prototype.VerificaUser = function (socket) {
-    if(typeof this.ArrayCanvasClients[socket] === "undefined"){
+    if (typeof this.ArrayCanvasClients[socket] === "undefined") {
         var canvas = document.getElementById(this.id);
         //var ctx = canvas.getContext("2d");
-        
+
         var cnv = document.createElement("canvas");
         cnv.width = canvas.width;
-        cnv.height = canvas.height
-        this.ArrayCanvasClients[socket] = cnv;   
+        cnv.height = canvas.height;
+        this.ArrayCanvasClients[socket] = cnv;
     }
     return  this.ArrayCanvasClients[socket];
 };
@@ -65,7 +64,7 @@ Draw.prototype.resize = function () {
 Draw.prototype.draw = function (x, y, type) {
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
-    
+
     if (type === "mousedown") {
         ctx.beginPath();
         this.flag = true;
@@ -79,11 +78,11 @@ Draw.prototype.draw = function (x, y, type) {
     }
 };
 
-Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket,image) {
-    alert();
+Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image) {
+//    alert();
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
-    
+
     var canvas2 = this.VerificaUser(socket);
     var ctx2 = canvas2.getContext('2d');
 
@@ -93,32 +92,32 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket,image) 
     ctx2.lineCap = "round";
 
 
-   // this.resize();
-    
+    // this.resize();
+
     var corline = this.getColor();
     var cur = this.getSizeCursor();
     this.setColor(cor);
     this.setSizePensil(sizecur);
-    
+
 
     if (type === "mousedown") {
         canvas2.width = 700;
         canvas2.height = 700;
         ctx2.beginPath();
         ctx2.moveTo(x, y);
-        
+
     } else if (type === "mousemove") {
         ctx2.lineTo(x, y);
         ctx2.stroke();
-        
-    } else if (type === "mouseup"){
+
+    } else if (type === "mouseup") {
         ctx2.closePath();
-    } else if (type === "backgoundImage"){
-        imageCanvas(image,this.id);
+    } else if (type === "backgoundImage") {
+        imageCanvas(image, this.id);
     }
-    
-    ctx.drawImage(canvas2,0,0);
-    
+
+    ctx.drawImage(canvas2, 0, 0);
+
 
     this.setColor(corline);
     this.setSizePensil(cur);
@@ -126,26 +125,16 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type,socket,image) 
 };
 
 
-Draw.prototype.setPallet = function (x, y, id) {
-    if (!this.pallet) {
-        this.pallet = true;
-        $.get("../html/pallet.html", function (data) {
-            $(document.body).append(data);
-            $("#toolbar").attr('data-idPai', id);
-            $("#toolbar").css({
-                top: y,
-                left: x
-            });
-        });
-    }
+Draw.prototype.setPallet = function (id) {
+    $.get("./../html/pallet.html", function (data) {
+        $(document.body).append(data);
+        $("#LoadImageCanvas").attr('data-idPai', id);
+    });
 };
 
-Draw.prototype.setPalletOff = function () {
-    this.pallet = false;
-};
 
 Draw.prototype.setSizePensil = function (val) {
-        var canvas = document.getElementById(this.id);
+    var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     this.curSize = val;
     ctx.lineWidth = val;
@@ -176,7 +165,7 @@ Draw.prototype.setColor = function (obj) {
             break;
         default :
     }
-        var canvas = document.getElementById(this.id);
+    var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     ctx.strokeStyle = this.color;
 };

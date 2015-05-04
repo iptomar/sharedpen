@@ -79,9 +79,9 @@ TextEditor.prototype.init = function () {
 // Helper to get hash from end of URL or generate a random one.
 TextEditor.prototype.getExampleRef = function () {
     var ref = new Firebase('https://sharedpentest.firebaseio.com/');
-    var hash = this.key
+    var hash = this.key;
     if (hash) {
-        ref = ref.child("-" + hash.split("-")[1]);
+        ref = ref.child("-" + hash.split("/-")[1]);
     } else {
         ref = ref.push(); // generate unique location.
     }

@@ -77,6 +77,7 @@ $(document).ready(function () {
                     username +
                     "</b></i></u>");
             socket.emit("myname", username);
+            addLayoutToDiv("MenuPrincipal.html");
             $("#msg1").focus();
         } else {
             $("#erro_name").html("Nome Incorreto!");
@@ -118,146 +119,115 @@ $(document).ready(function () {
     /**
      * Funções relacionadas com o desenho -------------------------------------------------------------------------
      */
-    $("body").on('click', '#closePallet', function () {
-       var thisId = $("body").find("#toolbar").attr("data-idPai");    
-        var tabNumber = $("body").find("#toolbar").attr("data-idPai").match(/^\d+|\d+\b|\d+(?=\w)/);
-        var idToll = ".txtTab"+tabNumber;
-                hash[idToll].modelo.arrayElem[thisId].drawObj.setPalletOff();
-                $("body").find("#toolbar").remove();
-
-    });
-
-    /**
-     * Evento de selecao da cor para desenhar no canvas
-     */
-    $("body").on('click', '.color_canvas', function () {
-       var thisId = $("body").find("#toolbar").attr("data-idPai");   
-       if(typeof $("body").find("#toolbar").attr("data-idPai") !== "undefined"){
-        var tabNumber = $("body").find("#toolbar").attr("data-idPai").match(/^\d+|\d+\b|\d+(?=\w)/);
-        var idToll = ".txtTab"+tabNumber;
-         
-
-                if ($(this).attr("id") !== "sizecur") {
-                    hash[idToll].modelo.arrayElem[thisId].drawObj.setColor($(this).attr("id"));
-                    hash[idToll].modelo.arrayElem[thisId].drawObj.setPalletOff();
-                    $("body").find("#toolbar").remove();
-                } else if ($(this).attr("id") === "sizecur") {
-                    hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil($("#sizecur option:selected").text());
-                    $("body").find("#toolbar").remove();
-                }
-
-        }
-
-        
-    });
-
     /**
      * evento do socket para desenhar o que recebe pelo socket
      */
     socket.on('draw', function (data) {
 
-       var cmvv = hash["."+data.data.parent].modelo.arrayElem[data.data.id].drawObj;
-               cmvv.drawOtherUser(
-                        data.data.color,
-                        data.data.sizeCursor,
-                        data.data.x,
-                        data.data.y,
-                        data.data.type,
-                        data.data.socket,
-                        //envia a imagem 
-                        data.data.image
-                        );
+        var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
+        cmvv.drawOtherUser(
+                data.data.color,
+                data.data.sizeCursor,
+                data.data.x,
+                data.data.y,
+                data.data.type,
+                data.data.socket,
+                //envia a imagem 
+                data.data.image
+                );
     });
 
     /**
      * Eventos do mouse para desenhar no canvas
      */
     $("body").on('mousedown mousemove mouseup', "canvas", function (e) {
-        $(this).on("contextmenu", function () {
-            return false;
+        var idToll = "." + $(this).parent().parent().attr('class').split(' ')[1];
+        var thisId = $(this).attr('id');
+        switch (event.which) {
+            case 1:
+                var offset, type, x, y;
+                type = e.handleObj.type;
+                offset = $(this).offset();
+                e.offsetX = e.clientX - offset.left;
+                e.offsetY = e.clientY - offset.top;
+                x = e.offsetX;
+                y = e.offsetY;
+                var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
+                cmv.draw(x, y, type);
+                // var ctx = c.getContext('2d');
+                //var img = ctx.getImageData
 
-        });
-        var idToll = "."+ $(this).parent().parent().attr('class').split(' ')[1];
-        var thisId = $(this).attr('id');      
-                switch (event.which) {
-                    case 1:
-                        var offset, type, x, y;
-                        type = e.handleObj.type;
-                        offset = $(this).offset();
-                        e.offsetX = e.clientX - offset.left;
-                        e.offsetY = e.clientY - offset.top;
-                        x = e.offsetX;
-                        y = e.offsetY;
-                        var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
-                        cmv.draw(x, y, type);
-
-
-
-                        // var ctx = c.getContext('2d');
-                        //var img = ctx.getImageData
-
-                        socket.emit('drawClick', {
-                            id: this.id,
-                            x: x,
-                            y: y,
-                            type: type,
-                            color: hash[idToll].modelo.arrayElem[thisId].drawObj.getColor(),
-                            sizeCursor: hash[idToll].modelo.arrayElem[thisId].drawObj.getSizeCursor(),
-                            socket: socket.id,
-                            canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
-                            parent: $(this).parent().parent().attr('class').split(' ')[1]
-                        });
+                socket.emit('drawClick', {
+                    id: this.id,
+                    x: x,
+                    y: y,
+                    type: type,
+                    color: hash[idToll].modelo.arrayElem[thisId].drawObj.getColor(),
+                    sizeCursor: hash[idToll].modelo.arrayElem[thisId].drawObj.getSizeCursor(),
+                    socket: socket.id,
+                    canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
+                    parent: $(this).parent().parent().attr('class').split(' ')[1]
+                });
 //                        alert('Left Mouse button pressed.');
-                        break;
-                    case 2:
+                break;
+            case 2:
 //                        alert('Middle Mouse button pressed.');
-                        break;
-                    case 3:
-                        hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(e.pageX, e.pageY, this.id);
+                break;
+            case 3:
+                $(this).contextMenu({
+                    menuSelector: "#toolbar",
+                    menuSelected: function (invokedOn, selectedMenu) {
+                        switch (selectedMenu.data("tipo")) {
+                            case "cor":
+                                hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
+//                                alert(selectedMenu.data("cor"));
+                                break;
+                            case "size":
+                                hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil(selectedMenu.data("size"));
+//                                alert(selectedMenu.data("size"));
+                                break;
+                            case "img":
+                                $("#LoadImageCanvas").click();
+//                                alert(selectedMenu.data("tipo"));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+
+                hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(this.id);
 //                        alert('Right Mouse button pressed.');
-                        break;
-                    default:
+                break;
+            default:
 //                        alert('You have a strange Mouse!');
-                }
+        }
 
     });
 
-
-
-
     $("body").on('change', '#LoadImageCanvas', function (e) {
-
-        
-        var Thid =  $("#LoadImageCanvas").parent().attr('data-idpai');
-        var parent = "txtTab"+Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
+        var Thid = $("#LoadImageCanvas").attr('data-idpai');
+        var parent = "txtTab" + Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
         var input = event.target;
 
         var reader = new FileReader();
-        reader.onload = function(){
+        reader.onload = function () {
             var dataURL = reader.result;
-   
-            imageCanvas(dataURL,Thid);
-            
-             socket.emit('drawClick', {
+            imageCanvas(dataURL, Thid);
+            socket.emit('drawClick', {
                 id: Thid,
                 type: "backgoundImage",
-                color: hash["."+parent].modelo.arrayElem[Thid].drawObj.getColor(),
-                sizeCursor: hash["."+parent].modelo.arrayElem[Thid].drawObj.getSizeCursor(),
+                color: hash["." + parent].modelo.arrayElem[Thid].drawObj.getColor(),
+                sizeCursor: hash["." + parent].modelo.arrayElem[Thid].drawObj.getSizeCursor(),
                 socket: socket.id,
-                canvas: hash["."+parent].modelo.arrayElem[Thid].drawObj.getCanvas().toDataURL(),
+                canvas: hash["." + parent].modelo.arrayElem[Thid].drawObj.getCanvas().toDataURL(),
                 parent: parent,
                 image: dataURL
             });
-            
-            
         };
         reader.readAsDataURL(input.files[0]);
-
-
-
     });
-    
-   
+
     /*
      * Funçoes relacionadas com as cores ----------------------------------------------------------------------
      */
@@ -345,10 +315,10 @@ $(document).ready(function () {
      */
     socket.on('NewTabs', function (data) {
         var newHash = {};
-        for(var item in data.tabsHash){
+        for (var item in data.tabsHash) {
             newHash[item] = castTab(data.tabsHash[item]);
         }
-        hash= newHash;
+        hash = newHash;
 
         var i = 0;
         for (var key in hash) {
@@ -394,9 +364,9 @@ $(document).ready(function () {
             if (data.op === "remover") {
                 removeTab(data.id);
             } else {
-                Addtab(data.modelo, data.pos);                      
-                hash[".txtTab" + data.pos] =  castTab(data.tab);              
-                
+                Addtab(data.modelo, data.pos);
+                hash[".txtTab" + data.pos] = castTab(data.tab);
+
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
                     updateTab(data.pos, ".txtTab" + data.pos);
                 });
@@ -438,7 +408,7 @@ $(document).ready(function () {
     /**
      * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
      */
-    $('#tabs a[href="#add-page"]').on('click', function () {
+    $("body").on('click', '#tabs a[href="#add-page"]', function () {
         $.ajax({
             url: "/models", // this is just a url that is responsible to return files list 
             success: function (data) {
@@ -669,16 +639,18 @@ $(document).ready(function () {
             $("#divUsers").css({'visibility': "visible"});
             $("#divUsers").animate({
                 "left": "74%"
-            });
-            $("#numMsg").animate({
-                opacity: 0
-            }, 500, function () {
-                $("#numMsg").css({
-                    visibility: "hidden",
-                    opacity: 1
+            }, 1000, "swing", function () {
+                $("#numMsg").animate({
+                    opacity: 0
+                }, 500, function () {
+                    $("#numMsg").css({
+                        visibility: "hidden",
+                        opacity: 1
+                    });
+                    countMsg = 0;
                 });
-                countMsg = 0;
             });
+
         } else {
             $("#divUsers").animate({
                 "left": "100%"
@@ -687,6 +659,15 @@ $(document).ready(function () {
             });
         }
 
+    });
+
+    /**
+     * 
+     * 
+     */
+
+    $("body").on("click", ".menuBar", function () {
+        addLayoutToDiv($(this).data("layout"), socket);
     });
 
     /**
@@ -705,16 +686,16 @@ $(window).resize(function () {
  */
 
 
-function castTab(tabToCast){
+function castTab(tabToCast) {
     //Faz o cast da Tab, e todos os seus elementos
-    var tab = $.extend(new Tab(),tabToCast);
-    tab.modelo = $.extend(new Modelo(), tabToCast.modelo );
-    for(var item in tabToCast.modelo.arrayElem){
+    var tab = $.extend(new Tab(), tabToCast);
+    tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
+    for (var item in tabToCast.modelo.arrayElem) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
-        if(tab.modelo.arrayElem[item].elementType === "CANVAS"){
-            tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(),tabToCast.modelo.arrayElem[item].drawObj);
+        if (tab.modelo.arrayElem[item].elementType === "CANVAS") {
+            tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
         }
-    }   
+    }
     return tab;
 }
 
@@ -731,28 +712,28 @@ function updateTab(i, key) {
 
 
         for (var elemento in hash[key].modelo.arrayElem) {
-       
-                switch (hash[key].modelo.arrayElem[elemento].elementType) {
-                    case "IMG":
-                        $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
-                        break;
-                   case "CANVAS":
-                        var cmv = $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
-                        var ctx = cmv.getContext('2d');
-                        var img = document.createElement('img');
-                        hash[key].modelo.arrayElem[elemento].drawObj.init();
-                        if(typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined")
-                            img.src = hash[key].modelo.arrayElem[elemento].canvas;
-                        ctx.drawImage(img, 0, 0);
-                        break;
-                    default:
-                        if ($("#" + elemento).attr('class').match('editable')) {
-                            var txtedit = new TextEditor(elemento, hash[key].modelo.arrayElem[elemento].keyEditor);
-                            txtedit.init();
-                        }
-                        $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
-                        break;
-                }
+
+            switch (hash[key].modelo.arrayElem[elemento].elementType) {
+                case "IMG":
+                    $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
+                    break;
+                case "CANVAS":
+                    var cmv = $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
+                    var ctx = cmv.getContext('2d');
+                    var img = document.createElement('img');
+                    hash[key].modelo.arrayElem[elemento].drawObj.init();
+                    if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined")
+                        img.src = hash[key].modelo.arrayElem[elemento].canvas;
+                    ctx.drawImage(img, 0, 0);
+                    break;
+                default:
+                    if ($("#" + elemento).attr('class').match('editable')) {
+                        var txtedit = new TextEditor(elemento, hash[key].modelo.arrayElem[elemento].keyEditor);
+                        txtedit.init();
+                    }
+                    $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
+                    break;
+            }
 
         }
     });
@@ -806,7 +787,7 @@ function refactorTab(html, idNum) {
     $(".txtTab" + idNum).children('div').children().each(function () {
 
         $(this).attr("id", "tab" + idNum + "-" + this.id);
-        
+
         i++;
     });
     $(".txtTab" + idNum).css({
@@ -827,11 +808,11 @@ function addtohash(idNum) {
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
 
-        if(thType === 'CANVAS'){
+        if (thType === 'CANVAS') {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             tabTest.modelo.arrayElem[thID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
             tabTest.modelo.arrayElem[thID].drawObj.init();
-            
+
         } else if ($(this).attr("class").match("editable")) {
             var txtedit = new TextEditor($(this).attr("id"), "");
             txtedit.init();
@@ -883,14 +864,14 @@ function removeTab(liElem) {
             $(this).attr('id', "page" + (i + 1));
 
             var classs = $(this).children('div').attr('class').replace(/[0-9]/, (i + 1));
-            
+
             $(this).children('div').attr('class', classs);
             $(this).children('div').children().find('*').each(function () {
                 //muda o id
-                if(typeof $(this).attr('id') !== "undefined"){
+                if (typeof $(this).attr('id') !== "undefined") {
                     var id = $(this).attr('id').replace(/[0-9]/, (i + 1));
-                //coloca outro id
-                $(this).attr('id', id);
+                    //coloca outro id
+                    $(this).attr('id', id);
                 }
             });
             $(this).children('textarea').attr('id', "msg" + (i + 1));
@@ -934,7 +915,7 @@ function refactorHash(liElem) {
 
             hash1[newId].modelo.arrayElem[idd].id = hash[key].modelo.arrayElem[elemento].id.replace(/[0-9]/, (i + 1));
             hash1[newId].modelo.arrayElem[idd].conteudo = hash[key].modelo.arrayElem[elemento].conteudo;
-            if(hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {              
+            if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
                 hash1[newId].modelo.arrayElem[idd].drawObj.tabClass = hash[key].modelo.arrayElem[elemento].drawObj.tabClass.replace(/[0-9]/, (i + 1));
                 hash1[newId].modelo.arrayElem[idd].drawObj.page = hash[key].modelo.arrayElem[elemento].drawObj.page.replace(/[0-9]/, (i + 1));
                 hash1[newId].modelo.arrayElem[idd].drawObj.id = hash[key].modelo.arrayElem[elemento].drawObj.id.replace(/[0-9]/, (i + 1));
@@ -947,51 +928,51 @@ function refactorHash(liElem) {
     hash = hash1;
 }
 
-function GetImgCanvas(){
- $("#LoadImageCanvas").click();   
-}
+//function GetImgCanvas() {
+//    $("#LoadImageCanvas").click();
+//}
 
 
-function imageCanvas(dataURL,Thid){
-        var img = document.createElement('img');
-        img.src = dataURL;
+function imageCanvas(dataURL, Thid) {
+    var img = document.createElement('img');
+    img.src = dataURL;
 
 
-        var cmv = document.getElementById(Thid);
-        var ctx = cmv.getContext("2d");
+    var cmv = document.getElementById(Thid);
+    var ctx = cmv.getContext("2d");
 
 
-        var maxWidth = cmv.width; // Max width for the image
-        var maxHeight = cmv.height;    // Max height for the image
-        var ratio = 0;  // Used for aspect ratio
-        var width = img.width;    // Current image width
-        var height = img.height;  // Current image height
-        var nWidth;
-        var nHeigth;
-        // Check if the current width is larger than the max
-        if(width > maxWidth){
-            ratio = maxWidth / width;   // get ratio for scaling image
-            $(this).css("width", maxWidth); // Set new width
-            $(this).css("height", height * ratio);  // Scale height based on ratio
-            height = height * ratio;    // Reset height to match scaled image
-            nHeigth = height * ratio;
-            nWidth = maxWidth;
-        }
+    var maxWidth = cmv.width; // Max width for the image
+    var maxHeight = cmv.height;    // Max height for the image
+    var ratio = 0;  // Used for aspect ratio
+    var width = img.width;    // Current image width
+    var height = img.height;  // Current image height
+    var nWidth;
+    var nHeigth;
+    // Check if the current width is larger than the max
+    if (width > maxWidth) {
+        ratio = maxWidth / width;   // get ratio for scaling image
+        $(this).css("width", maxWidth); // Set new width
+        $(this).css("height", height * ratio);  // Scale height based on ratio
+        height = height * ratio;    // Reset height to match scaled image
+        nHeigth = height * ratio;
+        nWidth = maxWidth;
+    }
 
-        var width = img.width;    // Current image width
-        var height = img.height;  // Current image height
+    var width = img.width;    // Current image width
+    var height = img.height;  // Current image height
 
-        // Check if current height is larger than max
-        if(height > maxHeight){
-            ratio = maxHeight / height; // get ratio for scaling image
-            $(this).css("height", maxHeight);   // Set new height
-            $(this).css("width", width * ratio);    // Scale width based on ratio
-            width = width * ratio;    // Reset width to match scaled image
-            nWidth = width * ratio; 
-            nHeigth = maxHeight;
-        }
+    // Check if current height is larger than max
+    if (height > maxHeight) {
+        ratio = maxHeight / height; // get ratio for scaling image
+        $(this).css("height", maxHeight);   // Set new height
+        $(this).css("width", width * ratio);    // Scale width based on ratio
+        width = width * ratio;    // Reset width to match scaled image
+        nWidth = width * ratio;
+        nHeigth = maxHeight;
+    }
 
-        ctx.drawImage(img,0,0,nWidth,nHeigth);            
+    ctx.drawImage(img, 0, 0, nWidth, nHeigth);
 }
 
 
@@ -1010,6 +991,20 @@ function getArrayElementObj(array, id) {
         }
     });
     return a;
+}
+
+function addLayoutToDiv(layout, stk) {
+    $("#contentor").load("./html_Work_Models/" + layout, function () {
+        switch (layout) {
+            case "Livro.html":
+                stk.emit("getAllTabs");
+                break;
+
+            default:
+
+                break;
+        }
+    });
 }
 
 /**
