@@ -631,7 +631,59 @@ $(document).ready(function () {
         }
     });
 
-
+    // *******************************************************************
+    // Botao do pdf
+    // *******************************************************************
+              
+     $('#bt_PDF').click(function () {
+         //firepad-toolbar.getAttribute('value') == 0;
+        // $('.firepad-toolbar-wrapper').css({'visibility': "hidden"});
+             var doc = new jsPDF();
+                
+         var specialElementHandlers = {
+                         '.tabpage': function (element,renderer) {
+                             return true;
+                         }
+                    };
+                                
+         doc.fromHTML($('.tabpage').html(), 15, 15, {
+                            'width': 170,'elementHandlers': specialElementHandlers
+                    });
+         
+                                   doc.save();
+                    }); 
+    // *******************************************************************
+    // Botao do Pre-visualizar
+    // *******************************************************************
+              
+     $('#bt_PRE').click(function () {  alert("Teste1");  
+         
+    // for(){ }
+        // $('.firepad-toolbar-wrapper').css({'visibility': "hidden"});
+           var doc = new jsPDF();
+                
+         var specialElementHandlers = {
+                         '.tab-content': function (element,renderer) {
+                             return true;
+                         }
+                    };
+                            
+         doc.fromHTML($('.tab-content').html(), 15, 15, {
+                            'width': 170,'elementHandlers': specialElementHandlers
+                    });
+         // doc.fromHTML($('#tab1-input3').html(), 30, 15, {
+                  //          'width': 170,'elementHandlers': specialElementHandlers
+                 //   });
+         
+          //doc.addImage($('.image').html(), 'JPEG', 45, 40, 180, 160);
+         
+         // doc.fromHTML($('#tab1-input3').html(), 60, 15, {
+              //              'width': 170,'elementHandlers': specialElementHandlers
+                //    });
+          
+         doc.output("dataurlnewwindow");
+                                   
+                    });
 
     // *******************************************************************
     // botao chat
