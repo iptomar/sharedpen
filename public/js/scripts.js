@@ -633,15 +633,22 @@ $(document).ready(function () {
         }
     });
 
+    
+      //************************************************
+    //****Esconder botoes do menu*********************
+    //************************************************
+    $('#bt_PDF').css({'visibility': "hidden"});   
+    $('#bt_PRE').css({'visibility': "hidden"});
+    
     // *******************************************************************
     // Botao do pdf
     // *******************************************************************
 
     $('#bt_PDF').click(function () {
+        
         var a = getArrayElementObj(allTextEditor, "tab1-input1");
-        alert(a.txtObjEditor.getTextEditor());
-        //firepad-toolbar.getAttribute('value') == 0;
-        // $('.firepad-toolbar-wrapper').css({'visibility': "hidden"});
+      
+        
         var doc = new jsPDF();
 
         var specialElementHandlers = {
@@ -649,10 +656,7 @@ $(document).ready(function () {
                 return true;
             }
         };
-//
-//        doc.fromHTML($('#tab1-tabpage').get(0), 15, 15, {
-//            'width': 170, 'elementHandlers': specialElementHandlers
-//        });
+
 
         doc.fromHTML(a.txtObjEditor.getTextEditor(), 15, 15, {
             'width': 170, 'elementHandlers': specialElementHandlers
@@ -660,17 +664,16 @@ $(document).ready(function () {
 
         doc.save("Livro.pdf");
     });
+    
     // *******************************************************************
     // Botao do Pre-visualizar
     // *******************************************************************
 
     $('#bt_PRE').click(function () {
-        var a = getArrayElementObj(allTextEditor, "tab1-input1");
+        
+       var a = getArrayElementObj(allTextEditor, "tab1-input1");
         alert(a.txtObjEditor.getTextEditor());
-//        alert("Teste1");
 
-        // for(){ }
-        // $('.firepad-toolbar-wrapper').css({'visibility': "hidden"});
         var doc = new jsPDF();
 
         var specialElementHandlers = {
@@ -679,18 +682,23 @@ $(document).ready(function () {
             }
         };
 
+        
+  /* var tipo = $('tab1-input1').children[0];
+        alert("filho:"+tipo);
+       var i = 1;
+        
+       $('#page'+ i).children('div').each(function () {
+           alert(this);
+        $(this).attr("id");
+
+        i++;
+    });*/
+             
+             
         doc.fromHTML(a.txtObjEditor.getTextEditor(), 15, 15, {
             'width': 170, 'elementHandlers': specialElementHandlers
         });
-        // doc.fromHTML($('#tab1-input3').html(), 30, 15, {
-        //          'width': 170,'elementHandlers': specialElementHandlers
-        //   });
-
-        //doc.addImage($('.image').html(), 'JPEG', 45, 40, 180, 160);
-
-        // doc.fromHTML($('#tab1-input3').html(), 60, 15, {
-        //              'width': 170,'elementHandlers': specialElementHandlers
-        //    });
+       
 
         doc.output("dataurlnewwindow");
 
@@ -1016,6 +1024,8 @@ function addLayoutToDiv(layout, stk) {
         switch (layout) {
             case "Livro.html":
                 stk.emit("getAllTabs");
+                  $('#bt_PDF').css({'visibility': "visible"});   
+                $('#bt_PRE').css({'visibility': "visible"});
                 break;
 
             default:
