@@ -1,9 +1,11 @@
-var TextEditor = function (idpai, key) {
+var TextEditor = function (idpai, key, user, cor) {
     this.idpai = idpai;
     this.key = key;
-    this.firepadRef;
-    this.codeMirror;
-    this.firepad;
+    this.user = user;
+    this.cor = cor;
+    this.firepadRef = "";
+    this.codeMirror = "";
+    this.firepad = "";
     this.toolbarShow = false;
 };
 
@@ -31,6 +33,8 @@ TextEditor.prototype.init = function () {
 //    userColor (default: generated from userId) - A css color (e.g. "#ccc") for this user's cursor.
 //    defaultText (default: null) - Text to initialize the Firepad with if history is empty.
 
+    this.firepad.setUserId(this.user);
+    this.firepad.setUserColor("#" + this.cor);
 
     //// Initialize contents.
     this.firepad.on('ready', function () {
@@ -96,3 +100,6 @@ TextEditor.prototype.getKey = function () {
     return this.key;
 };
 
+TextEditor.prototype.getTextEditor = function () {
+    return this.firepad.getHtml();
+};

@@ -8,6 +8,7 @@ var users = [];             // array com os clientes ligado
 var numUsers = 0;
 var socket = "";            // socket de comunicacao
 var username = "";          // nome do utilizador ligado
+var userColor = "";
 var allTextEditor = [];     // array com todos os editores de texto
 var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
@@ -77,6 +78,7 @@ $(document).ready(function () {
                     username +
                     "</b></i></u>");
             socket.emit("myname", username);
+            userColor = hexToRgb(0, socket.id, username);
             addLayoutToDiv("MenuPrincipal.html");
             $("#msg1").focus();
         } else {
@@ -634,56 +636,65 @@ $(document).ready(function () {
     // *******************************************************************
     // Botao do pdf
     // *******************************************************************
-              
-     $('#bt_PDF').click(function () {
-         //firepad-toolbar.getAttribute('value') == 0;
+
+    $('#bt_PDF').click(function () {
+        var a = getArrayElementObj(allTextEditor, "tab1-input1");
+        alert(a.txtObjEditor.getTextEditor());
+        //firepad-toolbar.getAttribute('value') == 0;
         // $('.firepad-toolbar-wrapper').css({'visibility': "hidden"});
-             var doc = new jsPDF();
-                
-         var specialElementHandlers = {
-                         '.tabpage': function (element,renderer) {
-                             return true;
-                         }
-                    };
-                                
-         doc.fromHTML($('.tabpage').html(), 15, 15, {
-                            'width': 170,'elementHandlers': specialElementHandlers
-                    });
-         
-                                   doc.save();
-                    }); 
+        var doc = new jsPDF();
+
+        var specialElementHandlers = {
+            'div': function (element, renderer) {
+                return true;
+            }
+        };
+//
+//        doc.fromHTML($('#tab1-tabpage').get(0), 15, 15, {
+//            'width': 170, 'elementHandlers': specialElementHandlers
+//        });
+
+        doc.fromHTML(a.txtObjEditor.getTextEditor(), 15, 15, {
+            'width': 170, 'elementHandlers': specialElementHandlers
+        });
+
+        doc.save("Livro.pdf");
+    });
     // *******************************************************************
     // Botao do Pre-visualizar
     // *******************************************************************
-              
-     $('#bt_PRE').click(function () {  alert("Teste1");  
-         
-    // for(){ }
+
+    $('#bt_PRE').click(function () {
+        var a = getArrayElementObj(allTextEditor, "tab1-input1");
+        alert(a.txtObjEditor.getTextEditor());
+//        alert("Teste1");
+
+        // for(){ }
         // $('.firepad-toolbar-wrapper').css({'visibility': "hidden"});
-           var doc = new jsPDF();
-                
-         var specialElementHandlers = {
-                         '.tab-content': function (element,renderer) {
-                             return true;
-                         }
-                    };
-                            
-         doc.fromHTML($('.tab-content').html(), 15, 15, {
-                            'width': 170,'elementHandlers': specialElementHandlers
-                    });
-         // doc.fromHTML($('#tab1-input3').html(), 30, 15, {
-                  //          'width': 170,'elementHandlers': specialElementHandlers
-                 //   });
-         
-          //doc.addImage($('.image').html(), 'JPEG', 45, 40, 180, 160);
-         
-         // doc.fromHTML($('#tab1-input3').html(), 60, 15, {
-              //              'width': 170,'elementHandlers': specialElementHandlers
-                //    });
-          
-         doc.output("dataurlnewwindow");
-                                   
-                    });
+        var doc = new jsPDF();
+
+        var specialElementHandlers = {
+            '.div': function (element, renderer) {
+                return true;
+            }
+        };
+
+        doc.fromHTML(a.txtObjEditor.getTextEditor(), 15, 15, {
+            'width': 170, 'elementHandlers': specialElementHandlers
+        });
+        // doc.fromHTML($('#tab1-input3').html(), 30, 15, {
+        //          'width': 170,'elementHandlers': specialElementHandlers
+        //   });
+
+        //doc.addImage($('.image').html(), 'JPEG', 45, 40, 180, 160);
+
+        // doc.fromHTML($('#tab1-input3').html(), 60, 15, {
+        //              'width': 170,'elementHandlers': specialElementHandlers
+        //    });
+
+        doc.output("dataurlnewwindow");
+
+    });
 
     // *******************************************************************
     // botao chat
@@ -783,7 +794,7 @@ function updateTab(i, key) {
                     break;
                 default:
                     if ($("#" + elemento).attr('class').match('editable')) {
-                        var txtedit = new TextEditor(elemento, hash[key].modelo.arrayElem[elemento].keyEditor);
+                        var txtedit = new TextEditor(elemento, hash[key].modelo.arrayElem[elemento].keyEditor, username, userColor);
                         txtedit.init();
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
@@ -869,7 +880,7 @@ function addtohash(idNum) {
             tabTest.modelo.arrayElem[thID].drawObj.init();
 
         } else if ($(this).attr("class").match("editable")) {
-            var txtedit = new TextEditor($(this).attr("id"), "");
+            var txtedit = new TextEditor($(this).attr("id"), "", username, userColor);
             txtedit.init();
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
             var editTxt = {

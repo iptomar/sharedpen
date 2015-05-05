@@ -84,11 +84,17 @@ function hexToRgb(hex, s, n) {
         hex += n[i].charCodeAt(0);
     }
     var bigint = parseInt(hex.toString(16), 16);
+    bigint = 100 * bigint;
     var r = ((bigint >> 16) & 255);
     var g = (bigint >> 8) & 255;
     var b = (bigint & 255);
 
-    return r + "," + g + "," + b;
+    if (g !== undefined) {
+        return Number(0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).substring(1);
+    }
+    else {
+        return Number(0x1000000 + r[0] * 0x10000 + r[1] * 0x100 + r[2]).toString(16).substring(1);
+    }
 }
 
 $.fn.contextMenu = function (settings) {
