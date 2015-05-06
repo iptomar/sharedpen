@@ -417,7 +417,7 @@ $(document).ready(function () {
             url: "/models", // this is just a url that is responsible to return files list 
             success: function (data) {
                 var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div>";
+                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
 
                 for (var i = 0, max = data.length; i < max; i++) {
                     var file = data[i];
@@ -426,7 +426,7 @@ $(document).ready(function () {
                             "<figcaption> " + file.split(".")[0] + " </figcaption>" +
                             "</figure>";
                 }
-                htmlModel += "</div></div></div>";
+                htmlModel += "</div></div></div></div>";
                 $("body").append(htmlModel);
             }
         });
@@ -633,75 +633,59 @@ $(document).ready(function () {
         }
     });
 
-    
-      //************************************************
+
+    //************************************************
     //****Esconder botoes do menu*********************
     //************************************************
-    $('#bt_PDF').css({'visibility': "hidden"});   
+    $('#bt_PDF').css({'visibility': "hidden"});
     $('#bt_PRE').css({'visibility': "hidden"});
-    
+
     // *******************************************************************
-    // Botao do pdf
+    // Botao do pdf, Botao do Pre-visualizar
     // *******************************************************************
 
-    $('#bt_PDF').click(function () {
-        
-        var a = getArrayElementObj(allTextEditor, "tab1-input1");
-      
-        
-        var doc = new jsPDF();
+    $('#bt_PRE, #bt_PDF').click(function () {
+        var textPdf = "";
+        $('#tabs > li > a').each(function () {
+            $($(this).attr("href")).children().children().children().each(function () {
+                var idDiv = this.id;
+                if (idDiv.indexOf("input") !== -1) {
+                    var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
+                    textPdf += a.txtObjEditor.getTextEditor();
+                } else if (idDiv.indexOf("image") !== -1) {
+                    textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
 
-        var specialElementHandlers = {
-            'div': function (element, renderer) {
-                return true;
-            }
-        };
+                } else if (idDiv.indexOf("canvas") !== -1) {
+                    console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
+                    textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
 
-
-        doc.fromHTML(a.txtObjEditor.getTextEditor(), 15, 15, {
-            'width': 170, 'elementHandlers': specialElementHandlers
+                }
+            });
+//            alert("New Page")
         });
+        console.log(textPdf);
+        socket.emit("convertToPdf", textPdf, "Livro.pdf");
 
-        doc.save("Livro.pdf");
-    });
-    
-    // *******************************************************************
-    // Botao do Pre-visualizar
-    // *******************************************************************
+//       var a = getArrayElementObj(allTextEditor, "tab1-input1");
+//        alert(a.txtObjEditor.getTextEditor());
+//
+//        var doc = new jsPDF();
+//
+//        var specialElementHandlers = {
+//            'div': function (element, renderer) {
+//                return true;
+//            }
+//        };
 
-    $('#bt_PRE').click(function () {
-        
-       var a = getArrayElementObj(allTextEditor, "tab1-input1");
-        alert(a.txtObjEditor.getTextEditor());
 
-        var doc = new jsPDF();
-
-        var specialElementHandlers = {
-            '.div': function (element, renderer) {
-                return true;
-            }
-        };
-
-        
-  /* var tipo = $('tab1-input1').children[0];
-        alert("filho:"+tipo);
-       var i = 1;
-        
-       $('#page'+ i).children('div').each(function () {
-           alert(this);
-        $(this).attr("id");
-
-        i++;
-    });*/
-             
-             
-        doc.fromHTML(a.txtObjEditor.getTextEditor(), 15, 15, {
-            'width': 170, 'elementHandlers': specialElementHandlers
-        });
-       
-
-        doc.output("dataurlnewwindow");
-
+//        doc.fromHTML(textPdf, 15, 15, {
+//            'width': 170, 'elementHandlers': specialElementHandlers
+//        });
+//        if (this.id === "bt_PDF") {
+//            doc.save("Livro.pdf");
+//        } else {
+//            doc.output("dataurlnewwindow");
+//        }
     });
 
     // *******************************************************************
@@ -731,14 +715,16 @@ $(document).ready(function () {
                 $("#divUsers").css({'visibility': "hidden"});
             });
         }
-
+    });
+    
+    //******************************************************************
+    // Recebe a lista de ficheiros de uma determinada pasta
+    //******************************************************************
+    socket.on("files2folder", function (data) {
+        alert(data);
     });
 
-    /**
-     * 
-     * 
-     */
-
+    
     $("body").on("click", ".menuBar", function () {
         addLayoutToDiv($(this).data("layout"), socket);
     });
@@ -772,6 +758,10 @@ function castTab(tabToCast) {
     return tab;
 }
 
+
+function getFilesToFolder(sckt, folder) {
+    sckt.emit("getFiles2Folder", folder);
+}
 
 /**
  * Poe o modelo no Html
@@ -1024,7 +1014,7 @@ function addLayoutToDiv(layout, stk) {
         switch (layout) {
             case "Livro.html":
                 stk.emit("getAllTabs");
-                  $('#bt_PDF').css({'visibility': "visible"});   
+                $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
                 break;
 

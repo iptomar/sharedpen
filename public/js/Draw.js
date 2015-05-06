@@ -124,7 +124,7 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
 };
 
 Draw.prototype.imageCanvas = function (dataURL) {
-       $("#" + this.id).css({
+    $("#" + this.id).css({
         "background": "url(" + dataURL + ")  no-repeat center center",
         "background-size": "100% auto"
     });
@@ -175,4 +175,12 @@ Draw.prototype.setColor = function (obj) {
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     ctx.strokeStyle = this.color;
+};
+
+Draw.prototype.getImgCanvas = function () {
+    var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
+    var image = new Image();
+    image.src = canvas.toDataURL("image/png");
+    return "<img alt='' src=" + canvas.toDataURL("image/png") +">";
 };
