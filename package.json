@@ -11,7 +11,8 @@
     "express": "*",
     "firebase": "^2.2.4",
     "socket.io": "*",
-	"firepad": "0.1.4"
+    "firepad": "0.1.4",
+    "html-to-pdf": "*"
   },
   "devDependencies": {
     "firebase-server": "^0.1.0"
