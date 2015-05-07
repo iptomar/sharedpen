@@ -1019,6 +1019,8 @@ function addLayoutToDiv(layout, stk) {
                 break;
 
             default:
+                $('#bt_PDF').css({'visibility': "hidden"});
+                $('#bt_PRE').css({'visibility': "hidden"});
 
                 break;
         }
