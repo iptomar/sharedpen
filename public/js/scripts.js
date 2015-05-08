@@ -117,7 +117,6 @@ $(document).ready(function () {
      * evento do socket para desenhar o que recebe pelo socket
      */
     socket.on('draw', function (data) {
-
         var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
         cmvv.drawOtherUser(
                 data.data.color,
@@ -127,7 +126,8 @@ $(document).ready(function () {
                 data.data.type,
                 data.data.socket,
                 //envia a imagem 
-                data.data.image
+                data.data.image,
+                data.data.apagar
                 );
     });
     /**
@@ -156,6 +156,7 @@ $(document).ready(function () {
                     y: y,
                     type: type,
                     color: hash[idToll].modelo.arrayElem[thisId].drawObj.getColor(),
+                    apagar : hash[idToll].modelo.arrayElem[thisId].drawObj.getApagar(),
                     sizeCursor: hash[idToll].modelo.arrayElem[thisId].drawObj.getSizeCursor(),
                     socket: socket.id,
                     canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
@@ -696,9 +697,9 @@ $(document).ready(function () {
         var Thid = $(this).attr('data-idpai').replace(".", "");
         var cnv = $(this).attr('data-idcnv');
         var imgSrc = $(this).children("img").attr("src");
+        var imgData = getBase64Image(imgSrc);
 
-        hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgSrc);
-        var dataUrl = hash["." + Thid].modelo.arrayElem[cnv].drawObj.getImgCanvas();
+        hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgData);
 
         socket.emit('drawClick', {
             id: cnv,
@@ -708,7 +709,7 @@ $(document).ready(function () {
             socket: socket.id,
             canvas: imgSrc,
             parent: Thid,
-            image: dataUrl
+            image: imgData
         });
 
 
@@ -768,6 +769,25 @@ $(window).resize(function () {
  * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
  */
 
+// Code taken from MatthewCrumley (http://stackoverflow.com/a/934925/298479)
+function getBase64Image(img) {
+    var img2 = document.createElement("img");
+    img2.src = img;
+    // Create an empty canvas element
+    var canvas = document.createElement("canvas");
+    canvas.width = img2.width;
+    canvas.height = img2.height;
+
+    // Copy the image contents to the canvas
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img2, 0, 0);
+
+    // Get the data-URL formatted image
+    // Firefox supports PNG and JPEG. You could check img.src to guess the
+    // original format, but be aware the using "image/jpg" will re-encode the image.
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL;
+}
 
 function castTab(tabToCast) {
     //Faz o cast da Tab, e todos os seus elementos
