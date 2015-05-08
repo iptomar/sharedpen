@@ -123,6 +123,10 @@ body, #div-login{
     overflow-y: scroll;
 }
 
+#criarProjBtn, #gerirUserBtn {
+    margin-top: 3cm;   
+}
+
 .p_msg_chat { 
     background: bisque; 
 }
