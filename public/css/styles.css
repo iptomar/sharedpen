@@ -72,16 +72,27 @@ body, #div-login{
     text-align: center;
 }
 
-#divUsers {
+#divUsers, #divGaleria {
     background-color: white;
     border: 1px solid black;
     padding: 1%;
-    height: 93%;
     top: 6%;
-    position: fixed;
-    left: 100%;
+    height: 93%;
     visibility: hidden;
+    position: fixed;
 }
+#divUsers {
+    left: 100%;    
+}
+
+#divGaleria {
+    left: -30%;    
+}
+
+#panelGaleria {
+    height: 95%;
+    overflow-y: scroll;
+} 
 
 .cantosArrendondados {
     -moz-border-radius: 20px;
@@ -157,4 +168,8 @@ body, #div-login{
     -ms-transform:scale(.80); /* IE 9 */
     -o-transform:scale(.80); /* Opera */
      transform:scale(.80);
+}
+
+.imageGaleria > img{
+    width: 100%;
 }

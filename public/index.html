@@ -40,9 +40,9 @@
         <script src="./js/javascript.js"></script>
         <script src="./js/Tab.js"></script>
         <script src="./js/TextEditor.js"></script>
-        
-        
-         <!-- pdf ------------------------------------>
+
+
+        <!-- pdf ------------------------------------>
         <script type="text/javascript" src="./lib/jspdf.js"></script>	
         <script type="text/javascript" src="./lib/FileSaver.js"></script>
         <script type="text/javascript" src="./lib/jspdf.plugin.standard_fonts_metrics.js"></script>
@@ -61,15 +61,15 @@
                 <input id="startlogin" type="button" class="btn btn-lg btn-primary btn-block" value="Login">
                 <h3 id="erro_name" class=" text-center"></h3>
             </div>                        
-        </div>
+        </div> <!-- <select id="colorpicker" class="btn btn-info selectpicker show-tick"></select> -->
         <div class="container-fluid">
             <div id="menuBar" class="row cantosArrendondados shadowBox">
                 <div class="col-xs-2 col-sm-2 col-md-2 text-right"><img alt="" src="./img/caneta-logo2_48.png"> </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 text-right"></div>
                 <div data-layout="MenuPrincipal.html" class="col-xs-1 col-sm-1 col-md-1 text-right image menuBar"><img alt="" src="./img/home_48.png"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PRE" class="btn btn-info">Pre-Visualizacao</button>    </div>                
-                <div class="col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PDF" class="btn btn-info">PDF</button></div>
-                <div class="col-xs-1 col-sm-1 col-md-1 text-right"><select id="colorpicker" class="btn btn-info selectpicker show-tick"></select></div>                 
+                <div class="col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PRE" class="btn btn-info">Prev. Pdf</button></div>                
+                <div class="col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PDF" class="btn btn-info">Pdf</button></div>
+                <div class="col-xs-1 col-sm-1 col-md-1 text-right"><input id="showGaleria" type="button" value="Galeria"></div>                 
                 <div class="col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/email_48.png"></div>
                 <div class="col-xs-1 col-sm-1 col-md-1 image"><img alt="" src="./img/search_48.png"></div>
                 <div class="col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/user_48.png"></div>
@@ -79,7 +79,7 @@
             <div class="row">
                 <div class="col-xs-1 col-sm-1 col-md-1"></div>
                 <div id="contentor" class="col-xs-10 col-sm-10 col-md-10  cantosArrendondados shadowBox">
-                    
+
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1"></div>
             </div>
@@ -96,6 +96,11 @@
                         <input id="msgChat" type="text" name="msgChat" class="form-control">
                         <button id="btnSendChat" type="button" class="btn btn-default">Send</button>
                     </div>
+                </div>
+            </div>
+            <div id="divGaleria"  class="col-xs-3 col-sm-3 col-md-3 cantosArrendondados shadowBox">
+                <h4>Galeria de Imagens</h4>
+                <div class="well" id="panelGaleria">
                 </div>
             </div>
         </div> 

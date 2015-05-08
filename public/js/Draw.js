@@ -182,5 +182,5 @@ Draw.prototype.getImgCanvas = function () {
     var ctx = canvas.getContext("2d");
     var image = new Image();
     image.src = canvas.toDataURL("image/png");
-    return "<img alt='' src=" + canvas.toDataURL("image/png") +">";
+    return canvas.toDataURL("image/png");
 };

@@ -44,21 +44,16 @@ $(document).ready(function () {
     };
     // cria a ligação com o servidor que disponibiliza o socket
     socket = io.connect(window.location.href);
-
     // Carrega o dropdown com a liosta das cores
     $('#colorpicker').addAllColors(listaColor);
-
     // coloca o cursor para introduzir o nome do utilizador
     $("#username").focus();
-
     // ao carregar em enter no nome do utilizador carrega no button
     $("#username").keydown(function (event) {
         if (event.keyCode === 13) {
             $("#startlogin").click();
         }
     });
-
-
     /**
      * Funções relacionadas com a autenticação --------------------------------------------------------------------
      */
@@ -96,7 +91,6 @@ $(document).ready(function () {
         }
     });
     ajustElements();
-
     // recebe as cordenadas dos outros utilizadores e movimenta a label dele
     // conforme as coordenadas recebidas
     socket.on('useron', function (data, port, socketid) {
@@ -116,8 +110,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
     /**
      * Funções relacionadas com o desenho -------------------------------------------------------------------------
      */
@@ -138,7 +130,6 @@ $(document).ready(function () {
                 data.data.image
                 );
     });
-
     /**
      * Eventos do mouse para desenhar no canvas
      */
@@ -192,12 +183,19 @@ $(document).ready(function () {
                                 $("#LoadImageCanvas").click();
 //                                alert(selectedMenu.data("tipo"));
                                 break;
+                            case "galeria":
+                                var vals = {
+                                    folder: "galeria",
+                                    idtab: idToll,
+                                    idObj: thisId
+                                };
+                                getFilesToFolder(socket, vals);
+                                break;
                             default:
                                 break;
                         }
                     }
                 });
-
                 hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
 //                        alert('Right Mouse button pressed.');
                 break;
@@ -206,13 +204,11 @@ $(document).ready(function () {
         }
 
     });
-
     $("body").on('change', '#LoadImageCanvas', function (e) {
         var Thid = $("#LoadImageCanvas").attr('data-idpai');
         var parent = "txtTab" + Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
         var cnv = $("#LoadImageCanvas").attr('data-idcnv');
         var input = e.target;
-
         var reader = new FileReader();
         reader.onload = function () {
             var dataURL = reader.result;
@@ -231,7 +227,6 @@ $(document).ready(function () {
         };
         reader.readAsDataURL(input.files[0]);
     });
-
     /*
      * Funçoes relacionadas com as cores ----------------------------------------------------------------------
      */
@@ -244,7 +239,6 @@ $(document).ready(function () {
             cor: $(this).find('option:selected').val()
         });
     });
-
     /**
      * Evento gerado quando recebe uma alteraçao de cores
      */
@@ -269,7 +263,6 @@ $(document).ready(function () {
         }
         $("#colorpicker").val(data.cor);
     });
-
     /*
      * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
      */
@@ -323,7 +316,6 @@ $(document).ready(function () {
             newHash[item] = castTab(data.tabsHash[item]);
         }
         hash = newHash;
-
         var i = 0;
         for (var key in hash) {
             i++;
@@ -331,7 +323,6 @@ $(document).ready(function () {
             updateTab(i, key);
         }
     });
-
     /**
      *  envia o codigo ASCII do backspace e do delete
      */
@@ -359,7 +350,6 @@ $(document).ready(function () {
             'parent': $(this).parent().parent().attr('class').split(' ')[1]
         });
     });
-
     /**
      * Evento gerado quando ha alteraçoes nas tabs
      */
@@ -370,7 +360,6 @@ $(document).ready(function () {
             } else {
                 Addtab(data.modelo, data.pos);
                 hash[".txtTab" + data.pos] = castTab(data.tab);
-
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
                     updateTab(data.pos, ".txtTab" + data.pos);
                 });
@@ -386,7 +375,6 @@ $(document).ready(function () {
         var idNum = (Object.keys(hash).length + 1);
         //cria uma nova tab e adaciona-a ao array       
         Addtab(modelo, idNum);
-
         $(".txtTab" + idNum).load("./html_models/" + modelo, function () {
 
             refactorTab(modelo, idNum);
@@ -408,7 +396,6 @@ $(document).ready(function () {
             $("body").find("a[href^='#page']:last").click();
         });
     });
-
     /**
      * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
      */
@@ -418,7 +405,6 @@ $(document).ready(function () {
             success: function (data) {
                 var htmlModel = "<div id='divchangemodel'>" +
                         "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
-
                 for (var i = 0, max = data.length; i < max; i++) {
                     var file = data[i];
                     htmlModel += "<figure>" +
@@ -431,7 +417,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /**
      * Funçao que remove tabs
      */
@@ -449,11 +434,9 @@ $(document).ready(function () {
         }
         return false;
     });
-
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
-
     /*
      * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
      */
@@ -519,7 +502,6 @@ $(document).ready(function () {
             scrollTop: $('#panelChat').prop("scrollHeight")
         }, 500);
     });
-
     /*
      * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
      */
@@ -547,29 +529,24 @@ $(document).ready(function () {
         };
         reader.readAsDataURL(file);
     });
-
     $("body").on('dragenter', ".dragandrophandler", function (e) {
         e.stopPropagation();
         e.preventDefault();
         $(this).css('border', '2px solid #0B85A1');
     });
-
     $("body").on('dragover', ".dragandrophandler", function (e) {
         e.stopPropagation();
         e.preventDefault();
     });
-
     $("body").on('click', ".dragandrophandler", function (e) {
         var obj = $(this);
         obj.prev('input[type=file]').click();
     });
-
     $("body").on('drop', ".dragandrophandler", function (e) {
         var idImg = this.id;
         $(this).css('border', '2px dotted #0B85A1');
         e.preventDefault();
         var files = e.originalEvent.dataTransfer.files;
-
         var errMessage = 0;
         $.each(files, function (index, file) {
             // Some error messaging
@@ -603,19 +580,15 @@ $(document).ready(function () {
                     'tipo': $("body").find('#' + idImg).prop("tagName"),
                     'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
                 });
-
                 $("body").find('#' + idImg).attr('src', evt.target.result);
             };
             reader.readAsDataURL(file);
         });
     });
-
     // recebe a imagem e coloca-a de acordo com o id recebido
     socket.on('user image', function (data) {
         $("body").find('#' + data.id).attr("src", data.imageData);
     });
-
-
     /**
      * Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -632,14 +605,11 @@ $(document).ready(function () {
             }
         }
     });
-
-
     //************************************************
     //****Esconder botoes do menu*********************
     //************************************************
     $('#bt_PDF').css({'visibility': "hidden"});
     $('#bt_PRE').css({'visibility': "hidden"});
-
     // *******************************************************************
     // Botao do pdf, Botao do Pre-visualizar
     // *******************************************************************
@@ -654,18 +624,15 @@ $(document).ready(function () {
                     textPdf += a.txtObjEditor.getTextEditor();
                 } else if (idDiv.indexOf("image") !== -1) {
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
-                    textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
-
+                    textPdf += "<div>" + "<img alt='' src=" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "></div>";
                 }
             });
 //            alert("New Page")
         });
         console.log(textPdf);
         socket.emit("convertToPdf", textPdf, "Livro.pdf");
-
 //       var a = getArrayElementObj(allTextEditor, "tab1-input1");
 //        alert(a.txtObjEditor.getTextEditor());
 //
@@ -687,7 +654,6 @@ $(document).ready(function () {
 //            doc.output("dataurlnewwindow");
 //        }
     });
-
     // *******************************************************************
     // botao chat
     // *******************************************************************
@@ -707,7 +673,6 @@ $(document).ready(function () {
                     countMsg = 0;
                 });
             });
-
         } else {
             $("#divUsers").animate({
                 "left": "100%"
@@ -716,30 +681,89 @@ $(document).ready(function () {
             });
         }
     });
-    
+
+    $("#showGaleria").click(function () {
+        var vals = {
+            folder: "imgupload",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, vals);
+    });
+
+    $("body").on("click", ".imageGaleria", function () {
+
+        var Thid = $(this).attr('data-idpai').replace(".", "");
+        var cnv = $(this).attr('data-idcnv');
+        var imgSrc = $(this).children("img").attr("src");
+
+        hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgSrc);
+        var dataUrl = hash["." + Thid].modelo.arrayElem[cnv].drawObj.getImgCanvas();
+
+        socket.emit('drawClick', {
+            id: cnv,
+            type: "backgoundImage",
+            color: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getColor(),
+            sizeCursor: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getSizeCursor(),
+            socket: socket.id,
+            canvas: imgSrc,
+            parent: Thid,
+            image: dataUrl
+        });
+
+
+
+        $("#divGaleria").animate({
+            "left": "-30%"
+        }, 1000, function () {
+            $("#divGaleria").css({"visibility": "hidden"});
+        });
+    });
     //******************************************************************
     // Recebe a lista de ficheiros de uma determinada pasta
     //******************************************************************
-    socket.on("files2folder", function (data) {
-        alert(data);
-    });
+    socket.on("files2folder", function (data, dataVals) {
+        switch (dataVals.folder) {
+            case "galeria":
+            case "imgupload":
+                if ($("#divGaleria").css("visibility") === "hidden") {
+                    var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        imgList += '<div class="imageGaleria col-xs-4 col-sm-4 col-md-4 image" data-idpai="' + dataVals.idtab + '" data-idcnv="' + dataVals.idObj + '">';
+                        imgList += '<img src="./' + dataVals.folder + '/' + data[i] + '" alt="">';
+                        imgList += '</div>';
+                    }
+                    imgList += ' </div>';
+                    $("#panelGaleria").html(imgList);
 
-    
+                    $("#divGaleria").css({"visibility": "visible"});
+                    $("#divGaleria").animate({
+                        "left": "1%"
+                    }, 1000, "swing");
+                } else {
+                    $("#divGaleria").animate({
+                        "left": "-30%"
+                    }, 1000, function () {
+                        $("#divGaleria").css({"visibility": "hidden"});
+                    });
+                }
+                break;
+            default:
+
+                break;
+        }
+    });
     $("body").on("click", ".menuBar", function () {
         addLayoutToDiv($(this).data("layout"), socket);
     });
-
     /**
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
 
 });
-
-
 $(window).resize(function () {
     ajustElements();
 });
-
 /*
  * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
  */
@@ -759,8 +783,8 @@ function castTab(tabToCast) {
 }
 
 
-function getFilesToFolder(sckt, folder) {
-    sckt.emit("getFiles2Folder", folder);
+function getFilesToFolder(sckt, data) {
+    sckt.emit("getFiles2Folder", data);
 }
 
 /**
@@ -772,8 +796,6 @@ function getFilesToFolder(sckt, folder) {
 function updateTab(i, key) {
     $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
         refactorTab(hash[key].nomeModelo, i);
-
-
         for (var elemento in hash[key].modelo.arrayElem) {
 
             switch (hash[key].modelo.arrayElem[elemento].elementType) {
@@ -822,13 +844,11 @@ function Addtab(html, idNum) {
             ' <button type="button" id=' +
             (idNum) +
             ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
-
     // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' + idNum +
             '"><div class="txtTab txtTab' + idNum + '"></div>' +
             '</div>');
-
 }
 
 /**
@@ -847,11 +867,9 @@ function refactorTab(html, idNum) {
     tabTest = new Tab(".txtTab" + (idNum), numElements, html);
     var i = 0;
     $(".txtTab" + idNum).children('div').attr("id", "tab" + idNum + "-" + $(".txtTab" + idNum).children('div').attr('id'));
-
     $(".txtTab" + idNum).children('div').children().each(function () {
 
         $(this).attr("id", "tab" + idNum + "-" + this.id);
-
         i++;
     });
     $(".txtTab" + idNum).css({
@@ -871,12 +889,10 @@ function addtohash(idNum) {
         //vai buscar id atribuido
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
-
         if (thType === 'CANVAS') {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             tabTest.modelo.arrayElem[thID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
             tabTest.modelo.arrayElem[thID].drawObj.init();
-
         } else if ($(this).attr("class").match("editable")) {
             var txtedit = new TextEditor($(this).attr("id"), "", username, userColor);
             txtedit.init();
@@ -907,14 +923,12 @@ function removeTab(liElem) {
     // Tambem apaga o <div>(pagina) correta dentro de <div class="tab-content">
     $('div.tab-content div#page' + liElem).remove();
     var i = 1;
-
     //para renomear Li
     $('#tabs').children('li').each(function () {
 
         if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
             $(this).attr('id', "li" + i);
             $(this).children('a').attr('href', "#page" + i);
-
             var button = $(this).children('a').children();
             $(this).children('a').text('Pagina ' + i + " ").append(button);
             $(this).children('a').children('button').attr('id', i);
@@ -926,9 +940,7 @@ function removeTab(liElem) {
     $('.tab-content').children('div').each(function () {
         if ($(this).attr('id') !== $('div.tab-content div#page' + liElem)) {
             $(this).attr('id', "page" + (i + 1));
-
             var classs = $(this).children('div').attr('class').replace(/[0-9]/, (i + 1));
-
             $(this).children('div').attr('class', classs);
             $(this).children('div').children().find('*').each(function () {
                 //muda o id
@@ -943,13 +955,11 @@ function removeTab(liElem) {
         }
 
     });
-
     // activa a tab anterior no caso de a actual ser eliminada
     if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
         $("body").find("a[href='#page" + (liElem - 1) + "']:last").click();
     }
     refactorHash(liElem);
-
 }
 
 
@@ -971,12 +981,9 @@ function refactorHash(liElem) {
         var newId = key.replace(/[0-9]/, (i + 1));
         hash1[newId] = hash[key];
         hash1[newId].id = newId;
-
         for (var elemento in hash[key].modelo.arrayElem) {
             var idd = elemento.replace(/[0-9]/, (i + 1));
-
             hash1[newId].modelo.arrayElem[idd] = hash[key].modelo.arrayElem[elemento];
-
             hash1[newId].modelo.arrayElem[idd].id = hash[key].modelo.arrayElem[elemento].id.replace(/[0-9]/, (i + 1));
             hash1[newId].modelo.arrayElem[idd].conteudo = hash[key].modelo.arrayElem[elemento].conteudo;
             if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
@@ -1017,11 +1024,9 @@ function addLayoutToDiv(layout, stk) {
                 $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
                 break;
-
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
                 $('#bt_PRE').css({'visibility': "hidden"});
-
                 break;
         }
     });
