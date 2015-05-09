@@ -74,7 +74,12 @@ $(document).ready(function () {
                     "</b></i></u>");
             socket.emit("myname", username);
             userColor = hexToRgb(0, socket.id, username);
-            addLayoutToDiv("MenuPrincipal.html");
+            var data = {
+                folder: "html_Work_Models",
+                idtab: "",
+                idObj: ""
+            };
+            getFilesToFolder(socket, data);
             $("#msg1").focus();
         } else {
             $("#erro_name").html("Nome Incorreto!");
@@ -156,7 +161,7 @@ $(document).ready(function () {
                     y: y,
                     type: type,
                     color: hash[idToll].modelo.arrayElem[thisId].drawObj.getColor(),
-                    apagar : hash[idToll].modelo.arrayElem[thisId].drawObj.getApagar(),
+                    apagar: hash[idToll].modelo.arrayElem[thisId].drawObj.getApagar(),
                     sizeCursor: hash[idToll].modelo.arrayElem[thisId].drawObj.getSizeCursor(),
                     socket: socket.id,
                     canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
@@ -683,15 +688,6 @@ $(document).ready(function () {
         }
     });
 
-    $("#showGaleria").click(function () {
-        var vals = {
-            folder: "imgupload",
-            idtab: "",
-            idObj: ""
-        };
-        getFilesToFolder(socket, vals);
-    });
-
     $("body").on("click", ".imageGaleria", function () {
 
         var Thid = $(this).attr('data-idpai').replace(".", "");
@@ -711,15 +707,24 @@ $(document).ready(function () {
             parent: Thid,
             image: imgData
         });
-
-
-
         $("#divGaleria").animate({
             "left": "-30%"
         }, 1000, function () {
             $("#divGaleria").css({"visibility": "hidden"});
         });
     });
+
+    $("#homemenu").click(function () {
+        $('#bt_PDF').css({'visibility': "hidden"});
+        $('#bt_PRE').css({'visibility': "hidden"});
+        var data = {
+            folder: "html_Work_Models",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
+    });
+
     //******************************************************************
     // Recebe a lista de ficheiros de uma determinada pasta
     //******************************************************************
@@ -749,13 +754,24 @@ $(document).ready(function () {
                     });
                 }
                 break;
+            case "html_Work_Models":
+                var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
+                for (var i = 0, max = data.length; i < max; i++) {
+                    allPages += '<div class="col-xs-4 col-sm-4 col-md-4  menuBar" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
+                    allPages += '<figure class="image">';
+                    allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
+                    allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
+                }
+                allPages += '</div>';
+                $("#contentor").html(allPages);
+                break;
             default:
 
                 break;
         }
     });
     $("body").on("click", ".menuBar", function () {
-        addLayoutToDiv($(this).data("layout"), socket);
+        addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
     /**
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
@@ -1036,8 +1052,8 @@ function getArrayElementObj(array, id) {
     return a;
 }
 
-function addLayoutToDiv(layout, stk) {
-    $("#contentor").load("./html_Work_Models/" + layout, function () {
+function addLayoutToDiv(local, folder, layout, stk) {
+    $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
             case "Livro.html":
                 stk.emit("getAllTabs");

@@ -177,34 +177,3 @@ body, #div-login{
 .imageGaleria > img{
     width: 100%;
 }
-
-
-.navbar-margin-top-bottom{
-  margin-top:2px;
-  margin-bottom:2px;
-}
-
-.btn-xlg,
-.btn-group-xlg > .btn {
-  padding: 30px 16px;
-  font-size: 30px;
-  line-height: 1.3333333;
-  border-radius: 6px;
-}
-
-.btn-round,
-.btn-group-round > .btn {
- border-radius: 50px;
-}
-
-.h1{
- color:darkslateblue;  
-}
-
-<<<<<<< HEAD
- 
-=======
-.modal-backdrop {
-    z-index: 0;
->>>>>>> 2f1979f853053ebf6971162ef9eb864337ce0249
-}
