@@ -3,6 +3,11 @@
     margin-bottom:2px;
 }
 
+.table-margin-top-bottom{
+    margin-top: 35px;
+    margin-bottom:35px;
+}
+
 .btn-xlg,
 .btn-group-xlg > .btn {
     padding: 30px 16px;
