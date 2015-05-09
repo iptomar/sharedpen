@@ -173,3 +173,7 @@ body, #div-login{
 .imageGaleria > img{
     width: 100%;
 }
+
+.modal-backdrop {
+    z-index: 0;
+}
