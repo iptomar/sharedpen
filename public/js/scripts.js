@@ -915,8 +915,8 @@ function addtohash(idNum) {
             tabTest.modelo.arrayElem[thID].drawObj.init();
         } else if ($(this).attr("class").match("editable")) {
             var txtedit = new TextEditor($(this).attr("id"), "", username, userColor);
-            txtedit.init();
-            tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
+//            txtedit.init();
+//            tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
             var editTxt = {
                 id: $(this).attr("id"),
                 txtObjEditor: txtedit

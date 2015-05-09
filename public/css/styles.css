@@ -178,6 +178,7 @@ body, #div-login{
     width: 100%;
 }
 
+<<<<<<< HEAD
 
 .navbar-margin-top-bottom{
   margin-top:2px;
@@ -199,4 +200,8 @@ body, #div-login{
 
 .h1{
  color:darkslateblue;   
+=======
+.modal-backdrop {
+    z-index: 0;
+>>>>>>> 2f1979f853053ebf6971162ef9eb864337ce0249
 }
