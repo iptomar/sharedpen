@@ -30,6 +30,21 @@
     color:darkslateblue;  
 }
 
+.select-table-cell{
+    display:table-cell;
+    width:49%;
+    float:left;
+}
+
+
+.select-margin-right{
+    margin-right:23px;   
+}
+
+.grey-select{
+    color:darkgrey;   
+}
+
 .modal-backdrop {
     z-index: 0;
 }
