@@ -347,14 +347,46 @@ $(document).ready(function () {
             });
         }
     });
+
+    $("body").on('keydown', '.editablee', function (event) {
+        if (event.which === 8 || event.which === 46) {
+            socket.emit('msgappend', {
+                'char': event.which,
+                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
+                'id': "#" + $(this).attr('id'),
+                'parent': $(this).parent().parent().attr('class').split(' ')[1]
+            });
+        }
+    });
+
     // envia o codigo ASCII das teclas carregadas
-    $("body").on('keypress', '.editablee', function (event) {
-        socket.emit('msgappend', {
-            'char': event.which,
-            'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-            'id': "#" + $(this).attr('id'),
-            'parent': $(this).parent().parent().attr('class').split(' ')[1]
+    $("body").on('mousedown click', '.editable', function (e) {
+        var edit;
+        var tabContentor = $(this).parent().attr("id").split("-")[0];
+        var listClass = $(this).attr("class").split(" ");
+        for (var i = 0, max = listClass.length; i < max; i++) {
+            if (listClass[i].indexOf(tabContentor) !== -1) {
+                edit = getArrayElementObj(allTextEditor, listClass[i]);
+                edit.txtObjEditor.setNewId($("." + listClass[i]).attr("id"));
+            }
+        }
+        $(this).on("contextmenu", function () {
+            return false;
         });
+        switch (e.which) {
+            case 1:
+//                alert('Left Mouse button pressed.');
+                break;
+            case 2:
+//                alert('Middle Mouse button pressed.');
+                break;
+            case 3:
+//                edit.txtObjEditor.showToolbar();
+//                console.log('Right Mouse button pressed.');
+                break;
+            default:
+//                alert('You have a strange Mouse!');
+        }
     });
     /**
      * Evento gerado quando ha alteraçoes nas tabs
@@ -384,7 +416,7 @@ $(document).ready(function () {
         $(".txtTab" + idNum).load("./html_models/" + modelo, function () {
 
             refactorTab(modelo, idNum);
-            var firepadID = addtohash(idNum, false);
+            addtohash(idNum);
             socket.emit('TabsChanged', {
                 //remover ou adicionar
                 op: "adicionar",
@@ -414,7 +446,7 @@ $(document).ready(function () {
                 for (var i = 0, max = data.length; i < max; i++) {
                     var file = data[i];
                     htmlModel += "<figure>" +
-                            "<img class='btnmodels' alt='Capa' src='../img/" + file.split(".")[0] + ".png' data-model='" + file + "'/>" +
+                            "<img class='btnmodels' alt='' src='../img/" + file.split(".")[0] + ".png' data-model='" + file + "'/>" +
                             "<figcaption> " + file.split(".")[0] + " </figcaption>" +
                             "</figure>";
                 }
@@ -731,7 +763,6 @@ $(document).ready(function () {
     socket.on("files2folder", function (data, dataVals) {
         switch (dataVals.folder) {
             case "galeria":
-            case "imgupload":
                 if ($("#divGaleria").css("visibility") === "hidden") {
                     var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
                     for (var i = 0, max = data.length; i < max; i++) {
@@ -850,8 +881,13 @@ function updateTab(i, key) {
                     break;
                 default:
                     if ($("#" + elemento).attr('class').match('editable')) {
-                        var txtedit = new TextEditor(elemento, hash[key].modelo.arrayElem[elemento].keyEditor, username, userColor);
-                        txtedit.init();
+                        $("#" + elemento).addClass(elemento);
+                        var txtedit = new TextEditor(elemento, username, userColor);
+                        var editTxt = {
+                            id: elemento,
+                            txtObjEditor: txtedit
+                        };
+                        allTextEditor.push(editTxt);
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                     break;
@@ -904,7 +940,6 @@ function refactorTab(html, idNum) {
     var i = 0;
     $(".txtTab" + idNum).children('div').attr("id", "tab" + idNum + "-" + $(".txtTab" + idNum).children('div').attr('id'));
     $(".txtTab" + idNum).children('div').children().each(function () {
-
         $(this).attr("id", "tab" + idNum + "-" + this.id);
         i++;
     });
@@ -930,11 +965,11 @@ function addtohash(idNum) {
             tabTest.modelo.arrayElem[thID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
             tabTest.modelo.arrayElem[thID].drawObj.init();
         } else if ($(this).attr("class").match("editable")) {
-            var txtedit = new TextEditor($(this).attr("id"), "", username, userColor);
-//            txtedit.init();
-//            tabTest.modelo.arrayElem[thID] = new Element(thID, thType, txtedit.getKey() + "");
+            tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
+            var txtedit = new TextEditor($(this).attr("id"), username, userColor);
+            $(this).addClass(thID);
             var editTxt = {
-                id: $(this).attr("id"),
+                id: thID,
                 txtObjEditor: txtedit
             };
             allTextEditor.push(editTxt);

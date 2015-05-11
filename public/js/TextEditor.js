@@ -1,112 +1,101 @@
-var TextEditor = function (idpai, key, user, cor) {
+var TextEditor = function (idpai, user, cor) {
+    this.idpai = idpai;
+    this.newId;
+    this.user = user;
+    this.cor = cor;
     $('#' + idpai).summernote({
         lang: "pt-PT",
-        height: 300,
+        height: "auto",
         tabsize: 5,
-        airMode: true
+        idEdit: this.idpai,
+        focus: true//,
+//        airMode: true,
+//        onInit: function () {
+//            console.log('init', arguments, $('.summernote')[0] === this);
+//        },
+//        onFocus: function () {
+//            console.log('focus', arguments, $('.summernote')[0] === this);
+//        },
+//        onBlur: function () {
+//            console.log('blur', arguments, $('.summernote')[0] === this);
+//        },
+//        onKeydown: function () {
+//            console.log('keydown', arguments, $('.summernote')[0] === this);
+//        },
+//        onKeyup: function () {
+//            console.log('keyup', arguments, $('.summernote')[0] === this);
+//        },
+//        onEnter: function () {
+//            console.log('enter', arguments, $('.summernote')[0] === this);
+//        },
+//        onMousedown: function () {
+//            console.log('onMousedown', arguments, $('.summernote')[0] === this);
+//        },
+//        onMouseup: function () {
+//            console.log('onMouseup', arguments, $('.summernote')[0] === this);
+//        },
+//        onScroll: function () {
+//            console.log('onscroll', arguments, $('.summernote')[0] === this);
+//        },
+//        onPaste: function () {
+//            console.log('paste', arguments, $('.summernote')[0] === this);
+//        },
+//        onBeforeCommand: function () {
+//            console.log('onBeforeCommand', arguments, $('.summernote')[0] === this);
+//        },
+//        onChange: function ($editable, sHtml) {
+//            console.log($editable, sHtml);
+//            console.log('onChange', arguments, $('.summernote')[0] === this);
+//        },
+//        onImageUpload: function () {
+//            console.log('onImageUpload', arguments, $('.summernote')[0] === this);
+//        },
+//        onImageUploadError: function () {
+//            console.log('onImageUploadError', arguments, $('.summernote')[0] === this);
+//        }
+//    }).on('summernote.init', function () {
+//        console.log('summernote.init', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.focus', function () {
+//        console.log('summernote.focus', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.blur', function () {
+//        console.log('summernote.blur', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.keydown', function () {
+//        console.log('summernote.keydown', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.keyup', function () {
+//        console.log('summernote.keyup', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.enter', function () {
+//        console.log('summernote.enter', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.mousedown', function () {
+//        console.log('summernote.mousedown', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.mouseup', function () {
+//        console.log('summernote.mouseup', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.scroll', function () {
+//        console.log('summernote.scroll', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.paste', function () {
+//        console.log('summernote.paste', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.before.command', function () {
+//        console.log('summernote.before.command', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.change', function () {
+//        console.log('summernote.change', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.image.upload', function () {
+//        console.log('summernote.image.upload', arguments, $('.summernote')[0] === this);
+//    }).on('summernote.image.upload.error', function () {
+//        console.log('summernote.image.error', arguments, $('.summernote')[0] === this);
     });
-
-//    this.idpai = idpai;
+      
+    
+//    $('.note-editable').css('font-size','18px');
 //    this.key = key;
-//    this.user = user;
-//    this.cor = cor;
 //    this.firepadRef = "";
 //    this.codeMirror = "";
 //    this.firepad = "";
 //    this.toolbarShow = false;
 };
 
-//TextEditor.prototype.init = function () {
-//    //// Initialize Firebase.
-//    this.firepadRef = this.getExampleRef();
-//    // TODO: Replace above line with:
-//    // var firepadRef = new Firebase('<YOUR FIREBASE URL>');
-//
-//    //// Create CodeMirror (with lineWrapping on).
-//    this.codeMirror = CodeMirror(document.getElementById(this.idpai), {
-//        lineWrapping: true
-//    });
-//
-//    //// Create Firepad (with rich text toolbar and shortcuts enabled).
-//    this.firepad = Firepad.fromCodeMirror(this.firepadRef, this.codeMirror, {
-//        richTextToolbar: true,
-//        richTextShortcuts: true
-//    });
-//
-////    Available Options:
-////    richTextToolbar (default: false) - Adds a toolbar with buttons for bold, italic, etc.
-////    richTextShortcuts (default: false) - Maps Ctrl-B to bold, etc.
-////    userId (default: random) - The user ID for the person editing.
-////    userColor (default: generated from userId) - A css color (e.g. "#ccc") for this user's cursor.
-////    defaultText (default: null) - Text to initialize the Firepad with if history is empty.
-//
-//    this.firepad.setUserId(this.user);
-//    this.firepad.setUserColor("#" + this.cor);
-//
-//    //// Initialize contents.
-//    this.firepad.on('ready', function () {
-////        if (this.firepad.isHistoryEmpty()) {
-////            this.firepad.setHtml('');
-////        }
-//    });
-//
-//    // An example of a complex custom entity.
-//    this.firepad.registerEntity('checkbox', {
-//        render: function (info, entityHandler) {
-//            var inputElement = document.createElement('input');
-//            inputElement.setAttribute('type', 'checkbox');
-//            if (info.checked) {
-//                inputElement.checked = 'checked';
-//            }
-//            inputElement.addEventListener('click', function () {
-//                entityHandler.replace({checked: this.checked});
-//            });
-//            return inputElement;
-//        }.bind(this),
-//        fromElement: function (element) {
-//            var info = {};
-//            if (element.hasAttribute('checked')) {
-//                info.checked = true;
-//            }
-//            return info;
-//        },
-//        update: function (info, element) {
-//            if (info.checked) {
-//                element.checked = 'checked';
-//            } else {
-//                element.checked = null;
-//            }
-//        },
-//        export: function (info) {
-//            var inputElement = document.createElement('checkbox');
-//            if (info.checked) {
-//                inputElement.setAttribute('checked', true);
-//            }
-//            return inputElement;
-//        }
-//    });
-//};
-//
-//// Helper to get hash from end of URL or generate a random one.
-//TextEditor.prototype.getExampleRef = function () {
-//    var ref = new Firebase('https://sharedpentest.firebaseio.com/');
-//    var hash = this.key;
-//    if (hash) {
-//        ref = ref.child("-" + hash.split("/-")[1]);
-//    } else {
-//        ref = ref.push(); // generate unique location.
-//    }
-//    if (typeof console !== 'undefined') {
-//        console.log('Firebase data: ', ref.toString());
-//    }
-//    this.key = ref;
-//    return ref;
-//};
-//
-//TextEditor.prototype.getKey = function () {
-//    return this.key;
-//};
-//
-//TextEditor.prototype.getTextEditor = function () {
-//    return this.firepad.getHtml();
-//};
+TextEditor.prototype.setNewId = function (val) {
+  this.newId = val;  
+};
+
+TextEditor.prototype.showToolbar = function () {
+//    $('#note-popover-' + this.newId.substr(this.newId.length - 1)).find(".note-air-popover").css('display', 'block');
+};
