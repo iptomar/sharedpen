@@ -167,10 +167,10 @@ $(document).ready(function () {
                     canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
                     parent: $(this).parent().parent().attr('class').split(' ')[1]
                 });
-//                        alert('Left Mouse button pressed.');
+                //                        alert('Left Mouse button pressed.');
                 break;
             case 2:
-//                        alert('Middle Mouse button pressed.');
+                //                        alert('Middle Mouse button pressed.');
                 break;
             case 3:
                 $(this).contextMenu({
@@ -179,15 +179,15 @@ $(document).ready(function () {
                         switch (selectedMenu.data("tipo")) {
                             case "cor":
                                 hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
-//                                alert(selectedMenu.data("cor"));
+                                //                                alert(selectedMenu.data("cor"));
                                 break;
                             case "size":
                                 hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil(selectedMenu.data("size"));
-//                                alert(selectedMenu.data("size"));
+                                //                                alert(selectedMenu.data("size"));
                                 break;
                             case "img":
                                 $("#LoadImageCanvas").click();
-//                                alert(selectedMenu.data("tipo"));
+                                //                                alert(selectedMenu.data("tipo"));
                                 break;
                             case "galeria":
                                 var vals = {
@@ -203,10 +203,10 @@ $(document).ready(function () {
                     }
                 });
                 hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
-//                        alert('Right Mouse button pressed.');
+                //                        alert('Right Mouse button pressed.');
                 break;
             default:
-//                        alert('You have a strange Mouse!');
+                //                        alert('You have a strange Mouse!');
         }
 
     });
@@ -219,7 +219,7 @@ $(document).ready(function () {
         reader.onload = function () {
             var dataURL = reader.result;
             hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(dataURL);
-//            imageCanvas(dataURL, Thid);
+            //            imageCanvas(dataURL, Thid);
             socket.emit('drawClick', {
                 id: cnv,
                 type: "backgoundImage",
@@ -375,17 +375,17 @@ $(document).ready(function () {
         });
         switch (e.which) {
             case 1:
-//                alert('Left Mouse button pressed.');
+                //                alert('Left Mouse button pressed.');
                 break;
             case 2:
-//                alert('Middle Mouse button pressed.');
+                //                alert('Middle Mouse button pressed.');
                 break;
             case 3:
-//                edit.txtObjEditor.showToolbar();
-//                console.log('Right Mouse button pressed.');
+                //                edit.txtObjEditor.showToolbar();
+                //                console.log('Right Mouse button pressed.');
                 break;
             default:
-//                alert('You have a strange Mouse!');
+                //                alert('You have a strange Mouse!');
         }
     });
     /**
@@ -408,13 +408,11 @@ $(document).ready(function () {
      * Evento que determina qual e o modelo escolhido
      */
     $("body").on('click', ".btnmodels", function () {
-
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
         //cria uma nova tab e adaciona-a ao array       
         Addtab(modelo, idNum);
         $(".txtTab" + idNum).load("./html_models/" + modelo, function () {
-
             refactorTab(modelo, idNum);
             addtohash(idNum);
             socket.emit('TabsChanged', {
@@ -711,14 +709,11 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".imageGaleria", function () {
-
         var Thid = $(this).attr('data-idpai').replace(".", "");
         var cnv = $(this).attr('data-idcnv');
         var imgSrc = $(this).children("img").attr("src");
         var imgData = getBase64Image(imgSrc);
-
         hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgData);
-
         socket.emit('drawClick', {
             id: cnv,
             type: "backgoundImage",
@@ -798,8 +793,23 @@ $(document).ready(function () {
                 htmlModel += "</div></div></div></div>";
                 $("body").append(htmlModel);
                 break;
+            case "temaspoemas":
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                        "<h1 style='text-center'>Temas</h1>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    if (data[i].indexOf(".") === -1) {
+                        var pasta = data[i];
+                        htmlModel += "<figure>" +
+                                "<img class='btnmodels' alt='' src='./img/temaspoema/" + data[i] + ".png' '/>" +
+                                "<figcaption> " + pasta + " </figcaption>" +
+                                "</figure>";
+                    }
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+                break;
             default:
-
                 break;
         }
     });
@@ -815,6 +825,17 @@ $(document).ready(function () {
     $("body").on("click", ".menuBar", function () {
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
+
+
+    $("body").on("click", 'a[href="#add-poema"]', function () {
+        var data = {
+            folder: "temaspoemas",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
+    });
+
     /**
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -1113,6 +1134,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
         }
     });
 }
+
 
 /**
  * Ajusta os elementos do ecram principal
