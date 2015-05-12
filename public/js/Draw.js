@@ -1,5 +1,3 @@
-
-
 var Draw = function (tabClass, page, id) {
     this.tabClass = tabClass;
     this.page = page;
@@ -12,11 +10,10 @@ var Draw = function (tabClass, page, id) {
     this.ArrayCanvasClients = [];
     this.canvasArray = [];
     this.isWriting = false;
-    
-    this.x=0;
-    this.y=0;
-    this.x1=0;
-    this.y1=0;
+    this.x = 0;
+    this.y = 0;
+    this.x1 = 0;
+    this.y1 = 0;
 };
 
 Draw.prototype.init = function () {
@@ -31,7 +28,6 @@ Draw.prototype.init = function () {
     canvas.height = 700;
 
     this.ArrayCanvasClients = {};
-
 };
 
 Draw.prototype.VerificaUser = function (socket) {
@@ -54,9 +50,11 @@ Draw.prototype.getColor = function () {
 Draw.prototype.getSizeCursor = function () {
     return this.curSize;
 };
+
 Draw.prototype.getApagar = function () {
     return this.apagar;
 };
+
 Draw.prototype.getCanvas = function () {
     var canvas = document.getElementById(this.id);
     return canvas;
@@ -78,7 +76,6 @@ Draw.prototype.draw = function (x, y, type) {
     } else {
         this.paintThis(ctx, x, y, type, "destination-out");
     }
-    
 };
 
 Draw.prototype.paintThis = function (ctx, x, y, type, opt) {
@@ -89,25 +86,21 @@ Draw.prototype.paintThis = function (ctx, x, y, type, opt) {
         this.flag = true;
         ctx.moveTo(x, y);
     } else if (type === "mousemove" && this.flag) {
-        if(this.x1 != 0)
+        if (this.x1 != 0)
             ctx.moveTo(this.x1, this.y1);
         else
             ctx.moveTo(x, y);
         ctx.lineTo(x, y);
         ctx.stroke();
-     //   else{
-      //      ctx.moveTo(x,y)
-      //  }
-        this.x1=x;
-        this.y1=y;
-
+        this.x1 = x;
+        this.y1 = y;
     } else {
         this.flag = false;
-        ctx.closePath(); 
-        this.isWriting = false        
+        ctx.closePath();
+        this.isWriting = false;
         this.CheckDrawOtherUser();
-        this.x1=0;
-        this.y1=0;
+        this.x1 = 0;
+        this.y1 = 0;
     }
 };
 
@@ -117,7 +110,7 @@ Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
         ctx.globalCompositeOperation = opt;
         ctx.moveTo(x, y);
     } else if (type === "mousemove") {
-        if(this.x != 0)
+        if (this.x !== 0)
             ctx.moveTo(this.x, this.y);
         else
             ctx.moveTo(x, y);
@@ -125,34 +118,32 @@ Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
         ctx.lineTo(x, y);
         ctx.stroke();
         //actualiza o x e y
-        this.x=x;
-        this.y=y;
-
+        this.x = x;
+        this.y = y;
     } else {
         ctx.closePath();
-        this.x=0;
-        this.y=0;
+        this.x = 0;
+        this.y = 0;
     }
 };
-Draw.prototype.CheckDrawOtherUser = function (){
-    if(!this.isWriting){     
-        for (item in this.canvasArray){
-         var last = Object.keys(this.canvasArray[item]).length-1;
-            
-            if(this.canvasArray[item][last].type == "mouseup" || this.canvasArray[item][last].type == "backgoundImage" ){
 
-                for (item1 in this.canvasArray[item]){   
+Draw.prototype.CheckDrawOtherUser = function () {
+    if (!this.isWriting) {
+        for (var item in this.canvasArray) {
+            var last = Object.keys(this.canvasArray[item]).length - 1;
+
+            if (this.canvasArray[item][last].type === "mouseup" ||
+                    this.canvasArray[item][last].type === "backgoundImage") {
+
+                for (var item1 in this.canvasArray[item]) {
                     it = this.canvasArray[item][item1];
-                    this.drawOU(it.cor, it.sizecur, it.x, it.y, it.type, it.socket, it.image, it.apagar);   
-                 }
+                    this.drawOU(it.cor, it.sizecur, it.x, it.y, it.type, it.socket, it.image, it.apagar);
+                }
                 delete this.canvasArray[item];
             }
         }
-           
     }
-    
-}
-
+};
 
 Draw.prototype.drawOU = function (cor, sizecur, x, y, type, socket, image, apagar) {
     var canvas = document.getElementById(this.id);
@@ -160,34 +151,38 @@ Draw.prototype.drawOU = function (cor, sizecur, x, y, type, socket, image, apaga
 
     var oldCor = this.getColor();
     var oldSize = this.getSizeCursor();
-    
+
     ctx.fillStyle = "solid";
     ctx.strokeStyle = cor;
     ctx.lineWidth = sizecur;
     ctx.lineCap = "round";
     if (!apagar) {
-        this.paint(canvas,ctx, x, y, type, "source-over");
+        this.paint(canvas, ctx, x, y, type, "source-over");
     } else {
-        this.paint(canvas,ctx, x, y, type, "destination-out");
+        this.paint(canvas, ctx, x, y, type, "destination-out");
     }
 
     if (type === "backgoundImage") {
         this.imageCanvas(image);
     }
-    
+
     ctx.strokeStyle = oldCor;
     ctx.lineWidth = oldSize;
-}
+};
 
 Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image, apagar) {
-    
-    if(typeof this.canvasArray[socket] == "undefined"){
-        this.canvasArray[socket] =  []; 
+    if (typeof this.canvasArray[socket] === "undefined") {
+        this.canvasArray[socket] = [];
     }
-
-    this.canvasArray[socket].push({cor,sizecur,x,y,type,socket,image,apagar});  
-
-
+    this.canvasArray[socket].push({
+        cor: cor,
+        sizecur: sizecur,
+        x: x,
+        y: y,
+        type: type,
+        socket: socket,
+        image: image,
+        apagar: apagar});
     this.CheckDrawOtherUser();
 };
 
@@ -198,7 +193,6 @@ Draw.prototype.imageCanvas = function (dataURL) {
     });
 };
 
-
 Draw.prototype.setPallet = function (id, cnv) {
     $.get("./../html/pallet.html", function (data) {
         $(document.body).append(data);
@@ -206,7 +200,6 @@ Draw.prototype.setPallet = function (id, cnv) {
         $("#LoadImageCanvas").attr('data-idcnv', cnv);
     });
 };
-
 
 Draw.prototype.setSizePensil = function (val) {
     var canvas = document.getElementById(this.id);

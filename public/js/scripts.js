@@ -438,22 +438,12 @@ $(document).ready(function () {
      * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
      */
     $("body").on('click', '#tabs a[href="#add-page"]', function () {
-        $.ajax({
-            url: "/models", // this is just a url that is responsible to return files list 
-            success: function (data) {
-                var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    var file = data[i];
-                    htmlModel += "<figure>" +
-                            "<img class='btnmodels' alt='' src='../img/" + file.split(".")[0] + ".png' data-model='" + file + "'/>" +
-                            "<figcaption> " + file.split(".")[0] + " </figcaption>" +
-                            "</figure>";
-                }
-                htmlModel += "</div></div></div></div>";
-                $("body").append(htmlModel);
-            }
-        });
+        var data = {
+            folder: "html_models",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
     });
     /**
      * Funçao que remove tabs
@@ -796,11 +786,32 @@ $(document).ready(function () {
                 allPages += '</div>';
                 $("#contentor").html(allPages);
                 break;
+            case "html_models":
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    htmlModel += "<figure>" +
+                            "<img class='btnmodels' alt='' src='../img/" + data[i].split(".")[0] + ".png' data-model='" + data[i] + "'/>" +
+                            "<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
+                            "</figure>";
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+                break;
             default:
 
                 break;
         }
     });
+
+    $(".fecharGaleria").click(function () {
+        $("#divGaleria").animate({
+            "left": "-30%"
+        }, 1000, function () {
+            $("#divGaleria").css({"visibility": "hidden"});
+        });
+    });
+
     $("body").on("click", ".menuBar", function () {
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
