@@ -435,7 +435,7 @@ $(document).ready(function () {
     /**
      * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
      */
-    $("body").on('click', '#tabs a[href="#add-page"]', function () {
+    $("body").on('click', 'a[href="#add-page"]', function () {
         var data = {
             folder: "html_models",
             idtab: "",
@@ -801,7 +801,7 @@ $(document).ready(function () {
                     if (data[i].indexOf(".") === -1) {
                         var pasta = data[i];
                         htmlModel += "<figure>" +
-                                "<img class='btnmodels' alt='' src='./img/temaspoema/" + data[i] + ".png' '/>" +
+                                "<img class='btnmodels-' alt='' src='./img/temaspoema/" + data[i] + ".png' '/>" +
                                 "<figcaption> " + pasta + " </figcaption>" +
                                 "</figure>";
                     }
