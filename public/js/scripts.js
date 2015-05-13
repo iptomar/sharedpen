@@ -795,7 +795,7 @@ $(document).ready(function () {
                 break;
             case "temaspoemas":
                 var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
                         "<h1 style='text-center'>Temas</h1>";
                 for (var i = 0, max = data.length; i < max; i++) {
                     if (data[i].indexOf(".") === -1) {
