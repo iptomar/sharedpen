@@ -18,7 +18,7 @@
         factory(window.jQuery);
     }
 }(function ($) {
-
+    var socketid;
 
 
     if (!Array.prototype.reduce) {
@@ -1478,7 +1478,7 @@
             /** @property {String} blank */
             blank: blankHTML,
             /** @property {String} emptyPara */
-            emptyPara: '<p>' + blankHTML + '</p>',
+            emptyPara: '<p class="'+socketid+'">' + blankHTML + '</p>',
             makePredByNodeName: makePredByNodeName,
             isEditable: isEditable,
             isControlSizing: isControlSizing,
@@ -3308,6 +3308,7 @@
             var rng = range.create();
 
             // deleteContents on range.
+            
             rng = rng.deleteContents();
 
             // Wrap range if it needs to be wrapped by paragraph
@@ -5523,6 +5524,8 @@
             $dimensionDisplay.html(dim.c + ' x ' + dim.r);
         };
 
+
+
         /**
          * bind KeyMap on keydown
          *
@@ -5532,8 +5535,21 @@
         this.bindKeyMap = function (layoutInfo, keyMap) {
             var $editor = layoutInfo.editor();
             var $editable = layoutInfo.editable();
+            
+            
 
             $editable.on('keydown', function (event) {
+            
+                      
+                
+            // console.log( event );
+          
+                //console.log($editor);
+               // console.log($editable);
+                //    alert(socketid);
+               //  if(socketid === "pedro"){
+               //      event.preventDefault();
+               //  }
                 var keys = [];
 
                 // modifier
@@ -6531,6 +6547,10 @@
          * @param {Object} options
          */
         this.createLayoutByFrame = function ($holder, options) {
+           
+            socketid=options.idEdit;
+            //alert(socketid);
+            dom.emptyPara = '<p class="'+socketid+'"></p>';
             var langInfo = options.langInfo;
 
             //01. create Editor

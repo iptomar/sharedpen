@@ -1,13 +1,13 @@
-var TextEditor = function (idpai, user, cor) {
-    this.idpai = idpai;
+var TextEditor = function (id, user, cor) {
+    this.id = id;
     this.newId;
     this.user = user;
     this.cor = cor;
-    $('#' + idpai).summernote({
+    $('#' + id).summernote({
         lang: "pt-PT",
         height: "auto",
         tabsize: 5,
-        idEdit: this.idpai,
+        idEdit: this.user,
         focus: true//,
 //        airMode: true,
 //        onInit: function () {
@@ -19,9 +19,27 @@ var TextEditor = function (idpai, user, cor) {
 //        onBlur: function () {
 //            console.log('blur', arguments, $('.summernote')[0] === this);
 //        },
-//        onKeydown: function () {
-//            console.log('keydown', arguments, $('.summernote')[0] === this);
-//        },
+        , onKeydown: function () {  
+            console.log("before");
+           // console.log('keydown', arguments, $('.summernote')[0] === this);
+           var idpai= $("#"+id).parent().parent().attr('class').split(' ')[1];
+            
+            //var html = $("#"+id).next().find('note-editable').html;
+            var html = $('#' + id).code();
+            //console.log(html);
+            
+            
+            
+           // hash["."+idpai].modelo.arrayElem[id].conteudo = html;
+            //console.log(idpai);
+           // console.log(id);
+
+            socket.emit('msgappend', {
+                'parent': idpai,
+                'id': id,
+                'html': html
+            });
+        }
 //        onKeyup: function () {
 //            console.log('keyup', arguments, $('.summernote')[0] === this);
 //        },
@@ -41,7 +59,7 @@ var TextEditor = function (idpai, user, cor) {
 //            console.log('paste', arguments, $('.summernote')[0] === this);
 //        },
 //        onBeforeCommand: function () {
-//            console.log('onBeforeCommand', arguments, $('.summernote')[0] === this);
+//            console.log("before");
 //        },
 //        onChange: function ($editable, sHtml) {
 //            console.log($editable, sHtml);

@@ -286,31 +286,35 @@ $(document).ready(function () {
                 break;
             default :
                 var id = data.id;
-                var str = $(id).val();
-                var str1 = "";
-                var posactual = $(id).getCursorPosition();
-                if (data.char === 8 /* backspace*/
-                        || data.char === 46 /* delete */) {
-
-                    if (data.char === 8) {
-
-                        if (data.pos > 0) {
-                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
-                        } else {
-                            str1 = str.slice(data.pos);
-                        }
-                    } else if (data.data === 46) {
-                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
-                    }
-                } else {
-                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
-                }
-                $(id).val(str1);
-                if (posactual < data.pos) {
-                    $(id).selectRange(posactual);
-                } else {
-                    $(id).selectRange(posactual - 1);
-                }
+                var idpai = data.parent;
+                var html = data.html;
+                $("#"+id).code(html);
+//                var id = data.id;
+//                var str = $(id).val();
+//                var str1 = "";
+//                var posactual = $(id).getCursorPosition();
+//                if (data.char === 8 /* backspace*/
+//                        || data.char === 46 /* delete */) {
+//
+//                    if (data.char === 8) {
+//
+//                        if (data.pos > 0) {
+//                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
+//                        } else {
+//                            str1 = str.slice(data.pos);
+//                        }
+//                    } else if (data.data === 46) {
+//                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
+//                    }
+//                } else {
+//                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
+//                }
+//                $(id).val(str1);
+//                if (posactual < data.pos) {
+//                    $(id).selectRange(posactual);
+//                } else {
+//                    $(id).selectRange(posactual - 1);
+//                }
         }
     });
     /**
@@ -888,6 +892,8 @@ function updateTab(i, key) {
                             txtObjEditor: txtedit
                         };
                         allTextEditor.push(editTxt);
+                      
+                      
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                     break;
@@ -973,6 +979,8 @@ function addtohash(idNum) {
                 txtObjEditor: txtedit
             };
             allTextEditor.push(editTxt);
+            
+              
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }

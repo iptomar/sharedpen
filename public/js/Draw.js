@@ -185,10 +185,12 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
         this.canvasArray[socket] =  []; 
     }
 
-    this.canvasArray[socket].push({cor,sizecur,x,y,type,socket,image,apagar});  
+    this.drawOU(cor, sizecur, x, y, type, socket, image, apagar);   
+    
+    //this.canvasArray[socket].push({cor,sizecur,x,y,type,socket,image,apagar});  
 
 
-    this.CheckDrawOtherUser();
+    //this.CheckDrawOtherUser();
 };
 
 Draw.prototype.imageCanvas = function (dataURL) {
