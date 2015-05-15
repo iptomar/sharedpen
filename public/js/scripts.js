@@ -961,24 +961,25 @@ function updateTab(i, key) {
                   $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
                 
             }else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS"){
-                
+                    //cria o seu canvas!
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
                 
-                //se o array nao estiver vazio
+                //se o array nao estiver vazio (se nao tiver clientes canvas)
                 if(hash[key].modelo.arrayElem[elemento].allClientCanvas !== [] ){
-                    
                     for(item in hash[key].modelo.arrayElem[elemento].allClientCanvas){
+                        //cria as canvas dos outros clientes
                         hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
-                        //hash[key].modelo.arrayElem[elemento].allClientCanvas[item]
-                        var dr = $("#"+elemento+""+item);
-                       // alert(dr);
-                        //console.log(dr);
-                        var ctx = dr.getContext('2d');    
-                        //ctx.drawImage(dr,700,700);
+                        var dr = $("#"+elemento+""+item)[0];
+                        //cria imagem 
+                        var img = document.createElement('img');
+                        img.src=hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
+                        //vai buscar o context
+                        var ctx = dr.getContext('2d');   
+                        //pinta a imagem
+                        ctx.drawImage(img,0,0);
                     }
-                    
-                    
-                    hash[key].modelo.arrayElem[elemento].drawObj.getCanvas
+                                        
+                    //hash[key].modelo.arrayElem[elemento].drawObj.getCanvas
                     
                 }
                // if(hash[key].modelo.arrayElem[elemento].canvas === [])
