@@ -37,17 +37,17 @@
     padding: 30px;
 }
 
-.btnmodels {
+.btnmodels-style {
     -moz-box-shadow:     0 0 10px #000000;
     -webkit-box-shadow:  0 0 10px #000000;
     box-shadow:          0 0 10px #000000;
 }
-.btnmodels:hover {
+.btnmodels-style:hover {
     -moz-box-shadow:     3px 3px 5px #000000;
     -webkit-box-shadow:  3px 3px 5px #000000;
     box-shadow:          3px 3px 5px #000000;
 }
-.btnmodels:active {
+.btnmodels-style:active {
     -moz-box-shadow:     -3px -3px 10px #000000;
     -webkit-box-shadow:  -3px -3px 10px #000000;
     box-shadow:          -3px -3px 10px #000000;
