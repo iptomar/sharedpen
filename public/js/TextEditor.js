@@ -24,17 +24,29 @@ function showCaretPos() {
 function getElementAtCaret(caret) {
     var element;
     var counter = 0;
+    var buffer;
     var ps = $('p', '.note-editable:first');
-    for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
-      element = $(ps[paragrafo]);
-      var aux = element.contents();
-      for (var i = 0; i < aux.length; i++) {
-        counter += $(aux[i]).text().length;
-        if(counter >= caret) {
-          return element;
+    if(ps.length > 0) {
+        for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
+          element = $(ps[paragrafo]);
+          var aux = element.contents();
+          for (var i = 0; i < aux.length; i++) {
+            counter += $(aux[i]).text().length;
+            if(counter >= caret) {
+              return element;
+            }
+          }
         }
-      }
+    } else {
+        //criar p correctamente
+        var p = document.createElement('p');
+        
+        $('.note-editable:first').append(p);
+        
+        $('p', '.note-editable:first')[0].focus();
     }
+    
+    
 }
 
 var TextEditor = function (id, user, cor) {
