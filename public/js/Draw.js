@@ -11,6 +11,7 @@ var Draw = function (tabClass, page, id,counter) {
     this.resizeCanvas = false;
     this.apagar = false;
     this.ArrayCanvasClients = [];
+    this.MyCanvas = "";
 };
 
 Draw.prototype.init = function () {

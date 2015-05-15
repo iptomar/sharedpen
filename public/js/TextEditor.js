@@ -1,3 +1,42 @@
+function getCaretCharacterOffsetWithin(element) {
+    var caretOffset = 0;
+    if (typeof window.getSelection != "undefined") {
+        var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
+        var textRange = document.selection.createRange();
+        var preCaretTextRange = document.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+}
+
+function showCaretPos() {
+    var el = document.getElementsByClassName("note-editable")[0];
+    return getCaretCharacterOffsetWithin(el);
+}
+
+function getElementAtCaret(caret) {
+    var element;
+    var counter = 0;
+    var ps = $('p', '.note-editable:first');
+    for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
+      element = $(ps[paragrafo]);
+      var aux = element.contents();
+      for (var i = 0; i < aux.length; i++) {
+        counter += $(aux[i]).text().length;
+        if(counter >= caret) {
+          return element;
+        }
+      }
+    }
+}
+
 var TextEditor = function (id, user, cor) {
     this.id = id;
     this.newId;
@@ -19,7 +58,10 @@ var TextEditor = function (id, user, cor) {
 //        onBlur: function () {
 //            console.log('blur', arguments, $('.summernote')[0] === this);
 //        },
-        , onKeydown: function () {  
+        , onKeydown: function () { 
+            var caret = showCaretPos();
+            console.log(caret);
+            console.log(getElementAtCaret(caret));
             console.log("before");
            // console.log('keydown', arguments, $('.summernote')[0] === this);
            var idpai= $("#"+id).parent().parent().attr('class').split(' ')[1];

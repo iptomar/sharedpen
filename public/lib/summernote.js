@@ -5542,7 +5542,7 @@
             
                       
                 
-            // console.log( event );
+             console.log( event );
           
                 //console.log($editor);
                // console.log($editable);
