@@ -26,9 +26,6 @@ var tabTest;
 var LivroPoemas = new Array();
 
 $(document).ready(function () {
-
-	
-	
 	
 	/**
      * Configuracao das opcoes do popup de online / offline de novos clientes
@@ -751,7 +748,9 @@ $(document).ready(function () {
 	// Recebe a lista de ficheiros de uma determinada pasta
 	//******************************************************************
 	socket.on("files2folder", function (data, dataVals) {
+		//Verifica se esta' a receber imagens de um certo tema
 		if (dataVals.imagensdotema != "undefined" && dataVals.imagensdotema != null){
+			//Verifica se existem imagens do tema
 			if (data.length > 0){
 				$("#divchangemodel").remove();
 				var htmlModel = "<div id='divchangemodel'>" +
@@ -816,10 +815,12 @@ $(document).ready(function () {
 					$("body").append(htmlModel);
 					break;
 				case "temaspoemas":
+					//Temas para os poemas
 					var htmlModel = "<div id='divchangemodel'>" +
 						"<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
 						"<h1 class='text-center'>Temas</h1>";
 					for (var i = 0, max = data.length; i < max; i++) {
+						//se o nome retornado nao contem "." desduz-se que é uma pasta
 						if (data[i].indexOf(".") === -1) {
 							var pasta = data[i];
 							htmlModel += "<figure class='image'>" +
@@ -849,7 +850,7 @@ $(document).ready(function () {
 		addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
 	});
 
-
+	//Mostrar os temas disponíveis para o poema
 	$("body").on("click", 'a[href="#add-poema"]', function () {
 		var data = {
 			folder: "temaspoemas",
@@ -859,6 +860,7 @@ $(document).ready(function () {
 		getFilesToFolder(socket, data);
 	});
 
+	//Mostrar os imagens disponíveis para o tema
 	$("body").on("click", '.tema-img', function () {
 		var self = this;
 		var data = {
@@ -870,6 +872,7 @@ $(document).ready(function () {
 		getFilesToFolder(socket, data);
 	});
 	
+	//Adiciona a tab do poema
 	$("body").on("click", '.imgPoema', function () {
 			/**folder: $(self).attr("data-folder"),
 			imagensdotema: $(self).attr("imagensdotema"),
