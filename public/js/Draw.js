@@ -41,7 +41,6 @@ Draw.prototype.init = function () {
 
 
     this.ArrayCanvasClients = {};
-
 };
 
 Draw.prototype.VerificaUser = function (socket) {
@@ -69,9 +68,11 @@ Draw.prototype.getColor = function () {
 Draw.prototype.getSizeCursor = function () {
     return this.curSize;
 };
+
 Draw.prototype.getApagar = function () {
     return this.apagar;
 };
+
 Draw.prototype.getCanvas = function () {
     var canvas = document.getElementById(this.id);
     return canvas;
@@ -93,7 +94,6 @@ Draw.prototype.draw = function (x, y, type) {
     } else {
         this.paintThis(ctx, x, y, type, "destination-out");
     }
-
 };
 
 Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
@@ -130,7 +130,7 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
 
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
-
+    
     var canvas2 = this.VerificaUser(socket);
     var ctx2 = canvas2.getContext('2d');
 
@@ -142,13 +142,12 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
         this.paint(canvas2,ctx2, x, y, type, "source-over");
     } else {
         this.paint(canvas2,ctx2, x, y, type, "destination-out");
+
     }
 
     if (type === "backgoundImage") {
         this.imageCanvas(image);
     }
-
-
 };
 
 Draw.prototype.imageCanvas = function (dataURL) {
@@ -158,7 +157,6 @@ Draw.prototype.imageCanvas = function (dataURL) {
     });
 };
 
-
 Draw.prototype.setPallet = function (id, cnv) {
     $.get("./../html/pallet.html", function (data) {
         $(document.body).append(data);
@@ -166,7 +164,6 @@ Draw.prototype.setPallet = function (id, cnv) {
         $("#LoadImageCanvas").attr('data-idcnv', cnv);
     });
 };
-
 
 Draw.prototype.setSizePensil = function (val) {
     var canvas = document.getElementById(this.id);
