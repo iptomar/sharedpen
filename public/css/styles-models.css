@@ -1,3 +1,10 @@
+canvas{
+    position: absolute;
+}
+#canvasdr{
+    position: relative;
+}
+
 .tabpage {
     border: 1px solid black;
     width: 210mm;

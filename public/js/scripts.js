@@ -139,8 +139,12 @@ $(document).ready(function () {
      * Eventos do mouse para desenhar no canvas
      */
     $("body").on('mousedown mousemove mouseup', "canvas", function (e) {
-        var idToll = "." + $(this).parent().parent().attr('class').split(' ')[1];
-        var thisId = $(this).attr('id');
+        var idToll = "." + $(this).parent().parent().parent().attr('class').split(' ')[1];
+        var iddd = $(this).attr('id');
+        var tabNumber = iddd.match(/\d+/)[0];
+        var thisId = "tab"+tabNumber+"-Mycanvas";
+        
+        
         switch (e.which) {
             case 1:
                 var offset, type, x, y;
@@ -150,22 +154,25 @@ $(document).ready(function () {
                 e.offsetY = e.clientY - offset.top;
                 x = e.offsetX;
                 y = e.offsetY;
+
                 var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
+                
+                
                 cmv.draw(x, y, type);
                 // var ctx = c.getContext('2d');
                 //var img = ctx.getImageData
 
                 socket.emit('drawClick', {
-                    id: this.id,
+                    id: thisId,
                     x: x,
                     y: y,
                     type: type,
-                    color: hash[idToll].modelo.arrayElem[thisId].drawObj.getColor(),
-                    apagar: hash[idToll].modelo.arrayElem[thisId].drawObj.getApagar(),
-                    sizeCursor: hash[idToll].modelo.arrayElem[thisId].drawObj.getSizeCursor(),
+                    color: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getColor(),
+                    apagar: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getApagar(),
+                    sizeCursor: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getSizeCursor(),
                     socket: socket.id,
                     canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
-                    parent: $(this).parent().parent().attr('class').split(' ')[1]
+                    parent: $(this).parent().parent().parent().attr('class').split(' ')[1]
                 });
 //                        alert('Left Mouse button pressed.');
                 break;
@@ -401,7 +408,7 @@ $(document).ready(function () {
                 removeTab(data.id);
             } else {
                 Addtab(data.modelo, data.pos);
-                hash[".txtTab" + data.pos] = castTab(data.tab);
+                hash[".txtTab" + data.pos] = castTab(data.tab);             
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
                     updateTab(data.pos, ".txtTab" + data.pos);
                 });
@@ -868,22 +875,27 @@ function updateTab(i, key) {
     $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
         refactorTab(hash[key].nomeModelo, i);
         for (var elemento in hash[key].modelo.arrayElem) {
-
-            switch (hash[key].modelo.arrayElem[elemento].elementType) {
-                case "IMG":
-                    $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
-                    break;
-                case "CANVAS":
-                    var cmv = $("#" + hash[key].modelo.arrayElem[elemento].id)[0];
-                    var ctx = cmv.getContext('2d');
-                    var img = document.createElement('img');
+            
+            if(hash[key].modelo.arrayElem[elemento].elementType === "IMG"){
+                  $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
+                
+            }else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS"){
+                
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
-                    if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined") {
-                        img.src = hash[key].modelo.arrayElem[elemento].canvas;
-                    }
-                    ctx.drawImage(img, 0, 0);
-                    break;
-                default:
+                
+                   // var cmv = $("#" + elemento)[0];
+                   // console.log(elemento);
+                    //var ctx = cmv.getContext('2d');
+                    //var img = document.createElement('img');
+                    //console.log(hash[key]);
+                    
+                    
+                   // if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined") {
+                   //     img.src = hash[key].modelo.arrayElem[elemento].canvas;
+                   // }
+                    //ctx.drawImage(img, 0, 0);
+        }else {
+             
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
                         var txtedit = new TextEditor(elemento, username, userColor);
@@ -896,7 +908,7 @@ function updateTab(i, key) {
                       
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
-                    break;
+                    
             }
 
         }
@@ -966,10 +978,17 @@ function addtohash(idNum) {
         //vai buscar id atribuido
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
-        if (thType === 'CANVAS') {
-            tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
-            tabTest.modelo.arrayElem[thID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
-            tabTest.modelo.arrayElem[thID].drawObj.init();
+        
+        var tabNumber = thID.match(/\d+/)[0];
+        
+        var newElementID = "tab"+tabNumber+"-Mycanvas";
+        
+        if ($(this).attr("id").match("tab"+tabNumber+"-canvasdr")) {
+            
+            tabTest.modelo.arrayElem[newElementID] = new Element(newElementID, "CANVAS");
+            tabTest.modelo.arrayElem[newElementID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
+            tabTest.modelo.arrayElem[newElementID].drawObj.init();
+            
         } else if ($(this).attr("class").match("editable")) {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             var txtedit = new TextEditor($(this).attr("id"), username, userColor);
