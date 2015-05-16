@@ -157,14 +157,9 @@ $(document).ready(function () {
                 x = e.offsetX;
                 y = e.offsetY;
 
-                var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
-                
-                
+                var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;             
                 cmv.draw(x, y, type);
-                //actualiza o a imagem no objecto draw
-             // hash[idToll].modelo.arrayElem[thisId].drawObj.MyCanvas=  hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL();
-                // var ctx = c.getContext('2d');
-                //var img = ctx.getImageData
+                
                 socket.emit('drawClick', {
                     id: thisId,
                     x: x,
@@ -967,34 +962,24 @@ function updateTab(i, key) {
                 //se o array nao estiver vazio (se nao tiver clientes canvas)
                 if(hash[key].modelo.arrayElem[elemento].allClientCanvas !== [] ){
                     for(item in hash[key].modelo.arrayElem[elemento].allClientCanvas){
-                        //cria as canvas dos outros clientes
-                        hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
-                        var dr = $("#"+elemento+""+item)[0];
-                        //cria imagem 
-                        var img = document.createElement('img');
-                        img.src=hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
-                        //vai buscar o context
-                        var ctx = dr.getContext('2d');   
-                        //pinta a imagem
-                        ctx.drawImage(img,0,0);
-                    }
-                                        
-                    //hash[key].modelo.arrayElem[elemento].drawObj.getCanvas
+                            //cria as canvas dos outros clientes
+                            hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
+                            var dr = $("#"+elemento+""+item)[0];
+                            //cria imagem 
+                            var img = document.createElement('img');
+                            img.src=hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
+                            //vai buscar o context
+                            var ctx = dr.getContext('2d');   
+                            //pinta a imagem
+                            ctx.drawImage(img,0,0);  
                     
                 }
-               // if(hash[key].modelo.arrayElem[elemento].canvas === [])
-                   // var cmv = $("#" + elemento)[0];
-                   // console.log(elemento);
-                    //var ctx = cmv.getContext('2d');
-                    //var img = document.createElement('img');
-                    //console.log(hash[key]);
-                    
-                    
-                   // if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined") {
-                   //     img.src = hash[key].modelo.arrayElem[elemento].canvas;
-                   // }
-                    //ctx.drawImage(img, 0, 0);
-        }else { 
+                    //se tiver backgorund desenha o 
+                    if(hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== ""){
+                            var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
+                            hash[key].modelo.arrayElem[elemento].drawObj.imageCanvas(imgg);
+                    }
+                }else { 
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
                         var txtedit = new TextEditor(elemento, username, userColor);
@@ -1010,7 +995,7 @@ function updateTab(i, key) {
                     
             }
 
-        }
+        }}
     });
 }
 
