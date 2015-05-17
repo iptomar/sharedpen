@@ -296,6 +296,13 @@ $(document).ready(function () {
                 var idpai = data.parent;
                 var html = data.html;
 
+//                var idEditor = "note-editable_" + data.id;
+//                if ($("#" + idEditor).is(":focus")) {
+//                    var caret = showCaretPos(idEditor);
+//                    var elem = getElementAtCaret(idEditor, caret);
+//                    var posP = caret;
+//                    setCaretAtEditor(idEditor, elem, posP);
+//                }
                 $("#" + id).code(html);
 //                var id = data.id;
 //                var str = $(id).val();
@@ -797,7 +804,7 @@ $(document).ready(function () {
                 break;
             case "html_models":
                 var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
                 for (var i = 0, max = data.length; i < max; i++) {
                     htmlModel += "<figure>" +
                             "<img class='btnmodels btnmodels-style' alt='' src='../img/" + data[i].split(".")[0] + ".png' data-model='" + data[i] + "'/>" +
@@ -1004,21 +1011,18 @@ function updateTab(i, key) {
                         var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
                         hash[key].modelo.arrayElem[elemento].drawObj.imageCanvas(imgg);
                     }
-                } else {
-                    if ($("#" + elemento).attr('class').match('editable')) {
-                        $("#" + elemento).addClass(elemento);
-                        var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
-                        var editTxt = {
-                            id: elemento,
-                            txtObjEditor: txtedit
-                        };
-                        allTextEditor.push(editTxt);
-
-
-                    }
-                    $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                 }
-
+            } else {
+                if ($("#" + elemento).attr('class').match('editable')) {
+                    $("#" + elemento).addClass(elemento);
+                    var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
+                    var editTxt = {
+                        id: elemento,
+                        txtObjEditor: txtedit
+                    };
+                    allTextEditor.push(editTxt);
+                }
+                $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
             }
         }
     });

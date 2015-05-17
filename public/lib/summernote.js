@@ -8,7 +8,6 @@
  *
  * Date: 2015-04-29T19:41Z
  */
-var socketid;
 (function (factory) {
     /* global define */
     if (typeof define === 'function' && define.amd) {
@@ -19,6 +18,11 @@ var socketid;
         factory(window.jQuery);
     }
 }(function ($) {
+    var socketid;
+    var idinput;
+    var lastKey = 0;
+    var controlEnter = false;
+    var lastIdEditor = "";
 
     if (!Array.prototype.reduce) {
         /**
@@ -439,19 +443,19 @@ var socketid;
 
 
         return {
-            head: head, 
-            last: last, 
-            initial: initial, 
+            head: head,
+            last: last,
+            initial: initial,
             tail: tail,
-            prev: prev, 
-            next: next, 
-            find: find, 
+            prev: prev,
+            next: next,
+            find: find,
             contains: contains,
-            all: all, 
-            sum: sum, 
+            all: all,
+            sum: sum,
             from: from,
-            clusterBy: clusterBy, 
-            compact: compact, 
+            clusterBy: clusterBy,
+            compact: compact,
             unique: unique
         };
     })();
@@ -5550,34 +5554,56 @@ var socketid;
 
             $editable.on('keydown', function (event) {
 
-                var caret = showCaretPos();
-                var elem = getElementAtCaret(caret);
+                var idEditor = $(this).attr("id");
+                var caret = showCaretPos(idEditor);
+                var elem = getElementAtCaret(idEditor, caret);
                 var sizeP = $(elem).text().length;
                 var posP = caret;
                 var clasP = $(elem).attr("class");
-
+//
                 if (typeof elem === "undefined") {
-                    console.log("ok");
-                    $(elem).addClass(socketid);
-                }
-
-//                console.log("size - " + sizeP);
-                if (sizeP === 0 && clasP !== socketid) {
-                    console.log("1");
-                    $(elem).removeClass(clasP).addClass(socketid);
-                } else if (event.keyCode === key.code.ENTER) {
-                    console.log("2");
-                    if (sizeP !== posP) {
-                        console.log("2a");
-                        event.preventDefault();
-                    } else {
-                        console.log("2b");
-                        $(elem).removeClass(clasP).addClass(socketid);
+//                    console.log("elemento nao defenido");
+                    modules.editor["insertParagraph"]($editable, $editor.data('options'));
+                    $('#' + idEditor).find('p').first().remove();
+                } else if (clasP !== socketid) {
+//                    console.log("class do paragrafo != do socketid");
+                    if (posP < sizeP || event.keyCode !== key.code.ENTER) {
+                        if (posP === sizeP && lastKey == key.code.ENTER && controlEnter) {
+//                            console.log("Last Enter ok");
+                            $(elem).removeClass(clasP).addClass(socketid);
+                            lastKey = 0;
+                            controlEnter = false;
+                        } else if (lastKey == key.code.ENTER && !controlEnter) {
+//                            console.log("Last Enter carregado");
+                            controlEnter = true;
+                        } else {
+//                            console.log("my pos menor que size paragrafo");
+                            event.preventDefault();
+                        }
+                    } else if (event.keyCode === key.code.ENTER) {
+//                        console.log("Enter carregado");
+                        lastKey = key.code.ENTER;
                     }
-                } else if (socketid !== clasP) {
-                    console.log("3");
-                    event.preventDefault();
+                    else if (event.keyCode === 46) {
+//                        console.log("Delete carregado");
+                        event.preventDefault();
+                    }
+                } else {
+                    if (event.keyCode === 46) {
+//                        console.log("Delete carregado");
+                        event.preventDefault();
+                    }
+//                    console.log("class do paragrafo = do socketid");
+                    lastKey = 0;
                 }
+//                console.log("-----------------------------------------");
+                $("#" + idEditor + " > p:not(." + socketid + ")").css({
+                    "color": "blue"
+                });
+
+                $("#" + idEditor + " > p." + socketid).css({
+                    "color": "black"
+                });
                 var keys = [];
 
                 // modifier
@@ -6577,6 +6603,7 @@ var socketid;
         this.createLayoutByFrame = function ($holder, options) {
 
             socketid = options.idEdit;
+            idinput = options.idinput;
             //alert(socketid);
             dom.emptyPara = '<p class="' + socketid + '"></p>';
             var langInfo = options.langInfo;
@@ -6594,7 +6621,7 @@ var socketid;
 
             //03. create Editable
             var isContentEditable = !$holder.is(':disabled');
-            var $editable = $('<div class="note-editable" contentEditable="' + isContentEditable + '"></div>')
+            var $editable = $('<div id="note-editable_' + idinput + '" class="note-editable" contentEditable="' + isContentEditable + '"></div>')
                     .prependTo($editor);
             if (options.height) {
                 $editable.height(options.height);

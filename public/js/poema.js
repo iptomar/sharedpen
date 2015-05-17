@@ -7,8 +7,11 @@ var Poema = function (titulo, text, img) {
 
 
 /**
- *  Adiciona a tab ao Html
- * @returns {undefined} */
+ * 
+ * @param {type} livro
+ * @param {type} img
+ * @returns {undefined}
+ */
 function AddPoema(livro, img) {
 
     var idNum = livro.length;
