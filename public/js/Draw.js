@@ -8,31 +8,30 @@ var Draw = function (tabClass, page, id,counter) {
     this.flag = false;
     this.color = "black";
     this.curSize = 1;
-    this.resizeCanvas = false;
     this.apagar = false;
-    this.ArrayCanvasClients = [];
+    this.ArrayCanvasClients = {};
+    this.ArrayCanvasImage={};
     this.bgImg ="";
 };
 
 Draw.prototype.init = function () { 
-    
-        var cnv = document.createElement("canvas");
-        cnv.setAttribute("id","tab"+this.tabNumber+"-background");
-        cnv.width = 700;
-        cnv.height = 400;
-        cnv.style.zIndex = "0";
-        $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
-    
-        var cnv = document.createElement("canvas");
-        cnv.setAttribute("id","tab"+this.tabNumber+"-Mycanvas");
-        cnv.width = 700;
-        cnv.height = 400;
-        cnv.style.zIndex = "2";
-        $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
-    
+        
+    //cria o canavs onde vao ser colocadas as imagens de fundo
+    var cnv = document.createElement("canvas");
+    cnv.setAttribute("id","tab"+this.tabNumber+"-background");
+    cnv.width = 700;
+    cnv.height = 400;
+    cnv.style.zIndex = "0";
+    $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
 
+    //cria o seu canvas (onde vai escrever)
+    var cnv = document.createElement("canvas");
+    cnv.setAttribute("id","tab"+this.tabNumber+"-Mycanvas");
+    cnv.width = 700;
+    cnv.height = 400;
+    cnv.style.zIndex = "2";
+    $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
     
-    //var canvas = document.getElementById(this.id);
     
     var ctx = cnv.getContext("2d");
     ctx.fillStyle = "solid";
@@ -80,13 +79,6 @@ Draw.prototype.getCanvas = function () {
     return canvas;
 };
 
-Draw.prototype.resize = function () {
-    if (!this.resizeCanvas) {
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
-        this.resizeCanvas = true;
-    }
-};
 
 Draw.prototype.draw = function (x, y, type) {
     var canvas = document.getElementById(this.id);
@@ -100,8 +92,6 @@ Draw.prototype.draw = function (x, y, type) {
 
 Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
     if (type === "mousedown") {
-      //  canvas2.width = 700;
-       // canvas2.height = 700;
         ctx.beginPath();
         ctx.globalCompositeOperation = opt;
         ctx.moveTo(x, y);
@@ -144,9 +134,7 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
         this.paint(canvas2,ctx2, x, y, type, "source-over");
     } else {
         this.paint(canvas2,ctx2, x, y, type, "destination-out");
-
     }
-
     if (type === "backgoundImage") {
         this.imageCanvas(image);
     }

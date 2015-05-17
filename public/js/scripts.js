@@ -10,7 +10,7 @@ var socket = "";            // socket de comunicacao
 var username = "";          // nome do utilizador ligado
 var userColor = "";
 var allTextEditor = [];     // array com todos os editores de texto
-var listaColor = [// array com as corres disponiveis para alterar o fundo
+var listaColor = [          // array com as corres disponiveis para alterar o fundo
 	["default", "Default"],
 	["white", "Branco"],
 	["red", "Vermelho"],
@@ -124,18 +124,20 @@ $(document).ready(function () {
      * evento do socket para desenhar o que recebe pelo socket
      */
 	socket.on('draw', function (data) {
-		var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
-		cmvv.drawOtherUser(
-			data.data.color,
-			data.data.sizeCursor,
-			data.data.x,
-			data.data.y,
-			data.data.type,
-			data.data.socket,
-			//envia a imagem 
-			data.data.image,
-			data.data.apagar
-		);
+        if(typeof hash["." + data.data.parent] !== "undefined"){
+            var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
+            cmvv.drawOtherUser(
+                data.data.color,
+                data.data.sizeCursor,
+                data.data.x,
+                data.data.y,
+                data.data.type,
+                data.data.socket,
+                //envia a imagem 
+                data.data.image,
+                data.data.apagar
+            );
+        }
 	});
 	/**
      * Eventos do mouse para desenhar no canvas
@@ -159,20 +161,34 @@ $(document).ready(function () {
 
                 var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;             
                 cmv.draw(x, y, type);
+                    socket.emit('drawClick', {
+                        id: thisId,
+                        x: x,
+                        y: y,
+                        type: type,
+                        color: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getColor(),
+                        apagar: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getApagar(),
+                        sizeCursor: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getSizeCursor(),
+                        socket: socket.id,
+                        //imagem do meu canvas!!
+                        canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
+                        parent: $(this).parent().parent().parent().attr('class').split(' ')[1]
+                    });
+//                    socket.emit('drawClick', {
+//                        id: thisId,
+//                        x: x,
+//                        y: y,
+//                        type: type,
+//                        color: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getColor(),
+//                        apagar: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getApagar(),
+//                        sizeCursor: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getSizeCursor(),
+//                        socket: socket.id,
+//                        //imagem do meu canvas!!
+//                        canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
+//                        parent: $(this).parent().parent().parent().attr('class').split(' ')[1]
+//                    });
                 
-                socket.emit('drawClick', {
-                    id: thisId,
-                    x: x,
-                    y: y,
-                    type: type,
-                    color: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getColor(),
-                    apagar: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getApagar(),
-                    sizeCursor: hash[idToll].modelo.arrayElem["tab"+tabNumber+"-Mycanvas"].drawObj.getSizeCursor(),
-                    socket: socket.id,
-                    //imagem do meu canvas!!
-                    canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
-                    parent: $(this).parent().parent().parent().attr('class').split(' ')[1]
-                });
+                
 //                        alert('Left Mouse button pressed.');
                 break;
             case 2:
@@ -988,20 +1004,34 @@ function updateTab(i, key) {
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
                 
                 //se o array nao estiver vazio (se nao tiver clientes canvas)
-                if(hash[key].modelo.arrayElem[elemento].allClientCanvas !== [] ){
-                    for(item in hash[key].modelo.arrayElem[elemento].allClientCanvas){
+                if(hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== [] ){
+                    for(item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage){
                             //cria as canvas dos outros clientes
                             hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
                             var dr = $("#"+elemento+""+item)[0];
                             //cria imagem 
                             var img = document.createElement('img');
-                            img.src=hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
+                            img.src=hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage[item];
                             //vai buscar o context
                             var ctx = dr.getContext('2d');   
                             //pinta a imagem
                             ctx.drawImage(img,0,0);  
                     
                 }
+//                if(hash[key].modelo.arrayElem[elemento].allClientCanvas !== [] ){
+//                    for(item in hash[key].modelo.arrayElem[elemento].allClientCanvas){
+//                            //cria as canvas dos outros clientes
+//                            hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
+//                            var dr = $("#"+elemento+""+item)[0];
+//                            //cria imagem 
+//                            var img = document.createElement('img');
+//                            img.src=hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
+//                            //vai buscar o context
+//                            var ctx = dr.getContext('2d');   
+//                            //pinta a imagem
+//                            ctx.drawImage(img,0,0);  
+//                    
+//                }
                     //se tiver backgorund desenha o 
                     if(hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== ""){
                             var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
