@@ -12,9 +12,16 @@ canvas{
     padding: 20px;
     margin: auto;
 }
+/*
+.tabpage > div {
+    height: 40px;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 50px;
+}*/
 
 .tabpage > .titulo {
-    height: 100px;
+    height: 150px;
     text-align: center;
     margin-top: 50px;
 }
@@ -22,7 +29,7 @@ canvas{
 
 .tabpage > .conteudo {
     width: 100%;
-    height: 270mm;
+    height: 100%;
 } 
 
 .tabpage > img {

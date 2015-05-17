@@ -19,10 +19,7 @@
     }
 }(function ($) {
     var socketid;
-    var idinput;
-    var lastKey = 0;
-    var controlEnter = false;
-    var lastIdEditor = "";
+
 
     if (!Array.prototype.reduce) {
         /**
@@ -442,22 +439,10 @@
         };
 
 
-        return {
-            head: head,
-            last: last,
-            initial: initial,
-            tail: tail,
-            prev: prev,
-            next: next,
-            find: find,
-            contains: contains,
-            all: all,
-            sum: sum,
-            from: from,
-            clusterBy: clusterBy,
-            compact: compact,
-            unique: unique
-        };
+        return {head: head, last: last, initial: initial, tail: tail,
+            prev: prev, next: next, find: find, contains: contains,
+            all: all, sum: sum, from: from,
+            clusterBy: clusterBy, compact: compact, unique: unique};
     })();
 
 
@@ -1493,7 +1478,7 @@
             /** @property {String} blank */
             blank: blankHTML,
             /** @property {String} emptyPara */
-            emptyPara: '<p class="' + socketid + '">' + blankHTML + '</p>',
+            emptyPara: '<p class="'+socketid+'">' + blankHTML + '</p>',
             makePredByNodeName: makePredByNodeName,
             isEditable: isEditable,
             isControlSizing: isControlSizing,
@@ -3320,11 +3305,10 @@
          * insert paragraph
          */
         this.insertParagraph = function () {
-
             var rng = range.create();
 
             // deleteContents on range.
-
+            
             rng = rng.deleteContents();
 
             // Wrap range if it needs to be wrapped by paragraph
@@ -5551,59 +5535,21 @@
         this.bindKeyMap = function (layoutInfo, keyMap) {
             var $editor = layoutInfo.editor();
             var $editable = layoutInfo.editable();
+            
+            
 
             $editable.on('keydown', function (event) {
-
-                var idEditor = $(this).attr("id");
-                var caret = showCaretPos(idEditor);
-                var elem = getElementAtCaret(idEditor, caret);
-                var sizeP = $(elem).text().length;
-                var posP = caret;
-                var clasP = $(elem).attr("class");
-//
-                if (typeof elem === "undefined") {
-//                    console.log("elemento nao defenido");
-                    modules.editor["insertParagraph"]($editable, $editor.data('options'));
-                    $('#' + idEditor).find('p').first().remove();
-                } else if (clasP !== socketid) {
-//                    console.log("class do paragrafo != do socketid");
-                    if (posP < sizeP || event.keyCode !== key.code.ENTER) {
-                        if (lastKey == key.code.ENTER && controlEnter) {
-//                            console.log("Last Enter ok");
-                            $(elem).removeClass(clasP).addClass(socketid);
-                            lastKey = 0;
-                            controlEnter = false;
-                        } else if (lastKey == key.code.ENTER && !controlEnter) {
-//                            console.log("Last Enter carregado");
-                            controlEnter = true;
-                        } else {
-//                            console.log("my pos menor que size paragrafo");
-                            event.preventDefault();
-                        }
-                    } else if (event.keyCode === key.code.ENTER) {
-//                        console.log("Enter carregado");
-                        lastKey = key.code.ENTER;
-                    }
-                    else if (event.keyCode === 46) {
-//                        console.log("Delete carregado");
-                        event.preventDefault();
-                    }
-                } else {
-                    if (event.keyCode === 46) {
-//                        console.log("Delete carregado");
-                        event.preventDefault();
-                    }
-//                    console.log("class do paragrafo = do socketid");
-                    lastKey = 0;
-                }
-//                console.log("-----------------------------------------");
-                $("#" + idEditor + " > p:not(." + socketid + ")").css({
-                    "color": "blue"
-                });
-
-                $("#" + idEditor + " > p." + socketid).css({
-                    "color": "black"
-                });
+            
+                      
+                
+             console.log( event );
+          
+                //console.log($editor);
+               // console.log($editable);
+                //    alert(socketid);
+               //  if(socketid === "pedro"){
+               //      event.preventDefault();
+               //  }
                 var keys = [];
 
                 // modifier
@@ -6601,11 +6547,10 @@
          * @param {Object} options
          */
         this.createLayoutByFrame = function ($holder, options) {
-
-            socketid = options.idEdit;
-            idinput = options.idinput;
+           
+            socketid=options.idEdit;
             //alert(socketid);
-            dom.emptyPara = '<p class="' + socketid + '"></p>';
+            dom.emptyPara = '<p class="'+socketid+'"></p>';
             var langInfo = options.langInfo;
 
             //01. create Editor
@@ -6621,7 +6566,7 @@
 
             //03. create Editable
             var isContentEditable = !$holder.is(':disabled');
-            var $editable = $('<div id="note-editable_' + idinput + '" class="note-editable" contentEditable="' + isContentEditable + '"></div>')
+            var $editable = $('<div class="note-editable" contentEditable="' + isContentEditable + '"></div>')
                     .prependTo($editor);
             if (options.height) {
                 $editable.height(options.height);
