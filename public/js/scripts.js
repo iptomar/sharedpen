@@ -124,18 +124,20 @@ $(document).ready(function () {
      * evento do socket para desenhar o que recebe pelo socket
      */
     socket.on('draw', function (data) {
-        var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
-        cmvv.drawOtherUser(
-                data.data.color,
-                data.data.sizeCursor,
-                data.data.x,
-                data.data.y,
-                data.data.type,
-                data.data.socket,
-                //envia a imagem 
-                data.data.image,
-                data.data.apagar
-                );
+        if (typeof hash["." + data.data.parent] !== "undefined") {
+            var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
+            cmvv.drawOtherUser(
+                    data.data.color,
+                    data.data.sizeCursor,
+                    data.data.x,
+                    data.data.y,
+                    data.data.type,
+                    data.data.socket,
+                    //envia a imagem 
+                    data.data.image,
+                    data.data.apagar
+                    );
+        }
     });
     /**
      * Eventos do mouse para desenhar no canvas
@@ -160,7 +162,6 @@ $(document).ready(function () {
 
                 var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
                 cmv.draw(x, y, type);
-
                 socket.emit('drawClick', {
                     id: thisId,
                     x: x,
@@ -992,14 +993,13 @@ function updateTab(i, key) {
                 hash[key].modelo.arrayElem[elemento].drawObj.init();
 
                 //se o array nao estiver vazio (se nao tiver clientes canvas)
-                if (hash[key].modelo.arrayElem[elemento].allClientCanvas !== []) {
-                    for (item in hash[key].modelo.arrayElem[elemento].allClientCanvas) {
-                        //cria as canvas dos outros clientes
+                if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== []) {
+                    for (item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {                        //cria as canvas dos outros clientes
                         hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
                         var dr = $("#" + elemento + "" + item)[0];
                         //cria imagem 
                         var img = document.createElement('img');
-                        img.src = hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
+                        img.src = hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage[item];
                         //vai buscar o context
                         var ctx = dr.getContext('2d');
                         //pinta a imagem

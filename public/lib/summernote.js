@@ -5568,7 +5568,7 @@
                 } else if (clasP !== socketid) {
 //                    console.log("class do paragrafo != do socketid");
                     if (posP < sizeP || event.keyCode !== key.code.ENTER) {
-                        if (posP === sizeP && lastKey == key.code.ENTER && controlEnter) {
+                        if (lastKey == key.code.ENTER && controlEnter) {
 //                            console.log("Last Enter ok");
                             $(elem).removeClass(clasP).addClass(socketid);
                             lastKey = 0;
