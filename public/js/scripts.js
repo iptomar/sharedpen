@@ -559,20 +559,23 @@ $(document).ready(function () {
      */
 
     $(".container-fluid").on('change', 'input[type=file]', function (e) {
+        var inputFile = $(this).attr("class");
         var imgId = $(this).next().attr("id");
         var file = e.originalEvent.target.files[0],
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
             // envia as informacoes da nova imagem para os outros clientes
-            socket.emit('msgappend', {
-                id: imgId,
-                name: file.name,
-                'imageData': evt.target.result,
-                'tipo': $("body").find('#' + imgId).prop("tagName"),
-                'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
+            if (inputFile !== "avatar-Image") {
+                socket.emit('msgappend', {
+                    id: imgId,
+                    name: file.name,
+                    'imageData': evt.target.result,
+                    'tipo': $("body").find('#' + imgId).prop("tagName"),
+                    'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
 
-            });
+                });
+            }
         };
         reader.readAsDataURL(file);
     });
