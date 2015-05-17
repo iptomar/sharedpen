@@ -26,40 +26,42 @@ function getElementAtCaret(caret) {
     var counter = 0;
     var buffer;
     var ps = $('p', '.note-editable:first');
-    if(ps.length > 0) {
+    if (ps.length > 0) {
         for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
-          element = $(ps[paragrafo]);
-          var aux = element.contents();
-          for (var i = 0; i < aux.length; i++) {
-            counter += $(aux[i]).text().length;
-            if(counter >= caret) {
-              return element;
+            element = $(ps[paragrafo]);
+            var aux = element.contents();
+            for (var i = 0; i < aux.length; i++) {
+                counter += $(aux[i]).text().length;
+                if (counter >= caret) {
+                    return element;
+                }
             }
-          }
         }
     } else {
         //criar p correctamente
-        var p = document.createElement('p');
-        
-        $('.note-editable:first').append(p);
-        
-        $('p', '.note-editable:first')[0].focus();
+//        var p = document.createElement('p');
+//        
+//        $('.note-editable:first').append(p);
+//        
+//        $('p', '.note-editable:first')[0].focus();
     }
-    
-    
+
+
 }
 
-var TextEditor = function (id, user, cor) {
+var TextEditor = function (id, user, cor, socketId, socket) {
     this.id = id;
     this.newId;
     this.user = user;
     this.cor = cor;
+    this.socketId = socketId;
+    this.socket = socket;
     $('#' + id).summernote({
         lang: "pt-PT",
         height: "auto",
         tabsize: 5,
-        idEdit: this.user,
-        focus: true//,
+        idEdit: this.socketId,
+        focus: true, //
 //        airMode: true,
 //        onInit: function () {
 //            console.log('init', arguments, $('.summernote')[0] === this);
@@ -70,30 +72,14 @@ var TextEditor = function (id, user, cor) {
 //        onBlur: function () {
 //            console.log('blur', arguments, $('.summernote')[0] === this);
 //        },
-        , onKeydown: function () { 
-            var caret = showCaretPos();
-            console.log(caret);
-            console.log(getElementAtCaret(caret));
-            console.log("before");
-           // console.log('keydown', arguments, $('.summernote')[0] === this);
-           var idpai= $("#"+id).parent().parent().attr('class').split(' ')[1];
+//        onKeydown: function () {
+//            var caret = showCaretPos();
+//            console.log(caret);
+//            console.log(getElementAtCaret(caret));
+//            console.log("before");
+            // console.log('keydown', arguments, $('.summernote')[0] === this);
             
-            //var html = $("#"+id).next().find('note-editable').html;
-            var html = $('#' + id).code();
-            //console.log(html);
-            
-            
-            
-           // hash["."+idpai].modelo.arrayElem[id].conteudo = html;
-            //console.log(idpai);
-           // console.log(id);
-
-            socket.emit('msgappend', {
-                'parent': idpai,
-                'id': id,
-                'html': html
-            });
-        }
+//        }
 //        onKeyup: function () {
 //            console.log('keyup', arguments, $('.summernote')[0] === this);
 //        },
@@ -115,10 +101,27 @@ var TextEditor = function (id, user, cor) {
 //        onBeforeCommand: function () {
 //            console.log("before");
 //        },
-//        onChange: function ($editable, sHtml) {
+        onChange: function ($editable, sHtml) {
 //            console.log($editable, sHtml);
 //            console.log('onChange', arguments, $('.summernote')[0] === this);
-//        },
+            
+            var idpaiTab = $("#" + this.id).parent().parent().attr('class').split(' ')[1];
+
+            //var html = $("#"+id).next().find('note-editable').html;
+            var html = $('#' + id).code();
+            //console.log(html);
+
+            // hash["."+idpai].modelo.arrayElem[id].conteudo = html;
+            //console.log(idpai);
+            // console.log(id);
+
+            socket.emit('msgappend', {
+                'parent': idpaiTab,
+                'id': this.id,
+                'html': html
+            });
+            
+        }//,
 //        onImageUpload: function () {
 //            console.log('onImageUpload', arguments, $('.summernote')[0] === this);
 //        },
@@ -154,8 +157,8 @@ var TextEditor = function (id, user, cor) {
 //    }).on('summernote.image.upload.error', function () {
 //        console.log('summernote.image.error', arguments, $('.summernote')[0] === this);
     });
-      
-    
+
+
 //    $('.note-editable').css('font-size','18px');
 //    this.key = key;
 //    this.firepadRef = "";
@@ -165,7 +168,7 @@ var TextEditor = function (id, user, cor) {
 };
 
 TextEditor.prototype.setNewId = function (val) {
-  this.newId = val;  
+    this.newId = val;
 };
 
 TextEditor.prototype.showToolbar = function () {

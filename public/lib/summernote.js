@@ -8,6 +8,7 @@
  *
  * Date: 2015-04-29T19:41Z
  */
+var socketid;
 (function (factory) {
     /* global define */
     if (typeof define === 'function' && define.amd) {
@@ -18,7 +19,6 @@
         factory(window.jQuery);
     }
 }(function ($) {
-    var socketid;
 
 
     if (!Array.prototype.reduce) {
@@ -1478,7 +1478,7 @@
             /** @property {String} blank */
             blank: blankHTML,
             /** @property {String} emptyPara */
-            emptyPara: '<p class="'+socketid+'">' + blankHTML + '</p>',
+            emptyPara: '<p class="' + socketid + '">' + blankHTML + '</p>',
             makePredByNodeName: makePredByNodeName,
             isEditable: isEditable,
             isControlSizing: isControlSizing,
@@ -3305,10 +3305,11 @@
          * insert paragraph
          */
         this.insertParagraph = function () {
+
             var rng = range.create();
 
             // deleteContents on range.
-            
+
             rng = rng.deleteContents();
 
             // Wrap range if it needs to be wrapped by paragraph
@@ -5535,21 +5536,37 @@
         this.bindKeyMap = function (layoutInfo, keyMap) {
             var $editor = layoutInfo.editor();
             var $editable = layoutInfo.editable();
-            
-            
 
             $editable.on('keydown', function (event) {
-            
-                      
-                
-             console.log( event );
-          
-                //console.log($editor);
-               // console.log($editable);
-                //    alert(socketid);
-               //  if(socketid === "pedro"){
-               //      event.preventDefault();
-               //  }
+
+                var caret = showCaretPos();
+                var elem = getElementAtCaret(caret);
+                var sizeP = $(elem).text().length;
+                var posP = caret;
+                var clasP = $(elem).attr("class");
+
+                if (typeof elem === "undefined") {
+                    console.log("ok");
+                    $(elem).addClass(socketid);
+                }
+
+//                console.log("size - " + sizeP);
+                if (sizeP === 0 && clasP !== socketid) {
+                    console.log("1");
+                    $(elem).removeClass(clasP).addClass(socketid);
+                } else if (event.keyCode === key.code.ENTER) {
+                    console.log("2");
+                    if (sizeP !== posP) {
+                        console.log("2a");
+                        event.preventDefault();
+                    } else {
+                        console.log("2b");
+                        $(elem).removeClass(clasP).addClass(socketid);
+                    }
+                } else if (socketid !== clasP) {
+                    console.log("3");
+                    event.preventDefault();
+                }
                 var keys = [];
 
                 // modifier
@@ -6547,10 +6564,10 @@
          * @param {Object} options
          */
         this.createLayoutByFrame = function ($holder, options) {
-           
-            socketid=options.idEdit;
+
+            socketid = options.idEdit;
             //alert(socketid);
-            dom.emptyPara = '<p class="'+socketid+'"></p>';
+            dom.emptyPara = '<p class="' + socketid + '"></p>';
             var langInfo = options.langInfo;
 
             //01. create Editor
