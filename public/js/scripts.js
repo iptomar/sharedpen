@@ -135,7 +135,8 @@ $(document).ready(function () {
                     data.data.socket,
                     //envia a imagem 
                     data.data.image,
-                    data.data.apagar
+                    data.data.apagar,
+                    data.data.apagarTudo
                     );
         }
     });
@@ -161,7 +162,8 @@ $(document).ready(function () {
 
 
                 var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
-                cmv.draw(x, y, type);
+                var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
+                cmv.draw(x, y, type,sizeCurs);
                 socket.emit('drawClick', {
                     id: thisId,
                     x: x,
@@ -173,7 +175,8 @@ $(document).ready(function () {
                     socket: socket.id,
                     //imagem do meu canvas!!
                     canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
-                    parent: $(this).parent().parent().parent().attr('class').split(' ')[1]
+                    parent: $(this).parent().parent().parent().attr('class').split(' ')[1],
+                    apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo()
                 });
 //                        alert('Left Mouse button pressed.');
                 break;
@@ -185,6 +188,10 @@ $(document).ready(function () {
                     menuSelector: "#toolbar",
                     menuSelected: function (invokedOn, selectedMenu) {
                         switch (selectedMenu.data("tipo")) {
+                            case "corTudo":
+                                hash[idToll].modelo.arrayElem[thisId].drawObj.setApagarTudo(selectedMenu.data("cor"));
+//                                alert(selectedMenu.data("cor"));
+                                break;
                             case "cor":
                                 hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
 //                                alert(selectedMenu.data("cor"));

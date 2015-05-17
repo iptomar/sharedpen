@@ -12,6 +12,7 @@ var Draw = function (tabClass, page, id,counter) {
     this.ArrayCanvasClients = {};
     this.ArrayCanvasImage={};
     this.bgImg ="";
+    this.apagarTodos=false;
 };
 
 Draw.prototype.init = function () { 
@@ -65,6 +66,9 @@ Draw.prototype.VerificaUser = function (socket) {
 Draw.prototype.getColor = function () {
     return this.color;
 };
+Draw.prototype.getApagarTudo = function () {
+    return this.apagarTodos;
+};
 
 Draw.prototype.getSizeCursor = function () {
     return this.curSize;
@@ -80,14 +84,23 @@ Draw.prototype.getCanvas = function () {
 };
 
 
-Draw.prototype.draw = function (x, y, type) {
+Draw.prototype.draw = function (x, y, type,sizecur) {
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     if (!this.apagar) {
         this.paintThis(ctx, x, y, type, "source-over");
     } else {
-        this.paintThis(ctx, x, y, type, "destination-out");
+        this.paint(canvas,ctx, x, y, type, "destination-out");
+        if (this.apagarTodos){
+            for(item in this.ArrayCanvasClients){
+                canvas = this.ArrayCanvasClients[item];
+                ctx = canvas.getContext('2d');
+                ctx.lineWidth = sizecur;
+                this.paint(canvas,ctx, x, y, type, "destination-out");
+            }
+        }
     }
+    
 };
 
 Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
@@ -118,12 +131,13 @@ Draw.prototype.paintThis = function (ctx, x, y, type, opt) {
     }
 };
 
-Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image, apagar) {
+Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image, apagar,apagarTudo) {
 
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     
     var canvas2 = this.VerificaUser(socket);
+       
     var ctx2 = canvas2.getContext('2d');
 
     ctx2.fillStyle = "solid";
@@ -134,10 +148,30 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
         this.paint(canvas2,ctx2, x, y, type, "source-over");
     } else {
         this.paint(canvas2,ctx2, x, y, type, "destination-out");
+        if (apagarTudo){
+            this.tabNumber
+            for(item in this.ArrayCanvasClients){
+                console.log(item);
+                canvas2 = this.ArrayCanvasClients[item];
+                ctx2 = canvas2.getContext('2d');
+                ctx2.strokeStyle = cor;
+                ctx2.lineWidth = sizecur;
+                this.paint(canvas2,ctx2, x, y, type, "destination-out");
+            }
+            //Apaga o canvas do cliente!
+            var canvas2 = document.getElementById("tab"+this.tabNumber+"-Mycanvas");    
+            var ctx2 = canvas2.getContext('2d');
+            ctx2.lineWidth = sizecur;
+            this.paint(canvas2,ctx2, x, y, type, "destination-out");
+            
+         }
+
     }
     if (type === "backgoundImage") {
         this.imageCanvas(image);
     }
+        
+    
 };
 
 Draw.prototype.imageCanvas = function (dataURL) {
@@ -168,6 +202,20 @@ Draw.prototype.setColor = function (obj) {
     } else {
         this.color = obj;
         this.apagar = false;
+    }
+    var canvas = document.getElementById(this.id);
+    var ctx = canvas.getContext("2d");
+    ctx.strokeStyle = this.color;
+};
+Draw.prototype.setApagarTudo = function (obj) {
+    console.log(obj);
+    if (obj) {
+        this.apagar = true;
+        this.apagarTodos = true;
+    } else {
+        this.color = "apagar";
+        this.apagarTodos = false;
+        this.apagar = true;
     }
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
