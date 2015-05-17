@@ -761,6 +761,7 @@ $(document).ready(function () {
 	$("#homemenu").click(function () {
 		$('#bt_PDF').css({'visibility': "hidden"});
 		$('#bt_PRE').css({'visibility': "hidden"});
+		LivroPoemas = new Array();
 		var data = {
 			folder: "html_Work_Models",
 			idtab: "",
@@ -931,7 +932,9 @@ $(document).ready(function () {
 			imagensdotema: $(self).attr("imagensdotema"),
 			idObj: "",**/
 		AddPoema(LivroPoemas,$(this).attr("src"));
-
+		
+		$("body").find("#divchangemodel").remove();
+		$("body").find("a[href^='#page']:last").click();
 	});
 	
 
