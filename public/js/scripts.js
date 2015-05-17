@@ -826,7 +826,7 @@ $(document).ready(function () {
 				case "temaspoemas":
 					//Temas para os poemas
 					var htmlModel = "<div id='divchangemodel'>" +
-						"<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+						"<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
 						"<h1 class='text-center'>Temas</h1>";
 					for (var i = 0, max = data.length; i < max; i++) {
 						//se o nome retornado nao contem "." desduz-se que é uma pasta
@@ -834,6 +834,24 @@ $(document).ready(function () {
 							var pasta = data[i];
 							htmlModel += "<figure class='image'>" +
 								"<img class='tema-img' data-folder='temaspoemas/"+pasta+"' alt='' imagensdotema='"+pasta+"' src='./img/temaspoema/" + pasta + ".png' '/>" +
+								"<figcaption> " + pasta + " </figcaption>" +
+								"</figure>";
+						}
+					}
+					htmlModel += "</div></div></div></div>";
+					$("body").append(htmlModel);
+					break;
+                case "showperfil":
+					//Teste para PErfil do utilizador
+					var htmlModel = "<div id='divchangemodel'>" +
+						"<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+						"<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
+					for (var i = 0, max = data.length; i < max; i++) {
+						//se o nome retornado nao contem "." desduz-se que é uma pasta
+						if (data[i].indexOf(".") === -1) {
+							var pasta = data[i];
+							htmlModel += "<figure class='image'>" +
+								"<img class='tema-img' data-folder='showperfil/"+pasta+"' src='./img/showperfil/" + pasta + ".png' '/>" +
 								"<figcaption> " + pasta + " </figcaption>" +
 								"</figure>";
 						}
@@ -863,6 +881,16 @@ $(document).ready(function () {
 	$("body").on("click", 'a[href="#add-poema"]', function () {
 		var data = {
 			folder: "temaspoemas",
+			idtab: "",
+			idObj: ""
+		};
+		getFilesToFolder(socket, data);
+	});
+    
+    //Mostrar perfil do Utilizador
+    $("body").on("click", 'a[href="#show-perfil"]', function () {
+		var data = {
+			folder: "showperfil",
 			idtab: "",
 			idObj: ""
 		};
