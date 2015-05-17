@@ -11,22 +11,23 @@ var Draw = function (tabClass, page, id,counter) {
     this.resizeCanvas = false;
     this.apagar = false;
     this.ArrayCanvasClients = [];
-    this.MyCanvas = "";
+    this.bgImg ="";
 };
 
-Draw.prototype.init = function () {
-    
+Draw.prototype.init = function () { 
     
         var cnv = document.createElement("canvas");
         cnv.setAttribute("id","tab"+this.tabNumber+"-background");
         cnv.width = 700;
         cnv.height = 400;
+        cnv.style.zIndex = "0";
         $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
     
         var cnv = document.createElement("canvas");
         cnv.setAttribute("id","tab"+this.tabNumber+"-Mycanvas");
         cnv.width = 700;
         cnv.height = 400;
+        cnv.style.zIndex = "2";
         $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
     
 
@@ -54,7 +55,7 @@ Draw.prototype.VerificaUser = function (socket) {
         cnv.setAttribute("id",this.id+""+socket);
         cnv.width = canvas.width;
         cnv.height = canvas.height;
-        
+        cnv.style.zIndex = "2";
         $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
         
         this.ArrayCanvasClients[socket] = cnv;

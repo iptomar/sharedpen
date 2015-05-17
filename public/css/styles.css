@@ -162,6 +162,7 @@ body, #div-login{
     -ms-transition: all .25s ease; /* IE 9 */
     -o-transition: all .25s ease; /* Opera */
     transition: all .25s ease;
+    
     max-width: 100%;
     max-height: 100%;
 }

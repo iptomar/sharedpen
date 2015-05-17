@@ -157,14 +157,10 @@ $(document).ready(function () {
                 x = e.offsetX;
                 y = e.offsetY;
 
+
                 var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
-
-
                 cmv.draw(x, y, type);
-                //actualiza o a imagem no objecto draw
-                // hash[idToll].modelo.arrayElem[thisId].drawObj.MyCanvas=  hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL();
-                // var ctx = c.getContext('2d');
-                //var img = ctx.getImageData
+
                 socket.emit('drawClick', {
                     id: thisId,
                     x: x,
@@ -299,7 +295,7 @@ $(document).ready(function () {
                 var id = data.id;
                 var idpai = data.parent;
                 var html = data.html;
-                
+
                 $("#" + id).code(html);
 //                var id = data.id;
 //                var str = $(id).val();
@@ -764,93 +760,109 @@ $(document).ready(function () {
     //******************************************************************
     socket.on("files2folder", function (data, dataVals) {
         //Verifica se esta' a receber imagens de um certo tema
-        if (dataVals.imagensdotema != "undefined" && dataVals.imagensdotema != null) {
-            //Verifica se existem imagens do tema
-            if (data.length > 0) {
-                $("#divchangemodel").remove();
-                var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
-                        "<h1 style='text-center'>Imagens do tema - " + dataVals.imagensdotema + "</h1>";
+        switch (dataVals.folder) {
+            case "galeria":
+                if ($("#divGaleria").css("visibility") === "hidden") {
+                    var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        imgList += '<div class="imageGaleria col-xs-4 col-sm-4 col-md-4 image" data-idpai="' + dataVals.idtab + '" data-idcnv="' + dataVals.idObj + '">';
+                        imgList += '<img src="./' + dataVals.folder + '/' + data[i] + '" alt="">';
+                        imgList += '</div>';
+                    }
+                    imgList += ' </div>';
+                    $("#panelGaleria").html(imgList);
+
+                    $("#divGaleria").css({"visibility": "visible"});
+                    $("#divGaleria").animate({
+                        "left": "1%"
+                    }, 1000, "swing");
+                } else {
+                    $("#divGaleria").animate({
+                        "left": "-30%"
+                    }, 1000, function () {
+                        $("#divGaleria").css({"visibility": "hidden"});
+                    });
+                }
+                break;
+            case "html_Work_Models":
+                var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
                 for (var i = 0, max = data.length; i < max; i++) {
-                    htmlModel += "<figure class='image'>" +
-                            "<img class='imgPoema' data-folder='./temaspoemas/" + dataVals.imagensdotema + "' alt='' src='./temaspoemas/" + dataVals.imagensdotema + "/" + data[i] + "'/>" +
+                    allPages += '<div class="col-xs-4 col-sm-4 col-md-4  menuBar" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
+                    allPages += '<figure class="image">';
+                    allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
+                    allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
+                }
+                allPages += '</div>';
+                $("#contentor").html(allPages);
+                break;
+            case "html_models":
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    htmlModel += "<figure>" +
+                            "<img class='btnmodels btnmodels-style' alt='' src='../img/" + data[i].split(".")[0] + ".png' data-model='" + data[i] + "'/>" +
                             "<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
                             "</figure>";
                 }
                 htmlModel += "</div></div></div></div>";
                 $("body").append(htmlModel);
-            } else
-                alert("Não existem imagens do tema " + dataVals.imagensdotema);
-
-        } else {
-            switch (dataVals.folder) {
-                case "galeria":
-                    if ($("#divGaleria").css("visibility") === "hidden") {
-                        var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
-                        for (var i = 0, max = data.length; i < max; i++) {
-                            imgList += '<div class="imageGaleria col-xs-4 col-sm-4 col-md-4 image" data-idpai="' + dataVals.idtab + '" data-idcnv="' + dataVals.idObj + '">';
-                            imgList += '<img src="./' + dataVals.folder + '/' + data[i] + '" alt="">';
-                            imgList += '</div>';
-                        }
-                        imgList += ' </div>';
-                        $("#panelGaleria").html(imgList);
-
-                        $("#divGaleria").css({"visibility": "visible"});
-                        $("#divGaleria").animate({
-                            "left": "1%"
-                        }, 1000, "swing");
-                    } else {
-                        $("#divGaleria").animate({
-                            "left": "-30%"
-                        }, 1000, function () {
-                            $("#divGaleria").css({"visibility": "hidden"});
-                        });
-                    }
-                    break;
-                case "html_Work_Models":
-                    var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        allPages += '<div class="col-xs-4 col-sm-4 col-md-4  menuBar" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
-                        allPages += '<figure class="image">';
-                        allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
-                        allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
-                    }
-                    allPages += '</div>';
-                    $("#contentor").html(allPages);
-                    break;
-                case "html_models":
-                    var htmlModel = "<div id='divchangemodel'>" +
-                            "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        htmlModel += "<figure>" +
-                                "<img class='btnmodels btnmodels-style' alt='' src='../img/" + data[i].split(".")[0] + ".png' data-model='" + data[i] + "'/>" +
-                                "<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
+                break;
+            case "temaspoemas":
+                //Temas para os poemas
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                        "<h1 class='text-center'>Temas</h1>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    //se o nome retornado nao contem "." desduz-se que é uma pasta
+                    if (data[i].indexOf(".") === -1) {
+                        var pasta = data[i];
+                        htmlModel += "<figure class='image'>" +
+                                "<img class='tema-img' data-folder='temaspoemas/" + pasta + "' alt='' imagensdotema='" + pasta + "' src='./img/temaspoema/" + pasta + ".png' '/>" +
+                                "<figcaption> " + pasta + " </figcaption>" +
                                 "</figure>";
                     }
-                    htmlModel += "</div></div></div></div>";
-                    $("body").append(htmlModel);
-                    break;
-                case "temaspoemas":
-                    //Temas para os poemas
-                    var htmlModel = "<div id='divchangemodel'>" +
-                            "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
-                            "<h1 class='text-center'>Temas</h1>";
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        //se o nome retornado nao contem "." desduz-se que é uma pasta
-                        if (data[i].indexOf(".") === -1) {
-                            var pasta = data[i];
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+                break;
+            case "showperfil":
+                //Teste para PErfil do utilizador
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                        "<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    //se o nome retornado nao contem "." desduz-se que é uma pasta
+                    if (data[i].indexOf(".") === -1) {
+                        var pasta = data[i];
+                        htmlModel += "<figure class='image'>" +
+                                "<img class='tema-img' data-folder='showperfil/" + pasta + "' src='./img/showperfil/" + pasta + ".png' '/>" +
+                                "<figcaption> " + pasta + " </figcaption>" +
+                                "</figure>";
+                    }
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+                break;
+            default:
+                if (typeof dataVals.imagensdotema !== "undefined" && dataVals.imagensdotema !== null) {
+                    //Verifica se existem imagens do tema
+                    if (data.length > 0) {
+                        $("body").find("#divchangemodel").remove();
+                        var htmlModel = "<div id='divchangemodel'>" +
+                                "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                                "<h1 style='text-center'>Imagens do tema - " + dataVals.imagensdotema + "</h1>";
+                        for (var i = 0, max = data.length; i < max; i++) {
                             htmlModel += "<figure class='image'>" +
-                                    "<img class='tema-img' data-folder='temaspoemas/" + pasta + "' alt='' imagensdotema='" + pasta + "' src='./img/temaspoema/" + pasta + ".png' '/>" +
-                                    "<figcaption> " + pasta + " </figcaption>" +
+                                    "<img class='imgPoema' data-folder='./temaspoemas/" + dataVals.imagensdotema + "' alt='' src='./temaspoemas/" + dataVals.imagensdotema + "/" + data[i] + "'/>" +
+                                    "<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
                                     "</figure>";
                         }
-                    }
-                    htmlModel += "</div></div></div></div>";
-                    $("body").append(htmlModel);
-                    break;
-                default:
-                    break;
-            }
+                        htmlModel += "</div></div></div></div>";
+                        $("body").append(htmlModel);
+                    } else
+                        alert("Não existem imagens do tema " + dataVals.imagensdotema);
+                }
+                break;
         }
     });
 
@@ -876,13 +888,22 @@ $(document).ready(function () {
         getFilesToFolder(socket, data);
     });
 
+    //Mostrar perfil do Utilizador
+    $("body").on("click", 'a[href="#show-perfil"]', function () {
+        var data = {
+            folder: "showperfil",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
+    });
     //Mostrar os imagens disponíveis para o tema
     $("body").on("click", '.tema-img', function () {
         var self = this;
         var data = {
             folder: $(self).attr("data-folder"),
             imagensdotema: $(self).attr("imagensdotema"),
-            idObj: "",
+            idObj: ""
         };
         getFilesToFolder(socket, data);
     });
@@ -892,12 +913,11 @@ $(document).ready(function () {
         /**folder: $(self).attr("data-folder"),
          imagensdotema: $(self).attr("imagensdotema"),
          idObj: "",**/
+        $("body").find("#divchangemodel").remove();
         AddPoema(LivroPoemas, $(this).attr("src"));
-
     });
 
-
-    /**
+    /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
 
@@ -957,59 +977,49 @@ function updateTab(i, key) {
     $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
         refactorTab(hash[key].nomeModelo, i);
         for (var elemento in hash[key].modelo.arrayElem) {
-
             if (hash[key].modelo.arrayElem[elemento].elementType === "IMG") {
                 $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
 
             } else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
-
+                //cria o seu canvas!
                 hash[key].modelo.arrayElem[elemento].drawObj.init();
 
-                //se o array nao estiver vazio
+                //se o array nao estiver vazio (se nao tiver clientes canvas)
                 if (hash[key].modelo.arrayElem[elemento].allClientCanvas !== []) {
-
                     for (item in hash[key].modelo.arrayElem[elemento].allClientCanvas) {
+                        //cria as canvas dos outros clientes
                         hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
-                        //hash[key].modelo.arrayElem[elemento].allClientCanvas[item]
-                        var dr = $("#" + elemento + "" + item);
-                        // alert(dr);
-                        //console.log(dr);
+                        var dr = $("#" + elemento + "" + item)[0];
+                        //cria imagem 
+                        var img = document.createElement('img');
+                        img.src = hash[key].modelo.arrayElem[elemento].allClientCanvas[item];
+                        //vai buscar o context
                         var ctx = dr.getContext('2d');
-                        //ctx.drawImage(dr,700,700);
+                        //pinta a imagem
+                        ctx.drawImage(img, 0, 0);
+
                     }
+                    //se tiver backgorund desenha o 
+                    if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== "") {
+                        var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
+                        hash[key].modelo.arrayElem[elemento].drawObj.imageCanvas(imgg);
+                    }
+                } else {
+                    if ($("#" + elemento).attr('class').match('editable')) {
+                        $("#" + elemento).addClass(elemento);
+                        var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
+                        var editTxt = {
+                            id: elemento,
+                            txtObjEditor: txtedit
+                        };
+                        allTextEditor.push(editTxt);
 
 
-                    hash[key].modelo.arrayElem[elemento].drawObj.getCanvas
-
+                    }
+                    $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                 }
-                // if(hash[key].modelo.arrayElem[elemento].canvas === [])
-                // var cmv = $("#" + elemento)[0];
-                // console.log(elemento);
-                //var ctx = cmv.getContext('2d');
-                //var img = document.createElement('img');
-                //console.log(hash[key]);
-
-
-                // if (typeof hash[key].modelo.arrayElem[elemento].canvas !== "undefined") {
-                //     img.src = hash[key].modelo.arrayElem[elemento].canvas;
-                // }
-                //ctx.drawImage(img, 0, 0);
-            } else {
-                if ($("#" + elemento).attr('class').match('editable')) {
-                    $("#" + elemento).addClass(elemento);
-                    var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
-                    var editTxt = {
-                        id: elemento,
-                        txtObjEditor: txtedit
-                    };
-                    allTextEditor.push(editTxt);
-
-
-                }
-                $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
 
             }
-
         }
     });
 }
