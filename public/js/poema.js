@@ -34,7 +34,7 @@ function AddPoema(livro, img) {
 		(idNum) +
 		' <button type="button" id=' +
 		(idNum) +
-		' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
+		' class="btn btn-warning btn-xs xpoema"><span>x</span></button></a>');
 	// Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
 	$('div.tab-content').append(
 		'<div class="tab-pane fade" id="page' + idNum +
