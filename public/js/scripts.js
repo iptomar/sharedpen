@@ -472,6 +472,18 @@ $(document).ready(function () {
         }
         return false;
     });
+	
+	 $("body").on('click', '.xpoema', function () {
+        liElem = $(this).attr('id');
+        // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
+        if (confirm("Tem a certeza que quer apagar?")) {
+            $('#page'+liElem).remove();
+            $('#li'+liElem).remove();
+			LivroPoemas.splice(liElem, 1);
+            };
+    });
+	
+	
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
@@ -826,7 +838,7 @@ $(document).ready(function () {
                 $("body").append(htmlModel);
                 break;
             case "showperfil":
-                //Teste para PErfil do utilizador
+                //Teste para Perfil do utilizador
                 var htmlModel = "<div id='divchangemodel'>" +
                         "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
                         "<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
