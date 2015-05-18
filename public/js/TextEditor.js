@@ -67,7 +67,7 @@ TextEditor.prototype.setNewId = function (val) {
  * @param {type} text
  * @returns {undefined}
  */
-TextEditor.prototype.setTextToEditor = function (text){
+TextEditor.prototype.setTextToEditor = function (text) {
     $('#' + this.id).code(text);
 };
 
@@ -75,7 +75,7 @@ TextEditor.prototype.setTextToEditor = function (text){
  * 
  * @returns {unresolved}
  */
-TextEditor.prototype.getTextEditor = function (){
+TextEditor.prototype.getTextEditor = function () {
     return  $('#note-editable_' + this.id).code();
 };
 /**
@@ -130,7 +130,11 @@ function getElementAtCaret(idEditor, caret) {
             for (var i = 0; i < aux.length; i++) {
                 counter += $(aux[i]).text().length;
                 if (counter >= caret) {
-                    return element;
+                    return {
+                        element: element,
+                        paragrafo: paragrafo,
+                        pos: i
+                    };
                 }
             }
         }
@@ -148,7 +152,7 @@ function setCaretAtEditor(editor, linha, coluna) {
     var el = document.getElementById(editor);
     var range = document.createRange();
     var sel = window.getSelection();
-    range.setStart(el.childNodes[(linha % 2 === 0) ? linha : linha + 1], (linha === 0) ? coluna + 3 : coluna);
+    range.setStart(el.childNodes[linha], coluna);
     range.collapse(true);
     sel.removeAllRanges();
     sel.addRange(range);

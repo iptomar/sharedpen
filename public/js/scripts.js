@@ -299,7 +299,17 @@ $(document).ready(function () {
                 var id = data.id;
                 var idpai = data.parent;
                 var html = data.html;
+
+                var idEditor = 'note-editable_' + id;
+                console.log(idEditor);
+                var caret = showCaretPos(idEditor);
+                console.log(caret);
+                var elem = getElementAtCaret(idEditor, caret);
                 $("#" + id).code(html);
+                if (typeof elem !== "undefined") {
+                    setCaretAtEditor(idEditor, elem.paragrafo, elem.pos);
+                }
+
 //                var id = data.id;
 //                var str = $(id).val();
 //                var str1 = "";
@@ -475,18 +485,19 @@ $(document).ready(function () {
         }
         return false;
     });
-	
-	 $("body").on('click', '.xpoema', function () {
+
+    $("body").on('click', '.xpoema', function () {
         liElem = $(this).attr('id');
         // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
         if (confirm("Tem a certeza que quer apagar?")) {
-            $('#page'+liElem).remove();
-            $('#li'+liElem).remove();
-			LivroPoemas.splice(liElem, 1);
-            };
+            $('#page' + liElem).remove();
+            $('#li' + liElem).remove();
+            LivroPoemas.splice(liElem, 1);
+        }
+        ;
     });
-	
-	
+
+
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
