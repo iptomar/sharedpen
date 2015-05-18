@@ -329,7 +329,7 @@ $(document).ready(function () {
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-        console.log(data.tabsHash);
+//        console.log(data.tabsHash);
         var newHash = {};
         for (var item in data.tabsHash) {
             newHash[item] = castTab(data.tabsHash[item]);
@@ -671,7 +671,7 @@ $(document).ready(function () {
             //            alert("New Page")
         });
         console.log(textPdf);
-        socket.emit("convertToPdf", textPdf, "Livro.pdf");
+//        socket.emit("convertToPdf", textPdf, "Livro.pdf");
         //       var a = getArrayElementObj(allTextEditor, "tab1-input1");
         //        alert(a.txtObjEditor.getTextEditor());
         //
@@ -1030,6 +1030,7 @@ function updateTab(i, key) {
                         txtObjEditor: txtedit
                     };
                     allTextEditor.push(editTxt);
+                    txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
                 }
                 $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
             }
@@ -1231,8 +1232,8 @@ function getArrayElementObj(array, id) {
 }
 
 /**
-* 
-
+ * 
+ 
  * @param {type} local
  * @param {type} folder
  * @param {type} layout

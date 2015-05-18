@@ -64,6 +64,22 @@ TextEditor.prototype.setNewId = function (val) {
 
 /**
  * 
+ * @param {type} text
+ * @returns {undefined}
+ */
+TextEditor.prototype.setTextToEditor = function (text){
+    $('#' + this.id).code(text);
+};
+
+/**
+ * 
+ * @returns {unresolved}
+ */
+TextEditor.prototype.getTextEditor = function (){
+    return  $('#note-editable_' + this.id).code();
+};
+/**
+ * 
  * @param {type} element
  * @returns {Number|document.body@call;createTextRange.text.length}
  */
@@ -118,13 +134,6 @@ function getElementAtCaret(idEditor, caret) {
                 }
             }
         }
-    } else {
-        //criar p correctamente
-//        var p = document.createElement('p');
-//        
-//        $('.note-editable:first').append(p);
-//        
-//        $('p', '.note-editable:first')[0].focus();
     }
 }
 
