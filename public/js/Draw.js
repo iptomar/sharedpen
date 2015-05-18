@@ -17,21 +17,27 @@ var Draw = function (tabClass, page, id,counter) {
 
 Draw.prototype.init = function () { 
         
+    var widthPai =  $("#tab"+this.tabNumber+"-canvasdr").parent().width();
+    var heightPai =  $("#tab"+this.tabNumber+"-canvasdr").parent().height();
+    
+    
     //cria o canavs onde vao ser colocadas as imagens de fundo
     var cnv = document.createElement("canvas");
     cnv.setAttribute("id","tab"+this.tabNumber+"-background");
-    cnv.width = 700;
-    cnv.height = 400;
+    cnv.width = widthPai;
+    cnv.height = heightPai;
     cnv.style.zIndex = "0";
     $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
 
     //cria o seu canvas (onde vai escrever)
     var cnv = document.createElement("canvas");
     cnv.setAttribute("id","tab"+this.tabNumber+"-Mycanvas");
-    cnv.width = 700;
-    cnv.height = 400;
+    cnv.width = widthPai;
+    cnv.height = heightPai;
     cnv.style.zIndex = "2";
     $("#tab"+this.tabNumber+"-canvasdr").append(cnv);
+    
+    
     
     
     var ctx = cnv.getContext("2d");
