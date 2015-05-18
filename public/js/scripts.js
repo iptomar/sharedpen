@@ -826,7 +826,7 @@ $(document).ready(function () {
                 $("body").append(htmlModel);
                 break;
             case "showperfil":
-                //Teste para PErfil do utilizador
+                //Teste para Perfil do utilizador
                 var htmlModel = "<div id='divchangemodel'>" +
                         "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
                         "<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
