@@ -5557,44 +5557,46 @@
                 var idEditor = $(this).attr("id");
                 var caret = showCaretPos(idEditor);
                 var elem = getElementAtCaret(idEditor, caret);
-                var sizeP = $(elem).text().length;
-                var posP = caret;
-                var clasP = $(elem).attr("class");
 //
                 if (typeof elem === "undefined") {
 //                    console.log("elemento nao defenido");
                     modules.editor["insertParagraph"]($editable, $editor.data('options'));
                     $('#' + idEditor).find('p').first().remove();
-                } else if (clasP !== socketid) {
+                } else {
+                    var sizeP = $(elem.element).text().length;
+                    var posP = caret;
+                    var clasP = $(elem.element).attr("class");
+                    if (clasP !== socketid) {
 //                    console.log("class do paragrafo != do socketid");
-                    if (posP < sizeP || event.keyCode !== key.code.ENTER) {
-                        if (lastKey == key.code.ENTER && controlEnter) {
+                        if (posP < sizeP || event.keyCode !== key.code.ENTER) {
+                            if (lastKey == key.code.ENTER && controlEnter) {
 //                            console.log("Last Enter ok");
-                            $(elem).removeClass(clasP).addClass(socketid);
-                            lastKey = 0;
-                            controlEnter = false;
-                        } else if (lastKey == key.code.ENTER && !controlEnter) {
+                                $(elem.element).removeClass(clasP).addClass(socketid);
+                                lastKey = 0;
+                                controlEnter = false;
+                            } else if (lastKey == key.code.ENTER && !controlEnter) {
 //                            console.log("Last Enter carregado");
-                            controlEnter = true;
-                        } else {
+                                controlEnter = true;
+                            } else {
 //                            console.log("my pos menor que size paragrafo");
+                                event.preventDefault();
+                            }
+                        } else if (event.keyCode === key.code.ENTER) {
+//                        console.log("Enter carregado");
+                            lastKey = key.code.ENTER;
+                        }
+                        else if (event.keyCode === 46) {
+//                        console.log("Delete carregado");
                             event.preventDefault();
                         }
-                    } else if (event.keyCode === key.code.ENTER) {
-//                        console.log("Enter carregado");
-                        lastKey = key.code.ENTER;
-                    }
-                    else if (event.keyCode === 46) {
+                    } else {
+                        if (event.keyCode === 46) {
 //                        console.log("Delete carregado");
-                        event.preventDefault();
-                    }
-                } else {
-                    if (event.keyCode === 46) {
-//                        console.log("Delete carregado");
-                        event.preventDefault();
-                    }
+                            event.preventDefault();
+                        }
 //                    console.log("class do paragrafo = do socketid");
-                    lastKey = 0;
+                        lastKey = 0;
+                    }
                 }
 //                console.log("-----------------------------------------");
                 $("#" + idEditor + " > p:not(." + socketid + ")").css({
