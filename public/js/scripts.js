@@ -458,7 +458,7 @@ $(document).ready(function () {
     /**
      * Funçao que remove tabs
      */
-    $("body").on('click', '.xtab', function (event) {
+    $("body").on('click', '.xtab', function () {
         liElem = $(this).attr('id');
         // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
         if (confirm("Tem a certeza que quer apagar?")) {
@@ -589,19 +589,19 @@ $(document).ready(function () {
         $.each(files, function (index, file) {
             // Some error messaging
             if (!files[index].type.match('image.*')) {
-                if (errMessage == 0) {
+                if (errMessage === 0) {
                     alert('Hey! Images only');
                     ++errMessage
                 }
-                else if (errMessage == 1) {
+                else if (errMessage === 1) {
                     alert('Stop it! Images only!');
                     ++errMessage
                 }
-                else if (errMessage == 2) {
+                else if (errMessage === 2) {
                     alert("Can't you read?! Images only!");
                     ++errMessage
                 }
-                else if (errMessage == 3) {
+                else if (errMessage === 3) {
                     alert("Fine! Keep dropping non-images.");
                     errMessage = 0;
                 }
@@ -931,6 +931,11 @@ $(window).resize(function () {
  */
 
 // Code taken from MatthewCrumley (http://stackoverflow.com/a/934925/298479)
+/**
+ * 
+ 
+ * @param {type} img
+ * @returns {unresolved} */
 function getBase64Image(img) {
     var img2 = document.createElement("img");
     img2.src = img;
@@ -950,6 +955,11 @@ function getBase64Image(img) {
     return dataURL;
 }
 
+/**
+ * 
+ 
+ * @param {type} tabToCast
+ * @returns {Object|castTab.tab} */
 function castTab(tabToCast) {
     //Faz o cast da Tab, e todos os seus elementos
     var tab = $.extend(new Tab(), tabToCast);
@@ -963,7 +973,12 @@ function castTab(tabToCast) {
     return tab;
 }
 
-
+/**
+ * 
+ 
+ * @param {type} sckt
+ * @param {type} data
+ * @returns {undefined} */
 function getFilesToFolder(sckt, data) {
     sckt.emit("getFiles2Folder", data);
 }
@@ -987,7 +1002,7 @@ function updateTab(i, key) {
 
                 //se o array nao estiver vazio (se nao tiver clientes canvas)
                 if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== []) {
-                    for (item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
+                    for (var item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
                         //cria as canvas dos outros clientes
                         hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
                         var dr = $("#" + elemento + "" + item)[0];
@@ -1126,7 +1141,7 @@ function removeTab(liElem) {
     //para renomear Li
     $('#tabs').children('li').each(function () {
 
-        if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
+        if ($(this).attr('id') !== "li-last" && $(this).attr('id') !== $('ul#tabs > li#li' + liElem).attr('id')) {
             $(this).attr('id', "li" + i);
             $(this).children('a').attr('href', "#page" + i);
             var button = $(this).children('a').children();
@@ -1153,7 +1168,6 @@ function removeTab(liElem) {
             $(this).children('textarea').attr('id', "msg" + (i + 1));
             i++;
         }
-
     });
     // activa a tab anterior no caso de a actual ser eliminada
     if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
@@ -1161,7 +1175,6 @@ function removeTab(liElem) {
     }
     refactorHash(liElem);
 }
-
 
 /**
  * Função para reorganizar o hash
@@ -1191,8 +1204,9 @@ function refactorHash(liElem) {
                 hash1[newId].modelo.arrayElem[idd].drawObj.page = hash[key].modelo.arrayElem[elemento].drawObj.page.replace(/[0-9]/, (i + 1));
                 hash1[newId].modelo.arrayElem[idd].drawObj.id = hash[key].modelo.arrayElem[elemento].drawObj.id.replace(/[0-9]/, (i + 1));
             }
-            if ((i + 1) >= id)
+            if ((i + 1) >= id) {
                 delete hash1[newId].modelo.arrayElem[elemento];
+            }
         }
         i++;
     }
@@ -1216,6 +1230,14 @@ function getArrayElementObj(array, id) {
     return a;
 }
 
+/**
+* 
+
+ * @param {type} local
+ * @param {type} folder
+ * @param {type} layout
+ * @param {type} stk
+ * @returns {undefined} */
 function addLayoutToDiv(local, folder, layout, stk) {
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {

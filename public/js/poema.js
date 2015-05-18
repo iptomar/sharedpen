@@ -49,16 +49,14 @@ function AddPoema(livro, img) {
     var ajudas = livro[idNum].palavras;
 
     if (ajudas.length > 0) {
-        var wordshelp = '<div class="help class="" style="float: left; border:dashed 5px black; width: 40%; height: 150px;"> ' +
+        var wordshelp = '<div class="help" style="float: left; border:dashed 5px black; width: 40%; height: 150px;"> ' +
                 '<h1 class="text-center">AJUDA </h1>' +
                 '<p>';
         for (var i in ajudas) {
-            wordshelp += '<h3><span class="label label-info"' + ajudas[i] + '</span></h3>';
+            wordshelp += '<h3><span class="label label-info">' + ajudas[i] + '</span></h3>';
         }
-        wordshelp += '</p>' +
-                '</div>';
-
-        $(".txtTab" + idNum).append(wordshelp);
+        wordshelp += '</p></div>';
+        $("body").find(".txtTab" + idNum).append(wordshelp);
     }
 }
 

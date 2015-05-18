@@ -1,4 +1,12 @@
-
+/**
+ * 
+ * @param {type} id
+ * @param {type} user
+ * @param {type} cor
+ * @param {type} socketId
+ * @param {type} socket
+ * @returns {TextEditor}
+ */
 var TextEditor = function (id, user, cor, socketId, socket) {
     this.id = id;
     this.newId;
@@ -27,6 +35,118 @@ var TextEditor = function (id, user, cor, socketId, socket) {
                     //['view', ['fullscreen', 'codeview']],
                     //['help', ['help']]
         ],
+        onChange: function ($editable, sHtml) {
+//            console.log($editable, sHtml);
+//            console.log('onChange', arguments, $('.summernote')[0] === this);
+
+            socket.emit('msgappend', {
+                'parent': $("#" + this.id).parent().parent().attr('class').split(' ')[1],
+                'id': this.id,
+                'html': $editable
+            });
+        }
+    });
+
+    $('#note-editable_' + this.id).css({
+        'font-size': '24px',
+        'text-align': 'center'
+    });
+};
+
+/**
+ * 
+ * @param {type} val
+ * @returns {undefined}
+ */
+TextEditor.prototype.setNewId = function (val) {
+    this.newId = val;
+};
+
+/**
+ * 
+ * @param {type} element
+ * @returns {Number|document.body@call;createTextRange.text.length}
+ */
+function getCaretCharacterOffsetWithin(element) {
+    var caretOffset = 0;
+    if (typeof window.getSelection != "undefined") {
+        var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
+        var textRange = document.selection.createRange();
+        var preCaretTextRange = document.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+}
+
+/**
+ * 
+ * @param {type} idEditor
+ * @returns {Number|document.body@call;createTextRange.text.length}
+ */
+function showCaretPos(idEditor) {
+//    var el = document.getElementsByClassName("note-editable")[0];
+    var el = document.getElementById(idEditor);
+    return getCaretCharacterOffsetWithin(el);
+}
+
+/**
+ * 
+ * @param {type} idEditor
+ * @param {type} caret
+ * @returns {getElementAtCaret.element|jQuery|$|@exp;_$|Window.$}
+ */
+function getElementAtCaret(idEditor, caret) {
+    var element;
+    var counter = 0;
+    var buffer;
+    var ps = $('p', "#" + idEditor + '.note-editable');
+    if (ps.length > 0) {
+        for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
+            element = $(ps[paragrafo]);
+            var aux = element.contents();
+            for (var i = 0; i < aux.length; i++) {
+                counter += $(aux[i]).text().length;
+                if (counter >= caret) {
+                    return element;
+                }
+            }
+        }
+    } else {
+        //criar p correctamente
+//        var p = document.createElement('p');
+//        
+//        $('.note-editable:first').append(p);
+//        
+//        $('p', '.note-editable:first')[0].focus();
+    }
+}
+
+/**
+ * 
+ * @param {type} editor
+ * @param {type} linha
+ * @param {type} coluna
+ * @returns {undefined}
+ */
+function setCaretAtEditor(editor, linha, coluna) {
+    var el = document.getElementById(editor);
+    var range = document.createRange();
+    var sel = window.getSelection();
+    range.setStart(el.childNodes[(linha % 2 === 0) ? linha : linha + 1], (linha === 0) ? coluna + 3 : coluna);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    el.focus();
+}
+
+// ----------------------  Exemplos de callbacks -------------------------
 //        airMode: true,
 //        onInit: function () {
 //            console.log('init', arguments, $('.summernote')[0] === this);
@@ -42,7 +162,7 @@ var TextEditor = function (id, user, cor, socketId, socket) {
 //            console.log(caret);
 //            console.log(getElementAtCaret(caret));
 //            console.log("before");
-        // console.log('keydown', arguments, $('.summernote')[0] === this);
+// console.log('keydown', arguments, $('.summernote')[0] === this);
 
 //        }
 //        onKeyup: function () {
@@ -66,17 +186,10 @@ var TextEditor = function (id, user, cor, socketId, socket) {
 //        onBeforeCommand: function () {
 //            console.log("before");
 //        },
-        onChange: function ($editable, sHtml) {
+//        onChange: function ($editable, sHtml) {
 //            console.log($editable, sHtml);
 //            console.log('onChange', arguments, $('.summernote')[0] === this);
-
-            socket.emit('msgappend', {
-                'parent': $("#" + this.id).parent().parent().attr('class').split(' ')[1],
-                'id': this.id,
-                'html': $('#' + id).code()
-            });
-
-        }//,
+//        },
 //        onImageUpload: function () {
 //            console.log('onImageUpload', arguments, $('.summernote')[0] === this);
 //        },
@@ -111,79 +224,4 @@ var TextEditor = function (id, user, cor, socketId, socket) {
 //        console.log('summernote.image.upload', arguments, $('.summernote')[0] === this);
 //    }).on('summernote.image.upload.error', function () {
 //        console.log('summernote.image.error', arguments, $('.summernote')[0] === this);
-    });
-
-
-    $('.note-editable').css('font-size', '18px');
-//    this.key = key;
-//    this.firepadRef = "";
-//    this.codeMirror = "";
-//    this.firepad = "";
-//    this.toolbarShow = false;
-};
-
-TextEditor.prototype.setNewId = function (val) {
-    this.newId = val;
-};
-
-function getCaretCharacterOffsetWithin(element) {
-    var caretOffset = 0;
-    if (typeof window.getSelection != "undefined") {
-        var range = window.getSelection().getRangeAt(0);
-        var preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(element);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length;
-    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
-        var textRange = document.selection.createRange();
-        var preCaretTextRange = document.body.createTextRange();
-        preCaretTextRange.moveToElementText(element);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.text.length;
-    }
-    return caretOffset;
-}
-
-function showCaretPos(idEditor) {
-//    var el = document.getElementsByClassName("note-editable")[0];
-    var el = document.getElementById(idEditor);
-    return getCaretCharacterOffsetWithin(el);
-}
-
-function getElementAtCaret(idEditor, caret) {
-    var element;
-    var counter = 0;
-    var buffer;
-    var ps = $('p', "#" + idEditor + '.note-editable');
-    if (ps.length > 0) {
-        for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
-            element = $(ps[paragrafo]);
-            var aux = element.contents();
-            for (var i = 0; i < aux.length; i++) {
-                counter += $(aux[i]).text().length;
-                if (counter >= caret) {
-                    return element;
-                }
-            }
-        }
-    } else {
-        //criar p correctamente
-//        var p = document.createElement('p');
-//        
-//        $('.note-editable:first').append(p);
-//        
-//        $('p', '.note-editable:first')[0].focus();
-    }
-}
-
-function setCaretAtEditor(editor, linha, coluna) {
-    var el = document.getElementById(editor);
-    var range = document.createRange();
-    var sel = window.getSelection();
-    range.setStart(el.childNodes[(linha % 2 === 0) ? linha : linha + 1], (linha === 0) ? coluna + 3 : coluna);
-    range.collapse(true);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    el.focus();
-}
 
