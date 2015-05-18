@@ -5569,15 +5569,15 @@
 //                    console.log("class do paragrafo != do socketid");
                     if (posP < sizeP || event.keyCode !== key.code.ENTER) {
                         if (lastKey == key.code.ENTER && controlEnter) {
-//                            console.log("Last Enter ok");
+                            console.log("Last Enter ok");
                             $(elem).removeClass(clasP).addClass(socketid);
                             lastKey = 0;
                             controlEnter = false;
                         } else if (lastKey == key.code.ENTER && !controlEnter) {
-//                            console.log("Last Enter carregado");
+                            console.log("Last Enter carregado");
                             controlEnter = true;
                         } else {
-//                            console.log("my pos menor que size paragrafo");
+                            console.log("my pos menor que size paragrafo");
                             event.preventDefault();
                         }
                     } else if (event.keyCode === key.code.ENTER) {

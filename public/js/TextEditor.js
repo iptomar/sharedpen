@@ -1,3 +1,4 @@
+
 var TextEditor = function (id, user, cor, socketId, socket) {
     this.id = id;
     this.newId;

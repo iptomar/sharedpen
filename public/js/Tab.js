@@ -17,7 +17,6 @@ var Element = function (id, elementType) {
     this.conteudo = "";
     this.elementType = elementType;
     this.drawObj;
-    //this.allClientCanvas={};
 };
 
 Element.prototype.createCanvasObj = function (tabClass, page, id) {

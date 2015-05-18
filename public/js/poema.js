@@ -1,3 +1,10 @@
+/**
+ * 
+ * @param {type} titulo
+ * @param {type} text
+ * @param {type} img
+ * @returns {Poema}
+ */
 var Poema = function (titulo, text, img) {
     this.titulo = titulo;
     this.text = text;
@@ -46,7 +53,7 @@ function AddPoema(livro, img) {
                 '<h1 class="text-center">AJUDA </h1>' +
                 '<p>';
         for (var i in ajudas) {
-            wordshelp += '<h3><span class="label label-info">' + ajudas[i] + '</span></h3>';
+            wordshelp += '<h3><span class="label label-info"' + ajudas[i] + '</span></h3>';
         }
         wordshelp += '</p>' +
                 '</div>';
@@ -55,7 +62,11 @@ function AddPoema(livro, img) {
     }
 }
 
-
+/**
+ * 
+ * @param {type} myfield
+ * @returns {undefined}
+ */
 function checkhits(myfield) {
     var hits = myfield.value.split(" ");
     for (var i = 0; i < hits.length; i++) {
