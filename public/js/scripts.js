@@ -22,7 +22,6 @@ var listaColor = [// array com as corres disponiveis para alterar o fundo
 var hash = {};
 var tabTest;
 var LivroPoemas = new Array();
-var backArray = ["home"];
 $(document).ready(function () {
 
     /**
@@ -888,29 +887,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".carregarLayout", function () {
-        var cenas = $(this).data("layout");
-        backArray.push(cenas);
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
-    });
-    
-    $("body").on("click", ".voltarLayout", function () {
-        window.alert(backArray[backArray.length -1] );
-        if(aux != "home"){
-            addLayoutToDiv("#contentor", $(this).data("folder"), aux, socket);
-            backArray.splice(0, 1);
-        }
-        else{
-            backArray.splice(0, 1);
-            $('#bt_PDF').css({'visibility': "hidden"});
-            $('#bt_PRE').css({'visibility': "hidden"});
-            LivroPoemas = new Array();
-            var data = {
-                folder: "html_Work_Models",
-                idtab: "",
-                idObj: ""
-            };
-            getFilesToFolder(socket, data);
-        }
     });
 
     //Mostrar os temas disponíveis para o poema
