@@ -798,7 +798,7 @@ $(document).ready(function () {
             case "html_Work_Models":
                 var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
                 for (var i = 0, max = data.length; i < max; i++) {
-                    allPages += '<div class="col-xs-4 col-sm-4 col-md-4  menuBar" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
+                    allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
                     allPages += '<figure class="image">';
                     allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
                     allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
@@ -885,7 +885,7 @@ $(document).ready(function () {
         });
     });
 
-    $("body").on("click", ".menuBar", function () {
+    $("body").on("click", ".carregarLayout", function () {
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
 
@@ -901,12 +901,12 @@ $(document).ready(function () {
 
     //Mostrar perfil do Utilizador
     $("body").on("click", 'a[href="#show-perfil"]', function () {
-        var data = {
-            folder: "showperfil",
-            idtab: "",
-            idObj: ""
-        };
-        getFilesToFolder(socket, data);
+//        var data = {
+//            folder: "showperfil",
+//            idtab: "",
+//            idObj: ""
+//        };
+//        getFilesToFolder(socket, data);
     });
     //Mostrar os imagens disponíveis para o tema
     $("body").on("click", '.tema-img', function () {
@@ -1253,6 +1253,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
  * @returns {undefined} */
 function ajustElements() {
     $("#contentor").css({
-        height: $(window).height() * 0.91
+        height: $(window).height() * 0.89
     });
 }

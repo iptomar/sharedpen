@@ -46,7 +46,7 @@ function AddPoema(livro, img) {
                 '<h1 class="text-center">AJUDA </h1>' +
                 '<p>';
         for (var i in ajudas) {
-            wordshelp += '<span class="badge">' + ajudas[i] + '</span> ';
+            wordshelp += '<h3><span class="label label-info">' + ajudas[i] + '</span></h3>';
         }
         wordshelp += '</p>' +
                 '</div>';
