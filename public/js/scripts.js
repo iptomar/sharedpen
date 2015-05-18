@@ -24,6 +24,7 @@ var tabTest;
 var LivroPoemas = new Array();
 var backArray = [""];
 var paginaAnterior = "home";
+var folderAnterior = "";
 $(document).ready(function () {
 
     /**
@@ -761,6 +762,7 @@ $(document).ready(function () {
     $("#homemenu").click(function () {
         backArray.push(paginaAnterior);
         paginaAnterior = "home";
+        folderAnterior = "html_Work_Models";
         $('#bt_PDF').css({'visibility': "hidden"});
         $('#bt_PRE').css({'visibility': "hidden"});
         LivroPoemas = new Array();
@@ -893,6 +895,7 @@ $(document).ready(function () {
      $("body").on("click", ".carregarLayout", function () {
         backArray.push(paginaAnterior);
         paginaAnterior = $(this).data("layout");
+        folderAnterior = $(this).data("folder");
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
     
@@ -911,7 +914,7 @@ $(document).ready(function () {
             getFilesToFolder(socket, data);
         }
         else if(aux!= "home" && aux!=""){
-            addLayoutToDiv("#contentor", $(this).data("folder"), aux, socket);
+            addLayoutToDiv("#contentor", folderAnterior, aux, socket);
             backArray.splice(backArray.length - 1, 1);
         }
     });
