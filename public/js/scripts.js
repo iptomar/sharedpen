@@ -710,10 +710,23 @@ $(document).ready(function () {
 
                 } else if (idDiv.indexOf("image") !== -1) {
 
+                    //console.log($(this)[0].outerHTML);
+                    // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
+
+                    // textPdf += '<img src="http://www.mensagenscomamor.com/images/interna/new/imagens_amor_2.jpg" >';
+                    console.log($(this)[0].src);
+
+                    socket.emit('user image', {
+                        imageData: $(this)[0].src
+                    });
+
+
+                    textPdf += '<img src="http://localhost:8080/imgupload/img.jpg" >';
+                    socket.emit('removeimage');
+
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
                     //teste imagem
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
-
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
@@ -722,6 +735,13 @@ $(document).ready(function () {
             });
             //alert("PDF Criado")
         });
+
+        // console.log(textPdf);
+        socket.emit("convertToPdf", textPdf, "livro.pdf");
+
+        // var doc =jsPDF();
+        //  doc.output("./Livro.pdf")
+
         console.log(textPdf);
 
 //PDF NO SERVIDOR
