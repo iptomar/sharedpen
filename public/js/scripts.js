@@ -925,7 +925,7 @@ $(document).ready(function () {
         folderArray.push($(this).data("folder"));
          
         currentPosition += 1;
-        console.log(backArray + " " + currentPosition);
+        //console.log(backArray + " " + currentPosition);
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
     
