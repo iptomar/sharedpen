@@ -48,6 +48,11 @@
     margin-right:23px;   
 }
 
+.avatar-mini{
+    width: 25px;
+    height: 25px;
+}
+
 .goback-logo{
     width:271px;
     height:48px;
