@@ -80,7 +80,7 @@ function AddPoema(livro, img) {
 		'"><a href="#page' +
 		(idNum) +
 		'" role="tab" data-toggle="tab">Poema ' +
-		(idNum) +
+		((idNum) +1)+
 		' <button type="button" id=' +
 		(idNum) +
 		' class="btn btn-warning btn-xs xpoema"><span>x</span></button></a>');
@@ -143,11 +143,10 @@ function AddPoema(livro, img) {
  */
 function checkhits(idTexto, myfield) {
 	var hits = myfield.split(" ");
-	LivroPoemas[id].setTexto(myfield);
-	console.log(LivroPoemas[id]);
-	$('.txtTab' + id + ' span').removeClass("label-success").addClass("label-info").css({"text-decoration": "none"});
+	LivroPoemas[idTexto].setTexto(myfield);
+	$('.txtTab' + idTexto + ' span').removeClass("label-success").addClass("label-info").css({"text-decoration": "none"});
 	for (var i = 0; i < hits.length; i++) {
-		$('.txtTab' + id + ' span').filter(function () {
+		$('.txtTab' + idTexto + ' span').filter(function () {
 			return $(this).text().toUpperCase()== hits[i].toUpperCase().trim() ;
 		}).removeClass("label-info").addClass("label-success").css({"text-decoration": "line-through"});
 	}
