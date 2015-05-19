@@ -23,7 +23,7 @@ var hash = {};
 var tabTest;
 var LivroPoemas = new Array();
 var backArray = ["home"];
-var folderArray =["html_Work_Models"];
+var folderArray = ["html_Work_Models"];
 var currentPosition = 1;
 $(document).ready(function () {
 
@@ -148,87 +148,92 @@ $(document).ready(function () {
         var iddd = $(this).attr('id');
         var tabNumber = iddd.match(/\d+/)[0];
         var thisId = "tab" + tabNumber + "-Mycanvas";
-        
-        if(e.which === 1 || e.handleObj.type == "touchstart" || e.handleObj.type == "touchmove" || e.handleObj.type == "touchend"){
-                var offset, type, x, y;
-                type = e.handleObj.type;
-                offset = $(this).offset();
-                e.offsetX = e.clientX - offset.left;
-                e.offsetY = e.clientY - offset.top;
-            
-            if(e.handleObj.type == "touchstart" || e.handleObj.type == "touchmove" || e.handleObj.type == "touchend"){
+
+        if (e.which === 1 ||
+                e.handleObj.type === "touchstart" ||
+                e.handleObj.type === "touchmove" ||
+                e.handleObj.type === "touchend") {
+            var offset, type, x, y;
+            type = e.handleObj.type;
+            offset = $(this).offset();
+            e.offsetX = e.clientX - offset.left;
+            e.offsetY = e.clientY - offset.top;
+
+            if (e.handleObj.type === "touchstart" ||
+                    e.handleObj.type === "touchmove" ||
+                    e.handleObj.type === "touchend") {
                 //para apanhar o erro no touchend
-               try {
-                x=  e.originalEvent.touches[0].pageX - offset.left;
-                y=  e.originalEvent.touches[0].pageY - offset.top;
-               }catch(err) {}
-                
-            }else{
+                try {
+                    x = e.originalEvent.touches[0].pageX - offset.left;
+                    y = e.originalEvent.touches[0].pageY - offset.top;
+                } catch (err) {
+                }
+
+            } else {
                 x = e.offsetX;
                 y = e.offsetY;
             }
 
-                var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
-                var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
-                cmv.draw(x, y, type, sizeCurs);
-                socket.emit('drawClick', {
-                    id: thisId,
-                    x: x,
-                    y: y,
-                    type: type,
-                    color: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getColor(),
-                    apagar: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagar(),
-                    sizeCursor: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor(),
-                    socket: socket.id,
-                    //imagem do meu canvas!!
-                    canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
-                    parent: $(this).parent().parent().parent().attr('class').split(' ')[1],
-                    apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo()
-                });
+            var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
+            var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
+            cmv.draw(x, y, type, sizeCurs);
+            socket.emit('drawClick', {
+                id: thisId,
+                x: x,
+                y: y,
+                type: type,
+                color: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getColor(),
+                apagar: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagar(),
+                sizeCursor: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor(),
+                socket: socket.id,
+                //imagem do meu canvas!!
+                canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
+                parent: $(this).parent().parent().parent().attr('class').split(' ')[1],
+                apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo()
+            });
 //                        alert('Left Mouse button pressed.');
-        }
-            else if (e.which === 2){
+        } else if (e.which === 2) {
 //                        alert('Middle Mouse button pressed.');
-            }
-             else if (e.which === 3 || e.handleObj.type == "doubletap"){
-                $(this).contextMenu({
-                    menuSelector: "#toolbar",
-                    menuSelected: function (invokedOn, selectedMenu) {
-                        switch (selectedMenu.data("tipo")) {
-                            case "corTudo":
-                                hash[idToll].modelo.arrayElem[thisId].drawObj.setApagarTudo(selectedMenu.data("cor"));
+        } else if (e.which === 3 ||
+                e.handleObj.type === "doubletap") {
+            $(this).contextMenu({
+                menuSelector: "#toolbar",
+                menuSelected: function (invokedOn, selectedMenu) {
+                    switch (selectedMenu.data("tipo")) {
+                        case "corTudo":
+                            hash[idToll].modelo.arrayElem[thisId].drawObj.setApagarTudo(selectedMenu.data("cor"));
 //                                alert(selectedMenu.data("cor"));
-                                break;
-                            case "cor":
-                                hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
+                            break;
+                        case "cor":
+                            hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
 //                                alert(selectedMenu.data("cor"));
-                                break;
-                            case "size":
-                                hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil(selectedMenu.data("size"));
+                            break;
+                        case "size":
+                            hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil(selectedMenu.data("size"));
 //                                alert(selectedMenu.data("size"));
-                                break;
-                            case "img":
-                                $("#LoadImageCanvas").click();
+                            break;
+                        case "img":
+                            $("#LoadImageCanvas").click();
 //                                alert(selectedMenu.data("tipo"));
-                                break;
-                            case "galeria":
-                                var vals = {
-                                    folder: "galeria",
-                                    idtab: idToll,
-                                    idObj: thisId
-                                };
-                                getFilesToFolder(socket, vals);
-                                break;
-                            default:
-                                break;
-                        }
+                            break;
+                        case "galeria":
+                            var vals = {
+                                folder: "galeria",
+                                idtab: idToll,
+                                idObj: thisId
+                            };
+                            getFilesToFolder(socket, vals);
+                            break;
+                        default:
+                            break;
                     }
-                });
-                hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
+                }
+            });
+            hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
 //                        alert('Right Mouse button pressed.');
-             }
+        }
 //                        alert('You have a strange Mouse!');
-        
+
 
     });
     $("body").on('change', '#LoadImageCanvas', function (e) {
@@ -783,7 +788,7 @@ $(document).ready(function () {
     $("#homemenu").click(function () {
         backArray.push("home");
         folderArray.push("html_Work_Models");
-        currentPosition +=1;
+        currentPosition += 1;
         console.log(backArray);
         $('#bt_PDF').css({'visibility': "hidden"});
         $('#bt_PRE').css({'visibility': "hidden"});
@@ -913,27 +918,27 @@ $(document).ready(function () {
             $("#divGaleria").css({"visibility": "hidden"});
         });
     });
-    
-     $("body").on("click", ".carregarLayout", function () {
-        if(currentPosition != backArray.length)
+
+    $("body").on("click", ".carregarLayout", function () {
+        if (currentPosition != backArray.length)
         {
-            backArray.splice(currentPosition, backArray.length - currentPosition);    
+            backArray.splice(currentPosition, backArray.length - currentPosition);
             folderArray.splice(currentPosition, folderArray.length - currentPosition);
         }
-          
-        backArray.push($(this).data("layout"));         
+
+        backArray.push($(this).data("layout"));
         folderArray.push($(this).data("folder"));
-         
+
         currentPosition += 1;
         //console.log(backArray + " " + currentPosition);
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
-    
+
     $("body").on("click", ".voltarLayout", function () {
-        if(currentPosition - 1 >= 1){
+        if (currentPosition - 1 >= 1) {
             currentPosition -= 1;
-            var aux = backArray[currentPosition- 1];
-            if(aux == "home"){
+            var aux = backArray[currentPosition - 1];
+            if (aux == "home") {
                 $('#bt_PDF').css({'visibility': "hidden"});
                 $('#bt_PRE').css({'visibility': "hidden"});
                 LivroPoemas = new Array();
@@ -944,11 +949,12 @@ $(document).ready(function () {
                 };
                 getFilesToFolder(socket, data);
             }
-            else if(aux!= "home" && aux!=""){
+            else if (aux != "home" && aux != "") {
                 addLayoutToDiv("#contentor", folderArray[currentPosition - 1], aux, socket);
             }
             console.log(backArray + " " + currentPosition);
-    }});
+        }
+    });
 
     //Mostrar os temas disponíveis para o poema
     $("body").on("click", 'a[href="#add-poema"]', function () {
@@ -1193,7 +1199,7 @@ function addtohash(idNum) {
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
-        
+
     });
     hash[tabTest.id] = tabTest;
 }

@@ -16,8 +16,18 @@ var TextEditor = function (id, user, cor, socketId, socket) {
     this.socket = socket;
     $('#' + id).summernote({
         lang: "pt-PT",
+        width: $("#" + this.id).width(), // set editor width
         height: $("#" + this.id).height(),
+        minHeight: $("#" + this.id).height(), // set minimum height of editor
+        maxHeight: $("#" + this.id).height(), // set maximum height of editor
         tabsize: 5,
+//        styleWithSpan: true, // style with span (Chrome and FF only)
+//        disableLinkTarget: true, // hide link Target Checkbox
+//        disableDragAndDrop: false, // disable drag and drop event
+        disableResizeEditor: true, // disable resizing editor
+//        shortcuts: false, // enable keyboard shortcuts
+//        placeholder: false, // enable placeholder text
+//        prettifyHtml: true, // enable prettifying html while toggling codeview
         idEdit: this.socketId,
         idinput: this.id,
         focus: true, //
@@ -29,27 +39,29 @@ var TextEditor = function (id, user, cor, socketId, socket) {
             ['fontsize', ['fontsize']],
             //['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            //['table', ['table']],
-            ['insert', ['link', 'picture', 'hr']]//,
+                    //['height', ['height']],
+                    //['table', ['table']],
+                    //['insert', ['link', 'picture', 'hr']]//,
                     //['view', ['fullscreen', 'codeview']],
                     //['help', ['help']]
         ],
         onChange: function ($editable, sHtml) {
 //            console.log($editable, sHtml);
 //            console.log('onChange', arguments, $('.summernote')[0] === this);
-
-            socket.emit('msgappend', {
-                'parent': $("#" + this.id).parent().parent().attr('class').split(' ')[1],
-                'id': this.id,
-                'html': $editable
-            });
+            if ((this.id).indexOf("Poema") === -1) {                
+                socket.emit('msgappend', {
+                    'parent': $("#" + this.id).parent().parent().attr('class').split(' ')[1],
+                    'id': this.id,
+                    'html': $editable
+                });  
+            }
         }
     });
-
+//    alert($('#note-editable_' + this.id).parent().attr("id"));
+//    alert($("#" + this.id).css('font-family'));
     $('#note-editable_' + this.id).css({
-        'font-size': '24px',
-        'text-align': 'center'
+        'font-size': $("#" + this.id).css('font-size'),
+        'text-align': $("#" + this.id).css('text-align')
     });
 };
 

@@ -14,15 +14,11 @@ canvas{
     padding: 20px;
     margin: auto;
 }
-/*
-.tabpage > div {
-    height: 40px;
-    text-align: center;
-    font-size: xx-large;
-    margin-top: 50px;
-}*/
 
 .tabpage > .titulo {
+    font-size: 32px;
+    text-align: center;
+    width: 200mm;
     height: 150px;
     text-align: center;
     margin-top: 50px;
@@ -30,8 +26,8 @@ canvas{
 
 
 .tabpage > .conteudo {
-    width: 100%;
-    height: 100%;
+    width: 200mm;
+    height: 275mm;
 } 
 
 .tabpage > img {
@@ -47,19 +43,12 @@ canvas{
     box-shadow:         inset 0 0 5px #000000;
 }
 
-.tabpage2 > textarea{
-    width: 95%; 
-    margin:2.5%; 
+.tabpage2 > div {
+    width: 200mm;
+    height: 250px;
+    border: 1px solid black;
     text-align: center; 
     font-family: 'Helvetica', Arial, Lucida Grande, sans-serif;
-}
-
-.tabpage2 > textarea {
-    width: 100%;
-    height: 400px;
-    margin-top: 5%;
-    resize: none;
-    border: 1px solid black;
 }
 
 .tabpage2 > img {
