@@ -22,9 +22,9 @@ var listaColor = [// array com as corres disponiveis para alterar o fundo
 var hash = {};
 var tabTest;
 var LivroPoemas = new Array();
-var backArray = [""];
-var paginaAnterior = "home";
-var folderAnterior = "";
+var backArray = ["home"];
+var folderArray =["html_Work_Models"];
+var currentPosition = 1;
 $(document).ready(function () {
 
     /**
@@ -771,9 +771,10 @@ $(document).ready(function () {
     });
 
     $("#homemenu").click(function () {
-        backArray.push(paginaAnterior);
-        paginaAnterior = "home";
-        folderAnterior = "html_Work_Models";
+        backArray.push("home");
+        folderArray.push("html_Work_Models");
+        currentPosition +=1;
+        console.log(backArray);
         $('#bt_PDF').css({'visibility': "hidden"});
         $('#bt_PRE').css({'visibility': "hidden"});
         LivroPoemas = new Array();
@@ -904,31 +905,40 @@ $(document).ready(function () {
     });
     
      $("body").on("click", ".carregarLayout", function () {
-        backArray.push(paginaAnterior);
-        paginaAnterior = $(this).data("layout");
-        folderAnterior = $(this).data("folder");
+        if(currentPosition != backArray.length)
+        {
+            backArray.splice(currentPosition, backArray.length - currentPosition);    
+            folderArray.splice(currentPosition, folderArray.length - currentPosition);
+        }
+          
+        backArray.push($(this).data("layout"));         
+        folderArray.push($(this).data("folder"));
+         
+        currentPosition += 1;
+        console.log(backArray + " " + currentPosition);
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
     
     $("body").on("click", ".voltarLayout", function () {
-        var aux = backArray[backArray.length - 1];
-        if(aux == "home"){
-            backArray.splice(backArray.length - 1, 1);
-            $('#bt_PDF').css({'visibility': "hidden"});
-            $('#bt_PRE').css({'visibility': "hidden"});
-            LivroPoemas = new Array();
-            var data = {
-                folder: "html_Work_Models",
-                idtab: "",
-                idObj: ""
-            };
-            getFilesToFolder(socket, data);
-        }
-        else if(aux!= "home" && aux!=""){
-            addLayoutToDiv("#contentor", folderAnterior, aux, socket);
-            backArray.splice(backArray.length - 1, 1);
-        }
-    });
+        if(currentPosition - 1 >= 1){
+            currentPosition -= 1;
+            var aux = backArray[currentPosition- 1];
+            if(aux == "home"){
+                $('#bt_PDF').css({'visibility': "hidden"});
+                $('#bt_PRE').css({'visibility': "hidden"});
+                LivroPoemas = new Array();
+                var data = {
+                    folder: "html_Work_Models",
+                    idtab: "",
+                    idObj: ""
+                };
+                getFilesToFolder(socket, data);
+            }
+            else if(aux!= "home" && aux!=""){
+                addLayoutToDiv("#contentor", folderArray[currentPosition - 1], aux, socket);
+            }
+            console.log(backArray + " " + currentPosition);
+    }});
 
     //Mostrar os temas disponíveis para o poema
     $("body").on("click", 'a[href="#add-poema"]', function () {
