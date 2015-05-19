@@ -664,12 +664,12 @@ $(document).ready(function () {
             reader.readAsDataURL(file);
         });
     });
-    
+
     // recebe a imagem e coloca-a de acordo com o id recebido
     socket.on('user image', function (data) {
         $("body").find('#' + data.id).attr("src", data.imageData);
     });
-    
+
     /**
      * Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -692,8 +692,8 @@ $(document).ready(function () {
     //************************************************
     $('#bt_PDF').css({'visibility': "hidden"});
     $('#bt_PRE').css({'visibility': "hidden"});
-    
-    
+
+
     // *******************************************************************
     // Botao do pdf, Botao do Pre-visualizar
     // *******************************************************************
@@ -704,36 +704,16 @@ $(document).ready(function () {
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
                 if (idDiv.indexOf("input") !== -1) {
-                    
+
                     var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
                     textPdf += a.txtObjEditor.getTextEditor();
-                    
+
                 } else if (idDiv.indexOf("image") !== -1) {
-<<<<<<< HEAD
-                    
-                    //console.log($(this)[0].outerHTML);
-                   // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-                    
-        // textPdf += '<img src="http://www.mensagenscomamor.com/images/interna/new/imagens_amor_2.jpg" >';
-                      console.log($(this)[0].src);
-                    
-                    socket.emit('user image', {
-                            imageData : $(this)[0].src
-                            });
-                                
-                 
-                    textPdf += '<img src="http://localhost:8080/imgupload/img.jpg" >';
-                     socket.emit('removeimage');
-                    
-                    
-=======
+
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-                    
                     //teste imagem
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
 
-
->>>>>>> 357cd97a22abdf1d61038190bd16a39638f3629f
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
@@ -742,21 +722,12 @@ $(document).ready(function () {
             });
             //alert("PDF Criado")
         });
-<<<<<<< HEAD
-        
-       // console.log(textPdf);
-        socket.emit("convertToPdf", textPdf, "livro.pdf");
-        
-     // var doc =jsPDF();
-      //  doc.output("./Livro.pdf")
-        
-=======
         console.log(textPdf);
-        
+
 //PDF NO SERVIDOR
         socket.emit("convertToPdf", textPdf, "Livro.pdf");
 
-        
+
 // PDF NO CLIENTE
 //       var a = getArrayElementObj(allTextEditor, "tab1-input1");
 //        alert(a.txtObjEditor.getTextEditor());
@@ -778,7 +749,6 @@ $(document).ready(function () {
 //        } else {
 //            doc.output("dataurlnewwindow");
 //        }
->>>>>>> 357cd97a22abdf1d61038190bd16a39638f3629f
     });
     // *******************************************************************
     // botao chat
