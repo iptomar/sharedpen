@@ -143,20 +143,31 @@ $(document).ready(function () {
     /**
      * Eventos do mouse para desenhar no canvas
      */
-    $("body").on('mousedown mousemove mouseup', "canvas", function (e) {
+    $("body").on('click mousedown mouseup mousemove mouseleave mouseout touchstart touchmove touchend touchcancel', "canvas", function (e) {
         var idToll = "." + $(this).parent().parent().parent().attr('class').split(' ')[1];
         var iddd = $(this).attr('id');
         var tabNumber = iddd.match(/\d+/)[0];
         var thisId = "tab" + tabNumber + "-Mycanvas";
-        switch (e.which) {
-            case 1:
+        
+        if(e.which === 1 || e.handleObj.type == "touchstart" || e.handleObj.type == "touchmove" || e.handleObj.type == "touchend"){
                 var offset, type, x, y;
                 type = e.handleObj.type;
                 offset = $(this).offset();
                 e.offsetX = e.clientX - offset.left;
                 e.offsetY = e.clientY - offset.top;
+            
+            if(e.handleObj.type == "touchstart" || e.handleObj.type == "touchmove" || e.handleObj.type == "touchend"){
+                //para apanhar o erro no touchend
+               try {
+                x=  e.originalEvent.touches[0].pageX - offset.left;
+                y=  e.originalEvent.touches[0].pageY - offset.top;
+               }catch(err) {}
+                
+            }else{
                 x = e.offsetX;
                 y = e.offsetY;
+            }
+
                 var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
                 var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
                 cmv.draw(x, y, type, sizeCurs);
@@ -175,11 +186,11 @@ $(document).ready(function () {
                     apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo()
                 });
 //                        alert('Left Mouse button pressed.');
-                break;
-            case 2:
+        }
+            else if (e.which === 2){
 //                        alert('Middle Mouse button pressed.');
-                break;
-            case 3:
+            }
+             else if (e.which === 3 || e.handleObj.type == "doubletap"){
                 $(this).contextMenu({
                     menuSelector: "#toolbar",
                     menuSelected: function (invokedOn, selectedMenu) {
@@ -215,10 +226,9 @@ $(document).ready(function () {
                 });
                 hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
 //                        alert('Right Mouse button pressed.');
-                break;
-            default:
+             }
 //                        alert('You have a strange Mouse!');
-        }
+        
 
     });
     $("body").on('change', '#LoadImageCanvas', function (e) {
@@ -1183,6 +1193,7 @@ function addtohash(idNum) {
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
+        
     });
     hash[tabTest.id] = tabTest;
 }

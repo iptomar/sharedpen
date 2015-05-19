@@ -91,6 +91,7 @@ Draw.prototype.getCanvas = function () {
 
 
 Draw.prototype.draw = function (x, y, type,sizecur) {
+
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     if (!this.apagar) {
@@ -110,11 +111,11 @@ Draw.prototype.draw = function (x, y, type,sizecur) {
 };
 
 Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
-    if (type === "mousedown") {
+    if (type === "mousedown" || type === "touchstart") {
         ctx.beginPath();
         ctx.globalCompositeOperation = opt;
         ctx.moveTo(x, y);
-    } else if (type === "mousemove") {
+    } else if (type === "mousemove" || type === "touchmove") {
         ctx.lineTo(x, y);
         ctx.stroke();
     } else {
@@ -122,13 +123,13 @@ Draw.prototype.paint = function (canvas2, ctx, x, y, type, opt) {
     }
 };
 
-Draw.prototype.paintThis = function (ctx, x, y, type, opt) {
-    if (type === "mousedown") {
+Draw.prototype.paintThis = function (ctx, x, y, type, opt) {     
+    if (type === "mousedown" || type === "touchstart") {   
         ctx.beginPath();
         ctx.globalCompositeOperation = opt;
         this.flag = true;
         ctx.moveTo(x, y);
-    } else if (type === "mousemove" && this.flag) {
+    } else if (( type === "mousemove" ||type === "touchmove"  ) && this.flag) {
         ctx.lineTo(x, y);
         ctx.stroke();
     } else {
