@@ -92,7 +92,7 @@ function AddPoema(livro, img) {
 		'</div>');
 
 
-	$(".txtTab" + idNum).append('<div id="txtText' + idNum + '" class="altura-poema"></div>');
+	$(".txtTab" + idNum).append('<div id="txtPoema' + idNum + '" class="altura-poema"></div>');
 
 	$(".txtTab" + idNum).children('div').each(function () {
 
@@ -126,7 +126,7 @@ function AddPoema(livro, img) {
 	}
 
 	//evento que coloca 'a escuta o texto introduzido no editor 
-	$("body").find("#note-editable_txtText" + idNum).keyup(function (event) {
+	$("body").find("#note-editable_txtPoema" + idNum).keyup(function (event) {
 		checkhits(idNum, $(this).text());
 	});
 
