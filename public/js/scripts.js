@@ -709,7 +709,7 @@ $(document).ready(function () {
                     textPdf += a.txtObjEditor.getTextEditor();
                     
                 } else if (idDiv.indexOf("image") !== -1) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
                     
                     //console.log($(this)[0].outerHTML);
                    // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
@@ -726,14 +726,14 @@ $(document).ready(function () {
                      socket.emit('removeimage');
                     
                     
-=======
+//=======
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
                     
                     //teste imagem
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
 
 
->>>>>>> 357cd97a22abdf1d61038190bd16a39638f3629f
+//>>>>>>> 357cd97a22abdf1d61038190bd16a39638f3629f
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
@@ -742,7 +742,7 @@ $(document).ready(function () {
             });
             //alert("PDF Criado")
         });
-<<<<<<< HEAD
+//<<<<<<< HEAD
         
        // console.log(textPdf);
         socket.emit("convertToPdf", textPdf, "livro.pdf");
@@ -750,7 +750,7 @@ $(document).ready(function () {
      // var doc =jsPDF();
       //  doc.output("./Livro.pdf")
         
-=======
+//=======
         console.log(textPdf);
         
 //PDF NO SERVIDOR
@@ -778,7 +778,7 @@ $(document).ready(function () {
 //        } else {
 //            doc.output("dataurlnewwindow");
 //        }
->>>>>>> 357cd97a22abdf1d61038190bd16a39638f3629f
+//>>>>>>> 357cd97a22abdf1d61038190bd16a39638f3629f
     });
     // *******************************************************************
     // botao chat
