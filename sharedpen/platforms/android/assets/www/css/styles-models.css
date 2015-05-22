@@ -1,0 +1,90 @@
+canvas{
+    position: absolute;
+}
+#canvasdr{
+    position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.tabpage {
+    border: 1px solid black;
+    width: 210mm;
+    height: 297mm;
+    padding: 20px;
+    margin: auto;
+}
+
+.tabpage > .titulo {
+    font-size: 32px;
+    text-align: center;
+    width: 200mm;
+    height: 150px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+.tabpage > .conteudo {
+    width: 200mm;
+    height: 275mm;
+} 
+
+.tabpage > img {
+    height: 50%;
+    margin-top: 50px;
+}
+
+.tabpage > div, .tabpage > img, .tabpagedraw > input {
+    width: 100%;
+    border: 1px solid black;                
+    -moz-box-shadow:    inset 0 0 5px #000000;
+    -webkit-box-shadow: inset 0 0 5px #000000;
+    box-shadow:         inset 0 0 5px #000000;
+}
+
+.tabpage2 > div {
+    width: 200mm;
+    height: 250px;
+    border: 1px solid black;
+    text-align: center; 
+    font-family: 'Helvetica', Arial, Lucida Grande, sans-serif;
+}
+
+.tabpage2 > img {
+    margin: auto
+}		
+
+.tabpagedraw {
+    border: 1px solid black;
+    width: 210mm;
+    height: 297mm;
+    padding: 20px;
+    margin: auto;
+}
+.tabpagedraw > input {
+    height: 40px;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 50px;
+}
+.tabpagedraw > canvas {
+    border: 1px solid black;
+    width: 100%;
+    height: 700px;
+    margin-top: 30px;
+}
+
+input[type=file] {
+    display: none;
+}
+
+.dragandrophandler {
+    border:2px dotted #0B85A1;
+    width:400px;
+    color:#92AAB0;
+    text-align:left;vertical-align:middle;
+    padding: 10px 10px 10px 10px;
+    margin-bottom:10px;
+    font-size:200%;
+}

@@ -1,0 +1,91 @@
+.navbar-margin-top-bottom{
+    margin-top:2px;
+    margin-bottom:2px;
+}
+
+.margin-top-bottom{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.table-margin-top-bottom{
+    margin-top: 35px;
+    margin-bottom:35px;
+}
+
+.btn-xlg,
+.btn-group-xlg > .btn {
+    padding: 30px 16px;
+    font-size: 30px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+
+.btn-round,
+.btn-group-round > .btn {
+    border-radius: 50px;
+}
+
+.h1{
+    color:darkslateblue;  
+}
+
+.select-table-cell{
+    display:table-cell;
+    width:49%;
+    float:left;
+}
+
+.div-half-max-width{
+    display:table-cell;
+    max-width: 49%;
+    float:left;
+    margin-right: 50px;
+}
+
+
+.select-margin-right{
+    margin-right:23px;   
+}
+
+.avatar-mini{
+    width: 25px;
+    height: 25px;
+}
+
+.goback-logo{
+    width:271px;
+    height:48px;
+    margin-top:3px;
+}
+
+.grey-select{
+    color:darkgrey;   
+}
+
+.avatar-Image{
+    width: 300px;
+    height: 300px;
+}
+
+.dotted-div{
+    border-style: dotted;
+    border-color:#0B85A1;
+    border-width: 2px; 
+}
+
+.margin-top-50{
+    margin-top:50px;   
+}
+
+#Contacto, Password, #tipoUtilizador {
+    width: 250px;  
+}
+
+#Password {
+ margin-top: 10px;   
+}
+
+.modal-backdrop {
+    z-index: 0;
+}

@@ -1,3 +1,10 @@
 node_modules
 nbproject
 Proposta/logo/desktop.ini
+*.class
+*.apk
+
+platforms/android/assets/www
+platforms/android/bin/
+platforms/android/gen/
+platforms/android/res/xml/config.xml
