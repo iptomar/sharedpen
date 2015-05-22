@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /*
        Licensed to the Apache Software Foundation (ASF) under one
        or more contributor license agreements.  See the NOTICE file
@@ -17,9 +15,20 @@
        KIND, either express or implied.  See the License for the
        specific language governing permissions and limitations
        under the License.
-*/
+ */
 
-// Coho updates this line:
-var VERSION = "4.0.0";
+package com.ipt.sharedpen;
 
-console.log(VERSION);
+import android.os.Bundle;
+import org.apache.cordova.*;
+
+public class MainActivity extends CordovaActivity
+{
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        // Set by <content src="index.html" /> in config.xml
+        loadUrl(launchUrl);
+    }
+}
