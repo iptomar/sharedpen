@@ -45,7 +45,8 @@ $(document).ready(function () {
         "showMethod": "fadeIn"
     };
     // cria a ligação com o servidor que disponibiliza o socket
-    socket = io.connect('http://185.15.22.55:8080');
+//    socket = io.connect('http://185.15.22.55:8080');
+    socket = io.connect(window.location.href);
     // Carrega o dropdown com a liosta das cores
     $('#colorpicker').addAllColors(listaColor);
     // coloca o cursor para introduzir o nome do utilizador
