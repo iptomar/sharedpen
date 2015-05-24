@@ -1,11 +1,3 @@
-CREATE USER 'nelsonmpg'@'localhost' IDENTIFIED BY 'sharedpen';
-CREATE USER 'nelsonmpg'@'%' IDENTIFIED BY 'sharedpen';
-
-GRANT ALL PRIVILEGES ON * . * TO 'nelsonmpg'@'localhost';
-GRANT ALL PRIVILEGES ON * . * TO 'nelsonmpg'@'%';
-
------------------------------------------------------------------------------------------------
-
 create database sharedpen;
 
 CREATE USER 'sharedpen'@'%' IDENTIFIED BY 'sharedpen';
