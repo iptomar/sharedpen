@@ -451,38 +451,67 @@ $(document).ready(function () {
     $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
-        //cria uma nova tab e adaciona-a ao array
-        Addtab(modelo, idNum);
-        $(".txtTab" + idNum).load("./html_models/" + modelo, function () {
-            refactorTab(modelo, idNum);
-            addtohash(idNum);
-            socket.emit('TabsChanged', {
-                //remover ou adicionar
-                op: "adicionar",
-                //tab
-                tab: tabTest,
-                //posiçao
-                pos: (Object.keys(hash).length),
-                //modelo
-                modelo: modelo,
-                //numero de elementos do modelo
-                noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length
-            });
-            $("body").find("#divchangemodel").remove();
-            // Foco na ultima pagina adicionada
-            $("body").find("a[href^='#page']:last").click();
+        $.ajax({
+            type: "get",
+            url: "/getCodModel",
+            data: {
+                model: modelo
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                Addtab(modelo, idNum);
+                $(".txtTab" + idNum).html(data[0].htmltext);
+                refactorTab(modelo, idNum);
+                addtohash(idNum);
+                socket.emit('TabsChanged', {
+                    //remover ou adicionar
+                    op: "adicionar",
+                    //tab
+                    tab: tabTest,
+                    //posiçao
+                    pos: (Object.keys(hash).length),
+                    //modelo
+                    modelo: modelo + ".html",
+                    //numero de elementos do modelo
+                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length
+                });
+                $("body").find("#divchangemodel").remove();
+                // Foco na ultima pagina adicionada
+                $("body").find("a[href^='#page']:last").click();
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
         });
     });
     /**
      * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
      */
     $("body").on('click', 'a[href="#add-page"]', function () {
-        var data = {
-            folder: "html_models",
-            idtab: "",
-            idObj: ""
-        };
-        getFilesToFolder(socket, data);
+        $.ajax({
+            type: "GET",
+            url: "/getModelsPage",
+            dataType: 'json',
+            success: function (data) {
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    htmlModel += "<figure>" +
+                            "<img class='btnmodels btnmodels-style' alt='' src='" +
+                            (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                            "' data-model='" + data[i].nome + "'/>" +
+                            "<figcaption> " + data[i].nome + " </figcaption>" +
+                            "</figure>";
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
     });
     /**
      * Funçao que remove tabs
@@ -877,18 +906,6 @@ $(document).ready(function () {
                 allPages += '</div>';
                 $("#contentor").html(allPages);
                 break;
-            case "html_models":
-                var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlModel += "<figure>" +
-                            "<img class='btnmodels btnmodels-style' alt='' src='../img/" + data[i].split(".")[0] + ".png' data-model='" + data[i] + "'/>" +
-                            "<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
-                            "</figure>";
-                }
-                htmlModel += "</div></div></div></div>";
-                $("body").append(htmlModel);
-                break;
             case "temaspoemas":
                 //Temas para os poemas
                 var htmlModel = "<div id='divchangemodel'>" +
@@ -1048,7 +1065,7 @@ $(window).resize(function () {
 // Code taken from MatthewCrumley (http://stackoverflow.com/a/934925/298479)
 /**
  *
-
+ 
  * @param {type} img
  * @returns {unresolved} */
 function getBase64Image(img) {
@@ -1072,7 +1089,7 @@ function getBase64Image(img) {
 
 /**
  *
-
+ 
  * @param {type} tabToCast
  * @returns {Object|castTab.tab} */
 function castTab(tabToCast) {
@@ -1090,7 +1107,7 @@ function castTab(tabToCast) {
 
 /**
  *
-
+ 
  * @param {type} sckt
  * @param {type} data
  * @returns {undefined} */
@@ -1100,55 +1117,68 @@ function getFilesToFolder(sckt, data) {
 
 /**
  * Poe o modelo no Html
-
+ 
  * @param {type} i
  * @param {type} key
  * @returns {undefined} */
 function updateTab(i, key) {
-    $(".txtTab" + i).load("./html_models/" + hash[key].nomeModelo, function () {
-        refactorTab(hash[key].nomeModelo, i);
-        for (var elemento in hash[key].modelo.arrayElem) {
-            if (hash[key].modelo.arrayElem[elemento].elementType === "IMG") {
-                $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
+    $.ajax({
+        type: "get",
+        url: "/getCodModel",
+        data: {
+            model: hash[key].nomeModelo
+        },
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (data) {
+            $(".txtTab" + i).append(data[0].htmltext);
+            refactorTab(hash[key].nomeModelo, i);
+            for (var elemento in hash[key].modelo.arrayElem) {
+                if (hash[key].modelo.arrayElem[elemento].elementType === "IMG") {
+                    $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
 
-            } else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
-                //cria o seu canvas!
-                hash[key].modelo.arrayElem[elemento].drawObj.init();
+                } else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
+                    //cria o seu canvas!
+                    hash[key].modelo.arrayElem[elemento].drawObj.init();
 
-                //se o array nao estiver vazio (se nao tiver clientes canvas)
-                if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== []) {
-                    for (var item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
-                        //cria as canvas dos outros clientes
-                        hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
-                        var dr = $("#" + elemento + "" + item)[0];
-                        //cria imagem
-                        var img = document.createElement('img');
-                        img.src = hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage[item];
-                        //vai buscar o context
-                        var ctx = dr.getContext('2d');
-                        //pinta a imagem
-                        ctx.drawImage(img, 0, 0);
+                    //se o array nao estiver vazio (se nao tiver clientes canvas)
+                    if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== []) {
+                        for (var item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
+                            //cria as canvas dos outros clientes
+                            hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
+                            var dr = $("#" + elemento + "" + item)[0];
+                            //cria imagem
+                            var img = document.createElement('img');
+                            img.src = hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage[item];
+                            //vai buscar o context
+                            var ctx = dr.getContext('2d');
+                            //pinta a imagem
+                            ctx.drawImage(img, 0, 0);
 
+                        }
+                        //se tiver backgorund desenha o
+                        if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== "") {
+                            var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
+                            hash[key].modelo.arrayElem[elemento].drawObj.imageCanvas(imgg);
+                        }
                     }
-                    //se tiver backgorund desenha o
-                    if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== "") {
-                        var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
-                        hash[key].modelo.arrayElem[elemento].drawObj.imageCanvas(imgg);
+                } else {
+                    if ($("#" + elemento).attr('class').match('editable')) {
+                        $("#" + elemento).addClass(elemento);
+                        var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
+                        var editTxt = {
+                            id: elemento,
+                            txtObjEditor: txtedit
+                        };
+                        allTextEditor.push(editTxt);
+                        txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
                     }
+                    $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                 }
-            } else {
-                if ($("#" + elemento).attr('class').match('editable')) {
-                    $("#" + elemento).addClass(elemento);
-                    var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
-                    var editTxt = {
-                        id: elemento,
-                        txtObjEditor: txtedit
-                    };
-                    allTextEditor.push(editTxt);
-                    txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
-                }
-                $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
             }
+        },
+        error: function (error) {
+            console.log(JSON.stringify(error));
         }
     });
 }
@@ -1182,7 +1212,7 @@ function Addtab(html, idNum) {
 /**
  * Função que carrega o modelo para a tab e altera os id's de toda a tab
  * para id's relacionados com o numero da tab
-
+ 
  * @param {type} html   pagina html a ser carregada
  * @param {type} idNum  numeor da tab para alterar os id's da tab
  * @returns {undefined} */
@@ -1243,7 +1273,7 @@ function addtohash(idNum) {
 
 /**
  * Remove a tab correspondente ao <li>
-
+ 
  * @param {type} liElem
  * @returns {undefined} */
 function removeTab(liElem) {
@@ -1295,7 +1325,7 @@ function removeTab(liElem) {
 
 /**
  * Função para reorganizar o hash
-
+ 
  * @param {type} liElem
  * @returns {undefined} */
 function refactorHash(liElem) {
@@ -1333,7 +1363,7 @@ function refactorHash(liElem) {
 /**
  * Função que recebe um array a uma chave e devolve o objeto dessa posição se
  * existir e não nulkl
-
+ 
  * @param {type} array  array para a pesquisa
  * @param {type} id     valor a ser encontrado
  * @returns {value} */
@@ -1349,7 +1379,7 @@ function getArrayElementObj(array, id) {
 
 /**
  *
-
+ 
  * @param {type} local
  * @param {type} folder
  * @param {type} layout
@@ -1374,7 +1404,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 
 /**
  * Ajusta os elementos do ecram principal
-
+ 
  * @returns {undefined} */
 function ajustElements() {
     $("#contentor").css({
