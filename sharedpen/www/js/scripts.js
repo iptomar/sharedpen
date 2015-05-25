@@ -1019,6 +1019,17 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
+    
+        //adicionar palavra 'a ajuda do poema
+    $("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function(){ 
+        var idpage = $(this).parent().parent().parent().attr('id');
+        var text = prompt("Adicione um palavra de ajuda para este poema", "");
+        if (text.length > 0){
+            LivroPoemas[idpage.substring(4)].getAjuda()[LivroPoemas[idpage.substring(4)].getAjuda().length] = text;
+            $(this).before('<span class="label label-info" style="float:left; margin: 3px;">' + text + '</span>');
+        }       
+});
+
 
     //Mostrar perfil do Utilizador
     $("body").on("click", 'a[href="#show-perfil"]', function () {

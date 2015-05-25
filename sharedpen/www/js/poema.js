@@ -9,7 +9,7 @@ var Poema = function (titulo, text, img) {
 	this.titulo = titulo;
 	this.text = text;
 	this.img = img;
-	this.palavras = ["Banana", "Orange", "Apple", "Mango"];
+	this.palavras = ["+"];
 };
 
 /**
@@ -135,6 +135,10 @@ function AddPoema(livro, img) {
 		"background-size": "100% 100%",
 		"background-repeat": "no-repeat"
 	});
+    
+    $('#page' + idNum + ' > div.help.col-xs-4.col-sm-4.col-md-4 > h3 > span').filter(function () {
+			return $(this).text() == "+";
+		}).addClass("image");
 
 }
 
