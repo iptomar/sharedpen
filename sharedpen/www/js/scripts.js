@@ -449,7 +449,7 @@ $(document).ready(function () {
      * Evento que determina qual e o modelo escolhido
      */
 
-            $("body").on('click', ".btnmodels", function () {
+    $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -1102,6 +1102,53 @@ $(document).ready(function () {
 
     $("body").on("click", ".selectModelo", function () {
         $("body").find("#ModeloSelect").attr("src", $(this).attr("src"));
+        $("body").find("#ModeloSelect").attr("data-model", $(this).data("model"));
+    });
+
+    $("body").on("click", "#guardarModeloLivro", function () {
+        var nomeProj = $("body").find("#nomeProjeto").val();
+        var modelProj = $("body").find("#ModeloSelect").attr("data-model");
+        if (nomeProj.trim() === "") {
+            alert("Introduza um nome para o Projeto.");
+            return;
+        }
+        if (modelProj.trim().length === 0) {
+            alert("Selecione um modelo para as paginas do livro.");
+            return;
+        }
+        var textAjuda = $("body").find("#textAjudaLivro").html();
+        var fontName = $("body").find(".textResultado").css("font-family");
+        fontName = fontName.replace("'", '');
+        fontName = fontName.replace("'", '');
+        var formatText = JSON.stringify({
+            "font-family": fontName,
+            "font-size": $("body").find(".textResultado").css("font-size"),
+            "text-align": $("body").find(".textResultado").css("text-align"),
+            "color": $("body").find(".textResultado").css("color"),
+            "background-color": $("body").find(".textResultado").css("background-color")
+        });
+
+        $("body").append(wait);
+        $.ajax({
+            type: "POST",
+            url: "/saveModelLivro",
+            data: {
+                nomeProjeto: nomeProj,
+                nomeModelo: modelProj,
+                textHtml: textAjuda,
+                stylesLivro: formatText
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert(data);
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+//                alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                console.log(JSON.stringify(error));
+            }
+        });
+
     });
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
