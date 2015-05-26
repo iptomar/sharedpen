@@ -45,7 +45,7 @@ $(document).ready(function () {
         "showMethod": "fadeIn"
     };
     // cria a ligação com o servidor que disponibiliza o socket
-//    socket = io.connect('http://185.15.22.55:8080');
+    //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
     // Carrega o dropdown com a liosta das cores
     $('#colorpicker').addAllColors(listaColor);
@@ -192,9 +192,9 @@ $(document).ready(function () {
                 parent: $(this).parent().parent().parent().attr('class').split(' ')[1],
                 apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo()
             });
-//                        alert('Left Mouse button pressed.');
+            //                        alert('Left Mouse button pressed.');
         } else if (e.which === 2) {
-//                        alert('Middle Mouse button pressed.');
+            //                        alert('Middle Mouse button pressed.');
         } else if (e.which === 3 ||
                 e.handleObj.type === "doubletap") {
             $(this).contextMenu({
@@ -203,19 +203,19 @@ $(document).ready(function () {
                     switch (selectedMenu.data("tipo")) {
                         case "corTudo":
                             hash[idToll].modelo.arrayElem[thisId].drawObj.setApagarTudo(selectedMenu.data("cor"));
-//                                alert(selectedMenu.data("cor"));
+                            //                                alert(selectedMenu.data("cor"));
                             break;
                         case "cor":
                             hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
-//                                alert(selectedMenu.data("cor"));
+                            //                                alert(selectedMenu.data("cor"));
                             break;
                         case "size":
                             hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil(selectedMenu.data("size"));
-//                                alert(selectedMenu.data("size"));
+                            //                                alert(selectedMenu.data("size"));
                             break;
                         case "img":
                             $("#LoadImageCanvas").click();
-//                                alert(selectedMenu.data("tipo"));
+                            //                                alert(selectedMenu.data("tipo"));
                             break;
                         case "galeria":
                             var vals = {
@@ -231,9 +231,9 @@ $(document).ready(function () {
                 }
             });
             hash[idToll].modelo.arrayElem[thisId].drawObj.setPallet(idToll.replace(".", ""), thisId);
-//                        alert('Right Mouse button pressed.');
+            //                        alert('Right Mouse button pressed.');
         }
-//                        alert('You have a strange Mouse!');
+        //                        alert('You have a strange Mouse!');
 
 
     });
@@ -246,7 +246,7 @@ $(document).ready(function () {
         reader.onload = function () {
             var dataURL = reader.result;
             hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(dataURL);
-//            imageCanvas(dataURL, Thid);
+            //            imageCanvas(dataURL, Thid);
             socket.emit('drawClick', {
                 id: cnv,
                 type: "backgoundImage",
@@ -326,39 +326,39 @@ $(document).ready(function () {
                     setCaretAtEditor(idEditor, elem.paragrafo, elem.pos);
                 }
 
-//                var id = data.id;
-//                var str = $(id).val();
-//                var str1 = "";
-//                var posactual = $(id).getCursorPosition();
-//                if (data.char === 8 /* backspace*/
-//                        || data.char === 46 /* delete */) {
-//
-//                    if (data.char === 8) {
-//
-//                        if (data.pos > 0) {
-//                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
-//                        } else {
-//                            str1 = str.slice(data.pos);
-//                        }
-//                    } else if (data.data === 46) {
-//                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
-//                    }
-//                } else {
-//                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
-//                }
-//                $(id).val(str1);
-//                if (posactual < data.pos) {
-//                    $(id).selectRange(posactual);
-//                } else {
-//                    $(id).selectRange(posactual - 1);
-//                }
+                //                var id = data.id;
+                //                var str = $(id).val();
+                //                var str1 = "";
+                //                var posactual = $(id).getCursorPosition();
+                //                if (data.char === 8 /* backspace*/
+                //                        || data.char === 46 /* delete */) {
+                //
+                //                    if (data.char === 8) {
+                //
+                //                        if (data.pos > 0) {
+                //                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
+                //                        } else {
+                //                            str1 = str.slice(data.pos);
+                //                        }
+                //                    } else if (data.data === 46) {
+                //                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
+                //                    }
+                //                } else {
+                //                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
+                //                }
+                //                $(id).val(str1);
+                //                if (posactual < data.pos) {
+                //                    $(id).selectRange(posactual);
+                //                } else {
+                //                    $(id).selectRange(posactual - 1);
+                //                }
         }
     });
     /**
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-//        console.log(data.tabsHash);
+        //        console.log(data.tabsHash);
         var newHash = {};
         for (var item in data.tabsHash) {
             newHash[item] = castTab(data.tabsHash[item]);
@@ -448,7 +448,8 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
-    $("body").on('click', ".btnmodels", function () {
+
+            $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -1069,7 +1070,7 @@ $(document).ready(function () {
 
     $("body").on("click", ".dropdown-menu li a", function () {
         switch ($(this).data("type")) {
-            case "font-family":                
+            case "font-family":
                 $("body").find(".textResultado").css({
                     "font-family": $(this).data("value")
                 }).children(".font").html("Tipo de Letra - " + $(this).text());
@@ -1098,8 +1099,8 @@ $(document).ready(function () {
                 break;
         }
     });
-    
-    $("body").on("click", ".selectModelo", function (){
+
+    $("body").on("click", ".selectModelo", function () {
         $("body").find("#ModeloSelect").attr("src", $(this).attr("src"));
     });
     /*
