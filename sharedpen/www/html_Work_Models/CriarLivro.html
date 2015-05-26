@@ -1,94 +1,108 @@
 <div class="container-fluid">
-    <div id="criarLivro" class="col-xs-12 col-sm-12 col-md-12 col-md-12 row">
-        <div id="painelModelos" class="col-xs-7 col-sm-7 col-md-7">
-            <p>Selecione um modeleo para a pagina.</p>
-        </div>
-        <div class="col-xs-5 col-sm-5 col-md-5">
-            <div class="col-xs-6 col-sm-6 col-md-6">
-                <p>Nome do Projeto:</p>
-                <input id="nomeProjeto" value="123qwe" type="text" maxlength="20">
+    <div id="criarLivro" class="col-xs-12 col-sm-12 col-md-12 col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-md-12 row">
+            <div id="painelModelos" class="col-xs-6 col-sm-6 col-md-6">
+                <p>Selecione um modeleo para a pagina.</p>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6">
-                <p>Modelo Selecionado:</p>
-                <p><img id="ModeloSelect" alt="" src="" data-model=""></p>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <p>Nome do Projeto:</p>
+                    <input id="nomeProjeto" value="" type="text" maxlength="20">
+                    <form>
+                        <br>
+                        <input type="radio" name="sex" value="capa" checked>Capa
+                        <br>
+                        <input type="radio" name="sex" value="pagina">Pagina
+                    </form> 
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                    <p>Modelo Capa:</p>
+                    <p><img id="ModeloSelectCapa" alt="" src="" data-model=""></p>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                    <p>Modelo Pagina:</p>
+                    <p><img id="ModeloSelectPagina" alt="" src="" data-model=""></p>
+                </div>
             </div>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 textModelo">
-            <div class="col-xs-12 col-sm-12 col-md-12  menuText">
-                <p>Formatação do texto do Livro.</p>
-                <div class="col-xs-2 col-sm-2 col-md-2 dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Fonte<span class="caret"></span></button>
-                    <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a data-value="Times New Roman" data-type="font-family" role="menuitem" tabindex="-1" href="#">Times New Roman</a></li>
-                        <li role="presentation"><a data-value="Arial" data-type="font-family" role="menuitem" tabindex="-1" href="#">Arial</a></li>
-                        <li role="presentation"><a data-value="Comic Sans" data-type="font-family" role="menuitem" tabindex="-1" href="#">Comic Sans</a></li>
-                        <li role="presentation"><a data-value="Verdana" data-type="font-family" role="menuitem" tabindex="-1" href="#">Verdana</a></li>
-                    </ul>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-md-12 row">
+            <div class="col-xs-6 col-sm-6 col-md-6 textModelo">
+                <div class="col-xs-12 col-sm-12 col-md-12  menuText">
+                    <p>Formatação do texto do Livro.</p>
+                    <div class="col-xs-2 col-sm-2 col-md-2 dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Fonte<span class="caret"></span></button>
+                        <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a data-value="Times New Roman" data-type="font-family" role="menuitem" tabindex="-1" href="#">Times New Roman</a></li>
+                            <li role="presentation"><a data-value="Arial" data-type="font-family" role="menuitem" tabindex="-1" href="#">Arial</a></li>
+                            <li role="presentation"><a data-value="Comic Sans" data-type="font-family" role="menuitem" tabindex="-1" href="#">Comic Sans</a></li>
+                            <li role="presentation"><a data-value="Verdana" data-type="font-family" role="menuitem" tabindex="-1" href="#">Verdana</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Tamanho<span class="caret"></span></button>
+                        <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a data-value="12" data-type="font-size" role="menuitem" tabindex="-1" href="#">12</a></li>
+                            <li role="presentation"><a data-value="14" data-type="font-size" role="menuitem" tabindex="-1" href="#">14</a></li>
+                            <li role="presentation"><a data-value="16" data-type="font-size" role="menuitem" tabindex="-1" href="#">16</a></li>
+                            <li role="presentation"><a data-value="18" data-type="font-size" role="menuitem" tabindex="-1" href="#">18</a></li>
+                            <li role="presentation"><a data-value="20" data-type="font-size" role="menuitem" tabindex="-1" href="#">20</a></li>
+                            <li role="presentation"><a data-value="24" data-type="font-size" role="menuitem" tabindex="-1" href="#">24</a></li>
+                            <li role="presentation"><a data-value="28" data-type="font-size" role="menuitem" tabindex="-1" href="#">28</a></li>
+                            <li role="presentation"><a data-value="32" data-type="font-size" role="menuitem" tabindex="-1" href="#">32</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Alinhamento<span class="caret"></span></button>
+                        <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a data-value="left" data-type="text-align" role="menuitem" tabindex="-1" href="#">Esquerda</a></li>
+                            <li role="presentation"><a data-value="center" data-type="text-align" role="menuitem" tabindex="-1" href="#">Centro</a></li>
+                            <li role="presentation"><a data-value="right" data-type="text-align" role="menuitem" tabindex="-1" href="#">Direita</a></li>
+                            <li role="presentation"><a data-value="justify" data-type="text-align" role="menuitem" tabindex="-1" href="#">Justificado</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Cor<span class="caret"></span></button>
+                        <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a data-value="white" data-type="color" role="menuitem" tabindex="-1" href="#">Branco</a></li>
+                            <li role="presentation"><a data-value="black" data-type="color" role="menuitem" tabindex="-1" href="#">Preto</a></li>
+                            <li role="presentation"><a data-value="yellow" data-type="color" role="menuitem" tabindex="-1" href="#">Amarelo</a></li>
+                            <li role="presentation"><a data-value="red" data-type="color" role="menuitem" tabindex="-1" href="#">Vermelho</a></li>
+                            <li role="presentation"><a data-value="green" data-type="color" role="menuitem" tabindex="-1" href="#">Verde</a></li>
+                            <li role="presentation"><a data-value="blue" data-type="color" role="menuitem" tabindex="-1" href="#">Azul</a></li>
+                            <li role="presentation"><a data-value="pink" data-type="color" role="menuitem" tabindex="-1" href="#">Rosa</a></li>
+                            <li role="presentation"><a data-value="orange" data-type="color" role="menuitem" tabindex="-1" href="#">Laranja</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1 dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Cor Fundo<span class="caret"></span></button>
+                        <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a data-value="Transparent" data-type="background-color" role="menuitem" tabindex="-1" href="#">Transparente</a></li>
+                            <li role="presentation"><a data-value="white" data-type="background-color" role="menuitem" tabindex="-1" href="#">Branco</a></li>
+                            <li role="presentation"><a data-value="black" data-type="background-color" role="menuitem" tabindex="-1" href="#">Preto</a></li>
+                            <li role="presentation"><a data-value="yellow" data-type="background-color" role="menuitem" tabindex="-1" href="#">Amarelo</a></li>
+                            <li role="presentation"><a data-value="red" data-type="background-color" role="menuitem" tabindex="-1" href="#">Vermelho</a></li>
+                            <li role="presentation"><a data-value="green" data-type="background-color" role="menuitem" tabindex="-1" href="#">Verde</a></li>
+                            <li role="presentation"><a data-value="blue" data-type="background-color" role="menuitem" tabindex="-1" href="#">Azul</a></li>
+                            <li role="presentation"><a data-value="pink" data-type="background-color" role="menuitem" tabindex="-1" href="#">Rosa</a></li>
+                            <li role="presentation"><a data-value="orange" data-type="background-color" role="menuitem" tabindex="-1" href="#">Laranja</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Tamanho<span class="caret"></span></button>
-                    <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a data-value="12" data-type="font-size" role="menuitem" tabindex="-1" href="#">12</a></li>
-                        <li role="presentation"><a data-value="14" data-type="font-size" role="menuitem" tabindex="-1" href="#">14</a></li>
-                        <li role="presentation"><a data-value="16" data-type="font-size" role="menuitem" tabindex="-1" href="#">16</a></li>
-                        <li role="presentation"><a data-value="18" data-type="font-size" role="menuitem" tabindex="-1" href="#">18</a></li>
-                        <li role="presentation"><a data-value="20" data-type="font-size" role="menuitem" tabindex="-1" href="#">20</a></li>
-                        <li role="presentation"><a data-value="24" data-type="font-size" role="menuitem" tabindex="-1" href="#">24</a></li>
-                        <li role="presentation"><a data-value="28" data-type="font-size" role="menuitem" tabindex="-1" href="#">28</a></li>
-                        <li role="presentation"><a data-value="32" data-type="font-size" role="menuitem" tabindex="-1" href="#">32</a></li>
-                    </ul>
-                </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Alinhamento<span class="caret"></span></button>
-                    <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a data-value="left" data-type="text-align" role="menuitem" tabindex="-1" href="#">Esquerda</a></li>
-                        <li role="presentation"><a data-value="center" data-type="text-align" role="menuitem" tabindex="-1" href="#">Centro</a></li>
-                        <li role="presentation"><a data-value="right" data-type="text-align" role="menuitem" tabindex="-1" href="#">Direita</a></li>
-                        <li role="presentation"><a data-value="justify" data-type="text-align" role="menuitem" tabindex="-1" href="#">Justificado</a></li>
-                    </ul>
-                </div>
-                <div class="col-xs-2 col-sm-2 col-md-2 dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Cor<span class="caret"></span></button>
-                    <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a data-value="white" data-type="color" role="menuitem" tabindex="-1" href="#">Branco</a></li>
-                        <li role="presentation"><a data-value="black" data-type="color" role="menuitem" tabindex="-1" href="#">Preto</a></li>
-                        <li role="presentation"><a data-value="yellow" data-type="color" role="menuitem" tabindex="-1" href="#">Amarelo</a></li>
-                        <li role="presentation"><a data-value="red" data-type="color" role="menuitem" tabindex="-1" href="#">Vermelho</a></li>
-                        <li role="presentation"><a data-value="green" data-type="color" role="menuitem" tabindex="-1" href="#">Verde</a></li>
-                        <li role="presentation"><a data-value="blue" data-type="color" role="menuitem" tabindex="-1" href="#">Azul</a></li>
-                        <li role="presentation"><a data-value="pink" data-type="color" role="menuitem" tabindex="-1" href="#">Rosa</a></li>
-                        <li role="presentation"><a data-value="orange" data-type="color" role="menuitem" tabindex="-1" href="#">Laranja</a></li>
-                    </ul>
-                </div>
-                <div class="col-xs-1 col-sm-1 col-md-1 dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Cor Fundo<span class="caret"></span></button>
-                    <ul class="dropdown-menu addValueToText" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a data-value="Transparent" data-type="background-color" role="menuitem" tabindex="-1" href="#">Transparente</a></li>
-                        <li role="presentation"><a data-value="white" data-type="background-color" role="menuitem" tabindex="-1" href="#">Branco</a></li>
-                        <li role="presentation"><a data-value="black" data-type="background-color" role="menuitem" tabindex="-1" href="#">Preto</a></li>
-                        <li role="presentation"><a data-value="yellow" data-type="background-color" role="menuitem" tabindex="-1" href="#">Amarelo</a></li>
-                        <li role="presentation"><a data-value="red" data-type="background-color" role="menuitem" tabindex="-1" href="#">Vermelho</a></li>
-                        <li role="presentation"><a data-value="green" data-type="background-color" role="menuitem" tabindex="-1" href="#">Verde</a></li>
-                        <li role="presentation"><a data-value="blue" data-type="background-color" role="menuitem" tabindex="-1" href="#">Azul</a></li>
-                        <li role="presentation"><a data-value="pink" data-type="background-color" role="menuitem" tabindex="-1" href="#">Rosa</a></li>
-                        <li role="presentation"><a data-value="orange" data-type="background-color" role="menuitem" tabindex="-1" href="#">Laranja</a></li>
-                    </ul>
+                <div class="col-xs-12 col-sm-12 col-md-12 textResultado">
+                    <br>
+                    <p class="font">Tipo de Letra - Times New Roman</p>
+                    <p class="size">Tamanho - 14px</p>
+                    <p class="alin">Alinhamento - Esquerda</p> 
+                    <p class="cor">Cor da Letra - Preto</p> 
+                    <p class="corback">Cor do fundo - Transparente<br></p>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 textResultado">
-                <br>
-                <p class="font">Tipo de Letra - Times New Roman</p>
-                <p class="size">Tamanho - 14px</p>
-                <p class="alin">Alinhamento - Esquerda</p> 
-                <p class="cor">Cor da Letra - Preto</p> 
-                <p class="corback">Cor do fundo - Transparente<br></p>
-            </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 textProf">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <p>Texto de ajuda ao livro.</p>
-                <div id="textAjudaLivro" class="teste1" contenteditable="true">
-                      
+            <div class="col-xs-6 col-sm-6 col-md-6 textProf">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <p>Texto de ajuda ao livro.</p>
+                    <div id="textAjudaLivro" class="teste1" contenteditable="true">
+
+                    </div>
                 </div>
             </div>
         </div>
