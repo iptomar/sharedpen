@@ -1150,6 +1150,7 @@ $(document).ready(function () {
         });
 
     });
+		
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -1520,6 +1521,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
+                break;
+			case "CriarPoema.html":
+                
                 break;
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
