@@ -3,7 +3,7 @@
  * Scrip com as Funçoes de autenticação, tabs e modelos, desenho, chat, e cor de background
  */
 
-
+var wait = '<div id="loading"><div><img alt="" src="./../img/wait.gif"></div></div>';
 var users = []; // array com os clientes ligado
 var numUsers = 0;
 var socket = ""; // socket de comunicacao
@@ -451,6 +451,7 @@ $(document).ready(function () {
     $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
+        $("body").append(wait);
         $.ajax({
             type: "get",
             url: "/getCodModel",
@@ -460,6 +461,7 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
+                $("body").find("#loading").remove();
                 Addtab(modelo, idNum);
                 $(".txtTab" + idNum).html(data[0].htmltext);
                 refactorTab(modelo, idNum);
@@ -481,6 +483,8 @@ $(document).ready(function () {
                 $("body").find("a[href^='#page']:last").click();
             },
             error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
                 console.log(JSON.stringify(error));
             }
         });
@@ -489,6 +493,7 @@ $(document).ready(function () {
      * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
      */
     $("body").on('click', 'a[href="#add-page"]', function () {
+        $("body").append(wait);
         $.ajax({
             type: "GET",
             url: "/getModelsPage",
@@ -506,9 +511,11 @@ $(document).ready(function () {
                 }
                 htmlModel += "</div></div></div></div>";
                 $("body").append(htmlModel);
-
+                $("body").find("#loading").remove();
             },
             error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar os modelos selecionado.\n\Tente novamente.");
                 console.log(JSON.stringify(error));
             }
         });
@@ -974,8 +981,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".carregarLayout", function () {
-        if (currentPosition != backArray.length)
-        {
+        if (currentPosition != backArray.length) {
             backArray.splice(currentPosition, backArray.length - currentPosition);
             folderArray.splice(currentPosition, folderArray.length - currentPosition);
         }
@@ -1019,16 +1025,16 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
-    
-        //adicionar palavra 'a ajuda do poema
-    $("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function(){ 
+
+    //adicionar palavra 'a ajuda do poema
+    $("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function () {
         var idpage = $(this).parent().parent().parent().attr('id');
         var text = prompt("Adicione um palavra de ajuda para este poema", "");
-        if (text.length > 0){
+        if (text.length > 0) {
             LivroPoemas[idpage.substring(4)].getAjuda()[LivroPoemas[idpage.substring(4)].getAjuda().length] = text;
             $(this).before('<span class="label label-info" style="float:left; margin: 3px;">' + text + '</span>');
-        }       
-});
+        }
+    });
 
 
     //Mostrar perfil do Utilizador
@@ -1061,6 +1067,41 @@ $(document).ready(function () {
         $("body").find("a[href^='#page']:last").click();
     });
 
+    $("body").on("click", ".dropdown-menu li a", function () {
+        switch ($(this).data("type")) {
+            case "font-family":                
+                $("body").find(".textResultado").css({
+                    "font-family": $(this).data("value")
+                }).children(".font").html("Tipo de Letra - " + $(this).text());
+                break;
+            case "font-size":
+                $("body").find(".textResultado").css({
+                    "font-size": $(this).data("value")
+                }).children(".size").html("Tamanho - " + $(this).text() + "px");
+                break;
+            case "text-align":
+                $("body").find(".textResultado").css({
+                    "text-align": $(this).data("value")
+                }).children(".alin").html("Alinhamento - " + $(this).text());
+                break;
+            case "color":
+                $("body").find(".textResultado").css({
+                    "color": $(this).data("value")
+                }).children(".cor").html("Cor da Letra - " + $(this).text());
+                break;
+            case "background-color":
+                $("body").find(".textResultado").css({
+                    "background-color": $(this).data("value")
+                }).children(".corback").html("Cor do fundo - " + $(this).text());
+                break;
+            default:
+                break;
+        }
+    });
+    
+    $("body").on("click", ".selectModelo", function (){
+        $("body").find("#ModeloSelect").attr("src", $(this).attr("src"));
+    });
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -1403,6 +1444,34 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 stk.emit("getAllTabs");
                 $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
+                break;
+            case "CriarLivro.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getModelsPage",
+                    dataType: 'json',
+                    success: function (data) {
+                        var listLayout = "<div>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            listLayout += "<figure>" +
+                                    "<img class='selectModelo btnmodels-style' alt='' src='" +
+                                    (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                    "' data-model='" + data[i].nome + "'/>" +
+                                    "<figcaption> " + data[i].nome + " </figcaption>" +
+                                    "</figure>";
+                        }
+                        listLayout += "</div>";
+                        $("body").find("#loading").remove();
+                        $("body").find("#painelModelos").append(listLayout);
+
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
                 break;
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
