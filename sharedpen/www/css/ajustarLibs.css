@@ -26,7 +26,7 @@
     border-radius: 50px;
 }
 
-.h1{
+.h1, .h2, .h3, .h4, .h5{
     color:darkslateblue;  
 }
 
@@ -38,9 +38,9 @@
 
 .div-half-max-width{
     display:table-cell;
-    max-width: 49%;
+    width: 49%;
     float:left;
-    margin-right: 50px;
+    margin-right: 10px;
 }
 
 
@@ -68,14 +68,45 @@
     height: 300px;
 }
 
-.dotted-div{
+.dotted-round-div{
+    border-radius: 10px;
     border-style: dotted;
-    border-color:#0B85A1;
+    border-color:lightgray;
     border-width: 2px; 
 }
 
 .margin-top-50{
     margin-top:50px;   
+}
+
+.div-scrollable{
+    overflow-y: scroll;   
+}
+
+.userList {
+    list-style-type: none; 
+    max-height: 95%;
+    max-width: 47%;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+.div-user-tabs{
+    max-height: 84%;   
+}
+.div-users{
+    max-height: 1%;
+    border: 1px dotted grey;
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.div-max-height{
+    height:100%;
+}
+
+.div-max-width{
+    width:100%;    
 }
 
 #Contacto, Password, #tipoUtilizador {
