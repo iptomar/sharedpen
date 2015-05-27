@@ -44,6 +44,8 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn"
     };
+    
+    
     // cria a ligação com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
@@ -415,6 +417,58 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
+    
+    $("body").on('click', "#bt_guardar", function () {
+        console.log(hash);
+          $.ajax({
+            type: "POST",
+            url: "/setArray",
+            data: {
+               arrayy: JSON.stringify(hash)
+            },
+           // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                //alert(data);
+                
+            },
+            error: function (error) {
+               // alert("ERRO HASH");
+                //console.log(JSON.stringify(error));
+            }
+        });             
+    })
+    
+    $("body").on('click', "#bt_getHash", function () {
+        //alert(hash);
+          $.ajax({
+            type: "GET",
+            url: "/getArray",
+            data: {
+               id: 9
+            },
+           // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data[0]);
+                //var ola =   JSON.parse('[object Object]');
+               // console.log(ola);
+            
+             var test = JSON.parse(''+data[0].array+'');
+              
+                console.log(test);
+                //for (var a in test) break;
+                //console.log("aaaaaaaaaaaaaa"+a);
+               var olaola = castTab(test);
+                //console.log(olola);
+            },
+            error: function (error) {
+                alert("ERRO HASH");
+                //console.log(JSON.stringify(error));
+            }
+        });      
+        
+    })
 
     $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
@@ -1174,14 +1228,27 @@ function getBase64Image(img) {
     return dataURL;
 }
 
+function toObject(arr) {
+  var rv = {};
+  for (var i = 0; i < arr.length; ++i)
+    if (arr[i] !== undefined) rv[i] = arr[i];
+  return rv;
+}
+
 /**
  *
  
  * @param {type} tabToCast
  * @returns {Object|castTab.tab} */
 function castTab(tabToCast) {
+    //tabToCast = toObject(tabToCast);
+    //tabToCast = tabToCast[".txtTab1"];
     //Faz o cast da Tab, e todos os seus elementos
+    //tabToCast = tabToCast[;
+    
+    console.log(tabToCast);
     var tab = $.extend(new Tab(), tabToCast);
+    //alert(tabToCast.modelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
     for (var item in tabToCast.modelo.arrayElem) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
@@ -1189,6 +1256,7 @@ function castTab(tabToCast) {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
         }
     }
+    console.log(tab);
     return tab;
 }
 
