@@ -44,6 +44,8 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn"
     };
+    
+    
     // cria a ligação com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
@@ -312,46 +314,8 @@ $(document).ready(function () {
                 $("body").find('#' + data.id).attr('src', data.imageData);
                 break;
             default :
-                var id = data.id;
-                var idpai = data.parent;
-                var html = data.html;
-
-                var idEditor = 'note-editable_' + id;
-                console.log(idEditor);
-                var caret = showCaretPos(idEditor);
-                console.log(caret);
-                var elem = getElementAtCaret(idEditor, caret);
-                $("#" + id).code(html);
-                if (typeof elem !== "undefined") {
-                    setCaretAtEditor(idEditor, elem.paragrafo, elem.pos);
-                }
-
-                //                var id = data.id;
-                //                var str = $(id).val();
-                //                var str1 = "";
-                //                var posactual = $(id).getCursorPosition();
-                //                if (data.char === 8 /* backspace*/
-                //                        || data.char === 46 /* delete */) {
-                //
-                //                    if (data.char === 8) {
-                //
-                //                        if (data.pos > 0) {
-                //                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
-                //                        } else {
-                //                            str1 = str.slice(data.pos);
-                //                        }
-                //                    } else if (data.data === 46) {
-                //                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
-                //                    }
-                //                } else {
-                //                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
-                //                }
-                //                $(id).val(str1);
-                //                if (posactual < data.pos) {
-                //                    $(id).selectRange(posactual);
-                //                } else {
-                //                    $(id).selectRange(posactual - 1);
-                //                }
+                var textElem = getArrayElementObj(allTextEditor, data.id);
+                textElem.txtObjEditor.setTextEditor(data);
         }
     });
     /**
@@ -401,33 +365,38 @@ $(document).ready(function () {
     });
 
     // envia o codigo ASCII das teclas carregadas
-    $("body").on('mousedown click', '.editable', function (e) {
-        var edit;
-        var tabContentor = $(this).parent().attr("id").split("-")[0];
-        var listClass = $(this).attr("class").split(" ");
-        for (var i = 0, max = listClass.length; i < max; i++) {
-            if (listClass[i].indexOf(tabContentor) !== -1) {
-                edit = getArrayElementObj(allTextEditor, listClass[i]);
-                edit.txtObjEditor.setNewId($("." + listClass[i]).attr("id"));
-            }
-        }
-        $(this).on("contextmenu", function () {
-            return false;
-        });
-        switch (e.which) {
-            case 1:
-                //                alert('Left Mouse button pressed.');
-                break;
-            case 2:
-                //                alert('Middle Mouse button pressed.');
-                break;
-            case 3:
-                //                edit.txtObjEditor.showToolbar();
-                //                console.log('Right Mouse button pressed.');
-                break;
-            default:
-                //                alert('You have a strange Mouse!');
-        }
+    // keydown 
+    $("body").on('keypress keyup mousedown mouseup click', '.editable', function (e) {
+        var listClass = $(this).attr("id");
+        var edit = getArrayElementObj(allTextEditor, listClass);
+        edit.txtObjEditor.allOperation(e.handleObj.type, e);
+
+//        var edit;
+//        var tabContentor = $(this).parent().attr("id").split("-")[0];
+//        var listClass = $(this).attr("class").split(" ");
+//        for (var i = 0, max = listClass.length; i < max; i++) {
+//            if (listClass[i].indexOf(tabContentor) !== -1) {
+//                edit = getArrayElementObj(allTextEditor, listClass[i]);
+//                edit.txtObjEditor.setNewId($("." + listClass[i]).attr("id"));
+//            }
+//        }
+//        $(this).on("contextmenu", function () {
+//            return false;
+//        });
+//        switch (e.which) {
+//            case 1:
+//                //                alert('Left Mouse button pressed.');
+//                break;
+//            case 2:
+//                //                alert('Middle Mouse button pressed.');
+//                break;
+//            case 3:
+//                //                edit.txtObjEditor.showToolbar();
+//                //                console.log('Right Mouse button pressed.');
+//                break;
+//            default:
+//                //                alert('You have a strange Mouse!');
+//        }
     });
     /**
      * Evento gerado quando ha alteraçoes nas tabs
@@ -440,7 +409,7 @@ $(document).ready(function () {
                 Addtab(data.modelo, data.pos);
                 hash[".txtTab" + data.pos] = castTab(data.tab);
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
-                    updateTab(data.pos, ".txtTab" + data.pos);
+                    updateTab(data.pos, ".txtTab" + data.pos, data.creator);
                 });
             }
         }
@@ -448,8 +417,60 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
+    
+    $("body").on('click', "#bt_guardar", function () {
+        console.log(hash);
+          $.ajax({
+            type: "POST",
+            url: "/setArray",
+            data: {
+               arrayy: JSON.stringify(hash)
+            },
+           // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                //alert(data);
+                
+            },
+            error: function (error) {
+               // alert("ERRO HASH");
+                //console.log(JSON.stringify(error));
+            }
+        });             
+    })
+    
+    $("body").on('click', "#bt_getHash", function () {
+        //alert(hash);
+          $.ajax({
+            type: "GET",
+            url: "/getArray",
+            data: {
+               id: 9
+            },
+           // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data[0]);
+                //var ola =   JSON.parse('[object Object]');
+               // console.log(ola);
+            
+             var test = JSON.parse(''+data[0].array+'');
+              
+                console.log(test);
+                //for (var a in test) break;
+                //console.log("aaaaaaaaaaaaaa"+a);
+               var olaola = castTab(test);
+                //console.log(olola);
+            },
+            error: function (error) {
+                alert("ERRO HASH");
+                //console.log(JSON.stringify(error));
+            }
+        });      
+        
+    })
 
-            $("body").on('click', ".btnmodels", function () {
+    $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -477,7 +498,8 @@ $(document).ready(function () {
                     //modelo
                     modelo: modelo + ".html",
                     //numero de elementos do modelo
-                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length
+                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                    creator: socket.id
                 });
                 $("body").find("#divchangemodel").remove();
                 // Foco na ultima pagina adicionada
@@ -1101,8 +1123,74 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".selectModelo", function () {
-        $("body").find("#ModeloSelect").attr("src", $(this).attr("src"));
+        if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {
+            $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
+            $("body").find("#ModeloSelectCapa").attr("data-model", $(this).data("model"));
+        } else {
+            $("body").find("#ModeloSelectPagina").attr("src", $(this).attr("src"));
+            $("body").find("#ModeloSelectPagina").attr("data-model", $(this).data("model"));
+        }
     });
+
+    $("body").on("click", "#guardarModeloLivro", function () {
+        var nomeProj = $("body").find("#nomeProjeto").val();
+        var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-model");
+        var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-model");
+        if (nomeProj.trim() === "") {
+            alert("Introduza um nome para o Projeto.");
+            return;
+        }
+        if (modelProjC.length === 0 || modelProjP.length === 0) {
+            alert("Selecione um modelo para a capa ou para as paginas do livro.");
+            return;
+        }
+        var textAjuda = $("body").find("#textAjudaLivro").html();
+        var fontName = $("body").find(".textResultado").css("font-family");
+        fontName = fontName.replace("'", '');
+        fontName = fontName.replace("'", '');
+        var formatText = JSON.stringify({
+            "font-family": fontName,
+            "font-size": $("body").find(".textResultado").css("font-size"),
+            "text-align": $("body").find(".textResultado").css("text-align"),
+            "color": $("body").find(".textResultado").css("color"),
+            "background-color": $("body").find(".textResultado").css("background-color")
+        });
+
+        $("body").append(wait);
+        $.ajax({
+            type: "POST",
+            url: "/saveModelLivro",
+            data: {
+                nomeProjeto: nomeProj,
+                nomeModeloC: modelProjC,
+                nomeModeloP: modelProjP,
+                textHtml: textAjuda,
+                stylesLivro: formatText
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data === "Ok") {
+                    $("body").find("#loading").remove();
+                    $("body").find("#nomeProjeto").val("");
+                    $("body").find("#ModeloSelectCapa").attr("src", "");
+                    $("body").find("#ModeloSelectCapa").attr("data-model", "");
+                    $("body").find("#ModeloSelectPagina").attr("src", "");
+                    $("body").find("#ModeloSelectPagina").attr("data-model", "");
+                    $("body").find("#textAjudaLivro").html("");
+                } else {
+                    alert("O nome do livro já existe na base da dados.")
+                    $("body").find("#loading").remove();
+                }
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+//                alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                console.log(JSON.stringify(error));
+            }
+        });
+
+    });
+
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -1140,14 +1228,27 @@ function getBase64Image(img) {
     return dataURL;
 }
 
+function toObject(arr) {
+  var rv = {};
+  for (var i = 0; i < arr.length; ++i)
+    if (arr[i] !== undefined) rv[i] = arr[i];
+  return rv;
+}
+
 /**
  *
  
  * @param {type} tabToCast
  * @returns {Object|castTab.tab} */
 function castTab(tabToCast) {
+    //tabToCast = toObject(tabToCast);
+    //tabToCast = tabToCast[".txtTab1"];
     //Faz o cast da Tab, e todos os seus elementos
+    //tabToCast = tabToCast[;
+    
+    console.log(tabToCast);
     var tab = $.extend(new Tab(), tabToCast);
+    //alert(tabToCast.modelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
     for (var item in tabToCast.modelo.arrayElem) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
@@ -1155,6 +1256,7 @@ function castTab(tabToCast) {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
         }
     }
+    console.log(tab);
     return tab;
 }
 
@@ -1169,12 +1271,12 @@ function getFilesToFolder(sckt, data) {
 }
 
 /**
- * Poe o modelo no Html
+ * Poe o modelo no Html so e executado quando recebe alguma coisa de outro cliente
  
  * @param {type} i
  * @param {type} key
  * @returns {undefined} */
-function updateTab(i, key) {
+function updateTab(i, key, creator) {
     $.ajax({
         type: "get",
         url: "/getCodModel",
@@ -1218,7 +1320,7 @@ function updateTab(i, key) {
                 } else {
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
-                        var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
+                        var txtedit = new TextEditor(elemento, username, userColor, creator, socket);
                         var editTxt = {
                             id: elemento,
                             txtObjEditor: txtedit
@@ -1473,6 +1575,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
+                break;
+            case "CriarPoema.html":
+
                 break;
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
