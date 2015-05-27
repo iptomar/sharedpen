@@ -11,6 +11,15 @@ CREATE TABLE  modelos_pagina (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+create table modelo (
+    idmodelo int (11) NOT NULL auto_increment,
+    nome_livro varchar (50) NOT NULL,
+    nome_modelo varchar (50) NOT NULL,
+    htlm_texto text,
+    css_texto text NOT NULL,
+    PRIMARY KEY (idmodelo)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 insert into modelos_pagina (nome, htmltext) values
 ("Capa", '<div id="tabpage" class="tabpage">
     <div id="input1" class="editable titulo"></div>

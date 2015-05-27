@@ -403,33 +403,37 @@ $(document).ready(function () {
     });
 
     // envia o codigo ASCII das teclas carregadas
-    $("body").on('mousedown click', '.editable', function (e) {
-        var edit;
-        var tabContentor = $(this).parent().attr("id").split("-")[0];
-        var listClass = $(this).attr("class").split(" ");
-        for (var i = 0, max = listClass.length; i < max; i++) {
-            if (listClass[i].indexOf(tabContentor) !== -1) {
-                edit = getArrayElementObj(allTextEditor, listClass[i]);
-                edit.txtObjEditor.setNewId($("." + listClass[i]).attr("id"));
-            }
-        }
-        $(this).on("contextmenu", function () {
-            return false;
-        });
-        switch (e.which) {
-            case 1:
-                //                alert('Left Mouse button pressed.');
-                break;
-            case 2:
-                //                alert('Middle Mouse button pressed.');
-                break;
-            case 3:
-                //                edit.txtObjEditor.showToolbar();
-                //                console.log('Right Mouse button pressed.');
-                break;
-            default:
-                //                alert('You have a strange Mouse!');
-        }
+    $("body").on('keydown keyup keypress mousedown mouseup click', '.editable', function (e) {
+        var listClass = $(this).attr("id");
+        var edit = getArrayElementObj(allTextEditor, listClass);
+        edit.txtObjEditor.allOperation(e.handleObj.type, e);
+        
+//        var edit;
+//        var tabContentor = $(this).parent().attr("id").split("-")[0];
+//        var listClass = $(this).attr("class").split(" ");
+//        for (var i = 0, max = listClass.length; i < max; i++) {
+//            if (listClass[i].indexOf(tabContentor) !== -1) {
+//                edit = getArrayElementObj(allTextEditor, listClass[i]);
+//                edit.txtObjEditor.setNewId($("." + listClass[i]).attr("id"));
+//            }
+//        }
+//        $(this).on("contextmenu", function () {
+//            return false;
+//        });
+//        switch (e.which) {
+//            case 1:
+//                //                alert('Left Mouse button pressed.');
+//                break;
+//            case 2:
+//                //                alert('Middle Mouse button pressed.');
+//                break;
+//            case 3:
+//                //                edit.txtObjEditor.showToolbar();
+//                //                console.log('Right Mouse button pressed.');
+//                break;
+//            default:
+//                //                alert('You have a strange Mouse!');
+//        }
     });
     /**
      * Evento gerado quando ha alteraçoes nas tabs
@@ -1155,8 +1159,74 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".selectModelo", function () {
-        $("body").find("#ModeloSelect").attr("src", $(this).attr("src"));
+        if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {
+            $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
+            $("body").find("#ModeloSelectCapa").attr("data-model", $(this).data("model"));
+        } else {
+            $("body").find("#ModeloSelectPagina").attr("src", $(this).attr("src"));
+            $("body").find("#ModeloSelectPagina").attr("data-model", $(this).data("model"));
+        }
     });
+
+    $("body").on("click", "#guardarModeloLivro", function () {
+        var nomeProj = $("body").find("#nomeProjeto").val();
+        var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-model");
+        var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-model");
+        if (nomeProj.trim() === "") {
+            alert("Introduza um nome para o Projeto.");
+            return;
+        }
+        if (modelProjC.length === 0 || modelProjP.length === 0) {
+            alert("Selecione um modelo para a capa ou para as paginas do livro.");
+            return;
+        }
+        var textAjuda = $("body").find("#textAjudaLivro").html();
+        var fontName = $("body").find(".textResultado").css("font-family");
+        fontName = fontName.replace("'", '');
+        fontName = fontName.replace("'", '');
+        var formatText = JSON.stringify({
+            "font-family": fontName,
+            "font-size": $("body").find(".textResultado").css("font-size"),
+            "text-align": $("body").find(".textResultado").css("text-align"),
+            "color": $("body").find(".textResultado").css("color"),
+            "background-color": $("body").find(".textResultado").css("background-color")
+        });
+
+        $("body").append(wait);
+        $.ajax({
+            type: "POST",
+            url: "/saveModelLivro",
+            data: {
+                nomeProjeto: nomeProj,
+                nomeModeloC: modelProjC,
+                nomeModeloP: modelProjP,
+                textHtml: textAjuda,
+                stylesLivro: formatText
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data === "Ok") {
+                    $("body").find("#loading").remove();
+                    $("body").find("#nomeProjeto").val("");
+                    $("body").find("#ModeloSelectCapa").attr("src", "");
+                    $("body").find("#ModeloSelectCapa").attr("data-model", "");
+                    $("body").find("#ModeloSelectPagina").attr("src", "");
+                    $("body").find("#ModeloSelectPagina").attr("data-model", "");
+                    $("body").find("#textAjudaLivro").html("");
+                } else {
+                    alert("O nome do livro já existe na base da dados.")
+                    $("body").find("#loading").remove();
+                }
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+//                alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                console.log(JSON.stringify(error));
+            }
+        });
+
+    });
+		
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -1541,6 +1611,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
+                break;
+			case "CriarPoema.html":
+                
                 break;
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
