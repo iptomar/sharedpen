@@ -312,46 +312,8 @@ $(document).ready(function () {
                 $("body").find('#' + data.id).attr('src', data.imageData);
                 break;
             default :
-                var id = data.id;
-                var idpai = data.parent;
-                var html = data.html;
-
-                var idEditor = 'note-editable_' + id;
-                console.log(idEditor);
-                var caret = showCaretPos(idEditor);
-                console.log(caret);
-                var elem = getElementAtCaret(idEditor, caret);
-                $("#" + id).code(html);
-                if (typeof elem !== "undefined") {
-                    setCaretAtEditor(idEditor, elem.paragrafo, elem.pos);
-                }
-
-                //                var id = data.id;
-                //                var str = $(id).val();
-                //                var str1 = "";
-                //                var posactual = $(id).getCursorPosition();
-                //                if (data.char === 8 /* backspace*/
-                //                        || data.char === 46 /* delete */) {
-                //
-                //                    if (data.char === 8) {
-                //
-                //                        if (data.pos > 0) {
-                //                            str1 = str.slice(0, data.pos - 1) + str.slice(data.pos);
-                //                        } else {
-                //                            str1 = str.slice(data.pos);
-                //                        }
-                //                    } else if (data.data === 46) {
-                //                        str1 = str.slice(0, data.pos) + str.slice(data.pos + 1);
-                //                    }
-                //                } else {
-                //                    str1 = [str.slice(0, data.pos), String.fromCharCode(data.char), str.slice(data.pos)].join('');
-                //                }
-                //                $(id).val(str1);
-                //                if (posactual < data.pos) {
-                //                    $(id).selectRange(posactual);
-                //                } else {
-                //                    $(id).selectRange(posactual - 1);
-                //                }
+                var textElem = getArrayElementObj(allTextEditor, data.id);
+                textElem.txtObjEditor.setTextEditor(data);
         }
     });
     /**
@@ -401,11 +363,12 @@ $(document).ready(function () {
     });
 
     // envia o codigo ASCII das teclas carregadas
-    $("body").on('keydown keyup keypress mousedown mouseup click', '.editable', function (e) {
+    // keydown 
+    $("body").on('keypress keyup mousedown mouseup click', '.editable', function (e) {
         var listClass = $(this).attr("id");
         var edit = getArrayElementObj(allTextEditor, listClass);
         edit.txtObjEditor.allOperation(e.handleObj.type, e);
-        
+
 //        var edit;
 //        var tabContentor = $(this).parent().attr("id").split("-")[0];
 //        var listClass = $(this).attr("class").split(" ");
@@ -444,7 +407,7 @@ $(document).ready(function () {
                 Addtab(data.modelo, data.pos);
                 hash[".txtTab" + data.pos] = castTab(data.tab);
                 $(".txtTab" + data.pos).load("./html_models/" + data.modelo, function () {
-                    updateTab(data.pos, ".txtTab" + data.pos);
+                    updateTab(data.pos, ".txtTab" + data.pos, data.creator);
                 });
             }
         }
@@ -481,7 +444,8 @@ $(document).ready(function () {
                     //modelo
                     modelo: modelo + ".html",
                     //numero de elementos do modelo
-                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length
+                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                    creator: socket.id
                 });
                 $("body").find("#divchangemodel").remove();
                 // Foco na ultima pagina adicionada
@@ -1172,7 +1136,7 @@ $(document).ready(function () {
         });
 
     });
-		
+
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -1239,12 +1203,12 @@ function getFilesToFolder(sckt, data) {
 }
 
 /**
- * Poe o modelo no Html
+ * Poe o modelo no Html so e executado quando recebe alguma coisa de outro cliente
  
  * @param {type} i
  * @param {type} key
  * @returns {undefined} */
-function updateTab(i, key) {
+function updateTab(i, key, creator) {
     $.ajax({
         type: "get",
         url: "/getCodModel",
@@ -1288,7 +1252,7 @@ function updateTab(i, key) {
                 } else {
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
-                        var txtedit = new TextEditor(elemento, username, userColor, socket.id, socket);
+                        var txtedit = new TextEditor(elemento, username, userColor, creator, socket);
                         var editTxt = {
                             id: elemento,
                             txtObjEditor: txtedit
@@ -1544,8 +1508,8 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     }
                 });
                 break;
-			case "CriarPoema.html":
-                
+            case "CriarPoema.html":
+
                 break;
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});

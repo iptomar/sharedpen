@@ -1,12 +1,21 @@
-var TextEditor = function (idpai, user, cor, socketId, socket) {
+var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     this.idpai = idpai;
     this.user = user;
     this.cor = cor;
-    this.socketId = socketId;
+    this.socketId = socket.id;
     this.valPId = 1;
+    this.atualPAra = "";
     this.socket = socket;
-//    $("#" + this.idpai).attr('contenteditable', 'true');
-    $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + this.socketId + '" contenteditable></p>');
+
+    $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
+
+
+    $("#" + this.idpai + " > p").css({
+        margin: "0 0 0 0 !important"
+    });
+    $("#" + this.idpai).css({
+        "font-size": "20px"
+    });
 
     this.key = {
         'BACKSPACE': 8,
@@ -44,31 +53,113 @@ var TextEditor = function (idpai, user, cor, socketId, socket) {
 };
 
 TextEditor.prototype.allOperation = function (type, evt) {
-    if (type === "keydown" && evt.keyCode === this.key.ENTER) {
-        evt.preventDefault(); //Prevent default browser behavior
-        this.createPara(this.socketId);
+    if ($("#" + this.idpai + " > #" + event.target.id).attr("class") !== this.socketId) {
+        if (type.charAt(0) === 'm' || type.charAt(0) === 'c') {
+            setCaretAtEditor(event.target.id, 0, $("#" + this.idpai + " > #" + event.target.id).text().length);
+        } else {
+            if (evt.keyCode === this.key.ENTER) {
+                evt.preventDefault(); //Prevent default browser behavior
+                this.createPara(this.socketId, event.target.id);
+                this.socket.emit('msgappend', {
+                    'html': $(evt.target).text(),
+                    'pos': 0,
+                    "socketid": this.socketId,
+                    'id': this.idpai,
+                    novoPara: true,
+                    'idPara': event.target.id,
+                    'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
+                });
+            } else {
+                evt.preventDefault();
+            }
+        }
+    } else {
+        var newPara = false;
+        if (type.charAt(0) === 'k' && evt.keyCode === this.key.ENTER) {
+            if (type === 'keypress') {
+                this.createPara(this.socketId, event.target.id);
+                newPara = true;
+            }
+            evt.preventDefault(); //Prevent default browser behavior
+        }
+        this.atualPAra = event.target.id;
+        this.socket.emit('msgappend', {
+            'html': $(evt.target).text(),
+            'pos': 0,
+            "socketid": this.socketId,
+            'id': this.idpai,
+            novoPara: newPara,
+            'idPara': event.target.id,
+            'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
+        });
+        newPara = false;
     }
-//    console.log($("#" + this.idpai).parent().parent().attr('class').split(' ')[1]);
-    this.socket.emit('msgappend', {
-        'char': $(evt.target).text(),
-        'pos': 0,
-        'id': "#" + $(evt.target).attr("id"),
-        'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
+    this.changeColorPUsers();
+};
+
+TextEditor.prototype.changeColorPUsers = function () {
+    $("#" + this.idpai + " > p:not(." + this.socketId + ")").css({
+        "color": "blue"
+    });
+    $("#" + this.idpai + " > p." + this.socketId).css({
+        "color": "black"
     });
 };
 
-TextEditor.prototype.createPara = function (sckid) {
-    $("#" + this.idpai).append('<p  id="' + this.idpai + "-" + this.valPId++ + '" class="' + sckid + '" contenteditable></p>');
+TextEditor.prototype.createPara = function (sckid, idPara) {
+    $('<p  id="' +
+            this.idpai + "-" +
+            this.valPId++ +
+            '" class="' +
+            sckid +
+            '" contenteditable></p>').insertAfter("#" +
+            this.idpai +
+            " > #" + idPara);
+
+    console.log(sckid + "=== " + this.socketId);
     if (sckid === this.socketId) {
+        console.log("passou");
         $("#" + this.idpai + ' > p#' + this.idpai + "-" + (this.valPId - 1)).focus();
     }
 };
 
-TextEditor.prototype.showToolbar = function () {
-//    $('#note-popover-' + this.newId.substr(this.newId.length - 1)).find(".note-air-popover").css('display', 'block');
+TextEditor.prototype.setTextEditor = function (data) {
+    if (data.novoPara) {
+        this.createPara(data.socketid, data.idPara);
+    } else {
+        $("#" + this.idpai + " > #" + data.idPara).html(data.html);
+        if (data.idPara === this.atualPAra) {
+            setCaretAtEditor(data.idPara, 0, data.html.length);
+        }
+    }
+    this.changeColorPUsers();
 };
 
 
+function getCaretPosition(editableDiv) {
+    var caretPos = 0,
+            sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            if (range.commonAncestorContainer.parentNode == editableDiv) {
+                caretPos = range.endOffset;
+            }
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        if (range.parentElement() == editableDiv) {
+            var tempEl = document.createElement("span");
+            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            var tempRange = range.duplicate();
+            tempRange.moveToElementText(tempEl);
+            tempRange.setEndPoint("EndToEnd", range);
+            caretPos = tempRange.text.length;
+        }
+    }
+    return caretPos;
+}
 
 //
 /////**
@@ -226,23 +317,23 @@ TextEditor.prototype.showToolbar = function () {
 //    }
 //}
 //
-///**
-// * 
-// * @param {type} editor
-// * @param {type} linha
-// * @param {type} coluna
-// * @returns {undefined}
-// */
-//function setCaretAtEditor(editor, linha, coluna) {
-//    var el = document.getElementById(editor);
-//    var range = document.createRange();
-//    var sel = window.getSelection();
-//    range.setStart(el.childNodes[linha], coluna);
-//    range.collapse(true);
-//    sel.removeAllRanges();
-//    sel.addRange(range);
-//    el.focus();
-//}
+/**
+ * 
+ * @param {type} editor
+ * @param {type} linha
+ * @param {type} coluna
+ * @returns {undefined}
+ */
+function setCaretAtEditor(editor, linha, coluna) {
+    var el = document.getElementById(editor);
+    var range = document.createRange();
+    var sel = window.getSelection();
+    range.setStart(el.childNodes[linha], coluna);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    el.focus();
+}
 //
 //// ----------------------  Exemplos de callbacks -------------------------
 ////        airMode: true,
