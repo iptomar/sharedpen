@@ -1246,7 +1246,6 @@ function castTab(tabToCast) {
     //Faz o cast da Tab, e todos os seus elementos
     //tabToCast = tabToCast[;
     
-    console.log(tabToCast);
     var tab = $.extend(new Tab(), tabToCast);
     //alert(tabToCast.modelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
@@ -1256,7 +1255,6 @@ function castTab(tabToCast) {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
         }
     }
-    console.log(tab);
     return tab;
 }
 
