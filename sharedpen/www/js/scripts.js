@@ -752,6 +752,7 @@ $(document).ready(function () {
     //************************************************
     $('#bt_PDF').css({'visibility': "hidden"});
     $('#bt_PRE').css({'visibility': "hidden"});
+    $('#bt_HTML').css({'visibility': "hidden"});
 
 
     // *******************************************************************
@@ -830,6 +831,35 @@ $(document).ready(function () {
 //            doc.output("dataurlnewwindow");
 //        }
     });
+
+
+    // *******************************************************************
+    // Botão de HTML
+    // *******************************************************************
+
+    $('#bt_HTML').click(function () {
+        var textPdf = "";
+        var pages = [];
+        $('#tabs > li > a').each(function () {
+            var page = "";
+            $($(this).attr("href")).children().children().children().each(function () {
+                var idDiv = this.id;
+                if (idDiv.indexOf("input") !== -1) {
+                    var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
+                    page += a.txtObjEditor.getTextEditor();
+                } else if (idDiv.indexOf("image") !== -1) {
+                    page += "<div>" + $(this)[0].outerHTML + "</div>";
+                } else if (idDiv.indexOf("canvas") !== -1) {
+                    page += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
+                }
+            });
+            pages.push(page);
+        });
+        socket.emit("saveAsHtml", pages);
+    });
+
+
+
     // *******************************************************************
     // botao chat
     // *******************************************************************
@@ -888,6 +918,7 @@ $(document).ready(function () {
         console.log(backArray);
         $('#bt_PDF').css({'visibility': "hidden"});
         $('#bt_PRE').css({'visibility': "hidden"});
+        $('#bt_HTML').css({'visibility': "hidden"});
         LivroPoemas = new Array();
         var data = {
             folder: "html_Work_Models",
@@ -1024,6 +1055,7 @@ $(document).ready(function () {
             if (aux == "home") {
                 $('#bt_PDF').css({'visibility': "hidden"});
                 $('#bt_PRE').css({'visibility': "hidden"});
+                $('#bt_HTML').css({'visibility': "hidden"});
                 LivroPoemas = new Array();
                 var data = {
                     folder: "html_Work_Models",
@@ -1545,6 +1577,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 stk.emit("getAllTabs");
                 $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
+                $('#bt_HTML').css({'visibility': "visible"});
                 break;
             case "CriarLivro.html":
                 $("body").append(wait);
@@ -1580,6 +1613,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
                 $('#bt_PRE').css({'visibility': "hidden"});
+                $('#bt_HTML').css({'visibility': "hidden"});
                 break;
         }
     });
