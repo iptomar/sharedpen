@@ -20,7 +20,6 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     this.key = {
         'ENTER': 13
     };
-
 };
 
 TextEditor.prototype.allOperation = function (type, evt) {
@@ -29,18 +28,23 @@ TextEditor.prototype.allOperation = function (type, evt) {
             setCaretAtEditor(event.target.id, 0, $("#" + this.idpai + " > #" + event.target.id).text().length);
         } else {
             if (evt.keyCode === this.key.ENTER) {
-                evt.preventDefault(); //Prevent default browser behavior
-                this.createPara(this.socketId, event.target.id);
-                this.socket.emit('msgappend', {
-                    'html': $("#" + this.idpai).html(),
-                    textSinc: $(evt.target).text(),
-                    'pos': 0,
-                    "socketid": this.socketId,
-                    'id': this.idpai,
-                    novoPara: true,
-                    'idPara': event.target.id,
-                    'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
-                });
+                if ($("#" + this.idpai).height() > this.getSizePUtilizado()) {
+                    evt.preventDefault(); //Prevent default browser behavior
+                    this.createPara(this.socketId, event.target.id);
+                    this.socket.emit('msgappend', {
+                        'html': $("#" + this.idpai).html(),
+                        textSinc: $(evt.target).text(),
+                        'pos': 0,
+                        "socketid": this.socketId,
+                        'id': this.idpai,
+                        novoPara: true,
+                        'idPara': event.target.id,
+                        'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
+                    });
+                } else {
+                    alert("Fim tamanho.")
+                }
+
             } else {
                 evt.preventDefault();
             }
@@ -49,8 +53,12 @@ TextEditor.prototype.allOperation = function (type, evt) {
         var newPara = false;
         if (type.charAt(0) === 'k' && evt.keyCode === this.key.ENTER) {
             if (type === 'keypress') {
-                this.createPara(this.socketId, event.target.id);
-                newPara = true;
+                if ($("#" + this.idpai).height() > this.getSizePUtilizado()) {
+                    this.createPara(this.socketId, event.target.id);
+                    newPara = true;
+                } else {
+                    alert("fin Tamanho.")
+                }
             }
             evt.preventDefault(); //Prevent default browser behavior
         }
@@ -111,6 +119,14 @@ TextEditor.prototype.getTextEditor = function () {
         alltextP += $(this).text() + "\n";
     });
     return alltextP;
+};
+
+TextEditor.prototype.getSizePUtilizado = function () {
+    var size = $('#' + this.idpai + "-" + 1).height();
+    $('#' + this.idpai).children('p').each(function () {
+        size += $(this).height() * 1.3;
+    });
+    return size;
 };
 
 TextEditor.prototype.setTextToEditor = function (text) {
