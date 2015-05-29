@@ -94,6 +94,7 @@
     margin-bottom: 15px;
     font-size: 40px;
     font-style: bold;
+    text-align: center;
 }
 .tabspace{
     margin-left: 50px;   
@@ -152,9 +153,14 @@
     margin-top: 20px;   
 }
 
+.ValorAvaliacao {
+    float:left;
+    width: 100%;
+}
+
 #ValorAvaliacao {
     float:left;
-    width: 50%;
+    width: 100%;
 }
 
 .SmallAvatar {
@@ -162,6 +168,9 @@
     Height: 150px;
 }
 
+#SideInfo {
+margin-left: 10%;
+}
 .modal-backdrop {
     z-index: 0;
 }
