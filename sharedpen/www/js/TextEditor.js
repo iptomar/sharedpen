@@ -2,10 +2,12 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     this.idpai = idpai;
     this.user = user;
     this.cor = cor;
-    this.socketId = socket.id;
+    if(typeof socket !== "undefined")
+        this.socketId = socket.id;
     this.valPId = 1;
     this.atualPAra = "";
     this.socket = socket;
+    this.socketCreator = socketCreator;
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
     }
@@ -23,6 +25,7 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
 };
 
 TextEditor.prototype.allOperation = function (type, evt) {
+    console.log("passou");
     if ($("#" + this.idpai + " > #" + event.target.id).attr("class") !== this.socketId) {
         if (type.charAt(0) === 'm' || type.charAt(0) === 'c') {
             setCaretAtEditor(event.target.id, 0, $("#" + this.idpai + " > #" + event.target.id).text().length);
@@ -174,6 +177,9 @@ function getCaretPosition(editableDiv) {
  * @returns {undefined}
  */
 function setCaretAtEditor(editor, linha, coluna) {
+    console.log(editor);
+    console.log(linha);
+    console.log(coluna);
     var el = document.getElementById(editor);
     var range = document.createRange();
     var sel = window.getSelection();

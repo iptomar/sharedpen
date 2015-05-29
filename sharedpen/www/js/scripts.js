@@ -9,7 +9,7 @@ var numUsers = 0;
 var socket = ""; // socket de comunicacao
 var username = ""; // nome do utilizador ligado
 var userColor = "";
-var allTextEditor = []; // array com todos os editores de texto
+//var allTextEditor = []; // array com todos os editores de texto
 var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
     ["white", "Branco"],
@@ -314,18 +314,25 @@ $(document).ready(function () {
                 $("body").find('#' + data.id).attr('src', data.imageData);
                 break;
             default :
-                var textElem = getArrayElementObj(allTextEditor, data.id);
-                textElem.txtObjEditor.setTextEditor(data);
+                var parentid = $("#"+data.id).parent().parent().attr('class').split(' ')[1]
+                
+              var editor=  hash["."+parentid].modelo.arrayElem[data.id].editor;
+               // var textElem = getArrayElementObj(allTextEditor, data.id);
+                editor.setTextEditor(data);
         }
     });
     /**
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-        //        console.log(data.tabsHash);
+        recebeuTabs(data.tabsHash);
+    });
+    
+    function recebeuTabs(tabsHash){
+                //        console.log(data.tabsHash);
         var newHash = {};
-        for (var item in data.tabsHash) {
-            newHash[item] = castTab(data.tabsHash[item]);
+        for (var item in tabsHash) {
+            newHash[item] = castTab(tabsHash[item]);
         }
         hash = newHash;
         var i = 0;
@@ -334,7 +341,7 @@ $(document).ready(function () {
             Addtab(hash[key].nomeModelo, i);
             updateTab(i, key);
         }
-    });
+    }
     /**
      *  envia o codigo ASCII do backspace e do delete
      */
@@ -367,9 +374,15 @@ $(document).ready(function () {
     // envia o codigo ASCII das teclas carregadas
     // keydown 
     $("body").on('keypress keyup mousedown mouseup click', '.editable', function (e) {
+        
         var listClass = $(this).attr("id");
-        var edit = getArrayElementObj(allTextEditor, listClass);
-        edit.txtObjEditor.allOperation(e.handleObj.type, e);
+        var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
+       // console.log(listClassPAI);
+       var edit = hash["."+listClassPAI].modelo.arrayElem[listClass].editor;
+        //alert(listClass);
+
+       // var edit = getArrayElementObj(allTextEditor, listClass);
+        edit.allOperation(e.handleObj.type, e);
 
 //        var edit;
 //        var tabContentor = $(this).parent().attr("id").split("-")[0];
@@ -646,6 +659,137 @@ $(document).ready(function () {
      */
 
 
+    
+    
+    //Click para ver os meus projectos através do data-layout
+	$("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
+		var myID = 1;
+		$("body").append(wait);
+		$.ajax({
+			type: "get",
+			url: "/getProjects",
+			data: {
+				id: myID
+			},
+			contentType: "application/json; charset=utf-8",
+			dataType: 'json',
+			success: function (data) {
+				$("body").find("#loading").remove();
+                //insere todos os projectos no html!!!!
+				for (var proj in data) {
+					var htmlLine = "<tr class='actve'>"+
+						"<td><a class='' href='#AbrirProj' data-folder='html_Work_Models' data-layout='Livro.html' data-array="+data[proj].array+">"+data[proj].nome+"</a></td>"+
+						"<td>"+data[proj].tipo+"</td>"+
+						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>"+
+						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>"+
+						"<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>"+
+						"</tr>";
+                    //faz o append do html gerado
+					$("#meusProjTable").append(htmlLine);
+				}
+			},
+			error: function (error) {
+				$("body").find("#loading").remove();
+				alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+				console.log(JSON.stringify(error));
+			}
+		});
+	});
+    
+    
+$("body").on('click', 'a[href="#AbrirProj"]', function () {
+		hash = JSON.parse($(this).attr("data-array"));
+			
+
+    
+        var layout = $(this).data("layout");
+        var folder = $(this).data("folder");
+    
+        var local = "#contentor";
+        var layout = $(this).data("layout");
+        var folder = $(this).data("folder");
+        var skt = socket;
+    
+    
+    $(local).load("./" + folder + "/" + layout, function () {
+        switch (layout) {
+            case "Livro.html":
+               // stk.emit("getAllTabs");
+                $('#bt_PDF').css({'visibility': "visible"});
+                $('#bt_PRE').css({'visibility': "visible"});
+                $('#bt_HTML').css({'visibility': "visible"});
+                break;
+            case "CriarLivro.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getModelsPage",
+                    dataType: 'json',
+                    success: function (data) {
+                        var listLayout = "<div>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            listLayout += "<figure>" +
+                                    "<img class='selectModelo btnmodels-style' alt='' src='" +
+                                    (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                    "' data-model='" + data[i].nome + "'/>" +
+                                    "<figcaption> " + data[i].nome + " </figcaption>" +
+                                    "</figure>";
+                        }
+                        listLayout += "</div>";
+                        $("body").find("#loading").remove();
+                        $("body").find("#painelModelos").append(listLayout);
+
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                break;
+            case "CriarPoema.html":
+
+                break;
+            default:
+                $('#bt_PDF').css({'visibility': "hidden"});
+                $('#bt_PRE').css({'visibility': "hidden"});
+                $('#bt_HTML').css({'visibility': "hidden"});
+                break;
+        }
+        
+        var newHash = {};
+		for (var item in hash) {
+			newHash[item] = castTab(hash[item]);
+		}
+		
+		hash = newHash;
+        var i=0;
+        for (var item in hash) {
+            i++;
+            console.log(hash[item].modelo);       
+            Addtab(hash[item].modelo, i);
+            doLoad(i,hash[item].modelo,socket.id)
+        }
+        socket.emit('storedhash', {
+			storedhash: JSON.stringify(hash)
+		});
+    });
+    
+    
+    function doLoad(i,modelo,id){
+        $(".txtTab" + i).load("./html_models/" + modelo, function () {
+            updateTab(i, ".txtTab" + i, id);
+        });
+    }
+    
+
+});
+    
+    
+    
+    
+    
+    
     /**
      * Funcoes para drag and drop de imagens -----------------------------------------
      */
@@ -1285,6 +1429,10 @@ function castTab(tabToCast) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
         if (tab.modelo.arrayElem[item].elementType === "CANVAS") {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
+        }else if(typeof tabToCast.modelo.arrayElem[item].editor !== "undefined"){
+            //console.log(socket);
+            tabToCast.modelo.arrayElem[item].socket = socket;
+            tab.modelo.arrayElem[item].editor = $.extend(new TextEditor(), tabToCast.modelo.arrayElem[item].editor);
         }
     }
     return tab;
@@ -1307,6 +1455,7 @@ function getFilesToFolder(sckt, data) {
  * @param {type} key
  * @returns {undefined} */
 function updateTab(i, key, creator) {
+    alert(i);
     $.ajax({
         type: "get",
         url: "/getCodModel",
@@ -1348,14 +1497,12 @@ function updateTab(i, key, creator) {
                         }
                     }
                 } else {
+                    console.log($("#" + elemento).attr('id'));
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
-                        var txtedit = new TextEditor(elemento, username, userColor, creator, socket);
-                        var editTxt = {
-                            id: elemento,
-                            txtObjEditor: txtedit
-                        };
-                        allTextEditor.push(editTxt);
+                       var sCreator= hash[key].modelo.arrayElem[elemento].editor.socketCreator;
+                        var txtedit = new TextEditor(elemento, username, userColor, creator, sCreator);
+                        hash[key].modelo.arrayElem[elemento].editor = txtedit;
                         txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
@@ -1375,8 +1522,11 @@ function updateTab(i, key, creator) {
  * @param {type} idNum
  * @returns {undefined} */
 function Addtab(html, idNum) {
+    //console.log(html);
+    //console.log(idNum);
     //var idNum = (Object.keys(hash).length + 1);
     // Adiciona um separador antes do Ãºltimo (linha <li></li> antes do last-child)
+    console.log($('#tabs li:last-child').attr('id'));
     $('ul#tabs li:last-child').before(
             '<li id="li' +
             (idNum) +
@@ -1571,10 +1721,12 @@ function getArrayElementObj(array, id) {
  * @param {type} stk
  * @returns {undefined} */
 function addLayoutToDiv(local, folder, layout, stk) {
+    
     $(local).load("./" + folder + "/" + layout, function () {
+        console.log("1");
         switch (layout) {
             case "Livro.html":
-                stk.emit("getAllTabs");
+               // stk.emit("getAllTabs");
                 $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
                 $('#bt_HTML').css({'visibility': "visible"});
@@ -1616,6 +1768,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 $('#bt_HTML').css({'visibility': "hidden"});
                 break;
         }
+        
     });
 }
 
