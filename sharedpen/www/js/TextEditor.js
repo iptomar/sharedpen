@@ -5,16 +5,12 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     if(typeof socket !== "undefined")
         this.socketId = socket.id;
     this.valPId = 1;
-    this.atualPAra = "";
+    this.atualPara = "";
     this.socket = socket;
     this.socketCreator = socketCreator;
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
     }
-
-    $("#" + this.idpai + " > p").css({
-        margin: "0 0 0 0 !important"
-    });
     $("#" + this.idpai).css({
         "font-size": "20px"
     });
@@ -45,9 +41,8 @@ TextEditor.prototype.allOperation = function (type, evt) {
                         'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
                     });
                 } else {
-                    alert("Fim tamanho.")
+                    alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
                 }
-
             } else {
                 evt.preventDefault();
             }
@@ -60,12 +55,12 @@ TextEditor.prototype.allOperation = function (type, evt) {
                     this.createPara(this.socketId, event.target.id);
                     newPara = true;
                 } else {
-                    alert("fin Tamanho.")
+                    alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
                 }
             }
             evt.preventDefault(); //Prevent default browser behavior
         }
-        this.atualPAra = event.target.id;
+        this.atualPara = event.target.id;
         this.socket.emit('msgappend', {
             'html': $("#" + this.idpai).html(),
             textSinc: $(evt.target).text(),
@@ -109,7 +104,7 @@ TextEditor.prototype.setTextEditor = function (data) {
         this.createPara(data.socketid, data.idPara);
     } else {
         $("#" + this.idpai + " > #" + data.idPara).html(data.textSinc);
-        if (data.idPara === this.atualPAra) {
+        if (data.idPara === this.atualPara) {
             setCaretAtEditor(data.idPara, 0, data.textSinc.length);
         }
     }
@@ -125,9 +120,9 @@ TextEditor.prototype.getTextEditor = function () {
 };
 
 TextEditor.prototype.getSizePUtilizado = function () {
-    var size = $('#' + this.idpai + "-" + 1).height();
+    var size = $('#' + this.idpai + "-" + 1).height() + 10;
     $('#' + this.idpai).children('p').each(function () {
-        size += $(this).height() * 1.3;
+        size += $(this).height() + 10;
     });
     return size;
 };
@@ -151,13 +146,13 @@ function getCaretPosition(editableDiv) {
         sel = window.getSelection();
         if (sel.rangeCount) {
             range = sel.getRangeAt(0);
-            if (range.commonAncestorContainer.parentNode == editableDiv) {
+            if (range.commonAncestorContainer.parentNode === editableDiv) {
                 caretPos = range.endOffset;
             }
         }
     } else if (document.selection && document.selection.createRange) {
         range = document.selection.createRange();
-        if (range.parentElement() == editableDiv) {
+        if (range.parentElement() === editableDiv) {
             var tempEl = document.createElement("span");
             editableDiv.insertBefore(tempEl, editableDiv.firstChild);
             var tempRange = range.duplicate();

@@ -63,8 +63,8 @@
 }
 
 .avatar-Image{
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
 }
 
 #userImage{
@@ -91,10 +91,24 @@
 .changeUser{
     width: 70px;
     height: 60px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-size: 40px;
     font-style: bold;
+    text-align: center;
 }
+
+#removeButton{
+    background-image: url(../img/Minus.png);
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+#addButton{
+    background-image: url(../img/add.png);
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
 .tabspace{
     margin-left: 50px;   
 }
@@ -103,13 +117,17 @@
     border:1px solid lightgray;
     border-radius: 5px;
     list-style-type: none; 
-    max-height: 90%;
+    max-height: 82%;
     max-width: 44%;
     width: 44%;
     overflow-y: scroll;
 }
 .buttonTable{
     margin-top: 220px;
+    float:left;
+}
+
+.div-side {
     float:left;
 }
 
@@ -127,7 +145,7 @@
     width:100%;    
 }
 
-#Contacto, Password, #tipoUtilizador {
+#Password, #tipoUtilizador {
     width: 250px;  
 }
 
@@ -135,16 +153,40 @@
  margin-top: 10px;   
 }
 
-#Contact, #Pass, #Username, #Nome, #tipoUser, #guardarEdit {
+#users-avaliar{
+    height:20%; 
+    width:220%;
+}
+
+#Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser {
     width: 100%;
     height: 50px;
     font-size: auto;
+    margin-bottom: 10px;
 }
     
 #guardarEdit {
- margin-top: 20px;   
+    margin-top: 20px;   
 }
 
+.ValorAvaliacao {
+    float:left;
+    width: 100%;
+}
+
+#ValorAvaliacao {
+    float:left;
+    width: 100%;
+}
+
+.SmallAvatar {
+    width: 150px;
+    Height: 150px;
+}
+
+#SideInfo {
+    margin-left: -80px;
+}
 .modal-backdrop {
     z-index: 0;
 }
