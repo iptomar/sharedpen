@@ -26,7 +26,7 @@ var backArray = ["home"];
 var folderArray = ["html_Work_Models"];
 var currentPosition = 1;
 $(document).ready(function () {
-
+    
     /**
      * Configuracao das opcoes do popup de online / offline de novos clientes
      */
@@ -44,8 +44,8 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn"
     };
-
-
+    
+    
     // cria a ligação com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
@@ -62,7 +62,7 @@ $(document).ready(function () {
     /**
      * Funções relacionadas com a autenticação --------------------------------------------------------------------
      */
-
+    
     // evento de carregar no button para fazer o login
     $("#startlogin").click(function () {
         username = $("#username").val();
@@ -151,7 +151,7 @@ $(document).ready(function () {
         var iddd = $(this).attr('id');
         var tabNumber = iddd.match(/\d+/)[0];
         var thisId = "tab" + tabNumber + "-Mycanvas";
-
+        
         if (e.which === 1 ||
                 e.handleObj.type === "touchstart" ||
                 e.handleObj.type === "touchmove" ||
@@ -161,7 +161,7 @@ $(document).ready(function () {
             offset = $(this).offset();
             e.offsetX = e.clientX - offset.left;
             e.offsetY = e.clientY - offset.top;
-
+            
             if (e.handleObj.type === "touchstart" ||
                     e.handleObj.type === "touchmove" ||
                     e.handleObj.type === "touchend") {
@@ -171,12 +171,12 @@ $(document).ready(function () {
                     y = e.originalEvent.touches[0].pageY - offset.top;
                 } catch (err) {
                 }
-
+                
             } else {
                 x = e.offsetX;
                 y = e.offsetY;
             }
-
+            
             var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
             var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
             cmv.draw(x, y, type, sizeCurs);
@@ -236,8 +236,8 @@ $(document).ready(function () {
             //                        alert('Right Mouse button pressed.');
         }
         //                        alert('You have a strange Mouse!');
-
-
+        
+        
     });
     $("body").on('change', '#LoadImageCanvas', function (e) {
         var Thid = $("#LoadImageCanvas").attr('data-idpai');
@@ -265,7 +265,7 @@ $(document).ready(function () {
     /*
      * Funçoes relacionadas com as cores ----------------------------------------------------------------------
      */
-
+    
     /**
      * Evento onChange da cor de fundo
      */
@@ -301,14 +301,14 @@ $(document).ready(function () {
     /*
      * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
      */
-
+    
     // *******************************************************************
     // dados recebidos pelo socket para o browser
     // *******************************************************************
     // recebe o codigo ASCII da tecla recebida, converte-a para
     // carater e adiciona-o na posicao coreta
     socket.on('msgappend', function (data) {
-
+        
         switch (data.tipo) {
             case "IMG":
                 $("body").find('#' + data.id).attr('src', data.imageData);
@@ -338,7 +338,7 @@ $(document).ready(function () {
     /**
      *  envia o codigo ASCII do backspace e do delete
      */
-
+    
     // *******************************************************************
     // dados enviadas pelo socket para o servidor
     // *******************************************************************
@@ -363,14 +363,14 @@ $(document).ready(function () {
             });
         }
     });
-
+    
     // envia o codigo ASCII das teclas carregadas
     // keydown 
     $("body").on('keypress keyup mousedown mouseup click', '.editable', function (e) {
         var listClass = $(this).attr("id");
         var edit = getArrayElementObj(allTextEditor, listClass);
         edit.txtObjEditor.allOperation(e.handleObj.type, e);
-
+        
 //        var edit;
 //        var tabContentor = $(this).parent().attr("id").split("-")[0];
 //        var listClass = $(this).attr("class").split(" ");
@@ -417,7 +417,7 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
-
+    
     $("body").on('click', "#bt_guardar", function () {
         console.log(hash);
         $.ajax({
@@ -430,7 +430,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 //alert(data);
-
+                
             },
             error: function (error) {
                 // alert("ERRO HASH");
@@ -438,7 +438,7 @@ $(document).ready(function () {
             }
         });
     })
-
+    
     $("body").on('click', "#bt_getHash", function () {
         //alert(hash);
         $.ajax({
@@ -453,9 +453,9 @@ $(document).ready(function () {
                 console.log(data[0]);
                 //var ola =   JSON.parse('[object Object]');
                 // console.log(ola);
-
+                
                 var test = JSON.parse('' + data[0].array + '');
-
+                
                 console.log(test);
                 //for (var a in test) break;
                 //console.log("aaaaaaaaaaaaaa"+a);
@@ -467,9 +467,9 @@ $(document).ready(function () {
                 //console.log(JSON.stringify(error));
             }
         });
-
+        
     })
-
+    
     $("body").on('click', ".btnmodels", function () {
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
@@ -560,7 +560,7 @@ $(document).ready(function () {
         }
         return false;
     });
-
+    
     $("body").on('click', '.xpoema', function () {
         liElem = $(this).attr('id');
         // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
@@ -571,15 +571,15 @@ $(document).ready(function () {
         }
         ;
     });
-
-
+    
+    
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
     /*
      * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
      */
-
+    
     /**
      * Evento gerado quando um utilizador manda mensagem no chat
      */
@@ -644,12 +644,12 @@ $(document).ready(function () {
     /*
      * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
      */
-
-
+    
+    
     /**
      * Funcoes para drag and drop de imagens -----------------------------------------
      */
-
+    
     $(".container-fluid").on('change', 'input[type=file]', function (e) {
         var imgId = $(this).next().attr("id");
         var file = e.originalEvent.target.files[0],
@@ -664,7 +664,7 @@ $(document).ready(function () {
                     'imageData': evt.target.result,
                     'tipo': $("body").find('#' + imgId).prop("tagName"),
                     'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
-
+                            
                 });
             }
         };
@@ -710,10 +710,10 @@ $(document).ready(function () {
                 }
                 return false;
             }
-
+            
             var reader = new FileReader(file);
             reader.onload = function (evt) {
-                if (idImg !== "userImage" && idImg !== "image") {
+                if (idImg !== "userImage" && idImg !== "image") {                    
                     // envia as informacoes da nova imagem para os outros clientes
                     socket.emit('msgappend', {
                         id: idImg,
@@ -728,19 +728,19 @@ $(document).ready(function () {
             reader.readAsDataURL(file);
         });
     });
-
+    
     // recebe a imagem e coloca-a de acordo com o id recebido
     socket.on('user image', function (data) {
         $("body").find('#' + data.id).attr("src", data.imageData);
     });
-
+    
     /**
      * Funçoes de logout -----------------------------------------------------------------------------------------------
      */
     /**
      * recebe o evento do socket com o socket id do cliente que se desligou
      */
-
+    
     socket.on('diconnected', function (socketid) {
         for (var item in users) {
             if (users[item].getSocketId() === socketid) {
@@ -757,62 +757,62 @@ $(document).ready(function () {
     $('#bt_PDF').css({'visibility': "hidden"});
     $('#bt_PRE').css({'visibility': "hidden"});
     $('#bt_HTML').css({'visibility': "hidden"});
-
-
+    
+    
     // *******************************************************************
     // Botao do pdf, Botao do Pre-visualizar
     // *******************************************************************
-
+    
     $('#bt_PRE, #bt_PDF').click(function () {
         var textPdf = "";
         $('#tabs > li > a').each(function () {
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
                 if (idDiv.indexOf("input") !== -1) {
-
+                    
                     var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
                     textPdf += a.txtObjEditor.getTextEditor();
-
+                    
                 } else if (idDiv.indexOf("image") !== -1) {
-
+                    
                     //console.log($(this)[0].outerHTML);
                     // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-
+                    
                     // textPdf += '<img src="http://www.mensagenscomamor.com/images/interna/new/imagens_amor_2.jpg" >';
                     console.log($(this)[0].src);
-
+                    
                     socket.emit('user image', {
                         imageData: $(this)[0].src
                     });
-
-
+                    
+                    
                     textPdf += '<img src="http://localhost:8080/imgupload/img.jpg" >';
                     socket.emit('removeimage');
-
+                    
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
                     //teste imagem
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
-
+                    
                 }
             });
             //alert("PDF Criado")
         });
-
+        
         // console.log(textPdf);
         socket.emit("convertToPdf", textPdf, "livro.pdf");
-
+        
         // var doc =jsPDF();
         //  doc.output("./Livro.pdf")
-
+        
         console.log(textPdf);
-
+        
 //PDF NO SERVIDOR
         socket.emit("convertToPdf", textPdf, "Livro.pdf");
-
-
+        
+        
 // PDF NO CLIENTE
 //       var a = getArrayElementObj(allTextEditor, "tab1-input1");
 //        alert(a.txtObjEditor.getTextEditor());
@@ -824,8 +824,8 @@ $(document).ready(function () {
 //                return true;
 //            }
 //        };
-
-
+        
+        
 //        doc.fromHTML(textPdf, 15, 15, {
 //            'width': 170, 'elementHandlers': specialElementHandlers
 //        });
@@ -835,12 +835,12 @@ $(document).ready(function () {
 //            doc.output("dataurlnewwindow");
 //        }
     });
-
-
+    
+    
     // *******************************************************************
     // Botão de HTML
     // *******************************************************************
-
+    
     $('#bt_HTML').click(function () {
         var textPdf = "";
         var pages = [];
@@ -861,9 +861,9 @@ $(document).ready(function () {
         });
         socket.emit("saveAsHtml", pages);
     });
-
-
-
+    
+    
+    
     // *******************************************************************
     // botao chat
     // *******************************************************************
@@ -891,7 +891,7 @@ $(document).ready(function () {
             });
         }
     });
-
+    
     $("body").on("click", ".imageGaleria", function () {
         var Thid = $(this).attr('data-idpai').replace(".", "");
         var cnv = $(this).attr('data-idcnv');
@@ -914,7 +914,7 @@ $(document).ready(function () {
             $("#divGaleria").css({"visibility": "hidden"});
         });
     });
-
+    
     $("#homemenu").click(function () {
         backArray.push("home");
         folderArray.push("html_Work_Models");
@@ -931,7 +931,7 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
-
+    
     //******************************************************************
     // Recebe a lista de ficheiros de uma determinada pasta
     //******************************************************************
@@ -963,13 +963,6 @@ $(document).ready(function () {
             case "html_Work_Models":
                 var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
                 for (var i = 0, max = data.length; i < max; i++) {
-                    $.ajax({
-                        url: './img/' + data[i].split(".")[0] + '.png', 
-                        type: 'HEAD', 
-                        error: function (e){
-                            console.log(e.message);
-                        }
-                    });
                     allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
                     allPages += '<figure class="image">';
                     allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
@@ -1036,7 +1029,7 @@ $(document).ready(function () {
                 break;
         }
     });
-
+    
     $(".fecharGaleria").click(function () {
         $("#divGaleria").animate({
             "left": "-30%"
@@ -1044,21 +1037,21 @@ $(document).ready(function () {
             $("#divGaleria").css({"visibility": "hidden"});
         });
     });
-
+    
     $("body").on("click", ".carregarLayout", function () {
         if (currentPosition != backArray.length) {
             backArray.splice(currentPosition, backArray.length - currentPosition);
             folderArray.splice(currentPosition, folderArray.length - currentPosition);
         }
-
+        
         backArray.push($(this).data("layout"));
         folderArray.push($(this).data("folder"));
-
+        
         currentPosition += 1;
         //console.log(backArray + " " + currentPosition);
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
-
+    
     $("body").on("click", ".voltarLayout", function () {
         if (currentPosition - 1 >= 1) {
             currentPosition -= 1;
@@ -1081,7 +1074,7 @@ $(document).ready(function () {
             console.log(backArray + " " + currentPosition);
         }
     });
-
+    
     //Mostrar os temas disponíveis para o poema
     $("body").on("click", 'a[href="#add-poema"]', function () {
         var data = {
@@ -1091,7 +1084,7 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
-
+    
     //adicionar palavra 'a ajuda do poema
     $("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function () {
         var idpage = $(this).parent().parent().parent().attr('id');
@@ -1101,8 +1094,8 @@ $(document).ready(function () {
             $(this).before('<span class="label label-info" style="float:left; margin: 3px;">' + text + '</span>');
         }
     });
-
-
+    
+    
     //Mostrar perfil do Utilizador
     $("body").on("click", 'a[href="#show-perfil"]', function () {
 //        var data = {
@@ -1122,7 +1115,7 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
-
+    
     //Adiciona a tab do poema
     $("body").on("click", '.imgPoema', function () {
         /**folder: $(self).attr("data-folder"),
@@ -1132,7 +1125,7 @@ $(document).ready(function () {
         $("body").find("#divchangemodel").remove();
         $("body").find("a[href^='#page']:last").click();
     });
-
+    
     $("body").on("click", ".dropdown-menu li a", function () {
         switch ($(this).data("type")) {
             case "font-family":
@@ -1164,7 +1157,7 @@ $(document).ready(function () {
                 break;
         }
     });
-
+    
     $("body").on("click", ".selectModelo", function () {
         if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
@@ -1174,7 +1167,7 @@ $(document).ready(function () {
             $("body").find("#ModeloSelectPagina").attr("data-model", $(this).data("model"));
         }
     });
-
+    
     $("body").on("click", "#guardarModeloLivro", function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
         var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-model");
@@ -1198,7 +1191,7 @@ $(document).ready(function () {
             "color": $("body").find(".textResultado").css("color"),
             "background-color": $("body").find(".textResultado").css("background-color")
         });
-
+        
         $("body").append(wait);
         $.ajax({
             type: "POST",
@@ -1231,13 +1224,13 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
+        
     });
-
+    
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
      */
-
+    
 });
 $(window).resize(function () {
     ajustElements();
@@ -1259,11 +1252,11 @@ function getBase64Image(img) {
     var canvas = document.createElement("canvas");
     canvas.width = img2.width;
     canvas.height = img2.height;
-
+    
     // Copy the image contents to the canvas
     var ctx = canvas.getContext("2d");
     ctx.drawImage(img2, 0, 0);
-
+    
     // Get the data-URL formatted image
     // Firefox supports PNG and JPEG. You could check img.src to guess the
     // original format, but be aware the using "image/jpg" will re-encode the image.
@@ -1289,7 +1282,7 @@ function castTab(tabToCast) {
     //tabToCast = tabToCast[".txtTab1"];
     //Faz o cast da Tab, e todos os seus elementos
     //tabToCast = tabToCast[;
-
+    
     var tab = $.extend(new Tab(), tabToCast);
     //alert(tabToCast.modelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
@@ -1333,11 +1326,11 @@ function updateTab(i, key, creator) {
             for (var elemento in hash[key].modelo.arrayElem) {
                 if (hash[key].modelo.arrayElem[elemento].elementType === "IMG") {
                     $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
-
+                    
                 } else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
                     //cria o seu canvas!
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
-
+                    
                     //se o array nao estiver vazio (se nao tiver clientes canvas)
                     if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== []) {
                         for (var item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
@@ -1351,7 +1344,7 @@ function updateTab(i, key, creator) {
                             var ctx = dr.getContext('2d');
                             //pinta a imagem
                             ctx.drawImage(img, 0, 0);
-
+                            
                         }
                         //se tiver backgorund desenha o
                         if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== "") {
@@ -1415,7 +1408,7 @@ function Addtab(html, idNum) {
  * @returns {undefined} */
 
 function refactorTab(html, idNum) {
-
+    
     //depois de carregar o html, vai buscar o numero de filhos q a div tem
     var numElements = $(".txtTab" + (idNum)).children('div').children().length;
     //cria tab no array
@@ -1437,20 +1430,20 @@ function refactorTab(html, idNum) {
  * @param {type} idNum
  * @returns {undefined} */
 function addtohash(idNum) {
-
+    
     $(".txtTab" + idNum).children('div').children().each(function () {
-
+        
         //vai buscar id atribuido
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
         var tabNumber = thID.match(/\d+/)[0];
         var newElementID = "tab" + tabNumber + "-Mycanvas";
         if ($(this).attr("id").match("tab" + tabNumber + "-canvasdr")) {
-
+            
             tabTest.modelo.arrayElem[newElementID] = new Element(newElementID, "CANVAS");
             tabTest.modelo.arrayElem[newElementID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
             tabTest.modelo.arrayElem[newElementID].drawObj.init();
-
+            
         } else if ($(this).attr("class").match("editable")) {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             var txtedit = new TextEditor($(this).attr("id"), username, userColor, socket.id, socket);
@@ -1463,7 +1456,7 @@ function addtohash(idNum) {
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
-
+        
     });
     hash[tabTest.id] = tabTest;
 }
@@ -1474,7 +1467,7 @@ function addtohash(idNum) {
  * @param {type} liElem
  * @returns {undefined} */
 function removeTab(liElem) {
-
+    
     $('ul#tabs > li#li' + liElem).fadeOut(1000, function () {
         // Apaga o <li></li>(separador) com um efeito fadeout
         $(this).remove();
@@ -1484,7 +1477,7 @@ function removeTab(liElem) {
     var i = 1;
     //para renomear Li
     $('#tabs').children('li').each(function () {
-
+        
         if ($(this).attr('id') !== "li-last" && $(this).attr('id') !== $('ul#tabs > li#li' + liElem).attr('id')) {
             $(this).attr('id', "li" + i);
             $(this).children('a').attr('href', "#page" + i);
@@ -1610,7 +1603,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         listLayout += "</div>";
                         $("body").find("#loading").remove();
                         $("body").find("#painelModelos").append(listLayout);
-
+                        
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -1620,7 +1613,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 });
                 break;
             case "CriarPoema.html":
-
+                
                 break;
             default:
                 $('#bt_PDF').css({'visibility': "hidden"});
