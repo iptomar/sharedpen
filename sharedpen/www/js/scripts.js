@@ -308,15 +308,14 @@ $(document).ready(function () {
     // recebe o codigo ASCII da tecla recebida, converte-a para
     // carater e adiciona-o na posicao coreta
     socket.on('msgappend', function (data) {
-
         switch (data.tipo) {
             case "IMG":
                 $("body").find('#' + data.id).attr('src', data.imageData);
                 break;
             default :
-                var parentid = $("#"+data.id).parent().parent().attr('class').split(' ')[1]
                 
-              var editor=  hash["."+parentid].modelo.arrayElem[data.id].editor;
+                var parentid = $("#"+data.id).parent().parent().attr('class').split(' ')[1]        
+                var editor=  hash["."+parentid].modelo.arrayElem[data.id].editor;
                // var textElem = getArrayElementObj(allTextEditor, data.id);
                 editor.setTextEditor(data);
         }
@@ -380,10 +379,73 @@ $(document).ready(function () {
        // console.log(listClassPAI);
        var edit = hash["."+listClassPAI].modelo.arrayElem[listClass].editor;
         //alert(listClass);
-
        // var edit = getArrayElementObj(allTextEditor, listClass);
-        edit.allOperation(e.handleObj.type, e);
+        //edit.allOperation(e.handleObj.type, e);
 
+        evt = e;
+  // ------------------------     
+        
+    console.log("passou");
+    if ($("#" + edit.idpai + " > #" + event.target.id).attr("class") !== edit.socketId) {
+        if (e.handleObj.type.charAt(0) === 'm' || e.handleObj.type.charAt(0) === 'c') {
+            setCaretAtEditor(event.target.id, 0, $("#" + edit.idpai + " > #" + event.target.id).text().length);
+        } else {
+            if (evt.keyCode === edit.key.ENTER) {
+                if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
+                    evt.preventDefault(); //Prevent default browser behavior
+                    edit.createPara(edit.socketId, event.target.id);
+                    socket.emit('msgappend', {
+                        'html': $("#" + edit.idpai).html(),
+                        textSinc: $(evt.target).text(),
+                        'pos': 0,
+                        "socketid": edit.socketId,
+                        'id': edit.idpai,
+                        novoPara: true,
+                        'idPara': event.target.id,
+                        'parent': $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
+                    });
+                } else {
+                    alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                }
+            } else {
+                evt.preventDefault();
+            }
+        }
+    } else {
+        var newPara = false;
+        if (e.handleObj.type.charAt(0) === 'k' && evt.keyCode === edit.key.ENTER) {
+            if (e.handleObj.type === 'keypress') {
+                if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
+                    edit.createPara(edit.socketId, event.target.id);
+                    newPara = true;
+                } else {
+                    alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                }
+            }
+            evt.preventDefault(); //Prevent default browser behavior
+        }
+        edit.atualPara = event.target.id;
+        socket.emit('msgappend', {
+            'html': $("#" + edit.idpai).html(),
+            textSinc: $(evt.target).text(),
+            'pos': 0,
+            "socketid": edit.socketId,
+            'id': edit.idpai,
+            novoPara: newPara,
+            'idPara': event.target.id,
+            'parent': $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
+        });
+        newPara = false;
+    }
+    edit.changeColorPUsers();
+        
+  //------------------      
+        
+        
+        
+        
+        
+        
 //        var edit;
 //        var tabContentor = $(this).parent().attr("id").split("-")[0];
 //        var listClass = $(this).attr("class").split(" ");
@@ -484,6 +546,7 @@ $(document).ready(function () {
     })
 
     $("body").on('click', ".btnmodels", function () {
+        
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -695,6 +758,14 @@ $(document).ready(function () {
 			}
 		});
 	});
+    
+    
+    function emitMsg(){
+        
+        
+        
+    }
+    
     
     
 $("body").on('click', 'a[href="#AbrirProj"]', function () {
@@ -1500,8 +1571,9 @@ function updateTab(i, key, creator) {
                     console.log($("#" + elemento).attr('id'));
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
-                       var sCreator= hash[key].modelo.arrayElem[elemento].editor.socketCreator;
-                        var txtedit = new TextEditor(elemento, username, userColor, creator, sCreator);
+                        var sCreator= hash[key].modelo.arrayElem[elemento].editor.socketCreator;
+                        var iddd= socket.id;
+                        var txtedit = new TextEditor(elemento, username, userColor, creator, iddd);
                         hash[key].modelo.arrayElem[elemento].editor = txtedit;
                         txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
                     }
@@ -1591,13 +1663,10 @@ function addtohash(idNum) {
 
         } else if ($(this).attr("class").match("editable")) {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
-            var txtedit = new TextEditor($(this).attr("id"), username, userColor, socket.id, socket);
+            var txtedit = new TextEditor($(this).attr("id"), username, userColor, socket.id, socket.id);
             $(this).addClass(thID);
-            var editTxt = {
-                id: thID,
-                txtObjEditor: txtedit
-            };
-            allTextEditor.push(editTxt);
+            tabTest.modelo.arrayElem[thID].editor =txtedit;
+            
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
