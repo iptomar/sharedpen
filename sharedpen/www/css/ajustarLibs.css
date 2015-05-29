@@ -67,6 +67,12 @@
     height: 300px;
 }
 
+#userImage{
+    width: 400px;
+    height: 400px;
+    margin-left: 100px;
+}
+
 .dotted-round-div{
     border-radius: 15px;
     border-style: dotted;
@@ -130,8 +136,8 @@
 }
 
 #Contact, #Pass, #Username, #Nome, #tipoUser, #guardarEdit {
-    width: 200%;
-    height: 100px;
+    width: 100%;
+    height: 50px;
     font-size: auto;
 }
     
