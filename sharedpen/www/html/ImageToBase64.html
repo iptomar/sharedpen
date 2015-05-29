@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SharedPen</title>
+        <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+
+        <!-- Bootstrap js -->
+        <script type="text/javascript" src="./../lib/jquery-1.11.2.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $("body").on('change', 'input[type=file]', function (e) {
+                    var file = e.originalEvent.target.files[0],
+                            reader = new FileReader(file);
+                    reader.onload = function (evt) {
+                        $("body").find('.converteFiles').attr('src', evt.target.result);
+                        $("#base64result").html(evt.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                $("body").on('dragenter', ".converteFiles", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).css('border', '2px solid #0B85A1');
+                });
+
+                $("body").on('dragover', ".converteFiles", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                $("body").on('click', ".converteFiles", function (e) {
+                    var obj = $(this);
+                    obj.prev('input[type=file]').click();
+                });
+
+                $("body").on('drop', ".converteFiles", function (e) {
+                    $(this).css('border', '2px dotted #0B85A1');
+                    e.preventDefault();
+                    var files = e.originalEvent.dataTransfer.files;
+                    var errMessage = 0;
+                    $.each(files, function (index, file) {
+                        // Some error messaging
+                        if (!files[index].type.match('image.*')) {
+                            if (errMessage === 0) {
+                                alert('Hey! Images only');
+                                ++errMessage
+                            }
+                            else if (errMessage === 1) {
+                                alert('Stop it! Images only!');
+                                ++errMessage
+                            }
+                            else if (errMessage === 2) {
+                                alert("Can't you read?! Images only!");
+                                ++errMessage
+                            }
+                            else if (errMessage === 3) {
+                                alert("Fine! Keep dropping non-images.");
+                                errMessage = 0;
+                            }
+                            return false;
+                        }
+
+                        var reader = new FileReader(file);
+                        reader.onload = function (evt) {
+                            $("body").find('.converteFiles').attr('src', evt.target.result);
+                            $("#base64result").html(evt.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            });
+        </script>
+        <style>
+            .converteFiles {
+                border: 1px solid black;
+                width: 100px;
+                height: 100px;
+            }
+            #base64result {
+                width: 97%;
+                height: 600px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div>
+            <input id="inputFile" type="file" class="" accept="image/*" />
+            <img id="image" class="converteFiles" alt="" src="">
+            <textarea id="base64result"></textarea>
+        </div>
+    </body>
+</html>

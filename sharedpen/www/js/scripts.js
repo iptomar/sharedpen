@@ -44,8 +44,8 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn"
     };
-    
-    
+
+
     // cria a ligação com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
@@ -417,57 +417,57 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
-    
+
     $("body").on('click', "#bt_guardar", function () {
         console.log(hash);
-          $.ajax({
+        $.ajax({
             type: "POST",
             url: "/setArray",
             data: {
-               arrayy: JSON.stringify(hash)
+                arrayy: JSON.stringify(hash)
             },
-           // contentType: "application/json; charset=utf-8",
+            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 //alert(data);
-                
+
             },
             error: function (error) {
-               // alert("ERRO HASH");
+                // alert("ERRO HASH");
                 //console.log(JSON.stringify(error));
             }
-        });             
+        });
     })
-    
+
     $("body").on('click', "#bt_getHash", function () {
         //alert(hash);
-          $.ajax({
+        $.ajax({
             type: "GET",
             url: "/getArray",
             data: {
-               id: 9
+                id: 9
             },
-           // contentType: "application/json; charset=utf-8",
+            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 console.log(data[0]);
                 //var ola =   JSON.parse('[object Object]');
-               // console.log(ola);
-            
-             var test = JSON.parse(''+data[0].array+'');
-              
+                // console.log(ola);
+
+                var test = JSON.parse('' + data[0].array + '');
+
                 console.log(test);
                 //for (var a in test) break;
                 //console.log("aaaaaaaaaaaaaa"+a);
-               var olaola = castTab(test);
+                var olaola = castTab(test);
                 //console.log(olola);
             },
             error: function (error) {
                 alert("ERRO HASH");
                 //console.log(JSON.stringify(error));
             }
-        });      
-        
+        });
+
     })
 
     $("body").on('click', ".btnmodels", function () {
@@ -656,15 +656,17 @@ $(document).ready(function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            // envia as informacoes da nova imagem para os outros clientes
-            socket.emit('msgappend', {
-                id: imgId,
-                name: file.name,
-                'imageData': evt.target.result,
-                'tipo': $("body").find('#' + imgId).prop("tagName"),
-                'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
+            if (imgId !== "userImage" && imgId !== "image") {
+                // envia as informacoes da nova imagem para os outros clientes
+                socket.emit('msgappend', {
+                    id: imgId,
+                    name: file.name,
+                    'imageData': evt.target.result,
+                    'tipo': $("body").find('#' + imgId).prop("tagName"),
+                    'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
 
-            });
+                });
+            }
         };
         reader.readAsDataURL(file);
     });
@@ -711,14 +713,16 @@ $(document).ready(function () {
 
             var reader = new FileReader(file);
             reader.onload = function (evt) {
-                // envia as informacoes da nova imagem para os outros clientes
-                socket.emit('msgappend', {
-                    id: idImg,
-                    name: file.name,
-                    'imageData': evt.target.result,
-                    'tipo': $("body").find('#' + idImg).prop("tagName"),
-                    'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
-                });
+                if (idImg !== "userImage" && idImg !== "image") {
+                    // envia as informacoes da nova imagem para os outros clientes
+                    socket.emit('msgappend', {
+                        id: idImg,
+                        name: file.name,
+                        'imageData': evt.target.result,
+                        'tipo': $("body").find('#' + idImg).prop("tagName"),
+                        'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
+                    });
+                }
                 $("body").find('#' + idImg).attr('src', evt.target.result);
             };
             reader.readAsDataURL(file);
@@ -959,6 +963,13 @@ $(document).ready(function () {
             case "html_Work_Models":
                 var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
                 for (var i = 0, max = data.length; i < max; i++) {
+                    $.ajax({
+                        url: './img/' + data[i].split(".")[0] + '.png', 
+                        type: 'HEAD', 
+                        error: function (e){
+                            console.log(e.message);
+                        }
+                    });
                     allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
                     allPages += '<figure class="image">';
                     allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
@@ -1261,10 +1272,11 @@ function getBase64Image(img) {
 }
 
 function toObject(arr) {
-  var rv = {};
-  for (var i = 0; i < arr.length; ++i)
-    if (arr[i] !== undefined) rv[i] = arr[i];
-  return rv;
+    var rv = {};
+    for (var i = 0; i < arr.length; ++i)
+        if (arr[i] !== undefined)
+            rv[i] = arr[i];
+    return rv;
 }
 
 /**
@@ -1277,7 +1289,7 @@ function castTab(tabToCast) {
     //tabToCast = tabToCast[".txtTab1"];
     //Faz o cast da Tab, e todos os seus elementos
     //tabToCast = tabToCast[;
-    
+
     var tab = $.extend(new Tab(), tabToCast);
     //alert(tabToCast.modelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
