@@ -113,6 +113,12 @@
     float:left;
 }
 
+.div-side {
+    width: 15%;
+    float:left;
+    
+}
+
 .div-users{
     height: 650px;
     margin-top: 5px;
@@ -143,7 +149,17 @@
 }
     
 #guardarEdit {
- margin-top: 20px;   
+    margin-top: 20px;   
+}
+
+#ValorAvaliacao {
+    float:left;
+    width: 50%;
+}
+
+.SmallAvatar {
+    width: 150px;
+    Height: 150px;
 }
 
 .modal-backdrop {
