@@ -2,10 +2,12 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     this.idpai = idpai;
     this.user = user;
     this.cor = cor;
+    this.socket = socket;
+	if (typeof socket != "undefined"){
     this.socketId = socket.id;
+	}
     this.valPId = 1;
     this.atualPAra = "";
-    this.socket = socket;
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
     }
