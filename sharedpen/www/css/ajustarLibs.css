@@ -131,6 +131,16 @@
  margin-top: 10px;   
 }
 
+#Contact, #Pass, #Username, #Nome, #tipoUser, #guardarEdit {
+    width: 200%;
+    height: 100px;
+    font-size: auto;
+}
+    
+#guardarEdit {
+ margin-top: 20px;   
+}
+
 .modal-backdrop {
     z-index: 0;
 }
