@@ -128,9 +128,7 @@
 }
 
 .div-side {
-    width: 15%;
     float:left;
-    
 }
 
 .div-users{
@@ -153,6 +151,11 @@
 
 #Password {
  margin-top: 10px;   
+}
+
+#users-avaliar{
+    height:20%; 
+    width:220%;
 }
 
 #Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser {
@@ -182,7 +185,7 @@
 }
 
 #SideInfo {
-margin-left: 10%;
+    margin-left: -80px;
 }
 .modal-backdrop {
     z-index: 0;
