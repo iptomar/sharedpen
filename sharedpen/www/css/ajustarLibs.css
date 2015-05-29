@@ -40,7 +40,6 @@
     display:table-cell;
     width: 49%;
     float:left;
-    margin-right: 10px;
 }
 
 
@@ -69,7 +68,7 @@
 }
 
 .dotted-round-div{
-    border-radius: 10px;
+    border-radius: 15px;
     border-style: dotted;
     border-color:lightgray;
     border-width: 2px; 
@@ -83,20 +82,35 @@
     overflow-y: scroll;   
 }
 
+.changeUser{
+    width: 60px;
+    height: 50px;
+    margin-bottom: 15px;
+    font-size: 30px;
+    font-style: bold;
+}
+
 .userList {
+    float:left;
+    border:1px solid lightgray;
+    border-radius: 5px;
     list-style-type: none; 
-    max-height: 95%;
-    max-width: 47%;
-    overflow-x: scroll;
+    max-height: 99%;
+    max-width: 45%;
+    width: 45%;
     overflow-y: scroll;
 }
+.buttonTable{
+    margin-top: 260px;
+    float:left;
+}
+
+
 .div-user-tabs{
     max-height: 84%;   
 }
 .div-users{
-    max-height: 1%;
-    border: 1px dotted grey;
-    border-radius: 10px;
+    height: 650px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
