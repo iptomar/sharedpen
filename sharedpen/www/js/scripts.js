@@ -24,6 +24,7 @@ var tabTest;
 var LivroPoemas = new Array();
 var backArray = ["home"];
 var folderArray = ["html_Work_Models"];
+var tmpArrayProj= [];
 var currentPosition = 1;
 $(document).ready(function () {
 
@@ -744,8 +745,10 @@ $(document).ready(function () {
 				$("body").find("#loading").remove();
                 //insere todos os projectos no html!!!!
 				for (var proj in data) {
+                    //guarda os arrays dos projetos
+                    tmpArrayProj[data[proj].id] = data[proj].array;
 					var htmlLine = "<tr class='actve'>"+
-						"<td><a class='' href='#AbrirProj' data-folder='html_Work_Models' data-layout='Livro.html' data-array='"+data[proj].array+"'>"+data[proj].nome+"</a></td>"+
+						"<td><a class='' href='#AbrirProj' data-idProj='"+data[proj].id+"' data-folder='html_Work_Models' data-layout='Livro.html'>"+data[proj].nome+"</a></td>"+
 						"<td>"+data[proj].tipo+"</td>"+
 						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>"+
 						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>"+
@@ -766,18 +769,15 @@ $(document).ready(function () {
     
     
 $("body").on('click', 'a[href="#AbrirProj"]', function () {
-    
-    console.log($(this).attr("data-array"));
-		hash = JSON.parse($(this).attr("data-array"));
-			 alert("ola");
+        var idProj = $(this).data("idproj");
+        
+        hash = JSON.parse(tmpArrayProj[idProj]);
 
     
         var layout = $(this).data("layout");
         var folder = $(this).data("folder");
     
         var local = "#contentor";
-        var layout = $(this).data("layout");
-        var folder = $(this).data("folder");
         var skt = socket;
     
     
