@@ -501,10 +501,13 @@ $(document).ready(function () {
                 for(elem in hashtoSave[item].modelo.arrayElem){
                     if(hashtoSave[item].modelo.arrayElem[elem].conteudo != ""){
                         var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
-                        for (var i = 0; i < conteudo.length; i++) {
-                            conteudo.charAt(i).match()
-                            
-                        }
+                        
+                        var newchar = '\\"'
+                        conteudo = conteudo.split('"').join(newchar);
+                        newchar = '\\/'
+                        conteudo = conteudo.split('/').join(newchar);
+                        hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
+
                     }
                 }
             }
