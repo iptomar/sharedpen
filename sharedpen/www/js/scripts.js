@@ -324,14 +324,9 @@ $(document).ready(function () {
      * Evento gerado quando um utilizador se connecta, coloca as tabs
      */
     socket.on('NewTabs', function (data) {
-        recebeuTabs(data.tabsHash);
-    });
-    
-    function recebeuTabs(tabsHash){
-                //        console.log(data.tabsHash);
         var newHash = {};
-        for (var item in tabsHash) {
-            newHash[item] = castTab(tabsHash[item]);
+        for (var item in data.tabsHash) {
+            newHash[item] = castTab(data.tabsHash[item]);
         }
         hash = newHash;
         var i = 0;
@@ -340,7 +335,8 @@ $(document).ready(function () {
             Addtab(hash[key].nomeModelo, i);
             updateTab(i, key);
         }
-    }
+    });
+    
     /**
      *  envia o codigo ASCII do backspace e do delete
      */
@@ -494,24 +490,32 @@ $(document).ready(function () {
      */
     
     $("body").on('click', "#bt_guardar", function () {
-        console.log(hash);
-          $.ajax({
-            type: "POST",
-            url: "/setArray",
-            data: {
-               arrayy: JSON.stringify(hash)
-            },
-           // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
-                //alert(data);
+        var hashtoSave;
+            socket.emit('reqHash', {});
+        
+            socket.on('getHash', function (data){
+                 hashtoSave = data.hashh
+
+                  $.ajax({
+                    type: "POST",
+                    url: "/setArray",
+                    data: {
+                       arrayy: JSON.stringify(hashtoSave)
+                    },
+                   // contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        //alert(data);
+
+                    },
+                    error: function (error) {
+                       // alert("ERRO HASH");
+                        //console.log(JSON.stringify(error));
+                    }
+                });  
                 
-            },
-            error: function (error) {
-               // alert("ERRO HASH");
-                //console.log(JSON.stringify(error));
-            }
-        });             
+            });
+           
     })
     
     $("body").on('click', "#bt_getHash", function () {
@@ -841,8 +845,9 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
             Addtab(hash[item].modelo, i);
             doLoad(i,hash[item].modelo,socket.id)
         }
+        console.log(hash);
         socket.emit('storedhash', {
-			storedhash: JSON.stringify(hash)
+			storedhash: hash
 		});
     });
     
@@ -1502,7 +1507,7 @@ function castTab(tabToCast) {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
         }else if(typeof tabToCast.modelo.arrayElem[item].editor !== "undefined"){
             //console.log(socket);
-            tabToCast.modelo.arrayElem[item].socket = socket;
+            //tabToCast.modelo.arrayElem[item].socket = socket;
             tab.modelo.arrayElem[item].editor = $.extend(new TextEditor(), tabToCast.modelo.arrayElem[item].editor);
         }
     }
@@ -1526,7 +1531,6 @@ function getFilesToFolder(sckt, data) {
  * @param {type} key
  * @returns {undefined} */
 function updateTab(i, key, creator) {
-    alert(i);
     $.ajax({
         type: "get",
         url: "/getCodModel",
@@ -1568,13 +1572,14 @@ function updateTab(i, key, creator) {
                         }
                     }
                 } else {
-                    console.log($("#" + elemento).attr('id'));
+                    console.log("update Editable");
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
                         var sCreator= hash[key].modelo.arrayElem[elemento].editor.socketCreator;
                         var iddd= socket.id;
                         var txtedit = new TextEditor(elemento, username, userColor, creator, iddd);
                         hash[key].modelo.arrayElem[elemento].editor = txtedit;
+                        console.log(hash[key].modelo.arrayElem[elemento]);
                         txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
@@ -1792,10 +1797,9 @@ function getArrayElementObj(array, id) {
 function addLayoutToDiv(local, folder, layout, stk) {
     
     $(local).load("./" + folder + "/" + layout, function () {
-        console.log("1");
         switch (layout) {
             case "Livro.html":
-               // stk.emit("getAllTabs");
+                stk.emit("getAllTabs");
                 $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
                 $('#bt_HTML').css({'visibility': "visible"});
