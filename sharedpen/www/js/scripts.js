@@ -496,6 +496,19 @@ $(document).ready(function () {
 
         socket.on('getHash', function (data) {
             hashtoSave = data.hashh
+            
+            for(item in hashtoSave){
+                for(elem in hashtoSave[item].modelo.arrayElem){
+                    if(hashtoSave[item].modelo.arrayElem[elem].conteudo != ""){
+                        var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+                        for (var i = 0; i < conteudo.length; i++) {
+                            conteudo.charAt(i).match()
+                            
+                        }
+                    }
+                }
+            }
+            
 
             $.ajax({
                 type: "POST",
@@ -746,6 +759,7 @@ $(document).ready(function () {
                 //insere todos os projectos no html!!!!
 				for (var proj in data) {
                     //guarda os arrays dos projetos
+                    console.log(data[proj].id);
                     tmpArrayProj[data[proj].id] = data[proj].array;
 					var htmlLine = "<tr class='actve'>"+
 						"<td><a class='' href='#AbrirProj' data-idProj='"+data[proj].id+"' data-folder='html_Work_Models' data-layout='Livro.html'>"+data[proj].nome+"</a></td>"+
@@ -770,9 +784,8 @@ $(document).ready(function () {
     
 $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
-        
-        hash = tmpArrayProj[idProj];
-
+          
+        hash= JSON.parse(tmpArrayProj[idProj]);
     
         var layout = $(this).data("layout");
         var folder = $(this).data("folder");
