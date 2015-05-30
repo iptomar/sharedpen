@@ -1459,6 +1459,56 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
         });
 
     });
+	
+	
+	
+	// carregar lista de alunos
+	 $("body").on("click", "#contentor > div > div[data-layout='MenuCriarProjectos.html']", function () {
+      	
+	 $("body").append(wait);
+     $.ajax({
+            type: "get",
+            url: "/getAllAluno",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $("body").find("#loading").remove();
+                //insere todos os alunos no html!!!!
+				for (var aluno in data) {
+                    //para cada aluno, carrega a informação
+					var htmlLine = "<option value="+data[aluno].id_user+">"+data[aluno].nome+"</option>";
+                    //faz o append do html gerado
+					$(".userList:first").append(htmlLine);
+				}
+			},
+			error: function (error) {
+				$("body").find("#loading").remove();
+				alert("Erro ao tentar carregar lista de alunos.");
+				console.log(JSON.stringify(error));
+			}
+		});
+	 
+    });
+	
+	
+	// selecionar user para participar no projeto
+	 $("body").on("click", "#addButton", function () {
+		 $(".userSelect").append($("#alluser option:selected").get(0));
+		 $("#alluser option:selected").hide();//css("display", "none");
+    });
+	
+	
+	// (des)selecionar user para participar no projeto
+	 $("body").on("click", "#removeButton", function () {
+		 //$(".userSelect").append($(".userSelect option:selected").get(0));
+		 //$("#alluser option:selected").css("display", "none");
+		 var valor = $(".userSelect option:selected").prop("value");
+		 alert(valor);
+		 $("#alluser option[value="+valor+"]").show();//css("display", "inline");
+		 
+    });
+	
+	
 
     /*
      * Fim Funçoes de logout -----------------------------------------------------------------------------------------------

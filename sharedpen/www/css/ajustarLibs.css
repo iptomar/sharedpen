@@ -132,6 +132,7 @@
 }
 
 .div-users{
+	min-width: 36.875em;
     height: 650px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -189,4 +190,7 @@
 }
 .modal-backdrop {
     z-index: 0;
+}
+.div-criarproj {
+	min-width: 76.875em;
 }
