@@ -45,8 +45,8 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn"
     };
-    
-    
+
+
     // cria a ligação com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
@@ -314,10 +314,10 @@ $(document).ready(function () {
                 $("body").find('#' + data.id).attr('src', data.imageData);
                 break;
             default :
-                
-                var parentid = $("#"+data.id).parent().parent().attr('class').split(' ')[1]        
-                var editor=  hash["."+parentid].modelo.arrayElem[data.id].editor;
-               // var textElem = getArrayElementObj(allTextEditor, data.id);
+
+                var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1]
+                var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
+                // var textElem = getArrayElementObj(allTextEditor, data.id);
                 editor.setTextEditor(data);
         }
     });
@@ -337,7 +337,7 @@ $(document).ready(function () {
             updateTab(i, key);
         }
     });
-    
+
     /**
      *  envia o codigo ASCII do backspace e do delete
      */
@@ -346,103 +346,103 @@ $(document).ready(function () {
     // dados enviadas pelo socket para o servidor
     // *******************************************************************
     // envia o codigo ASCII do backspace e do delete
-    $("body").on('keydown', '.editablee', function (event) {
-        if (event.which === 8 || event.which === 46) {
-            socket.emit('msgappend', {
-                'char': event.which,
-                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-                'id': "#" + $(this).attr('id'),
-                'parent': $(this).parent().parent().attr('class').split(' ')[1]
-            });
-        }
-    });
-    $("body").on('keydown', '.editablee', function (event) {
-        if (event.which === 8 || event.which === 46) {
-            socket.emit('msgappend', {
-                'char': event.which,
-                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
-                'id': "#" + $(this).attr('id'),
-                'parent': $(this).parent().parent().attr('class').split(' ')[1]
-            });
-        }
-    });
+//    $("body").on('keydown', '.editablee', function (event) {
+//        if (event.which === 8 || event.which === 46) {
+//            socket.emit('msgappend', {
+//                'char': event.which,
+//                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
+//                'id': "#" + $(this).attr('id'),
+//                'parent': $(this).parent().parent().attr('class').split(' ')[1]
+//            });
+//        }
+//    });
+//    $("body").on('keydown', '.editablee', function (event) {
+//        if (event.which === 8 || event.which === 46) {
+//            socket.emit('msgappend', {
+//                'char': event.which,
+//                'pos': $("#" + $(this).attr('id')).getCursorPosition(),
+//                'id': "#" + $(this).attr('id'),
+//                'parent': $(this).parent().parent().attr('class').split(' ')[1]
+//            });
+//        }
+//    });
 
     // envia o codigo ASCII das teclas carregadas
     // keydown 
     $("body").on('keypress keyup mousedown mouseup click', '.editable', function (e) {
-        
+
         var listClass = $(this).attr("id");
         var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
-       // console.log(listClassPAI);
-       var edit = hash["."+listClassPAI].modelo.arrayElem[listClass].editor;
+        // console.log(listClassPAI);
+        var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
         //alert(listClass);
-       // var edit = getArrayElementObj(allTextEditor, listClass);
+        // var edit = getArrayElementObj(allTextEditor, listClass);
         //edit.allOperation(e.handleObj.type, e);
 
         evt = e;
-  // ------------------------     
-        
-    console.log("passou");
-    if ($("#" + edit.idpai + " > #" + event.target.id).attr("class") !== edit.socketId) {
-        if (e.handleObj.type.charAt(0) === 'm' || e.handleObj.type.charAt(0) === 'c') {
-            setCaretAtEditor(event.target.id, 0, $("#" + edit.idpai + " > #" + event.target.id).text().length);
-        } else {
-            if (evt.keyCode === edit.key.ENTER) {
-                if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
-                    evt.preventDefault(); //Prevent default browser behavior
-                    edit.createPara(edit.socketId, event.target.id);
-                    socket.emit('msgappend', {
-                        'html': $("#" + edit.idpai).html(),
-                        textSinc: $(evt.target).text(),
-                        'pos': 0,
-                        "socketid": edit.socketId,
-                        'id': edit.idpai,
-                        novoPara: true,
-                        'idPara': event.target.id,
-                        'parent': $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
-                    });
-                } else {
-                    alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
-                }
+        // ------------------------     
+
+//        console.log("passou");
+        if ($("#" + edit.idpai + " > #" + event.target.id).attr("class") !== edit.socketId) {
+            if (e.handleObj.type.charAt(0) === 'm' || e.handleObj.type.charAt(0) === 'c') {
+                setCaretAtEditor(event.target.id, 0, $("#" + edit.idpai + " > #" + event.target.id).text().length);
             } else {
-                evt.preventDefault();
-            }
-        }
-    } else {
-        var newPara = false;
-        if (e.handleObj.type.charAt(0) === 'k' && evt.keyCode === edit.key.ENTER) {
-            if (e.handleObj.type === 'keypress') {
-                if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
-                    edit.createPara(edit.socketId, event.target.id);
-                    newPara = true;
+                if (evt.keyCode === edit.key.ENTER) {
+                    if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
+                        evt.preventDefault(); //Prevent default browser behavior
+                        edit.createPara(edit.socketId, event.target.id);
+                        socket.emit('msgappend', {
+                            'html': $("#" + edit.idpai).html(),
+                            textSinc: $(evt.target).text(),
+                            'pos': 0,
+                            "socketid": edit.socketId,
+                            'id': edit.idpai,
+                            novoPara: true,
+                            'idPara': event.target.id,
+                            'parent': $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
+                        });
+                    } else {
+                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                    }
                 } else {
-                    alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                    evt.preventDefault();
                 }
             }
-            evt.preventDefault(); //Prevent default browser behavior
+        } else {
+            var newPara = false;
+            if (e.handleObj.type.charAt(0) === 'k' && evt.keyCode === edit.key.ENTER) {
+                if (e.handleObj.type === 'keypress') {
+                    if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
+                        edit.createPara(edit.socketId, event.target.id);
+                        newPara = true;
+                    } else {
+                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                    }
+                }
+                evt.preventDefault(); //Prevent default browser behavior
+            }
+            edit.atualPara = event.target.id;
+            socket.emit('msgappend', {
+                'html': $("#" + edit.idpai).html(),
+                textSinc: $(evt.target).text(),
+                'pos': 0,
+                "socketid": edit.socketId,
+                'id': edit.idpai,
+                novoPara: newPara,
+                'idPara': event.target.id,
+                'parent': $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
+            });
+            newPara = false;
         }
-        edit.atualPara = event.target.id;
-        socket.emit('msgappend', {
-            'html': $("#" + edit.idpai).html(),
-            textSinc: $(evt.target).text(),
-            'pos': 0,
-            "socketid": edit.socketId,
-            'id': edit.idpai,
-            novoPara: newPara,
-            'idPara': event.target.id,
-            'parent': $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
-        });
-        newPara = false;
-    }
-    edit.changeColorPUsers();
-        
-  //------------------      
-        
-        
-        
-        
-        
-        
+        edit.changeColorPUsers();
+
+        //------------------      
+
+
+
+
+
+
 //        var edit;
 //        var tabContentor = $(this).parent().attr("id").split("-")[0];
 //        var listClass = $(this).attr("class").split(" ");
@@ -489,69 +489,69 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
-    
+
     $("body").on('click', "#bt_guardar", function () {
         var hashtoSave;
-            socket.emit('reqHash', {});
-        
-            socket.on('getHash', function (data){
-                 hashtoSave = data.hashh
+        socket.emit('reqHash', {});
 
-                  $.ajax({
-                    type: "POST",
-                    url: "/setArray",
-                    data: {
-                       arrayy: JSON.stringify(hashtoSave)
-                    },
-                   // contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    success: function (data) {
-                        //alert(data);
+        socket.on('getHash', function (data) {
+            hashtoSave = data.hashh
 
-                    },
-                    error: function (error) {
-                       // alert("ERRO HASH");
-                        //console.log(JSON.stringify(error));
-                    }
-                });  
-                
+            $.ajax({
+                type: "POST",
+                url: "/setArray",
+                data: {
+                    arrayy: JSON.stringify(hashtoSave)
+                },
+                // contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    //alert(data);
+
+                },
+                error: function (error) {
+                    // alert("ERRO HASH");
+                    //console.log(JSON.stringify(error));
+                }
             });
-           
+
+        });
+
     })
-    
+
     $("body").on('click', "#bt_getHash", function () {
         //alert(hash);
-          $.ajax({
+        $.ajax({
             type: "GET",
             url: "/getArray",
             data: {
-               id: 9
+                id: 9
             },
-           // contentType: "application/json; charset=utf-8",
+            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 console.log(data[0]);
                 //var ola =   JSON.parse('[object Object]');
-               // console.log(ola);
-            
-             var test = JSON.parse(''+data[0].array+'');
-              
+                // console.log(ola);
+
+                var test = JSON.parse('' + data[0].array + '');
+
                 console.log(test);
                 //for (var a in test) break;
                 //console.log("aaaaaaaaaaaaaa"+a);
-               var olaola = castTab(test);
+                var olaola = castTab(test);
                 //console.log(olola);
             },
             error: function (error) {
                 alert("ERRO HASH");
                 //console.log(JSON.stringify(error));
             }
-        });      
-        
+        });
+
     })
 
     $("body").on('click', ".btnmodels", function () {
-        
+
         var modelo = $(this).data('model');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -727,22 +727,22 @@ $(document).ready(function () {
      */
 
 
-    
-    
+
+
     //Click para ver os meus projectos através do data-layout
-	$("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
-		var myID = 1;
-		$("body").append(wait);
-		$.ajax({
-			type: "get",
-			url: "/getProjects",
-			data: {
-				id: myID
-			},
-			contentType: "application/json; charset=utf-8",
-			dataType: 'json',
-			success: function (data) {
-				$("body").find("#loading").remove();
+    $("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
+        var myID = 1;
+        $("body").append(wait);
+        $.ajax({
+            type: "get",
+            url: "/getProjects",
+            data: {
+                id: myID
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $("body").find("#loading").remove();
                 //insere todos os projectos no html!!!!
 				for (var proj in data) {
                     //guarda os arrays dos projetos
@@ -771,95 +771,95 @@ $(document).ready(function () {
 $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
         
-        hash = JSON.parse(tmpArrayProj[idProj]);
+        hash = tmpArrayProj[idProj];
 
     
         var layout = $(this).data("layout");
         var folder = $(this).data("folder");
-    
+
         var local = "#contentor";
         var skt = socket;
-    
-    
-    $(local).load("./" + folder + "/" + layout, function () {
-        switch (layout) {
-            case "Livro.html":
-                $('#bt_PDF').css({'visibility': "visible"});
-                $('#bt_PRE').css({'visibility': "visible"});
-                $('#bt_HTML').css({'visibility': "visible"});
-                break;
-            case "CriarLivro.html":
-                $("body").append(wait);
-                $.ajax({
-                    type: "GET",
-                    url: "/getModelsPage",
-                    dataType: 'json',
-                    success: function (data) {
-                        var listLayout = "<div>";
-                        for (var i = 0, max = data.length; i < max; i++) {
-                            listLayout += "<figure>" +
-                                    "<img class='selectModelo btnmodels-style' alt='' src='" +
-                                    (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
-                                    "' data-model='" + data[i].nome + "'/>" +
-                                    "<figcaption> " + data[i].nome + " </figcaption>" +
-                                    "</figure>";
+
+
+        $(local).load("./" + folder + "/" + layout, function () {
+            switch (layout) {
+                case "Livro.html":
+                    $('#bt_PDF').css({'visibility': "visible"});
+                    $('#bt_PRE').css({'visibility': "visible"});
+                    $('#bt_HTML').css({'visibility': "visible"});
+                    break;
+                case "CriarLivro.html":
+                    $("body").append(wait);
+                    $.ajax({
+                        type: "GET",
+                        url: "/getModelsPage",
+                        dataType: 'json',
+                        success: function (data) {
+                            var listLayout = "<div>";
+                            for (var i = 0, max = data.length; i < max; i++) {
+                                listLayout += "<figure>" +
+                                        "<img class='selectModelo btnmodels-style' alt='' src='" +
+                                        (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                        "' data-model='" + data[i].nome + "'/>" +
+                                        "<figcaption> " + data[i].nome + " </figcaption>" +
+                                        "</figure>";
+                            }
+                            listLayout += "</div>";
+                            $("body").find("#loading").remove();
+                            $("body").find("#painelModelos").append(listLayout);
+
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                            console.log(JSON.stringify(error));
                         }
-                        listLayout += "</div>";
-                        $("body").find("#loading").remove();
-                        $("body").find("#painelModelos").append(listLayout);
+                    });
+                    break;
+                case "CriarPoema.html":
 
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
-                        console.log(JSON.stringify(error));
-                    }
-                });
-                break;
-            case "CriarPoema.html":
+                    break;
+                default:
+                    $('#bt_PDF').css({'visibility': "hidden"});
+                    $('#bt_PRE').css({'visibility': "hidden"});
+                    $('#bt_HTML').css({'visibility': "hidden"});
+                    break;
+            }
 
-                break;
-            default:
-                $('#bt_PDF').css({'visibility': "hidden"});
-                $('#bt_PRE').css({'visibility': "hidden"});
-                $('#bt_HTML').css({'visibility': "hidden"});
-                break;
-        }
-        
-        var newHash = {};
-		for (var item in hash) {
-			newHash[item] = castTab(hash[item]);
-		}
-		
-		hash = newHash;
-        var i=0;
-        for (var item in hash) {
-            i++;
-            console.log(hash[item].modelo);       
-            Addtab(hash[item].modelo, i);
-            doLoad(i,hash[item].modelo,socket.id)
-        }
-        console.log(hash);
-        socket.emit('storedhash', {
-			storedhash: hash
-		});
-    });
-    
-    
-    function doLoad(i,modelo,id){
-        $(".txtTab" + i).load("./html_models/" + modelo, function () {
-            updateTab(i, ".txtTab" + i, id);
+            var newHash = {};
+            for (var item in hash) {
+                newHash[item] = castTab(hash[item]);
+            }
+
+            hash = newHash;
+            var i = 0;
+            for (var item in hash) {
+                i++;
+                console.log(hash[item].modelo);
+                Addtab(hash[item].modelo, i);
+                doLoad(i, hash[item].modelo, socket.id)
+            }
+//            console.log(hash);
+            socket.emit('storedhash', {
+                storedhash: hash
+            });
         });
-    }
-    
 
-});
-    
-    
-    
-    
-    
-    
+
+        function doLoad(i, modelo, id) {
+            $(".txtTab" + i).load("./html_models/" + modelo, function () {
+                updateTab(i, ".txtTab" + i, id);
+            });
+        }
+
+
+    });
+
+
+
+
+
+
     /**
      * Funcoes para drag and drop de imagens -----------------------------------------
      */
@@ -870,15 +870,17 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            // envia as informacoes da nova imagem para os outros clientes
-            socket.emit('msgappend', {
-                id: imgId,
-                name: file.name,
-                'imageData': evt.target.result,
-                'tipo': $("body").find('#' + imgId).prop("tagName"),
-                'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
+            if (imgId !== "userImage" && imgId !== "image") {
+                // envia as informacoes da nova imagem para os outros clientes
+                socket.emit('msgappend', {
+                    id: imgId,
+                    name: file.name,
+                    'imageData': evt.target.result,
+                    'tipo': $("body").find('#' + imgId).prop("tagName"),
+                    'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
 
-            });
+                });
+            }
         };
         reader.readAsDataURL(file);
     });
@@ -925,14 +927,16 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
 
             var reader = new FileReader(file);
             reader.onload = function (evt) {
-                // envia as informacoes da nova imagem para os outros clientes
-                socket.emit('msgappend', {
-                    id: idImg,
-                    name: file.name,
-                    'imageData': evt.target.result,
-                    'tipo': $("body").find('#' + idImg).prop("tagName"),
-                    'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
-                });
+                if (idImg !== "userImage" && idImg !== "image") {
+                    // envia as informacoes da nova imagem para os outros clientes
+                    socket.emit('msgappend', {
+                        id: idImg,
+                        name: file.name,
+                        'imageData': evt.target.result,
+                        'tipo': $("body").find('#' + idImg).prop("tagName"),
+                        'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
+                    });
+                }
                 $("body").find('#' + idImg).attr('src', evt.target.result);
             };
             reader.readAsDataURL(file);
@@ -980,8 +984,12 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
                 var idDiv = this.id;
                 if (idDiv.indexOf("input") !== -1) {
 
-                    var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
-                    textPdf += a.txtObjEditor.getTextEditor();
+
+                    var listClass = $(this).attr("id");
+                    var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
+
+                    var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
+                    textPdf += edit.getTextEditor();
 
                 } else if (idDiv.indexOf("image") !== -1) {
 
@@ -1010,9 +1018,6 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
             });
             //alert("PDF Criado")
         });
-
-        // console.log(textPdf);
-        socket.emit("convertToPdf", textPdf, "livro.pdf");
 
         // var doc =jsPDF();
         //  doc.output("./Livro.pdf")
@@ -1058,9 +1063,11 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
             var page = "";
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
-                if (idDiv.indexOf("input") !== -1) {
-                    var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
-                    page += a.txtObjEditor.getTextEditor();
+                if (idDiv.indexOf("input") !== -1) {                 
+                    var listClass = $(this).attr("id");
+                    var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
+                    var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
+                    page += edit.getTextEditor();
                 } else if (idDiv.indexOf("image") !== -1) {
                     page += "<div>" + $(this)[0].outerHTML + "</div>";
                 } else if (idDiv.indexOf("canvas") !== -1) {
@@ -1475,10 +1482,11 @@ function getBase64Image(img) {
 }
 
 function toObject(arr) {
-  var rv = {};
-  for (var i = 0; i < arr.length; ++i)
-    if (arr[i] !== undefined) rv[i] = arr[i];
-  return rv;
+    var rv = {};
+    for (var i = 0; i < arr.length; ++i)
+        if (arr[i] !== undefined)
+            rv[i] = arr[i];
+    return rv;
 }
 
 /**
@@ -1491,7 +1499,7 @@ function castTab(tabToCast) {
     //tabToCast = tabToCast[".txtTab1"];
     //Faz o cast da Tab, e todos os seus elementos
     //tabToCast = tabToCast[;
-    
+
     var tab = $.extend(new Tab(), tabToCast);
     //alert(tabToCast.modelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
@@ -1499,7 +1507,7 @@ function castTab(tabToCast) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
         if (tab.modelo.arrayElem[item].elementType === "CANVAS") {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
-        }else if(typeof tabToCast.modelo.arrayElem[item].editor !== "undefined"){
+        } else if (typeof tabToCast.modelo.arrayElem[item].editor !== "undefined") {
             //console.log(socket);
             //tabToCast.modelo.arrayElem[item].socket = socket;
             tab.modelo.arrayElem[item].editor = $.extend(new TextEditor(), tabToCast.modelo.arrayElem[item].editor);
@@ -1569,8 +1577,8 @@ function updateTab(i, key, creator) {
                     console.log("update Editable");
                     if ($("#" + elemento).attr('class').match('editable')) {
                         $("#" + elemento).addClass(elemento);
-                        var sCreator= hash[key].modelo.arrayElem[elemento].editor.socketCreator;
-                        var iddd= socket.id;
+                        var sCreator = hash[key].modelo.arrayElem[elemento].editor.socketCreator;
+                        var iddd = socket.id;
                         var txtedit = new TextEditor(elemento, username, userColor, creator, iddd);
                         hash[key].modelo.arrayElem[elemento].editor = txtedit;
                         console.log(hash[key].modelo.arrayElem[elemento]);
@@ -1664,8 +1672,8 @@ function addtohash(idNum) {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             var txtedit = new TextEditor($(this).attr("id"), username, userColor, socket.id, socket.id);
             $(this).addClass(thID);
-            tabTest.modelo.arrayElem[thID].editor =txtedit;
-            
+            tabTest.modelo.arrayElem[thID].editor = txtedit;
+
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
@@ -1789,7 +1797,7 @@ function getArrayElementObj(array, id) {
  * @param {type} stk
  * @returns {undefined} */
 function addLayoutToDiv(local, folder, layout, stk) {
-    
+
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
             case "Livro.html":
@@ -1835,7 +1843,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 $('#bt_HTML').css({'visibility': "hidden"});
                 break;
         }
-        
+
     });
 }
 
