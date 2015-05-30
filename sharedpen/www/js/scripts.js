@@ -745,7 +745,7 @@ $(document).ready(function () {
                 //insere todos os projectos no html!!!!
 				for (var proj in data) {
 					var htmlLine = "<tr class='actve'>"+
-						"<td><a class='' href='#AbrirProj' data-folder='html_Work_Models' data-layout='Livro.html' data-array="+data[proj].array+">"+data[proj].nome+"</a></td>"+
+						"<td><a class='' href='#AbrirProj' data-folder='html_Work_Models' data-layout='Livro.html' data-array='"+data[proj].array+"'>"+data[proj].nome+"</a></td>"+
 						"<td>"+data[proj].tipo+"</td>"+
 						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>"+
 						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>"+
@@ -764,17 +764,12 @@ $(document).ready(function () {
 	});
     
     
-    function emitMsg(){
-        
-        
-        
-    }
-    
-    
     
 $("body").on('click', 'a[href="#AbrirProj"]', function () {
+    
+    console.log($(this).attr("data-array"));
 		hash = JSON.parse($(this).attr("data-array"));
-			
+			 alert("ola");
 
     
         var layout = $(this).data("layout");
@@ -789,7 +784,6 @@ $("body").on('click', 'a[href="#AbrirProj"]', function () {
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
             case "Livro.html":
-               // stk.emit("getAllTabs");
                 $('#bt_PDF').css({'visibility': "visible"});
                 $('#bt_PRE').css({'visibility': "visible"});
                 $('#bt_HTML').css({'visibility': "visible"});
