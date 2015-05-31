@@ -1591,7 +1591,6 @@ $(document).ready(function () {
 
 	//muda o data-select do element escolhido da tabela
 	$("body").on("click", "#SelectPageStyle > table > tbody > tr > td.bs-checkbox > input[type='radio']", function () {
-		console.log($($(this).parent().parent()));
 		$("#SelectPageStyle > table > tbody > tr").each( function( index, element ){
 			$(element).get(0)["attributes"][0]["value"]="false";
 		});
@@ -1611,7 +1610,6 @@ $(document).ready(function () {
 		//$(".userSelect").append($(".userSelect option:selected").get(0));
 		//$("#alluser option:selected").css("display", "none");
 		var valor = $(".userSelect option:selected").prop("value");
-		alert(valor);
 		$("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
 
 	});
@@ -1620,20 +1618,22 @@ $(document).ready(function () {
 	$("body").on("click", "#btProjAvancar", function () {
 		//Nome do projeto
 		var nomeProj = $("#nomeProj").val();
-
+		
+		//array com os utilizadores do projeto
 		var users = [];
 		$(".userList.userSelect option").each(function()
 											  {
 			users.push($(this).prop("value"));
 		});
+		
 		//retirar a opcao por defeio
 		users = users.splice(1);
-		//$("#SelectPageStyle > table > tbody >")
 
+		//id modelo utilizado
+		var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
+		
+		console.log("Nome do novo Projeto:"+nomeProj+"\n id users:"+users+"\n ID do modelo:"+idmodel);
 
-		//var valor = $(".userSelect option:selected").prop("value");
-		//alert(valor);
-		//$("#alluser option[value="+valor+"]").show();//css("display", "inline");
 
 	});
 
