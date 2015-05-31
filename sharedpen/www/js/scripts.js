@@ -10,7 +10,7 @@ var socket = ""; // socket de comunicacao
 var username = ""; // nome do utilizador ligado
 var userColor = "";
 //var allTextEditor = []; // array com todos os editores de texto
-var listaColor = [// array com as corres disponiveis para alterar o fundo
+var listaColor = [ // array com as corres disponiveis para alterar o fundo
 	["default", "Default"],
 	["white", "Branco"],
 	["red", "Vermelho"],
@@ -24,13 +24,13 @@ var tabTest;
 var LivroPoemas = new Array();
 var backArray = ["home"];
 var folderArray = ["html_Work_Models"];
-var tmpArrayProj= [];
+var tmpArrayProj = [];
 var currentPosition = 1;
 $(document).ready(function () {
 
 	/**
-     * Configuracao das opcoes do popup de online / offline de novos clientes
-     */
+	 * Configuracao das opcoes do popup de online / offline de novos clientes
+	 */
 	toastr.options = {
 		"closeButton": true,
 		"debug": false,
@@ -61,8 +61,8 @@ $(document).ready(function () {
 		}
 	});
 	/**
-     * Funções relacionadas com a autenticação --------------------------------------------------------------------
-     */
+	 * Funções relacionadas com a autenticação --------------------------------------------------------------------
+	 */
 
 	// evento de carregar no button para fazer o login
 	$("#startlogin").click(function () {
@@ -122,11 +122,11 @@ $(document).ready(function () {
 		}
 	});
 	/**
-     * Funções relacionadas com o desenho -------------------------------------------------------------------------
-     */
+	 * Funções relacionadas com o desenho -------------------------------------------------------------------------
+	 */
 	/**
-     * evento do socket para desenhar o que recebe pelo socket
-     */
+	 * evento do socket para desenhar o que recebe pelo socket
+	 */
 	socket.on('draw', function (data) {
 		if (typeof hash["." + data.data.parent] !== "undefined") {
 			var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
@@ -145,8 +145,8 @@ $(document).ready(function () {
 		}
 	});
 	/**
-     * Eventos do mouse para desenhar no canvas
-     */
+	 * Eventos do mouse para desenhar no canvas
+	 */
 	$("body").on('click mousedown mouseup mousemove mouseleave mouseout touchstart touchmove touchend touchcancel', "canvas", function (e) {
 		var idToll = "." + $(this).parent().parent().parent().attr('class').split(' ')[1];
 		var iddd = $(this).attr('id');
@@ -170,8 +170,7 @@ $(document).ready(function () {
 				try {
 					x = e.originalEvent.touches[0].pageX - offset.left;
 					y = e.originalEvent.touches[0].pageY - offset.top;
-				} catch (err) {
-				}
+				} catch (err) {}
 
 			} else {
 				x = e.offsetX;
@@ -264,20 +263,20 @@ $(document).ready(function () {
 		reader.readAsDataURL(input.files[0]);
 	});
 	/*
-     * Funçoes relacionadas com as cores ----------------------------------------------------------------------
-     */
+	 * Funçoes relacionadas com as cores ----------------------------------------------------------------------
+	 */
 
 	/**
-     * Evento onChange da cor de fundo
-     */
+	 * Evento onChange da cor de fundo
+	 */
 	$("#colorpicker").change(function () {
 		socket.emit('setcolor', {
 			cor: $(this).find('option:selected').val()
 		});
 	});
 	/**
-     * Evento gerado quando recebe uma alteraçao de cores
-     */
+	 * Evento gerado quando recebe uma alteraçao de cores
+	 */
 	socket.on('getcolor', function (data) {
 		if (data.cor === "default") {
 			$('body').css('background-image', 'url(../img/background.png)');
@@ -289,7 +288,7 @@ $(document).ready(function () {
 						color: "black"
 					});
 					break;
-				default :
+				default:
 					$("h1, h3").css({
 						color: "white"
 					});
@@ -300,8 +299,8 @@ $(document).ready(function () {
 		$("#colorpicker").val(data.cor);
 	});
 	/*
-     * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
-     */
+	 * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
+	 */
 
 	// *******************************************************************
 	// dados recebidos pelo socket para o browser
@@ -313,7 +312,7 @@ $(document).ready(function () {
 			case "IMG":
 				$("body").find('#' + data.id).attr('src', data.imageData);
 				break;
-			default :
+			default:
 
 				var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1]
 				var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
@@ -322,8 +321,8 @@ $(document).ready(function () {
 		}
 	});
 	/**
-     * Evento gerado quando um utilizador se connecta, coloca as tabs
-     */
+	 * Evento gerado quando um utilizador se connecta, coloca as tabs
+	 */
 	socket.on('NewTabs', function (data) {
 		var newHash = {};
 		for (var item in data.tabsHash) {
@@ -339,8 +338,8 @@ $(document).ready(function () {
 	});
 
 	/**
-     *  envia o codigo ASCII do backspace e do delete
-     */
+	 *  envia o codigo ASCII do backspace e do delete
+	 */
 
 	// *******************************************************************
 	// dados enviadas pelo socket para o servidor
@@ -471,8 +470,8 @@ $(document).ready(function () {
 		//        }
 	});
 	/**
-     * Evento gerado quando ha alteraçoes nas tabs
-     */
+	 * Evento gerado quando ha alteraçoes nas tabs
+	 */
 	socket.on("TabsChanged", function (data) {
 		if ($.trim(username) !== "") {
 			if (data.op === "remover") {
@@ -487,8 +486,8 @@ $(document).ready(function () {
 		}
 	});
 	/**
-     * Evento que determina qual e o modelo escolhido
-     */
+	 * Evento que determina qual e o modelo escolhido
+	 */
 
 	$("body").on('click', "#bt_guardar", function () {
 		var hashtoSave;
@@ -497,9 +496,9 @@ $(document).ready(function () {
 		socket.on('getHash', function (data) {
 			hashtoSave = data.hashh
 
-			for(item in hashtoSave){
-				for(elem in hashtoSave[item].modelo.arrayElem){
-					if(hashtoSave[item].modelo.arrayElem[elem].conteudo != ""){
+			for (item in hashtoSave) {
+				for (elem in hashtoSave[item].modelo.arrayElem) {
+					if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
 						var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
 
 						var newchar = '\\"'
@@ -610,8 +609,8 @@ $(document).ready(function () {
 		});
 	});
 	/**
-     * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
-     */
+	 * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
+	 */
 	$("body").on('click', 'a[href="#add-page"]', function () {
 		$("body").append(wait);
 		$.ajax({
@@ -641,8 +640,8 @@ $(document).ready(function () {
 		});
 	});
 	/**
-     * Funçao que remove tabs
-     */
+	 * Funçao que remove tabs
+	 */
 	$("body").on('click', '.xtab', function () {
 		liElem = $(this).attr('id');
 		// Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
@@ -665,8 +664,7 @@ $(document).ready(function () {
 			$('#page' + liElem).remove();
 			$('#li' + liElem).remove();
 			LivroPoemas.splice(liElem, 1);
-		}
-		;
+		};
 	});
 
 
@@ -674,12 +672,12 @@ $(document).ready(function () {
 		$("body").find("#divchangemodel").remove();
 	});
 	/*
-     * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
-     */
+	 * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
+	 */
 
 	/**
-     * Evento gerado quando um utilizador manda mensagem no chat
-     */
+	 * Evento gerado quando um utilizador manda mensagem no chat
+	 */
 	var countMsg = 0;
 	socket.on('message', function (data) {
 		$('#panelChat').addNewText(data.user, data.data);
@@ -694,8 +692,8 @@ $(document).ready(function () {
 		}
 	});
 	/**
-     * Função para enviar uma mensagem no chat
-     */
+	 * Função para enviar uma mensagem no chat
+	 */
 	$('#btnSendChat').click(function () {
 		var chatMessage = $('#msgChat').val();
 		//limpa input
@@ -707,16 +705,16 @@ $(document).ready(function () {
 		$('#msgChat').val('');
 	});
 	/**
-     * Função para enviar mensagem com o enter
-     */
+	 * Função para enviar mensagem com o enter
+	 */
 	$('#msgChat').keydown(function (e) {
 		if (e.keyCode === 13) {
 			$('#btnSendChat').click();
 		}
 	});
 	/**
-     * Evento gerado quando um utilizador se liga, recebe todas as mensagens do chat
-     */
+	 * Evento gerado quando um utilizador se liga, recebe todas as mensagens do chat
+	 */
 	socket.on("OldmsgChat", function (data) {
 		$("#panelChat").html("");
 		var aux = data.split(",");
@@ -739,8 +737,8 @@ $(document).ready(function () {
 		}, 500);
 	});
 	/*
-     * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
-     */
+	 * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
+	 */
 
 
 
@@ -764,12 +762,12 @@ $(document).ready(function () {
 					//guarda os arrays dos projetos
 					console.log(data[proj].id);
 					tmpArrayProj[data[proj].id] = data[proj].array;
-					var htmlLine = "<tr class='actve'>"+
-						"<td><a class='' href='#AbrirProj' data-idProj='"+data[proj].id+"' data-folder='html_Work_Models' data-layout='Livro.html'>"+data[proj].nome+"</a></td>"+
-						"<td>"+data[proj].tipo+"</td>"+
-						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>"+
-						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>"+
-						"<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>"+
+					var htmlLine = "<tr class='actve'>" +
+						"<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
+						"<td>" + data[proj].tipo + "</td>" +
+						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>" +
+						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>" +
+						"<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>" +
 						"</tr>";
 					//faz o append do html gerado
 					$("#meusProjTable").append(htmlLine);
@@ -788,7 +786,7 @@ $(document).ready(function () {
 	$("body").on('click', 'a[href="#AbrirProj"]', function () {
 		var idProj = $(this).data("idproj");
 
-		hash= JSON.parse(tmpArrayProj[idProj]);
+		hash = JSON.parse(tmpArrayProj[idProj]);
 
 		var layout = $(this).data("layout");
 		var folder = $(this).data("folder");
@@ -800,9 +798,15 @@ $(document).ready(function () {
 		$(local).load("./" + folder + "/" + layout, function () {
 			switch (layout) {
 				case "Livro.html":
-					$('#bt_PDF').css({'visibility': "visible"});
-					$('#bt_PRE').css({'visibility': "visible"});
-					$('#bt_HTML').css({'visibility': "visible"});
+					$('#bt_PDF').css({
+						'visibility': "visible"
+					});
+					$('#bt_PRE').css({
+						'visibility': "visible"
+					});
+					$('#bt_HTML').css({
+						'visibility': "visible"
+					});
 					break;
 				case "CriarLivro.html":
 					$("body").append(wait);
@@ -836,9 +840,15 @@ $(document).ready(function () {
 
 					break;
 				default:
-					$('#bt_PDF').css({'visibility': "hidden"});
-					$('#bt_PRE').css({'visibility': "hidden"});
-					$('#bt_HTML').css({'visibility': "hidden"});
+					$('#bt_PDF').css({
+						'visibility': "hidden"
+					});
+					$('#bt_PRE').css({
+						'visibility': "hidden"
+					});
+					$('#bt_HTML').css({
+						'visibility': "hidden"
+					});
 					break;
 			}
 
@@ -877,8 +887,8 @@ $(document).ready(function () {
 
 
 	/**
-     * Funcoes para drag and drop de imagens -----------------------------------------
-     */
+	 * Funcoes para drag and drop de imagens -----------------------------------------
+	 */
 
 	$(".container-fluid").on('change', 'input[type=file]', function (e) {
 		var imgId = $(this).next().attr("id");
@@ -925,16 +935,13 @@ $(document).ready(function () {
 				if (errMessage === 0) {
 					alert('Hey! Images only');
 					++errMessage
-				}
-				else if (errMessage === 1) {
+				} else if (errMessage === 1) {
 					alert('Stop it! Images only!');
 					++errMessage
-				}
-				else if (errMessage === 2) {
+				} else if (errMessage === 2) {
 					alert("Can't you read?! Images only!");
 					++errMessage
-				}
-				else if (errMessage === 3) {
+				} else if (errMessage === 3) {
 					alert("Fine! Keep dropping non-images.");
 					errMessage = 0;
 				}
@@ -965,11 +972,11 @@ $(document).ready(function () {
 	});
 
 	/**
-     * Funçoes de logout -----------------------------------------------------------------------------------------------
-     */
+	 * Funçoes de logout -----------------------------------------------------------------------------------------------
+	 */
 	/**
-     * recebe o evento do socket com o socket id do cliente que se desligou
-     */
+	 * recebe o evento do socket com o socket id do cliente que se desligou
+	 */
 
 	socket.on('diconnected', function (socketid) {
 		for (var item in users) {
@@ -984,9 +991,15 @@ $(document).ready(function () {
 	//************************************************
 	//****Esconder botoes do menu*********************
 	//************************************************
-	$('#bt_PDF').css({'visibility': "hidden"});
-	$('#bt_PRE').css({'visibility': "hidden"});
-	$('#bt_HTML').css({'visibility': "hidden"});
+	$('#bt_PDF').css({
+		'visibility': "hidden"
+	});
+	$('#bt_PRE').css({
+		'visibility': "hidden"
+	});
+	$('#bt_HTML').css({
+		'visibility': "hidden"
+	});
 
 
 	// *******************************************************************
@@ -1079,7 +1092,7 @@ $(document).ready(function () {
 			var page = "";
 			$($(this).attr("href")).children().children().children().each(function () {
 				var idDiv = this.id;
-				if (idDiv.indexOf("input") !== -1) {                 
+				if (idDiv.indexOf("input") !== -1) {
 					var listClass = $(this).attr("id");
 					var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
 					var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
@@ -1102,7 +1115,9 @@ $(document).ready(function () {
 	// *******************************************************************
 	$('#bt_Chat').click(function () {
 		if ($("#divUsers").css("visibility") === "hidden") {
-			$("#divUsers").css({'visibility': "visible"});
+			$("#divUsers").css({
+				'visibility': "visible"
+			});
 			$("#divUsers").animate({
 				"left": "74%"
 			}, 1000, "swing", function () {
@@ -1120,7 +1135,9 @@ $(document).ready(function () {
 			$("#divUsers").animate({
 				"left": "100%"
 			}, function () {
-				$("#divUsers").css({'visibility': "hidden"});
+				$("#divUsers").css({
+					'visibility': "hidden"
+				});
 			});
 		}
 	});
@@ -1144,7 +1161,9 @@ $(document).ready(function () {
 		$("#divGaleria").animate({
 			"left": "-30%"
 		}, 1000, function () {
-			$("#divGaleria").css({"visibility": "hidden"});
+			$("#divGaleria").css({
+				"visibility": "hidden"
+			});
 		});
 	});
 
@@ -1153,9 +1172,15 @@ $(document).ready(function () {
 		folderArray.push("html_Work_Models");
 		currentPosition += 1;
 		console.log(backArray);
-		$('#bt_PDF').css({'visibility': "hidden"});
-		$('#bt_PRE').css({'visibility': "hidden"});
-		$('#bt_HTML').css({'visibility': "hidden"});
+		$('#bt_PDF').css({
+			'visibility': "hidden"
+		});
+		$('#bt_PRE').css({
+			'visibility': "hidden"
+		});
+		$('#bt_HTML').css({
+			'visibility': "hidden"
+		});
 		LivroPoemas = new Array();
 		var data = {
 			folder: "html_Work_Models",
@@ -1181,7 +1206,9 @@ $(document).ready(function () {
 					}
 					imgList += ' </div>';
 					$("#panelGaleria").html(imgList);
-					$("#divGaleria").css({"visibility": "visible"});
+					$("#divGaleria").css({
+						"visibility": "visible"
+					});
 					$("#divGaleria").animate({
 						"left": "1%"
 					}, 1000, "swing");
@@ -1189,7 +1216,9 @@ $(document).ready(function () {
 					$("#divGaleria").animate({
 						"left": "-30%"
 					}, 1000, function () {
-						$("#divGaleria").css({"visibility": "hidden"});
+						$("#divGaleria").css({
+							"visibility": "hidden"
+						});
 					});
 				}
 				break;
@@ -1267,7 +1296,9 @@ $(document).ready(function () {
 		$("#divGaleria").animate({
 			"left": "-30%"
 		}, 1000, function () {
-			$("#divGaleria").css({"visibility": "hidden"});
+			$("#divGaleria").css({
+				"visibility": "hidden"
+			});
 		});
 	});
 
@@ -1290,9 +1321,15 @@ $(document).ready(function () {
 			currentPosition -= 1;
 			var aux = backArray[currentPosition - 1];
 			if (aux == "home") {
-				$('#bt_PDF').css({'visibility': "hidden"});
-				$('#bt_PRE').css({'visibility': "hidden"});
-				$('#bt_HTML').css({'visibility': "hidden"});
+				$('#bt_PDF').css({
+					'visibility': "hidden"
+				});
+				$('#bt_PRE').css({
+					'visibility': "hidden"
+				});
+				$('#bt_HTML').css({
+					'visibility': "hidden"
+				});
 				LivroPoemas = new Array();
 				var data = {
 					folder: "html_Work_Models",
@@ -1300,8 +1337,7 @@ $(document).ready(function () {
 					idObj: ""
 				};
 				getFilesToFolder(socket, data);
-			}
-			else if (aux != "home" && aux != "") {
+			} else if (aux != "home" && aux != "") {
 				addLayoutToDiv("#contentor", folderArray[currentPosition - 1], aux, socket);
 			}
 			console.log(backArray + " " + currentPosition);
@@ -1464,7 +1500,7 @@ $(document).ready(function () {
 
 	// carregar lista de alunos
 	$("body").on("click", "#contentor > div > div[data-layout='MenuCriarProjectos.html']", function () {
-		var tmpModels=[];
+		var tmpModels = [];
 		$("body").append(wait);
 		$.ajax({
 			type: "get",
@@ -1476,7 +1512,7 @@ $(document).ready(function () {
 				//insere todos os alunos no html!!!!
 				for (var aluno in data) {
 					//para cada aluno, carrega a informação
-					var htmlLine = "<option value="+data[aluno].id_user+">"+data[aluno].nome+"</option>";
+					var htmlLine = "<option value=" + data[aluno].id_user + ">" + data[aluno].nome + "</option>";
 					//faz o append do html gerado
 					$(".userList:first").append(htmlLine);
 				}
@@ -1516,10 +1552,9 @@ $(document).ready(function () {
 			url: "/getModelsProject",
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
-				var html ="";
+				var html = "";
 				for (var i = 0, max = data.length; i < max; i++) {
-					html+="<div class='row image'><button type='button' class='btn-lg btn-default'>"+data[i].nome_livro+"</button><figure>" +
+					/*html+="<div class='row image'><button type='button' class='btn-lg btn-default'>"+data[i].nome_livro+"</button><figure>" +
 						"<img class='btnmodels-style img-responsive' alt='' src='" +  tmpModels[data[i].nome_modeloCapa] +
 						"'/>" +
 						"<figcaption> Capa </figcaption>" +
@@ -1528,9 +1563,17 @@ $(document).ready(function () {
 						"<img class='btnmodels-style img-responsive' alt='' src='" +  tmpModels[data[i].nome_modeloPagina] +
 						"'/>" +
 						"<figcaption> Página </figcaption>" +
-						"</figure></div>";
+						"</figure></div>";*/
+					html += "<tr data-select='false' data-idModel='"+data[i].idmodelo+"'>" +
+						"<td class='bs-checkbox'><input name='radioName' type='radio'></td>" +
+						"<td style='text-align: center;'>" + data[i].nome_livro + "</td>" +
+						"<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].nome_modeloCapa] +
+						"'/></td>" +
+						"<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].nome_modeloPagina] +
+						"'/></td>" +
+						"</tr>";
 				}
-				$("body").find("#SelectPageStyle").append(html);
+				$("body").find("#SelectPageStyle > table").append(html);
 				$("body").find("#loading").remove();
 
 			},
@@ -1546,10 +1589,20 @@ $(document).ready(function () {
 	});
 
 
+	//muda o data-select do element escolhido da tabela
+	$("body").on("click", "#SelectPageStyle > table > tbody > tr > td.bs-checkbox > input[type='radio']", function () {
+		console.log($($(this).parent().parent()));
+		$("#SelectPageStyle > table > tbody > tr").each( function( index, element ){
+			$(element).get(0)["attributes"][0]["value"]="false";
+		});
+
+		$($(this).parent().parent()).get(0)["attributes"][0]["value"]="true";
+	});
+
 	// selecionar user para participar no projeto
 	$("body").on("click", "#addButton", function () {
 		$(".userSelect").append($("#alluser option:selected").get(0));
-		$("#alluser option:selected").hide();//css("display", "none");
+		$("#alluser option:selected").hide(); //css("display", "none");
 	});
 
 
@@ -1559,15 +1612,34 @@ $(document).ready(function () {
 		//$("#alluser option:selected").css("display", "none");
 		var valor = $(".userSelect option:selected").prop("value");
 		alert(valor);
-		$("#alluser option[value="+valor+"]").show();//css("display", "inline");
+		$("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
 
 	});
 
+	// Avancar no projeto 
+	$("body").on("click", "#btProjAvancar", function () {
+		//Nome do projeto
+		var nomeProj = $("#nomeProj").val();
 
+		var users = [];
+		$(".userList.userSelect option").each(function()
+											  {
+			users.push($(this).prop("value"));
+		});
+		//retirar a opcao por defeio
+		users = users.splice(1);
+		//$("#SelectPageStyle > table > tbody >")
+
+
+		//var valor = $(".userSelect option:selected").prop("value");
+		//alert(valor);
+		//$("#alluser option[value="+valor+"]").show();//css("display", "inline");
+
+	});
 
 	/*
-     * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
-     */
+	 * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
+	 */
 
 });
 $(window).resize(function () {
@@ -1923,9 +1995,15 @@ function addLayoutToDiv(local, folder, layout, stk) {
 		switch (layout) {
 			case "Livro.html":
 				stk.emit("getAllTabs");
-				$('#bt_PDF').css({'visibility': "visible"});
-				$('#bt_PRE').css({'visibility': "visible"});
-				$('#bt_HTML').css({'visibility': "visible"});
+				$('#bt_PDF').css({
+					'visibility': "visible"
+				});
+				$('#bt_PRE').css({
+					'visibility': "visible"
+				});
+				$('#bt_HTML').css({
+					'visibility': "visible"
+				});
 				break;
 			case "CriarLivro.html":
 				$("body").append(wait);
@@ -1959,9 +2037,15 @@ function addLayoutToDiv(local, folder, layout, stk) {
 
 				break;
 			default:
-				$('#bt_PDF').css({'visibility': "hidden"});
-				$('#bt_PRE').css({'visibility': "hidden"});
-				$('#bt_HTML').css({'visibility': "hidden"});
+				$('#bt_PDF').css({
+					'visibility': "hidden"
+				});
+				$('#bt_PRE').css({
+					'visibility': "hidden"
+				});
+				$('#bt_HTML').css({
+					'visibility': "hidden"
+				});
 				break;
 		}
 
