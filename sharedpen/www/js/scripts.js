@@ -846,13 +846,14 @@ $(document).ready(function () {
                 var idDiv = this.id;
                 if (idDiv.indexOf("input") !== -1) {
                     var a = getArrayElementObj(allTextEditor, $(this).attr("id"));
-                    page += a.txtObjEditor.getTextEditor();
+                    page += a.txtObjEditor.getTextEditorForHtml();
                 } else if (idDiv.indexOf("image") !== -1) {
                     page += "<div>" + $(this)[0].outerHTML + "</div>";
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     page += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
                 }
             });
+            //console.log(JSON.stringify(page));
             pages.push(page);
         });
         socket.emit("saveAsHtml", pages);

@@ -10,7 +10,7 @@ body{
     width:100%;
     height:100%;
     background-color:white;
-    line-height:300px;
+    line-height:10px;
     font-size:20px;
     text-align:center;
 }
@@ -61,4 +61,7 @@ body{
     -o-box-shadow:inset 0 0 5px #666;
     -ms-box-shadow:inset 0 0 5px #666;
     box-shadow:inset 0 0 5px #666;
+}
+p {
+    height: 20px;
 }
