@@ -159,6 +159,11 @@
     width:220%;
 }
 
+.text-left{
+    display: inline-block;
+    text-align: left;   
+}
+
 #Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser {
     width: 100%;
     height: 50px;
