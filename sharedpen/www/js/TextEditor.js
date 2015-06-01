@@ -2,17 +2,13 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     this.idpai = idpai;
     this.user = user;
     this.cor = cor;
-    this.socketId = socket.id;
+    if(typeof socket !== "undefined")
+        this.socketId = socket;
     this.valPId = 1;
-    this.atualPAra = "";
-    this.socket = socket;
+    this.atualPara = "";
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
     }
-
-    $("#" + this.idpai + " > p").css({
-        margin: "0 0 0 0 !important"
-    });
     $("#" + this.idpai).css({
         "font-size": "20px"
     });
@@ -22,61 +18,6 @@ var TextEditor = function (idpai, user, cor, socketCreator, socket) {
     };
 };
 
-TextEditor.prototype.allOperation = function (type, evt) {
-    if ($("#" + this.idpai + " > #" + event.target.id).attr("class") !== this.socketId) {
-        if (type.charAt(0) === 'm' || type.charAt(0) === 'c') {
-            setCaretAtEditor(event.target.id, 0, $("#" + this.idpai + " > #" + event.target.id).text().length);
-        } else {
-            if (evt.keyCode === this.key.ENTER) {
-                if ($("#" + this.idpai).height() > this.getSizePUtilizado()) {
-                    evt.preventDefault(); //Prevent default browser behavior
-                    this.createPara(this.socketId, event.target.id);
-                    this.socket.emit('msgappend', {
-                        'html': $("#" + this.idpai).html(),
-                        textSinc: $(evt.target).text(),
-                        'pos': 0,
-                        "socketid": this.socketId,
-                        'id': this.idpai,
-                        novoPara: true,
-                        'idPara': event.target.id,
-                        'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
-                    });
-                } else {
-                    alert("Fim tamanho.")
-                }
-
-            } else {
-                evt.preventDefault();
-            }
-        }
-    } else {
-        var newPara = false;
-        if (type.charAt(0) === 'k' && evt.keyCode === this.key.ENTER) {
-            if (type === 'keypress') {
-                if ($("#" + this.idpai).height() > this.getSizePUtilizado()) {
-                    this.createPara(this.socketId, event.target.id);
-                    newPara = true;
-                } else {
-                    alert("fin Tamanho.")
-                }
-            }
-            evt.preventDefault(); //Prevent default browser behavior
-        }
-        this.atualPAra = event.target.id;
-        this.socket.emit('msgappend', {
-            'html': $("#" + this.idpai).html(),
-            textSinc: $(evt.target).text(),
-            'pos': 0,
-            "socketid": this.socketId,
-            'id': this.idpai,
-            novoPara: newPara,
-            'idPara': event.target.id,
-            'parent': $("#" + this.idpai).parent().parent().attr('class').split(' ')[1]
-        });
-        newPara = false;
-    }
-    this.changeColorPUsers();
-};
 
 TextEditor.prototype.changeColorPUsers = function () {
     $("#" + this.idpai + " > p:not(." + this.socketId + ")").css({
@@ -106,7 +47,7 @@ TextEditor.prototype.setTextEditor = function (data) {
         this.createPara(data.socketid, data.idPara);
     } else {
         $("#" + this.idpai + " > #" + data.idPara).html(data.textSinc);
-        if (data.idPara === this.atualPAra) {
+        if (data.idPara === this.atualPara) {
             setCaretAtEditor(data.idPara, 0, data.textSinc.length);
         }
     }
@@ -130,9 +71,9 @@ TextEditor.prototype.getTextEditorForHtml = function () {
 };
 
 TextEditor.prototype.getSizePUtilizado = function () {
-    var size = $('#' + this.idpai + "-" + 1).height();
+    var size = $('#' + this.idpai + "-" + 1).height() + 10;
     $('#' + this.idpai).children('p').each(function () {
-        size += $(this).height() * 1.3;
+        size += $(this).height() + 10;
     });
     return size;
 };
@@ -156,13 +97,13 @@ function getCaretPosition(editableDiv) {
         sel = window.getSelection();
         if (sel.rangeCount) {
             range = sel.getRangeAt(0);
-            if (range.commonAncestorContainer.parentNode == editableDiv) {
+            if (range.commonAncestorContainer.parentNode === editableDiv) {
                 caretPos = range.endOffset;
             }
         }
     } else if (document.selection && document.selection.createRange) {
         range = document.selection.createRange();
-        if (range.parentElement() == editableDiv) {
+        if (range.parentElement() === editableDiv) {
             var tempEl = document.createElement("span");
             editableDiv.insertBefore(tempEl, editableDiv.firstChild);
             var tempRange = range.duplicate();
@@ -182,6 +123,9 @@ function getCaretPosition(editableDiv) {
  * @returns {undefined}
  */
 function setCaretAtEditor(editor, linha, coluna) {
+    console.log(editor);
+    console.log(linha);
+    console.log(coluna);
     var el = document.getElementById(editor);
     var range = document.createRange();
     var sel = window.getSelection();
