@@ -2239,7 +2239,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 "<td>"+data[i].nome_agrupamento+"</td>" +
                             
                             '<td class="image">'+
-                                '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">'+
                                 '<img class="text-center image" src="../img/edit_28.png">'+
                                 '</div>'+
                                 '</td>'+
@@ -2272,7 +2272,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 								"<td>"+data[i].nome+"</td>" +
                             
                             '<td class="image">'+
-                                '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">'+
                                 '<img class="text-center image" src="../img/edit_28.png">'+
                                 '</div>'+
                                 '</td>'+
