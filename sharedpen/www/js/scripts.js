@@ -2155,6 +2155,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         for (var i = 0, max = data.length; i < max; i++) {
                             htmlVar+="<tr>";
 							htmlVar += "<td>"+data[i].id_user+"</td>" +
+                                "<td>"+data[i].avatar+"</td>"+
 								"<td>"+data[i].username+"</td>" +
                                 "<td>"+data[i].nome_aluno+"</td>" +
                                 "<td>"+data[i].num_aluno+"</td>" +
@@ -2194,7 +2195,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         for (var i = 0, max = data.length; i < max; i++) {
                             htmlVar+="<tr>";
 							htmlVar += "<td>"+data[i].id+"</td>" +
-                                
                                 "<td>"+data[i].avatar+"</td>"+
 								"<td>"+data[i].username+"</td>" +
                                 "<td>"+data[i].nome_professor+"</td>" +
