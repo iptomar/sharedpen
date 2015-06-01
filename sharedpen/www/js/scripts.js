@@ -2206,7 +2206,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 '<img class="text-center image" src="../img/edit_28.png">'+
                                 '</div>'+
                                 '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id_user +' src="../img/delete_28.png"></td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_28.png"></td>'+
                                 "</tr>";
 						}
                         
@@ -2237,6 +2237,13 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 "<td>"+data[i].morada+"</td>" +
                                 "<td>"+data[i].contacto+"</td>" +
                                 "<td>"+data[i].nome_agrupamento+"</td>" +
+                            
+                            '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
+                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_28.png"></td>'+
                                 "</tr>";
 						}
                         
@@ -2263,6 +2270,13 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             htmlVar+="<tr>";
 							htmlVar += "<td>"+data[i].id+"</td>" +
 								"<td>"+data[i].nome+"</td>" +
+                            
+                            '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
+                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_28.png"></td>'+
                                 "</tr>";
 						}
                         
