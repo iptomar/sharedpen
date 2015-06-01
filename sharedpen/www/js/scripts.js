@@ -2173,7 +2173,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 						}
                         
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
 											},
 					error: function (error) {
 						$("body").find("#loading").remove();
@@ -2211,7 +2211,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 						}
                         
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
 											},
 					error: function (error) {
 						$("body").find("#loading").remove();
@@ -2241,7 +2241,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 						}
                         
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
 											},
 					error: function (error) {
 						$("body").find("#loading").remove();
@@ -2267,7 +2267,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 						}
                         
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
 											},
 					error: function (error) {
 						$("body").find("#loading").remove();
