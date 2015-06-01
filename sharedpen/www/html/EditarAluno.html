@@ -6,60 +6,53 @@
             <img id="userImage" class="dragandrophandler avatar-Image " alt="" src="">
         </div>
         <div class="div-half-max-width">
-     
             <form class="form-horizontal">
               <div class="form-group">
-                <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                <label for="Id_aluno_edit" class="col-sm-2 control-label">ID</label>
                 <div class="col-sm-10">
-                  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                  <input class="form-control" id="Id_aluno_edit" disabled >
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                <label for="username_aluno_edit" class="col-sm-2 control-label">UserName</label>
                 <div class="col-sm-10">
-                  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                  <input class="form-control" id="username_aluno_edit" autofocus>
                 </div>
-              </div>
+              </div>  
               <div class="form-group">
-                <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                <label for="nome_aluno_edit" class="col-sm-2 control-label">Nome</label>
                 <div class="col-sm-10">
-                  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                  <input class="form-control" id="nome_aluno_edit"  >
                 </div>
-              </div>
+              </div>  
+              <div class="form-group">
+                <label for="numero_aluno_edit" class="col-sm-2 control-label">Numero</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="numero_aluno_edit"  >
+                </div>
+              </div>   
+              <div class="form-group">
+                <label for="turma_aluno_edit" class="col-sm-2 control-label">Turma</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="turma_aluno_edit"  >
+                </div>
+              </div>   
+              <div class="form-group">
+                <label for="ano_aluno_edit" class="col-sm-2 control-label">Ano</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="ano_aluno_edit"  >
+                </div>
+              </div>   
+              <div class="form-group">
+                <label for="escola_aluno_edit" class="col-sm-2 control-label">Escola</label>
+                <div class="col-sm-10">
+                        <select id="escola_aluno_edit" class="form-control"  >
+<!-- exemplo                           <option selected>Aluno</option>-->
+                        </select>
+                </div>
+              </div>   
             </form>
-            
-            
-            
-            
-            <input  id="Id_aluno_edit" class="form-control"   disabled>
-            
-            <label form="inputEmail" class="sr-only">Username</label>
-            <input  id="username_aluno_edit" class="form-control"  autofocus="">
-            
-            <label form="inputEmail" class="sr-only">Password</label>
-            <input id="pass_aluno_edit" class="form-control"  >
-            
-            <label form="inputEmail" class="sr-only">Nome</label>
-            <input  id="nome_aluno_edit" class="form-control"  >
-            
-            <label form="inputEmail" class="sr-only">Numero</label>
-            <input  id="numero_aluno_edit" class="form-control"  >
-            
-            <label form="inputEmail" class="sr-only">Ano</label>
-            <input id="ano_aluno_edit" class="form-control" >
-            
-            <label form="inputEmail" class="sr-only">Turma</label>
-            <input id="turma_aluno_edit" class="form-control"  >
-            
-            <label form="inputEmail" class="sr-only">Escola</label>
-            <input id="escola_aluno_edit" class="form-control" >
-            
-            <label form="inputEmail" class="sr-only">Tipo</label>
-            <select id="tipoUser" class="form-control select-table-cell grey-select"  >
-            <option selected>Aluno</option>
-            <option>Professor</option>
-            <option>Administrador</option>
-            </select>
+
             <input id="guardarEdit" type="button" value="Guardar Alterações" class="btn btn-primary btn-round">
         </div>
     </div>
