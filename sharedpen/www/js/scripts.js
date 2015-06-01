@@ -2053,7 +2053,13 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 "<td>"+data[i].turma+"</td>" +
                                 "<td>"+data[i].ano+"</td>" +
                                 "<td>"+data[i].nome_escola+"</td>" +
-                                "<td>"+data[i].avatar+"</td>"+
+                                //"<td>"+data[i].avatar+"</td>"+
+                                '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">'+
+                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id_user +' src="../img/delete_28.png"></td>'+
                                 "</tr>";
 						}
                         
@@ -2085,6 +2091,62 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 "<td>"+data[i].email+"</td>" +
                                 "<td>"+data[i].nome_agrupamento+"</td>" +
                                 "<td>"+data[i].avatar+"</td>"+
+                                "</tr>";
+						}
+                        
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirUsersTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
+                break;
+                
+                case "GerirEscolas.html":
+                $("body").append(wait);
+				$.ajax({
+					type: "GET",
+					url: "/getsEscolas",
+					dataType: 'json',
+					success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id+"</td>" +
+								"<td>"+data[i].nome_escola+"</td>" +
+                                "<td>"+data[i].morada+"</td>" +
+                                "<td>"+data[i].contacto+"</td>" +
+                                "<td>"+data[i].nome_agrupamento+"</td>" +
+                                "</tr>";
+						}
+                        
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirUsersTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
+                break;
+                 case "GerirAgrupamentos.html":
+                $("body").append(wait);
+				$.ajax({
+					type: "GET",
+					url: "/getsAgrupamentos",
+					dataType: 'json',
+					success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id+"</td>" +
+								"<td>"+data[i].nome+"</td>" +
                                 "</tr>";
 						}
                         
