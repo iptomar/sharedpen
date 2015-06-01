@@ -170,6 +170,10 @@
     font-size: auto;
     margin-bottom: 10px;
 }
+
+#gerirEntitiesTable{
+    font-size: 18px;   
+}
     
 #guardarEdit {
     margin-top: 20px;   

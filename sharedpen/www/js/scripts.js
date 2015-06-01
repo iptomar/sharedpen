@@ -767,8 +767,8 @@ $(document).ready(function () {
 					var htmlLine = "<tr class='actve'>" +
 						"<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
 						"<td>" + data[proj].tipo + "</td>" +
-						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>" +
-						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>" +
+						"<td class='image'><img class='text-center image' src='../img/edit_40.png'></td>" +
+						"<td class='image'><img class='text-center image' src='../img/delete_40.png'></td>" +
 						"<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>" +
 						"</tr>";
 					//faz o append do html gerado
@@ -2165,10 +2165,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 //"<td>"+data[i].avatar+"</td>"+
                                 '<td class="image">'+
                                 '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">'+
-                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
                                 '</div>'+
                                 '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id_user +' src="../img/delete_28.png"></td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id_user +' src="../img/delete_40.png"></td>'+
                                 "</tr>";
 						}
                         
@@ -2203,10 +2203,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             
                             '<td class="image">'+
                                 '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
-                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
                                 '</div>'+
                                 '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_28.png"></td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
                                 "</tr>";
 						}
                         
@@ -2240,10 +2240,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             
                             '<td class="image">'+
                                 '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">'+
-                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
                                 '</div>'+
                                 '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_28.png"></td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
                                 "</tr>";
 						}
                         
@@ -2273,10 +2273,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             
                             '<td class="image">'+
                                 '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">'+
-                                '<img class="text-center image" src="../img/edit_28.png">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
                                 '</div>'+
                                 '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_28.png"></td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
                                 "</tr>";
 						}
                         
