@@ -2036,6 +2036,69 @@ function addLayoutToDiv(local, folder, layout, stk) {
 			case "CriarPoema.html":
 
 				break;
+            case "GerirAluno.html":
+                $("body").append(wait);
+				$.ajax({
+					type: "GET",
+					url: "/getsAlunos",
+					dataType: 'json',
+					success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id_user+"</td>" +
+								"<td>"+data[i].username+"</td>" +
+                                "<td>"+data[i].nome_aluno+"</td>" +
+                                "<td>"+data[i].num_aluno+"</td>" +
+                                "<td>"+data[i].turma+"</td>" +
+                                "<td>"+data[i].ano+"</td>" +
+                                "<td>"+data[i].nome_escola+"</td>" +
+                                "<td>"+data[i].avatar+"</td>"+
+                                "</tr>";
+						}
+                        
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirUsersTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
+                break;
+                
+                case "GerirProfessor.html":
+                $("body").append(wait);
+				$.ajax({
+					type: "GET",
+					url: "/getsProfessores",
+					dataType: 'json',
+					success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id+"</td>" +
+								"<td>"+data[i].username+"</td>" +
+                                "<td>"+data[i].nome_professor+"</td>" +
+                                "<td>"+data[i].email+"</td>" +
+                                "<td>"+data[i].nome_agrupamento+"</td>" +
+                                "<td>"+data[i].avatar+"</td>"+
+                                "</tr>";
+						}
+                        
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirUsersTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
+                break;
 			default:
 				$('#bt_PDF').css({
 					'visibility': "hidden"
