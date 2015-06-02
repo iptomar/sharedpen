@@ -29,7 +29,8 @@ var tmpModels = [];
 var currentPosition = 1;
 $(document).ready(function () {
 
-	/**
+    $.ajaxSetup({async: false});
+    /**
      * Configuracao das opcoes do popup de online / offline de novos clientes
      */
 	toastr.options = {
@@ -675,148 +676,83 @@ $(document).ready(function () {
 
 
 
-
 	//Click para ver os meus projectos através do data-layout
-	$("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
-		var myID = 1;
-		$("body").append(wait);
-		$.ajax({
-			type: "get",
-			url: "/getProjects",
-			data: {
-				id: myID
-			},
-			contentType: "application/json; charset=utf-8",
-			dataType: 'json',
-			success: function (data) {
-				$("body").find("#loading").remove();
-				//insere todos os projectos no html!!!!
-				for (var proj in data) {
-					//guarda os arrays dos projetos
-					console.log(data[proj].id);
-					tmpArrayProj[data[proj].id] = data[proj].array;
-					var htmlLine = "<tr class='actve'>" +
-						"<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
-						"<td>" + data[proj].tipo + "</td>" +
-						"<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>" +
-						"<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>" +
-						"<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>" +
-						"</tr>";
-					//faz o append do html gerado
-					$("#meusProjTable").append(htmlLine);
-				}
-			},
-			error: function (error) {
-				$("body").find("#loading").remove();
-				alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-				console.log(JSON.stringify(error));
-			}
-		});
-	});
+    $("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
+        var myID = 1;
+        $("body").append(wait);
+        $.ajax({
+            type: "get",
+            url: "/getProjects",
+            data: {
+                id: myID
+            },
+            async: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                //insere todos os projectos no html!!!!
+                for (var proj in data) {
+                    //guarda os arrays dos projetos
+//                    console.log(data[proj].id);
+                    tmpArrayProj[data[proj].id] = data[proj].array;
+                    var htmlLine = "<tr class='actve'>" +
+                            "<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
+                            "<td>" + data[proj].tipo + "</td>" +
+                            "<td class='image'>"+
+                            "<div class='carregarLayout' data-folder='html' data-layout='EditarProjecto.html'>" +
+                            '<img class="text-center image" src="../img/edit_40.png">' +
+                            "</div>" +
+                            "</td>" +
+                            "<td class='image'><img class='text-center image' src='../img/delete_40.png'></td>" +
+                            
+                            "<td class='image'>" +
+                            "<div class='carregarLayout' data-folder='html' data-layout='AvaliarProjecto.html'>" +
+                                "<img class='text-center image' src='../img/avaliar_40.png'></td>" +
+                            "</div>" +
+                            "</td>" +
+                            "</tr>";
+                    //faz o append do html gerado
+                    $("body").find("#meusProjTable").append(htmlLine);
+                }
+                $("body").find("#loading").remove();
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                console.log(JSON.stringify(error));
+            }
+        });
+    });
 
 
 
 	$("body").on('click', 'a[href="#AbrirProj"]', function () {
-		var idProj = $(this).data("idproj");
-		tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
-		tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
-		tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
-		tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        var idProj = $(this).data("idproj");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
 
-		hash = JSON.parse(tmpArrayProj[idProj]);
+        hash = JSON.parse(tmpArrayProj[idProj]);
 
-		//        var layout = $(this).data("layout");
-		//        var folder = $(this).data("folder");
-		//
-		//        var local = "#contentor";
-		//        var skt = socket;
-		//
-		//        $(local).load("./" + folder + "/" + layout, function () {
-		//            switch (layout) {
-		//                case "Livro.html":
-		//                    $('#bt_PDF').css({
-		//                        'visibility': "visible"
-		//                    });
-		//                    $('#bt_PRE').css({
-		//                        'visibility': "visible"
-		//                    });
-		//                    $('#bt_HTML').css({
-		//                        'visibility': "visible"
-		//                    });
-		//                    break;
-		//                case "CriarLivro.html":
-		//                    $("body").append(wait);
-		//                    $.ajax({
-		//                        type: "GET",
-		//                        url: "/getModelsPage",
-		//                        dataType: 'json',
-		//                        success: function (data) {
-		//                            var listLayout = "<div>";
-		//                            for (var i = 0, max = data.length; i < max; i++) {
-		//                                listLayout += "<figure>" +
-		//                                        "<img class='selectModelo btnmodels-style' alt='' src='" +
-		//                                        (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
-		//                                        "' data-model='" + data[i].nome + "'/>" +
-		//                                        "<figcaption> " + data[i].nome + " </figcaption>" +
-		//                                        "</figure>";
-		//                            }
-		//                            listLayout += "</div>";
-		//                            $("body").find("#loading").remove();
-		//                            $("body").find("#painelModelos").append(listLayout);
-		//
-		//                        },
-		//                        error: function (error) {
-		//                            $("body").find("#loading").remove();
-		//                            alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
-		//                            console.log(JSON.stringify(error));
-		//                        }
-		//                    });
-		//                    break;
-		//                case "CriarPoema.html":
-		//
-		//                    break;
-		//                default:
-		//                    $('#bt_PDF').css({
-		//                        'visibility': "hidden"
-		//                    });
-		//                    $('#bt_PRE').css({
-		//                        'visibility': "hidden"
-		//                    });
-		//                    $('#bt_HTML').css({
-		//                        'visibility': "hidden"
-		//                    });
-		//                    break;
-		//            }
-
-		//            var newHash = {};
-		//            for (var item in hash) {
-		//                newHash[item] = castTab(hash[item]);
-		//            }
-		//
-		//            hash = newHash;
-		var i = 0;
-		for (var item in hash) {
-			i++;
-			console.log(hash[item].modelo);
-			Addtab(hash[item].modelo, i);
-			updateTab(i, ".txtTab" + i, userNumber);
-			//                doLoad(i, hash[item].modelo, socket.id)
-		}
-		//            console.log(hash);
-		socket.emit('storedhash', {
-			storedhash: hash
-		});
-		//        });
+        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+        var newHash = {};
+        for (var item in hash) {
+            newHash[item] = castTab(hash[item]);
+        }
+        hash = newHash;
+        var i = 0;
+        for (var item in hash) {
+            i++;
+            Addtab(hash[item].modelo, i);
+            updateTab(i, ".txtTab" + i, userNumber);
+        }
+        socket.emit('storedhash', {
+            storedhash: hash
+        });
 
 
-		//        function doLoad(i, modelo, id) {
-		//            $(".txtTab" + i).load("./html_models/" + modelo, function () {
-		//                updateTab(i, ".txtTab" + i, id);
-		//            });
-		//        }
-
-
-	});
+    });
 
 
 
@@ -915,393 +851,375 @@ $(document).ready(function () {
      * recebe o evento do socket com o socket id do cliente que se desligou
      */
 
-	socket.on('diconnected', function (socketid) {
-		for (var item in users) {
-			if (users[item].getSocketId() === socketid) {
-				var numid = users[item].getdivid();
-				toastr.warning(users[item].getUsername(), 'Offline');
-				users.splice(users[item], 1);
-				$("." + numid).remove();
-			}
-		}
-	});
-	//************************************************
-	//****Esconder botoes do menu*********************
-	//************************************************
-	$('#bt_PDF').css({
-		'visibility': "hidden"
-	});
-	$('#bt_PRE').css({
-		'visibility': "hidden"
-	});
-	$('#bt_HTML').css({
-		'visibility': "hidden"
-	});
+    socket.on('diconnected', function (socketid) {
+        for (var item in users) {
+            if (users[item].getSocketId() === socketid) {
+                var numid = users[item].getdivid();
+                toastr.warning(users[item].getUsername(), 'Offline');
+                users.splice(users[item], 1);
+                $("." + numid).remove();
+            }
+        }
+    });
+    //************************************************
+    //****Esconder botoes do menu*********************
+    //************************************************
+    $('#bt_PDF, #bt_PRE, #bt_HTML').css({
+        'visibility': "hidden"
+    });
+
+    // *******************************************************************
+    // Botao do pdf, Botao do Pre-visualizar
+    // *******************************************************************
+
+    $('#bt_PRE, #bt_PDF').click(function () {
+        var textPdf = "";
+        $('#tabs > li > a').each(function () {
+            $($(this).attr("href")).children().children().children().each(function () {
+                var idDiv = this.id;
+                if (idDiv.indexOf("input") !== -1) {
 
 
-	// *******************************************************************
-	// Botao do pdf, Botao do Pre-visualizar
-	// *******************************************************************
+                    var listClass = $(this).attr("id");
+                    var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
 
-	$('#bt_PRE, #bt_PDF').click(function () {
-		var textPdf = "";
-		$('#tabs > li > a').each(function () {
-			$($(this).attr("href")).children().children().children().each(function () {
-				var idDiv = this.id;
-				if (idDiv.indexOf("input") !== -1) {
+                    var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
+                    textPdf += edit.getTextEditor();
 
+                } else if (idDiv.indexOf("image") !== -1) {
 
-					var listClass = $(this).attr("id");
-					var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
+                    //console.log($(this)[0].outerHTML);
+                    // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
 
-					var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
-					textPdf += edit.getTextEditor();
+                    // textPdf += '<img src="http://www.mensagenscomamor.com/images/interna/new/imagens_amor_2.jpg" >';
+                    console.log($(this)[0].src);
 
-				} else if (idDiv.indexOf("image") !== -1) {
-
-					//console.log($(this)[0].outerHTML);
-					// textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-
-					// textPdf += '<img src="http://www.mensagenscomamor.com/images/interna/new/imagens_amor_2.jpg" >';
-					console.log($(this)[0].src);
-
-					socket.emit('user image', {
-						imageData: $(this)[0].src
-					});
+                    socket.emit('user image', {
+                        imageData: $(this)[0].src
+                    });
 
 
-					textPdf += '<img src="http://localhost:8080/imgupload/img.jpg" >';
-					socket.emit('removeimage');
+                    textPdf += '<img src="http://localhost:8080/imgupload/img.jpg" >';
+                    socket.emit('removeimage');
 
-					textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-					//teste imagem
-					//textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
-				} else if (idDiv.indexOf("canvas") !== -1) {
-					console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
-					textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
+                    textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
+                    //teste imagem
+                    //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
+                } else if (idDiv.indexOf("canvas") !== -1) {
+                    console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
+                    textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
 
-				}
-			});
-			//alert("PDF Criado")
-		});
+                }
+            });
+            //alert("PDF Criado")
+        });
 
-		// var doc =jsPDF();
-		//  doc.output("./Livro.pdf")
+        // var doc =jsPDF();
+        //  doc.output("./Livro.pdf")
 
-		console.log(textPdf);
+        console.log(textPdf);
 
-		//PDF NO SERVIDOR
-		socket.emit("convertToPdf", textPdf, "Livro.pdf");
-	});
+        //PDF NO SERVIDOR
+        socket.emit("convertToPdf", textPdf, "Livro.pdf");
+    });
 
 
-	// *******************************************************************
-	// Botão de HTML
-	// *******************************************************************
+    // *******************************************************************
+    // Botão de HTML
+    // *******************************************************************
 
-	$('#bt_HTML').click(function () {
-		var textPdf = "";
-		var pages = [];
-		$('#tabs > li > a').each(function () {
-			var page = "";
-			$($(this).attr("href")).children().children().children().each(function () {
-				var idDiv = this.id;
-				if (idDiv.indexOf("input") !== -1) {
-					var listClass = $(this).attr("id");
-					var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
-					var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
-					page += edit.getTextEditor();
-				} else if (idDiv.indexOf("image") !== -1) {
-					page += "<div>" + $(this)[0].outerHTML + "</div>";
-				} else if (idDiv.indexOf("canvas") !== -1) {
-					page += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
-				}
-			});
-			pages.push(page);
-		});
-		socket.emit("saveAsHtml", pages);
-	});
+    $('#bt_HTML').click(function () {
+        var textPdf = "";
+        var pages = [];
+        $('#tabs > li > a').each(function () {
+            var page = "";
+            $($(this).attr("href")).children().children().children().each(function () {
+                var idDiv = this.id;
+                if (idDiv.indexOf("input") !== -1) {
+                    var listClass = $(this).attr("id");
+                    var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
+                    var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
+                    page += edit.getTextEditor();
+                } else if (idDiv.indexOf("image") !== -1) {
+                    page += "<div>" + $(this)[0].outerHTML + "</div>";
+                } else if (idDiv.indexOf("canvas") !== -1) {
+                    page += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
+                }
+            });
+            pages.push(page);
+        });
+        socket.emit("saveAsHtml", pages);
+    });
 
 
 
-	// *******************************************************************
-	// botao chat
-	// *******************************************************************
-	$('#bt_Chat').click(function () {
-		if ($("#divUsers").css("visibility") === "hidden") {
-			$("#divUsers").css({
-				'visibility': "visible"
-			});
-			$("#divUsers").animate({
-				"left": "74%"
-			}, 1000, "swing", function () {
-				$("#numMsg").animate({
-					opacity: 0
-				}, 500, function () {
-					$("#numMsg").css({
-						visibility: "hidden",
-						opacity: 1
-					});
-					countMsg = 0;
-				});
-			});
-		} else {
-			$("#divUsers").animate({
-				"left": "100%"
-			}, function () {
-				$("#divUsers").css({
-					'visibility': "hidden"
-				});
-			});
-		}
-	});
+    // *******************************************************************
+    // botao chat
+    // *******************************************************************
+    $('#bt_Chat').click(function () {
+        if ($("#divUsers").css("visibility") === "hidden") {
+            $("#divUsers").css({
+                'visibility': "visible"
+            });
+            $("#divUsers").animate({
+                "left": "74%"
+            }, 1000, "swing", function () {
+                $("#numMsg").animate({
+                    opacity: 0
+                }, 500, function () {
+                    $("#numMsg").css({
+                        visibility: "hidden",
+                        opacity: 1
+                    });
+                    countMsg = 0;
+                });
+            });
+        } else {
+            $("#divUsers").animate({
+                "left": "100%"
+            }, function () {
+                $("#divUsers").css({
+                    'visibility': "hidden"
+                });
+            });
+        }
+    });
 
-	$("body").on("click", ".imageGaleria", function () {
-		var Thid = $(this).attr('data-idpai').replace(".", "");
-		var cnv = $(this).attr('data-idcnv');
-		var imgSrc = $(this).children("img").attr("src");
-		var imgData = getBase64Image(imgSrc);
-		hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgData);
-		socket.emit('drawClick', {
-			id: cnv,
-			type: "backgoundImage",
-			color: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getColor(),
-			sizeCursor: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getSizeCursor(),
-			socket: socket.id,
-			canvas: imgSrc,
-			parent: Thid,
-			image: imgData
-		});
-		$("#divGaleria").animate({
-			"left": "-30%"
-		}, 1000, function () {
-			$("#divGaleria").css({
-				"visibility": "hidden"
-			});
-		});
-	});
+    $("body").on("click", ".imageGaleria", function () {
+        var Thid = $(this).attr('data-idpai').replace(".", "");
+        var cnv = $(this).attr('data-idcnv');
+        var imgSrc = $(this).children("img").attr("src");
+        var imgData = getBase64Image(imgSrc);
+        hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgData);
+        socket.emit('drawClick', {
+            id: cnv,
+            type: "backgoundImage",
+            color: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getColor(),
+            sizeCursor: hash["." + Thid].modelo.arrayElem[cnv].drawObj.getSizeCursor(),
+            socket: socket.id,
+            canvas: imgSrc,
+            parent: Thid,
+            image: imgData
+        });
+        $("#divGaleria").animate({
+            "left": "-30%"
+        }, 1000, function () {
+            $("#divGaleria").css({
+                "visibility": "hidden"
+            });
+        });
+    });
 
-	$("#homemenu").click(function () {
-		backArray.push("home");
-		folderArray.push("html_Work_Models");
-		currentPosition += 1;
-		console.log(backArray);
-		$('#bt_PDF').css({
-			'visibility': "hidden"
-		});
-		$('#bt_PRE').css({
-			'visibility': "hidden"
-		});
-		$('#bt_HTML').css({
-			'visibility': "hidden"
-		});
-		LivroPoemas = new Array();
-		var data = {
-			folder: "html_Work_Models",
-			idtab: "",
-			idObj: ""
-		};
-		getFilesToFolder(socket, data);
-	});
+    $("#homemenu").click(function () {
+        backArray.push("home");
+        folderArray.push("html_Work_Models");
+        currentPosition += 1;
+        console.log(backArray);
+        $('#bt_PDF, #bt_PRE, #bt_HTML').css({
+            'visibility': "hidden"
+        });
+        LivroPoemas = new Array();
+        var data = {
+            folder: "html_Work_Models",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
+    });
 
-	//******************************************************************
-	// Recebe a lista de ficheiros de uma determinada pasta
-	//******************************************************************
-	socket.on("files2folder", function (data, dataVals) {
-		//Verifica se esta' a receber imagens de um certo tema
-		switch (dataVals.folder) {
-			case "galeria":
-				if ($("#divGaleria").css("visibility") === "hidden") {
-					var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
-					for (var i = 0, max = data.length; i < max; i++) {
-						imgList += '<div class="imageGaleria col-xs-4 col-sm-4 col-md-4 image" data-idpai="' + dataVals.idtab + '" data-idcnv="' + dataVals.idObj + '">';
-						imgList += '<img src="./' + dataVals.folder + '/' + data[i] + '" alt="">';
-						imgList += '</div>';
-					}
-					imgList += ' </div>';
-					$("#panelGaleria").html(imgList);
-					$("#divGaleria").css({
-						"visibility": "visible"
-					});
-					$("#divGaleria").animate({
-						"left": "1%"
-					}, 1000, "swing");
-				} else {
-					$("#divGaleria").animate({
-						"left": "-30%"
-					}, 1000, function () {
-						$("#divGaleria").css({
-							"visibility": "hidden"
-						});
-					});
-				}
-				break;
-			case "html_Work_Models":
-				var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
-				for (var i = 0, max = data.length; i < max; i++) {
-					allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
-					allPages += '<figure class="image">';
-					allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
-					allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
-				}
-				allPages += '</div>';
-				$("#contentor").html(allPages);
-				break;
-			case "temaspoemas":
-				//Temas para os poemas
-				var htmlModel = "<div id='divchangemodel'>" +
-					"<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
-					"<h1 class='text-center'>Temas</h1>";
-				for (var i = 0, max = data.length; i < max; i++) {
-					//se o nome retornado nao contem "." desduz-se que é uma pasta
-					if (data[i].indexOf(".") === -1) {
-						var pasta = data[i];
-						htmlModel += "<figure class='image'>" +
-							"<img class='tema-img' data-folder='temaspoemas/" + pasta + "' alt='' imagensdotema='" + pasta + "' src='./img/temaspoema/" + pasta + ".png' '/>" +
-							"<figcaption> " + pasta + " </figcaption>" +
-							"</figure>";
-					}
-				}
-				htmlModel += "</div></div></div></div>";
-				$("body").append(htmlModel);
-				break;
-			case "showperfil":
-				//Teste para Perfil do utilizador
-				var htmlModel = "<div id='divchangemodel'>" +
-					"<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
-					"<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
-				for (var i = 0, max = data.length; i < max; i++) {
-					//se o nome retornado nao contem "." desduz-se que é uma pasta
-					if (data[i].indexOf(".") === -1) {
-						var pasta = data[i];
-						htmlModel += "<figure class='image'>" +
-							"<img class='tema-img' data-folder='showperfil/" + pasta + "' src='./img/showperfil/" + pasta + ".png' '/>" +
-							"<figcaption> " + pasta + " </figcaption>" +
-							"</figure>";
-					}
-				}
-				htmlModel += "</div></div></div></div>";
-				$("body").append(htmlModel);
-				break;
-			default:
-				if (typeof dataVals.imagensdotema !== "undefined" && dataVals.imagensdotema !== null) {
-					//Verifica se existem imagens do tema
-					if (data.length > 0) {
-						$("body").find("#divchangemodel").remove();
-						var htmlModel = "<div id='divchangemodel'>" +
-							"<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
-							"<h1 style='text-center'>Imagens do tema - " + dataVals.imagensdotema + "</h1>";
-						for (var i = 0, max = data.length; i < max; i++) {
-							htmlModel += "<figure class='image'>" +
-								"<img class='imgPoema' data-folder='./temaspoemas/" + dataVals.imagensdotema + "' alt='' src='./temaspoemas/" + dataVals.imagensdotema + "/" + data[i] + "'/>" +
-								"<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
-								"</figure>";
-						}
-						htmlModel += "</div></div></div></div>";
-						$("body").append(htmlModel);
-					} else
-						alert("Não existem imagens do tema " + dataVals.imagensdotema);
-				}
-				break;
-		}
-	});
+    //******************************************************************
+    // Recebe a lista de ficheiros de uma determinada pasta
+    //******************************************************************
+    socket.on("files2folder", function (data, dataVals) {
+        //Verifica se esta' a receber imagens de um certo tema
+        switch (dataVals.folder) {
+            case "galeria":
+                if ($("#divGaleria").css("visibility") === "hidden") {
+                    var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        imgList += '<div class="imageGaleria col-xs-4 col-sm-4 col-md-4 image" data-idpai="' + dataVals.idtab + '" data-idcnv="' + dataVals.idObj + '">';
+                        imgList += '<img src="./' + dataVals.folder + '/' + data[i] + '" alt="">';
+                        imgList += '</div>';
+                    }
+                    imgList += ' </div>';
+                    $("#panelGaleria").html(imgList);
+                    $("#divGaleria").css({
+                        "visibility": "visible"
+                    });
+                    $("#divGaleria").animate({
+                        "left": "1%"
+                    }, 1000, "swing");
+                } else {
+                    $("#divGaleria").animate({
+                        "left": "-30%"
+                    }, 1000, function () {
+                        $("#divGaleria").css({
+                            "visibility": "hidden"
+                        });
+                    });
+                }
+                break;
+            case "html_Work_Models":
+                var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
+                for (var i = 0, max = data.length; i < max; i++) {
+                    allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
+                    allPages += '<figure class="image">';
+                    allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
+                    allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
+                }
+                allPages += '</div>';
+                $("#contentor").html(allPages);
+                break;
+            case "temaspoemas":
+                //Temas para os poemas
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                        "<h1 class='text-center'>Temas</h1>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    //se o nome retornado nao contem "." desduz-se que é uma pasta
+                    if (data[i].indexOf(".") === -1) {
+                        var pasta = data[i];
+                        htmlModel += "<figure class='image'>" +
+                                "<img class='tema-img' data-folder='temaspoemas/" + pasta + "' alt='' imagensdotema='" + pasta + "' src='./img/temaspoema/" + pasta + ".png' '/>" +
+                                "<figcaption> " + pasta + " </figcaption>" +
+                                "</figure>";
+                    }
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+                break;
+            case "showperfil":
+                //Teste para Perfil do utilizador
+                var htmlModel = "<div id='divchangemodel'>" +
+                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                        "<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
+                for (var i = 0, max = data.length; i < max; i++) {
+                    //se o nome retornado nao contem "." desduz-se que é uma pasta
+                    if (data[i].indexOf(".") === -1) {
+                        var pasta = data[i];
+                        htmlModel += "<figure class='image'>" +
+                                "<img class='tema-img' data-folder='showperfil/" + pasta + "' src='./img/showperfil/" + pasta + ".png' '/>" +
+                                "<figcaption> " + pasta + " </figcaption>" +
+                                "</figure>";
+                    }
+                }
+                htmlModel += "</div></div></div></div>";
+                $("body").append(htmlModel);
+                break;
+            default:
+                if (typeof dataVals.imagensdotema !== "undefined" && dataVals.imagensdotema !== null) {
+                    //Verifica se existem imagens do tema
+                    if (data.length > 0) {
+                        $("body").find("#divchangemodel").remove();
+                        var htmlModel = "<div id='divchangemodel'>" +
+                                "<div><div><input id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
+                                "<h1 style='text-center'>Imagens do tema - " + dataVals.imagensdotema + "</h1>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlModel += "<figure class='image'>" +
+                                    "<img class='imgPoema' data-folder='./temaspoemas/" + dataVals.imagensdotema + "' alt='' src='./temaspoemas/" + dataVals.imagensdotema + "/" + data[i] + "'/>" +
+                                    "<figcaption> " + data[i].split(".")[0] + " </figcaption>" +
+                                    "</figure>";
+                        }
+                        htmlModel += "</div></div></div></div>";
+                        $("body").append(htmlModel);
+                    } else
+                        alert("Não existem imagens do tema " + dataVals.imagensdotema);
+                }
+                break;
+        }
+    });
 
-	$(".fecharGaleria").click(function () {
-		$("#divGaleria").animate({
-			"left": "-30%"
-		}, 1000, function () {
-			$("#divGaleria").css({
-				"visibility": "hidden"
-			});
-		});
-	});
+    $(".fecharGaleria").click(function () {
+        $("#divGaleria").animate({
+            "left": "-30%"
+        }, 1000, function () {
+            $("#divGaleria").css({
+                "visibility": "hidden"
+            });
+        });
+    });
 
-	$("body").on("click", ".carregarLayout", function () {
-		if (currentPosition != backArray.length) {
-			backArray.splice(currentPosition, backArray.length - currentPosition);
-			folderArray.splice(currentPosition, folderArray.length - currentPosition);
-		}
+    $("body").on("click", ".carregarLayout", function () {
+        if (currentPosition != backArray.length) {
+            backArray.splice(currentPosition, backArray.length - currentPosition);
+            folderArray.splice(currentPosition, folderArray.length - currentPosition);
+        }
 
-		backArray.push($(this).data("layout"));
-		folderArray.push($(this).data("folder"));
+        backArray.push($(this).data("layout"));
+        folderArray.push($(this).data("folder"));
 
-		currentPosition += 1;
-		//console.log(backArray + " " + currentPosition);
-		addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
-	});
+        currentPosition += 1;
+        //console.log(backArray + " " + currentPosition);
+        addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
+    });
 
-	$("body").on("click", ".voltarLayout", function () {
-		if (currentPosition - 1 >= 1) {
-			currentPosition -= 1;
-			var aux = backArray[currentPosition - 1];
-			if (aux == "home") {
-				$('#bt_PDF').css({
-					'visibility': "hidden"
-				});
-				$('#bt_PRE').css({
-					'visibility': "hidden"
-				});
-				$('#bt_HTML').css({
-					'visibility': "hidden"
-				});
-				LivroPoemas = new Array();
-				var data = {
-					folder: "html_Work_Models",
-					idtab: "",
-					idObj: ""
-				};
-				getFilesToFolder(socket, data);
-			} else if (aux != "home" && aux != "") {
-				addLayoutToDiv("#contentor", folderArray[currentPosition - 1], aux, socket);
-			}
-			console.log(backArray + " " + currentPosition);
-		}
-	});
+    $("body").on("click", ".voltarLayout", function () {
+        if (currentPosition - 1 >= 1) {
+            currentPosition -= 1;
+            var aux = backArray[currentPosition - 1];
+            if (aux == "home") {
+                $('#bt_PDF, #bt_PRE, #bt_HTML').css({
+                    'visibility': "hidden"
+                });
+                LivroPoemas = new Array();
+                var data = {
+                    folder: "html_Work_Models",
+                    idtab: "",
+                    idObj: ""
+                };
+                getFilesToFolder(socket, data);
+            } else if (aux != "home" && aux != "") {
+                addLayoutToDiv("#contentor", folderArray[currentPosition - 1], aux, socket);
+            }
+            console.log(backArray + " " + currentPosition);
+        }
+    });
 
-	//Mostrar os temas disponíveis para o poema
-	$("body").on("click", 'a[href="#add-poema"]', function () {
-		var data = {
-			folder: "temaspoemas",
-			idtab: "",
-			idObj: ""
-		};
-		getFilesToFolder(socket, data);
-	});
+    //Mostrar os temas disponíveis para o poema
+    $("body").on("click", 'a[href="#add-poema"]', function () {
+        var data = {
+            folder: "temaspoemas",
+            idtab: "",
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
+    });
 
-	//adicionar palavra 'a ajuda do poema
-	$("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function () {
-		var idpage = $(this).parent().parent().parent().attr('id');
-		var text = prompt("Adicione um palavra de ajuda para este poema", "");
-		if (text.length > 0) {
-			LivroPoemas[idpage.substring(4)].getAjuda()[LivroPoemas[idpage.substring(4)].getAjuda().length] = text;
-			$(this).before('<span class="label label-info" style="float:left; margin: 3px;">' + text + '</span>');
-		}
-	});
+    //adicionar palavra 'a ajuda do poema
+    $("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function () {
+        var idpage = $(this).parent().parent().parent().attr('id');
+        var text = prompt("Adicione um palavra de ajuda para este poema", "");
+        if (text.length > 0) {
+            LivroPoemas[idpage.substring(4)].getAjuda()[LivroPoemas[idpage.substring(4)].getAjuda().length] = text;
+            $(this).before('<span class="label label-info" style="float:left; margin: 3px;">' + text + '</span>');
+        }
+    });
 
 
-	//Mostrar perfil do Utilizador
-	$("body").on("click", 'a[href="#show-perfil"]', function () {
-		//        var data = {
-		//            folder: "showperfil",
-		//            idtab: "",
-		//            idObj: ""
-		//        };
-		//        getFilesToFolder(socket, data);
-	});
-	//Mostrar os imagens disponíveis para o tema
-	$("body").on("click", '.tema-img', function () {
-		var self = this;
-		var data = {
-			folder: $(self).attr("data-folder"),
-			imagensdotema: $(self).attr("imagensdotema"),
-			idObj: ""
-		};
-		getFilesToFolder(socket, data);
-	});
+    //Mostrar perfil do Utilizador
+    $("body").on("click", 'a[href="#show-perfil"]', function () {
+        //        var data = {
+        //            folder: "showperfil",
+        //            idtab: "",
+        //            idObj: ""
+        //        };
+        //        getFilesToFolder(socket, data);
+    });
+    //Mostrar os imagens disponíveis para o tema
+    $("body").on("click", '.tema-img', function () {
+        var self = this;
+        var data = {
+            folder: $(self).attr("data-folder"),
+            imagensdotema: $(self).attr("imagensdotema"),
+            idObj: ""
+        };
+        getFilesToFolder(socket, data);
+    });
 
-	//Adiciona a tab do poema
-	$("body").on("click", '.imgPoema', function () {
-		/**folder: $(self).attr("data-folder"),
+    //Adiciona a tab do poema
+    $("body").on("click", '.imgPoema', function () {
+        /**folder: $(self).attr("data-folder"),
+>>>>>>> origin/master
          imagensdotema: $(self).attr("imagensdotema"),
          idObj: "",**/
 		AddPoema(LivroPoemas, $(this).attr("src"));
@@ -2052,211 +1970,213 @@ function getArrayElementObj(array, id) {
  * @returns {undefined} */
 function addLayoutToDiv(local, folder, layout, stk) {
 
-	$(local).load("./" + folder + "/" + layout, function () {
-		switch (layout) {
-			case "Livro.html":
-				stk.emit("getAllTabs");
-				$('#bt_PDF').css({
-					'visibility': "visible"
-				});
-				$('#bt_PRE').css({
-					'visibility': "visible"
-				});
-				$('#bt_HTML').css({
-					'visibility': "visible"
-				});
-				break;
-			case "CriarLivro.html":
-				$("body").append(wait);
-				$.ajax({
-					type: "GET",
-					url: "/getModelsPage",
-					dataType: 'json',
-					success: function (data) {
-						var listLayout = "<div>";
-						for (var i = 0, max = data.length; i < max; i++) {
-							listLayout += "<figure>" +
-								"<img class='selectModelo btnmodels-style' alt='' src='" +
-								(data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
-								"' data-model='" + data[i].nome + "'/>" +
-								"<figcaption> " + data[i].nome + " </figcaption>" +
-								"</figure>";
-						}
-						listLayout += "</div>";
-						$("body").find("#loading").remove();
-						$("body").find("#painelModelos").append(listLayout);
+    $(local).load("./" + folder + "/" + layout, function () {
+        switch (layout) {
+            case "Livro.html":
+                if (stk !== null) {
+                    stk.emit("getAllTabs");
+                }
+                $('#bt_PDF').css({
+                    'visibility': "visible"
+                });
+                $('#bt_PRE').css({
+                    'visibility': "visible"
+                });
+                $('#bt_HTML').css({
+                    'visibility': "visible"
+                });
+                break;
+            case "CriarLivro.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getModelsPage",
+                    dataType: 'json',
+                    success: function (data) {
+                        var listLayout = "<div>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            listLayout += "<figure>" +
+                                    "<img class='selectModelo btnmodels-style' alt='' src='" +
+                                    (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                    "' data-model='" + data[i].nome + "'/>" +
+                                    "<figcaption> " + data[i].nome + " </figcaption>" +
+                                    "</figure>";
+                        }
+                        listLayout += "</div>";
+                        $("body").find("#loading").remove();
+                        $("body").find("#painelModelos").append(listLayout);
 
-					},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
-				break;
-			case "CriarPoema.html":
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                break;
+            case "CriarPoema.html":
 
-				break;
-			case "GerirAluno.html":
-				$("body").append(wait);
-				$.ajax({
-					type: "GET",
-					url: "/getsAlunos",
-					dataType: 'json',
-					success: function (data) {
-						var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-						for (var i = 0, max = data.length; i < max; i++) {
+                break;
+            case "GerirAluno.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsAlunos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
 
-							htmlVar += "<tr>";
-							htmlVar += "<td>" + data[i].id_user + "</td>" +
-								"<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-								"<td>" + data[i].username + "</td>" +
-								"<td>" + data[i].nome_aluno + "</td>" +
-								"<td>" + data[i].num_aluno + "</td>" +
-								"<td>" + data[i].turma + "</td>" +
-								"<td>" + data[i].ano + "</td>" +
-								"<td>" + data[i].nome_escola + "</td>" +
-								//"<td>"+data[i].avatar+"</td>"+
-								'<td class="image">' +
-								'<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
-								'<img class="text-center image" src="../img/edit_40.png">' +
-								'</div>' +
-								'</td>' +
-								'<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
-								"</tr>";
-						}
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id_user + "</td>" +
+                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                    "<td>" + data[i].username + "</td>" +
+                                    "<td>" + data[i].nome_aluno + "</td>" +
+                                    "<td>" + data[i].num_aluno + "</td>" +
+                                    "<td>" + data[i].turma + "</td>" +
+                                    "<td>" + data[i].ano + "</td>" +
+                                    "<td>" + data[i].nome_escola + "</td>" +
+                                    //"<td>"+data[i].avatar+"</td>"+
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
 
-						$("body").find("#loading").remove();
-						$("body").find("#gerirEntitiesTable").append(htmlVar);
-					},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
 
-				break;
+                break;
 
-			case "GerirProfessor.html":
-				$("body").append(wait);
-				$.ajax({
-					type: "GET",
-					url: "/getsProfessores",
-					dataType: 'json',
-					success: function (data) {
-						var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-						for (var i = 0, max = data.length; i < max; i++) {
+            case "GerirProfessor.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsProfessores",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
 
-							htmlVar += "<tr>";
-							htmlVar += "<td>" + data[i].id + "</td>" +
-								"<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-								"<td>" + data[i].username + "</td>" +
-								"<td>" + data[i].nome_professor + "</td>" +
-								"<td>" + data[i].email + "</td>" +
-								"<td>" + data[i].nome_agrupamento + "</td>" +
-								'<td class="image">' +
-								'<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">' +
-								'<img class="text-center image" src="../img/edit_40.png">' +
-								'</div>' +
-								'</td>' +
-								'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
-								"</tr>";
-						}
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                    "<td>" + data[i].username + "</td>" +
+                                    "<td>" + data[i].nome_professor + "</td>" +
+                                    "<td>" + data[i].email + "</td>" +
+                                    "<td>" + data[i].nome_agrupamento + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
 
-						$("body").find("#loading").remove();
-						$("body").find("#gerirEntitiesTable").append(htmlVar);
-					},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
 
-				break;
+                break;
 
-			case "GerirEscolas.html":
-				$("body").append(wait);
-				$.ajax({
-					type: "GET",
-					url: "/getsEscolas",
-					dataType: 'json',
-					success: function (data) {
-						var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-						for (var i = 0, max = data.length; i < max; i++) {
-							htmlVar += "<tr>";
-							htmlVar += "<td>" + data[i].id + "</td>" +
-								"<td>" + data[i].nome_escola + "</td>" +
-								"<td>" + data[i].morada + "</td>" +
-								"<td>" + data[i].contacto + "</td>" +
-								"<td>" + data[i].nome_agrupamento + "</td>" +
-								'<td class="image">' +
-								'<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">' +
-								'<img class="text-center image" src="../img/edit_40.png">' +
-								'</div>' +
-								'</td>' +
-								'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
-								"</tr>";
-						}
+            case "GerirEscolas.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsEscolas",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                    "<td>" + data[i].nome_escola + "</td>" +
+                                    "<td>" + data[i].morada + "</td>" +
+                                    "<td>" + data[i].contacto + "</td>" +
+                                    "<td>" + data[i].nome_agrupamento + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
 
-						$("body").find("#loading").remove();
-						$("body").find("#gerirEntitiesTable").append(htmlVar);
-					},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
 
-				break;
-			case "GerirAgrupamentos.html":
-				$("body").append(wait);
-				$.ajax({
-					type: "GET",
-					url: "/getsAgrupamentos",
-					dataType: 'json',
-					success: function (data) {
-						var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-						for (var i = 0, max = data.length; i < max; i++) {
+                break;
+            case "GerirAgrupamentos.html":
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        for (var i = 0, max = data.length; i < max; i++) {
 
-							htmlVar += "<tr>";
-							htmlVar += "<td>" + data[i].id + "</td>" +
-								"<td>" + data[i].nome + "</td>" +
-								'<td class="image">' +
-								'<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
-								'<img class="text-center image" src="../img/edit_40.png">' +
-								'</div>' +
-								'</td>' +
-								'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
-								"</tr>";
-						}
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                    "<td>" + data[i].nome + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
 
-						$("body").find("#loading").remove();
-						$("body").find("#gerirEntitiesTable").append(htmlVar);
-					},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
-				break;
-			default:
-				$('#bt_PDF').css({
-					'visibility': "hidden"
-				});
-				$('#bt_PRE').css({
-					'visibility': "hidden"
-				});
-				$('#bt_HTML').css({
-					'visibility': "hidden"
-				});
-				break;
-		}
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                break;
+            default:
+                $('#bt_PDF').css({
+                    'visibility': "hidden"
+                });
+                $('#bt_PRE').css({
+                    'visibility': "hidden"
+                });
+                $('#bt_HTML').css({
+                    'visibility': "hidden"
+                });
+                break;
+        }
 
-	});
+    });
 }
 
 

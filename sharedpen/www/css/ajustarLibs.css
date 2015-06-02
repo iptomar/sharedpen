@@ -68,7 +68,7 @@
 }
 
 #userImage{
-    width: 400px;
+1    width: 400px;
     height: 400px;
     margin-left: 100px;
 }
@@ -109,6 +109,22 @@
     background-position:center;
 }
 
+#Avaliar_btn {
+    background-image: url(../img/check.png);
+    background-repeat: no-repeat;
+    background-position:right;
+    
+    float:right;
+    border-radius: 10px;
+    margin-left: 208px;
+    
+    width: 200px;
+    height:80px;
+    
+    font-size: 40px;
+    text-align: left;
+}
+
 .tabspace{
     margin-left: 50px;   
 }
@@ -117,7 +133,7 @@
     border:1px solid lightgray;
     border-radius: 5px;
     list-style-type: none; 
-    max-height: 82%;
+    max-height: 70%;
     max-width: 44%;
     width: 44%;
     overflow-y: scroll;
@@ -132,7 +148,7 @@
 }
 
 .div-users{
-	min-width: 36.875em;
+    min-width: 36.875em;
     height: 650px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -151,7 +167,7 @@
 }
 
 #Password {
- margin-top: 10px;   
+    margin-top: 10px;   
 }
 
 #users-avaliar{
@@ -171,10 +187,10 @@
     margin-bottom: 10px;
 }
 
-#gerirEntitiesTable{
+#gerirEntitiesTable, #meusProjTable{
     font-size: 18px;   
 }
-    
+
 #guardarEdit {
     margin-top: 20px;   
 }
@@ -201,5 +217,5 @@
     z-index: 0;
 }
 .div-criarproj {
-	min-width: 76.875em;
+    min-width: 76.875em;
 }
