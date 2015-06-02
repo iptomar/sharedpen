@@ -1752,8 +1752,6 @@ $(document).ready(function () {
 
     // (des)selecionar user para participar no projeto
     $("body").on("click", "#removeButton", function () {
-        //$(".userSelect").append($(".userSelect option:selected").get(0));
-        //$("#alluser option:selected").css("display", "none");
         var valor = $(".userSelect option:selected").prop("value");
         $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
 
@@ -1777,22 +1775,21 @@ $(document).ready(function () {
         $("#contentor").attr("NomeProj", nomeProj);
 
         //array com os utilizadores do projeto
-        var users = [];
+        var usersid = [];
         $(".userList.userSelect option").each(function () {
-            users.push($(this).prop("value"));
+            usersid.push($(this).prop("value"));
         });
 
+		
         //retirar a opcao por defeio
-        users = users.splice(1);
+        //users = users.splice(1);
 
         //verificar se foram selecionados alunos para participar no projeto
-        if (users.length === 0) {
+        if (usersid.length === 0) {
             alert("Escolha Utilizadores para participar no projeto");
             return;
         }
-        $("#contentor").attr("ProjUser", users);
-
-
+        $("#contentor").attr("projuser", usersid);
 
         //id modelo utilizado
         var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
@@ -1806,47 +1803,18 @@ $(document).ready(function () {
 
         var nomeCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
         var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
-        console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + nomeCapa + "\t Pagina:" + nomePagina);
 
-        for (item in hash) {
-            removeTab(hash[item].id);
-        }
+        //Limpar hash local e do server
         hash = {};
-
         socket.emit('storedhash', {
             storedhash: hash
         });
 
 
+        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
 
-        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
-
-
-
-        //ponto de Situação: tenho idmodelo, nome da capa, nome da pagina
-        //recolher da bd os dados refentes às páginas do modelo
-
-
-
-        /*var defer = $.when(
-         CarregaModelo(modelo , nomePagina)
-         );
-         
-         // (des)selecionar user para participar no projeto
-         $("body").on("click", "#removeButton", function () {
-         //$(".userSelect").append($(".userSelect option:selected").get(0));
-         //$("#alluser option:selected").css("display", "none");
-         var valor = $(".userSelect option:selected").prop("value");
-         $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
-         
-         
-         defer.done(function () {
-         modelo = nomePagina,
-         CarregaModelo(modelo)
-         });*/
         CarregaModelo(nomeCapa, nomePagina);
-        //CarregaModelo(modelo)
-
+    
     });
 
     function CarregaModelo(modelo, nomePagina) {
@@ -1968,27 +1936,29 @@ $(document).ready(function () {
             var usersP = $("#contentor").attr("projuser").split(",");
             var idmodel = $("#contentor").attr("idmodel")
             var idTmp = textToNumber(username);
-            var textHelp = $("#divTxtAjuda").text();
+			console.log(idTmp);
+			idTmp = 1;
+            var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
             var typeP = "Público";
             var hashtoSave;
 
 
             hashtoSave = hash;
 
-            /*for (item in hashtoSave) {
-             for (elem in hashtoSave[item].modelo.arrayElem) {
-             if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
-             var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+            for (item in hashtoSave) {
+             	for (elem in hashtoSave[item].modelo.arrayElem) {
+             		if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
+             		var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
              
-             var newchar = '\\"'
-             conteudo = conteudo.split('"').join(newchar);
-             newchar = '\\/'
-             conteudo = conteudo.split('/').join(newchar);
-             hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
+             		var newchar = '\\"'
+             			conteudo = conteudo.split('"').join(newchar);
+             			newchar = '\\/'
+             		conteudo = conteudo.split('/').join(newchar);
+             	hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
              
+             	}
              }
              }
-             }*/
 
             $.ajax({
                 type: "POST",
