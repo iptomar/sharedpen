@@ -117,7 +117,7 @@
     border:1px solid lightgray;
     border-radius: 5px;
     list-style-type: none; 
-    max-height: 82%;
+    max-height: 70%;
     max-width: 44%;
     width: 44%;
     overflow-y: scroll;
@@ -132,7 +132,7 @@
 }
 
 .div-users{
-	min-width: 36.875em;
+    min-width: 36.875em;
     height: 650px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -151,7 +151,7 @@
 }
 
 #Password {
- margin-top: 10px;   
+    margin-top: 10px;   
 }
 
 #users-avaliar{
@@ -174,7 +174,7 @@
 #gerirEntitiesTable{
     font-size: 18px;   
 }
-    
+
 #guardarEdit {
     margin-top: 20px;   
 }
@@ -201,5 +201,5 @@
     z-index: 0;
 }
 .div-criarproj {
-	min-width: 76.875em;
+    min-width: 76.875em;
 }

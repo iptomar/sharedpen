@@ -928,16 +928,9 @@ $(document).ready(function () {
     //************************************************
     //****Esconder botoes do menu*********************
     //************************************************
-    $('#bt_PDF').css({
+    $('#bt_PDF, #bt_PRE, #bt_HTML').css({
         'visibility': "hidden"
     });
-    $('#bt_PRE').css({
-        'visibility': "hidden"
-    });
-    $('#bt_HTML').css({
-        'visibility': "hidden"
-    });
-
 
     // *******************************************************************
     // Botao do pdf, Botao do Pre-visualizar
@@ -1086,13 +1079,7 @@ $(document).ready(function () {
         folderArray.push("html_Work_Models");
         currentPosition += 1;
         console.log(backArray);
-        $('#bt_PDF').css({
-            'visibility': "hidden"
-        });
-        $('#bt_PRE').css({
-            'visibility': "hidden"
-        });
-        $('#bt_HTML').css({
+        $('#bt_PDF, #bt_PRE, #bt_HTML').css({
             'visibility': "hidden"
         });
         LivroPoemas = new Array();
@@ -1235,13 +1222,7 @@ $(document).ready(function () {
             currentPosition -= 1;
             var aux = backArray[currentPosition - 1];
             if (aux == "home") {
-                $('#bt_PDF').css({
-                    'visibility': "hidden"
-                });
-                $('#bt_PRE').css({
-                    'visibility': "hidden"
-                });
-                $('#bt_HTML').css({
+                $('#bt_PDF, #bt_PRE, #bt_HTML').css({
                     'visibility': "hidden"
                 });
                 LivroPoemas = new Array();
