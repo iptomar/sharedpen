@@ -116,7 +116,7 @@
     
     float:right;
     border-radius: 10px;
-    margin-left: 208px;
+    margin-left: 140px;
     
     width: 200px;
     height:80px;
@@ -191,6 +191,11 @@
     font-size: 18px;   
 }
 
+.div-scroll-auto{
+    overflow-y: auto;   
+    max-height: 100%;
+}
+
 #guardarEdit {
     margin-top: 20px;   
 }
@@ -208,10 +213,11 @@
 .SmallAvatar {
     width: 150px;
     Height: 150px;
+    margin-left: 40px;
 }
 
 #SideInfo {
-    margin-left: -80px;
+    margin-left: -280px;
 }
 .modal-backdrop {
     z-index: 0;
