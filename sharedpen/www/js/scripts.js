@@ -922,7 +922,7 @@ $(document).ready(function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            if (imgId !== "userImage" && imgId !== "image") {
+            if (imgId !== "userImage" && imgId !== "image" && imgId!== "add-Entity-Image") {
                 // envia as informacoes da nova imagem para os outros clientes
                 socket.emit('msgappend', {
                     id: imgId,
@@ -1429,45 +1429,49 @@ $(document).ready(function () {
                     newSrc = newSrc + "userAluno.png";
                     htmlModel = '<form class="form-horizontal">'+
                           '<div class="form-group">'+
-                            '<label for="Id_aluno_edit" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>'+
+                            '<label for="Id_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="Id_aluno_edit" disabled >'+
+                              '<input class="form-control" id="Id_aluno_add" disabled >'+
                             '</div>'+
                           '</div>'+
                           '<div class="form-group">'+
-                            '<label for="username_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
+                            '<label for="username_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="username_aluno_edit" autofocus>'+
+                              '<input class="form-control" id="username_aluno_add" autofocus>'+
                             '</div>'+
                           '</div> '+
                            '<div class="form-group">'+
-                            '<label for="password_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
+                            '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
                             '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="password_aluno_edit" autofocus>'+
+                             ' <input class="form-control" id="password_aluno_add" autofocus>'+
                             '</div>'+
                           '</div> '+
                           '<div class="form-group">'+
-                            '<label for="nome_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<label for="nome_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="nome_aluno_edit"  >'+
+                              '<input class="form-control" id="nome_aluno_add"  >'+
                             '</div>'+
                           '</div>  '+
                           '<div class="form-group">'+
-                           ' <label for="numero_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>'+
+                           ' <label for="numero_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>'+
                             '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="numero_aluno_edit"  >'+
+                             ' <input class="form-control" id="numero_aluno_add"  >'+
                             '</div>'+
                           '</div>   '+
                           '<div class="form-group">'+
-                            '<label for="turma_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>'+
+                            '<label for="turma_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="turma_aluno_edit"  >'+
+                              '<select id="turma_aluno_add" class="form-control"  >'+
+                                    '<option selected disabled>Seleccione a Turma</option>'+
+                                '</select>'+
                             '</div>'+
                           '</div>'+
                           '<div class="form-group">'+
-                            '<label for="ano_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>'+
+                            '<label for="ano_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="ano_aluno_edit"  >'+
+                              '<select id="ano_aluno_add" class="form-control"  >'+
+                                    '<option selected disabled>Seleccione o Ano</option>'+
+                                '</select>'+
                             '</div>' +
                           '</div>'   +
                         '</form>' +
@@ -1478,33 +1482,33 @@ $(document).ready(function () {
                         newSrc = newSrc + "userProf.png";
                         htmlModel = '<form class="form-horizontal">'+
                           '<div class="form-group">'+
-                            '<label for="Id_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>'+
+                            '<label for="Id_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>'+
                             '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="Id_Professor_edit" disabled >'+
+                             ' <input class="form-control" id="Id_Professor_add" disabled >'+
                             '</div>'+
                             '</div>'+
                           '<div class="form-group">'+
-                            '<label for="username_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
+                            '<label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="username_Professor_edit" autofocus>'+
+                              '<input class="form-control" id="username_Professor_add" autofocus>'+
                             '</div>'+
                           '</div>  '+
                           '<div class="form-group">'+
-                            '<label for="password_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
+                            '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="password_aluno_edit" autofocus>'+
+                              '<input class="form-control" id="password_aluno_add" autofocus>'+
                             '</div>'+
                           '</div>'+
                           '<div class="form-group">'+
-                            '<label for="Nome_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<label for="Nome_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="Nome_Professor_edit"  >'+
+                              '<input class="form-control" id="Nome_Professor_add"  >'+
                             '</div>'+
                           '</div>  '+
                           '<div class="form-group">'+
-                            '<label for="Agrupamento_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
+                            '<label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
                             '<div class="col-sm-10">'+
-                              '<select id="Agrupamento_Professor_edit" class="form-control"  >'+
+                              '<select id="Agrupamento_Professor_add" class="form-control"  >'+
                                     '<option selected disabled>Seleccione o Agrupamento</option>'+
                                 '</select>'+
                            ' </div>'+
@@ -1516,35 +1520,36 @@ $(document).ready(function () {
                         break;
                     case "adicionarEscola":
                             newHeader ="Adicionar Nova Escola";
+                            newSrc= newSrc + "userEscola.png";   
                             htmlModel = '<form class="form-horizontal">'+
                                 '<div class="form-group">'+
-                                '<label for="id_Escola_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>'+
+                                '<label for="id_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>'+
                                 '<div class="col-sm-10">'+
-                                 ' <input class="form-control" id="Id_Escola_edit" disabled >'+
+                                 ' <input class="form-control" id="Id_Escola_add" disabled >'+
                                 '</div>'+
                               '</div>'+
                               '<div class="form-group">'+
-                                '<label for="Nome_Escola_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                                '<label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
                                 '<div class="col-sm-10">'+
-                                  '<input class="form-control" id="Nome_Escola_edit" autofocus>'+
+                                  '<input class="form-control" id="Nome_Escola_add" autofocus>'+
                                 '</div>'+
                               '</div>'+
                                 '<div class="form-group">'+
-                                '<label for="Morada_Escola_edit" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label>'+
+                                '<label for="Morada_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label>'+
                                 '<div class="col-sm-10">'+
-                                  '<input class="form-control" id="Morada_Escola_edit" autofocus>'+
+                                  '<input class="form-control" id="Morada_Escola_add" autofocus>'+
                                 '</div>'+
                               '</div> '+
                                 '<div class="form-group">'+
-                                '<label for="Contacto_Escola_edit" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label>'+
+                                '<label for="Contacto_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label>'+
                                 '<div class="col-sm-10">'+
-                                  '<input class="form-control" id="Contacto_Escola_edit" autofocus>'+
+                                  '<input class="form-control" id="Contacto_Escola_add" autofocus>'+
                                 '</div>'+
                               '</div>'+
                                 '<div class="form-group">'+
-                                '<label for="Agrupamento_Escola_edit" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
+                                '<label for="Agrupamento_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
                                 '<div class="col-sm-10">'+
-                                '<select id="Agrupamento_Escola_edit" class="form-control"  >'+
+                                '<select id="Agrupamento_Escola_add" class="form-control"  >'+
                                     '<option selected disabled>Seleccione o Agrupamento</option>'+
                                 '</select>'+
                                 '</div>'+
@@ -1555,17 +1560,18 @@ $(document).ready(function () {
                         break;
                     case "adicionarAgrupamento":
                             newHeader ="Adicionar Novo Agrupamento";
+                            newSrc= newSrc + "userAgrupamento.png";
                             htmlModel ='<form class="form-horizontal">'+
                           '<div class="form-group">'+
-                            '<label for="Id_Agrupamento_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>'+
+                            '<label for="Id_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>'+
                             '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="Id_Agrupamento_edit" disabled >'+
+                             ' <input class="form-control" id="Id_Agrupamento_add" disabled >'+
                             '</div>'+
                           '</div>'+
                           '<div class="form-group">'+
-                            '<label for="Nome_Agrupamento_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
                             '<div class="col-sm-10">'+
-                              '<input class="form-control" id="Nome_Agrupamento_edit" autofocus>'+
+                              '<input class="form-control" id="Nome_Agrupamento_add" autofocus>'+
                             '</div>'+
                           '</div>'+  
                         '</form>' +
@@ -1577,7 +1583,7 @@ $(document).ready(function () {
                 }
                 
                 $("body").find("#add-Entity-Header").append(newHeader);
-                $("body").find("#userImage").attr("src", newSrc);
+                $("body").find("#add-Entity-Image").attr("src", newSrc);
                 $("body").find("#div-Adicionar-Entity").append(htmlModel);
                 $("body").find("#loading").remove();
             },
