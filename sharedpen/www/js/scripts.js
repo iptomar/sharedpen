@@ -1012,7 +1012,8 @@ $(document).ready(function () {
                     var listClass = $(this).attr("id");
                     var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
                     var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
-                    page += edit.getTextEditor();
+                    page += edit.getTextEditorForHtml();
+                    
                 } else if (idDiv.indexOf("image") !== -1) {
                     page += "<div>" + $(this)[0].outerHTML + "</div>";
                 } else if (idDiv.indexOf("canvas") !== -1) {
