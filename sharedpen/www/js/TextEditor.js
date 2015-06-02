@@ -64,7 +64,7 @@ TextEditor.prototype.getTextEditor = function () {
 
 TextEditor.prototype.getTextEditorForHtml = function () {
     var alltextP = "";
-    $('#' + this.idpai).children('p').each(function () {
+    $('#' + this.idpai).each(function () {
         alltextP += this.outerHTML;
     });
     return alltextP;
