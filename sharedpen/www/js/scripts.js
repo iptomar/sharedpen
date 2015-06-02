@@ -1422,8 +1422,10 @@ $(document).ready(function () {
             success: function (data) {
                 var htmlModel = "";
                 var newSrc = "../img/";
+                var newHeader = "";
                 switch (id) {
                     case "adicionarAluno":
+                    newHeader ="Adicionar Novo Aluno";
                     newSrc = newSrc + "userAluno.png";
                     htmlModel = '<form class="form-horizontal">'+
                           '<div class="form-group">'+
@@ -1472,6 +1474,7 @@ $(document).ready(function () {
                         '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Aluno">';
                         break;
                     case "adicionarProfessor":
+                        newHeader ="Adicionar Novo Professor";
                         newSrc = newSrc + "userProf.png";
                         htmlModel = '<form class="form-horizontal">'+
                           '<div class="form-group">'+
@@ -1512,6 +1515,7 @@ $(document).ready(function () {
                         '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Professor">';
                         break;
                     case "adicionarEscola":
+                            newHeader ="Adicionar Nova Escola";
                             htmlModel = '<form class="form-horizontal">'+
                                 '<div class="form-group">'+
                                 '<label for="id_Escola_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>'+
@@ -1550,6 +1554,7 @@ $(document).ready(function () {
                  '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Escola">';
                         break;
                     case "adicionarAgrupamento":
+                            newHeader ="Adicionar Novo Agrupamento";
                             htmlModel ='<form class="form-horizontal">'+
                           '<div class="form-group">'+
                             '<label for="Id_Agrupamento_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>'+
@@ -1570,8 +1575,10 @@ $(document).ready(function () {
                     default:
                         break;
                 }
-                $("body").find("#div-Adicionar-Entity").append(htmlModel);
+                
+                $("body").find("#add-Entity-Header").append(newHeader);
                 $("body").find("#userImage").attr("src", newSrc);
+                $("body").find("#div-Adicionar-Entity").append(htmlModel);
                 $("body").find("#loading").remove();
             },
             error: function (error) {
