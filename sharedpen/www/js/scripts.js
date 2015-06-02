@@ -679,7 +679,9 @@ $(document).ready(function () {
                     modelo: modelo,
                     //numero de elementos do modelo
                     noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                    creator: userNumber
+                    creator: userNumber,
+                    //por id da nova TAB
+                    idProj : tabTest.projID
                 });
                 $("body").find("#loading").remove();
                 $("body").find("#divchangemodel").remove();
@@ -923,7 +925,7 @@ $(document).ready(function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            if (imgId !== "userImage" && imgId !== "image") {
+            if (imgId !== "userImage" && imgId !== "image" && imgId!== "add-Entity-Image") {
                 // envia as informacoes da nova imagem para os outros clientes
                 socket.emit('msgappend', {
                     id: imgId,
@@ -1414,6 +1416,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".adicionarEntity", function () {
+        var id = $(this).attr("id");
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -1421,24 +1424,170 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 var htmlModel = "";
-
-                switch ($(this).attr("id")) {
+                var newSrc = "../img/";
+                var newHeader = "";
+                switch (id) {
                     case "adicionarAluno":
-
+                    newHeader ="Adicionar Novo Aluno";
+                    newSrc = newSrc + "userAluno.png";
+                    htmlModel = '<form class="form-horizontal">'+
+                          '<div class="form-group">'+
+                            '<label for="Id_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="Id_aluno_add" disabled >'+
+                            '</div>'+
+                          '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="username_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="username_aluno_add" autofocus>'+
+                            '</div>'+
+                          '</div> '+
+                           '<div class="form-group">'+
+                            '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
+                            '<div class="col-sm-10">'+
+                             ' <input class="form-control" id="password_aluno_add" autofocus>'+
+                            '</div>'+
+                          '</div> '+
+                          '<div class="form-group">'+
+                            '<label for="nome_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="nome_aluno_add"  >'+
+                            '</div>'+
+                          '</div>  '+
+                          '<div class="form-group">'+
+                           ' <label for="numero_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>'+
+                            '<div class="col-sm-10">'+
+                             ' <input class="form-control" id="numero_aluno_add"  >'+
+                            '</div>'+
+                          '</div>   '+
+                          '<div class="form-group">'+
+                            '<label for="turma_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>'+
+                            '<div class="col-sm-10">'+
+                              '<select id="turma_aluno_add" class="form-control"  >'+
+                                    '<option selected disabled>Seleccione a Turma</option>'+
+                                '</select>'+
+                            '</div>'+
+                          '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="ano_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>'+
+                            '<div class="col-sm-10">'+
+                              '<select id="ano_aluno_add" class="form-control"  >'+
+                                    '<option selected disabled>Seleccione o Ano</option>'+
+                                '</select>'+
+                            '</div>' +
+                          '</div>'   +
+                        '</form>' +
+                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Aluno">';
                         break;
                     case "adicionarProfessor":
+                        newHeader ="Adicionar Novo Professor";
+                        newSrc = newSrc + "userProf.png";
+                        htmlModel = '<form class="form-horizontal">'+
+                          '<div class="form-group">'+
+                            '<label for="Id_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>'+
+                            '<div class="col-sm-10">'+
+                             ' <input class="form-control" id="Id_Professor_add" disabled >'+
+                            '</div>'+
+                            '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="username_Professor_add" autofocus>'+
+                            '</div>'+
+                          '</div>  '+
+                          '<div class="form-group">'+
+                            '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="password_aluno_add" autofocus>'+
+                            '</div>'+
+                          '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="Nome_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="Nome_Professor_add"  >'+
+                            '</div>'+
+                          '</div>  '+
+                          '<div class="form-group">'+
+                            '<label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
+                            '<div class="col-sm-10">'+
+                              '<select id="Agrupamento_Professor_add" class="form-control"  >'+
+                                    '<option selected disabled>Seleccione o Agrupamento</option>'+
+                                '</select>'+
+                           ' </div>'+
+                          '</div>'+
+                        '</form>'+
 
+
+                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Professor">';
                         break;
                     case "adicionarEscola":
+                            newHeader ="Adicionar Nova Escola";
+                            newSrc= newSrc + "userEscola.png";   
+                            htmlModel = '<form class="form-horizontal">'+
+                                '<div class="form-group">'+
+                                '<label for="id_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>'+
+                                '<div class="col-sm-10">'+
+                                 ' <input class="form-control" id="Id_Escola_add" disabled >'+
+                                '</div>'+
+                              '</div>'+
+                              '<div class="form-group">'+
+                                '<label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                                '<div class="col-sm-10">'+
+                                  '<input class="form-control" id="Nome_Escola_add" autofocus>'+
+                                '</div>'+
+                              '</div>'+
+                                '<div class="form-group">'+
+                                '<label for="Morada_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label>'+
+                                '<div class="col-sm-10">'+
+                                  '<input class="form-control" id="Morada_Escola_add" autofocus>'+
+                                '</div>'+
+                              '</div> '+
+                                '<div class="form-group">'+
+                                '<label for="Contacto_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label>'+
+                                '<div class="col-sm-10">'+
+                                  '<input class="form-control" id="Contacto_Escola_add" autofocus>'+
+                                '</div>'+
+                              '</div>'+
+                                '<div class="form-group">'+
+                                '<label for="Agrupamento_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
+                                '<div class="col-sm-10">'+
+                                '<select id="Agrupamento_Escola_add" class="form-control"  >'+
+                                    '<option selected disabled>Seleccione o Agrupamento</option>'+
+                                '</select>'+
+                                '</div>'+
+                              '</div> '+
+                            '</form>'+
 
+                 '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Escola">';
                         break;
                     case "adicionarAgrupamento":
-
+                            newHeader ="Adicionar Novo Agrupamento";
+                            newSrc= newSrc + "userAgrupamento.png";
+                            htmlModel ='<form class="form-horizontal">'+
+                          '<div class="form-group">'+
+                            '<label for="Id_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>'+
+                            '<div class="col-sm-10">'+
+                             ' <input class="form-control" id="Id_Agrupamento_add" disabled >'+
+                            '</div>'+
+                          '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="Nome_Agrupamento_add" autofocus>'+
+                            '</div>'+
+                          '</div>'+  
+                        '</form>' +
+                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Agrupamento">';
+                
                         break;
                     default:
                         break;
                 }
-                $("body").append(htmlModel);
+                
+                $("body").find("#add-Entity-Header").append(newHeader);
+                $("body").find("#add-Entity-Image").attr("src", newSrc);
+                $("body").find("#div-Adicionar-Entity").append(htmlModel);
                 $("body").find("#loading").remove();
             },
             error: function (error) {
@@ -1624,8 +1773,6 @@ $(document).ready(function () {
 
     // (des)selecionar user para participar no projeto
     $("body").on("click", "#removeButton", function () {
-        //$(".userSelect").append($(".userSelect option:selected").get(0));
-        //$("#alluser option:selected").css("display", "none");
         var valor = $(".userSelect option:selected").prop("value");
         $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
 
@@ -1647,20 +1794,21 @@ $(document).ready(function () {
         $("#contentor").attr("NomeProj", nomeProj);
 
         //array com os utilizadores do projeto
-        var users = [];
+        var usersid = [];
         $(".userList.userSelect option").each(function () {
-            users.push($(this).prop("value"));
+            usersid.push($(this).prop("value"));
         });
 
+		
         //retirar a opcao por defeio
-        users = users.splice(1);
+        //users = users.splice(1);
 
         //verificar se foram selecionados alunos para participar no projeto
-        if (users.length === 0) {
+        if (usersid.length === 0) {
             alert("Escolha Utilizadores para participar no projeto");
             return;
         }
-        $("#contentor").attr("ProjUser", users);
+        $("#contentor").attr("projuser", usersid);
 
         //id modelo utilizado
         var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
@@ -1676,16 +1824,14 @@ $(document).ready(function () {
         var numPagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
         console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + numCapa + "\t Pagina:" + numPagina);
 
-        for (item in hash) {
-            removeTab(hash[item].id);
-        }
+        //Limpar hash local e do server
         hash = {};
-
         socket.emit('storedhash', {
             storedhash: hash
         });
 
 
+        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
 
         addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
 
@@ -1813,27 +1959,29 @@ $(document).ready(function () {
             var usersP = $("#contentor").attr("projuser").split(",");
             var idmodel = $("#contentor").attr("idmodel")
             var idTmp = textToNumber(username);
-            var textHelp = $("#divTxtAjuda").text();
+			console.log(idTmp);
+			idTmp = 1;
+            var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
             var typeP = "Público";
             var hashtoSave;
 
 
             hashtoSave = hash;
 
-            /*for (item in hashtoSave) {
-             for (elem in hashtoSave[item].modelo.arrayElem) {
-             if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
-             var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+            for (item in hashtoSave) {
+             	for (elem in hashtoSave[item].modelo.arrayElem) {
+             		if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
+             		var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
              
-             var newchar = '\\"'
-             conteudo = conteudo.split('"').join(newchar);
-             newchar = '\\/'
-             conteudo = conteudo.split('/').join(newchar);
-             hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
+             		var newchar = '\\"'
+             			conteudo = conteudo.split('"').join(newchar);
+             			newchar = '\\/'
+             		conteudo = conteudo.split('/').join(newchar);
+             	hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
              
+             	}
              }
              }
-             }*/
 
             $.ajax({
                 type: "POST",
