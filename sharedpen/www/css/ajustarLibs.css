@@ -198,7 +198,7 @@
     text-align: left;   
 }
 
-#Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser {
+#Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser, #btnAdicionarEntity {
     width: 100%;
     height: 50px;
     font-size: auto;

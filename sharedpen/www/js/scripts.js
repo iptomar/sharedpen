@@ -1424,7 +1424,51 @@ $(document).ready(function () {
                 console.log("before switch");
                 switch (id) {
                     case "adicionarAluno":
-                        console.log("called button addAluno");
+                    htmlModel = '<form class="form-horizontal">'+
+                          '<div class="form-group">'+
+                            '<label for="Id_aluno_edit" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="Id_aluno_edit" disabled >'+
+                            '</div>'+
+                          '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="username_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="username_aluno_edit" autofocus>'+
+                            '</div>'+
+                          '</div> '+
+                           '<div class="form-group">'+
+                            '<label for="password_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
+                            '<div class="col-sm-10">'+
+                             ' <input class="form-control" id="password_aluno_edit" autofocus>'+
+                            '</div>'+
+                          '</div> '+
+                          '<div class="form-group">'+
+                            '<label for="nome_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="nome_aluno_edit"  >'+
+                            '</div>'+
+                          '</div>  '+
+                          '<div class="form-group">'+
+                           ' <label for="numero_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>'+
+                            '<div class="col-sm-10">'+
+                             ' <input class="form-control" id="numero_aluno_edit"  >'+
+                            '</div>'+
+                          '</div>   '+
+                          '<div class="form-group">'+
+                            '<label for="turma_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="turma_aluno_edit"  >'+
+                            '</div>'+
+                          '</div>'+
+                          '<div class="form-group">'+
+                            '<label for="ano_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>'+
+                            '<div class="col-sm-10">'+
+                              '<input class="form-control" id="ano_aluno_edit"  >'+
+                            '</div>' +
+                          '</div>'   +
+                        '</form>' +
+                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round">';
                         break;
                     case "adicionarProfessor":
 
@@ -1438,7 +1482,7 @@ $(document).ready(function () {
                     default:
                         break;
                 }
-                $("body").append(htmlModel);
+                $("body").find("#div-Adicionar-Entity").append(htmlModel);
                 $("body").find("#loading").remove();
             },
             error: function (error) {
