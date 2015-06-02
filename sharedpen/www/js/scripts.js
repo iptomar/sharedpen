@@ -1418,7 +1418,7 @@ $(document).ready(function () {
 			url: "/getCriationPage",
 			dataType: 'json',
 			success: function (data) {
-				var htmlModel = "";
+            var htmlModel = "";
                 
               switch ($(this).attr("id")) {
                 case "adicionarAluno":
