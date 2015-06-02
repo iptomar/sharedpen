@@ -1439,6 +1439,8 @@ $(document).ready(function () {
 
 	// Avancar no projeto 
 	$("body").on("click", "#btProjAvancar", function () {
+		
+		
 		//Nome do projeto
 		var nomeProj = $("#nomeProj").val();
 
@@ -1448,6 +1450,9 @@ $(document).ready(function () {
 			alert("Nome do Projeto Inválido");
 			return;
 		}
+		
+		
+		$("#contentor").attr("NomeProj",nomeProj);
 
 		//array com os utilizadores do projeto
 		var users = [];
@@ -1463,6 +1468,9 @@ $(document).ready(function () {
 			alert("Escolha Utilizadores para participar no projeto");
 			return;
 		}
+		$("#contentor").attr("ProjUser",users);
+		
+		
 
 		//id modelo utilizado
 		var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
@@ -1471,10 +1479,24 @@ $(document).ready(function () {
 			alert("Escolha um modelo de projeto");
 			return;
 		}
+		
+		$("#contentor").attr("idmodel",idmodel);
+		
 		var nomeCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
 		var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
 		console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + nomeCapa + "\t Pagina:" + nomePagina);
 
+		for (item in hash){
+			removeTab(hash[item].id);
+		}
+		hash= {};
+		
+		 socket.emit('storedhash', {
+            storedhash: hash
+        });
+		
+		
+		
 		addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
 
 
@@ -1494,7 +1516,6 @@ $(document).ready(function () {
          modelo = nomePagina,
          CarregaModelo(modelo)
          });*/
-
 		CarregaModelo(nomeCapa, nomePagina);
 		//CarregaModelo(modelo)
 
@@ -1610,7 +1631,65 @@ $(document).ready(function () {
 			}
 		});
 
+		
+		
+		$("body").on("click", "#btGuardarProjeto", function () {
+			
+			$("body").append(wait);
+			var nomeP =  $("#contentor").attr("NomeProj");
+			var usersP =  $("#contentor").attr("projuser").split(",");
+			var idmodel = $("#contentor").attr("idmodel")
+			var idTmp = textToNumber(username);
+			var textHelp =$("#divTxtAjuda").text();
+			var typeP ="Público";
+			var hashtoSave;
+			
+			
+			hashtoSave = hash;
 
+			/*for (item in hashtoSave) {
+				for (elem in hashtoSave[item].modelo.arrayElem) {
+					if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
+						var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+
+						var newchar = '\\"'
+						conteudo = conteudo.split('"').join(newchar);
+						newchar = '\\/'
+						conteudo = conteudo.split('/').join(newchar);
+						hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
+
+					}
+				}
+			}*/
+			
+		$.ajax({
+			type: "POST",
+			url: "/saveProjLivro",
+			data: {
+				nomeProjeto: nomeP,
+				idCreator: idTmp,
+				text: textHelp,
+				tipo: typeP,
+				idmodel: idmodel,
+				array:hashtoSave,
+				texto:textHelp
+			},
+			dataType: 'json',
+			success: function (data) {
+				if (data === "Ok") {
+					alert("Projeto Gravado");
+				} else {
+					alert("O nome do livro já existe na base da dados.")
+					$("body").find("#loading").remove();
+				}
+			},
+			error: function (error) {
+				$("body").find("#loading").remove();
+				console.log(JSON.stringify(error));
+			}
+		});
+		});
+		
 
 
 
@@ -2190,3 +2269,5 @@ function ajustElements() {
 		height: $(window).height() * 0.89
 	});
 }
+
+

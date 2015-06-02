@@ -97,6 +97,16 @@ function hexToRgb(hex, s, n) {
     }
 }
 
+
+function textToNumber(nome){
+	var result="";
+	for (var i = 0, max = nome.length; i < max; i++) {
+        result += nome[i].charCodeAt(0);
+    }
+	return result;
+	
+}
+
 $.fn.contextMenu = function (settings) {
 
     return this.each(function () {
