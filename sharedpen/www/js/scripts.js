@@ -679,7 +679,9 @@ $(document).ready(function () {
                     modelo: modelo,
                     //numero de elementos do modelo
                     noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                    creator: userNumber
+                    creator: userNumber,
+                    //por id da nova TAB
+                    idProj : tabTest.projID
                 });
                 $("body").find("#divchangemodel").remove();
                 // Foco na ultima pagina adicionada
