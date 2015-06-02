@@ -1411,6 +1411,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".adicionarEntity", function () {
+        var id = $(this).attr("id");
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -1418,10 +1419,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 var htmlModel = "";
-
-                switch ($(this).attr("id")) {
+                console.log("before switch");
+                switch (id) {
                     case "adicionarAluno":
-
+                        console.log("called button addAluno");
                         break;
                     case "adicionarProfessor":
 

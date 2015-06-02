@@ -125,6 +125,24 @@
     text-align: left;
 }
 
+#adicionarAluno, #adicionarProfessor,  #adicionarEscola, #adicionarAgrupamento{
+    background-image: url(../img/add.png);
+    background-repeat: no-repeat;
+    background-position:right;
+    
+    border-radius: 10px;
+    width: 260px;
+    height: 80px;
+    
+    font-size: 20px;
+    text-align: left;
+    
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+
+
 .tabspace{
     margin-left: 50px;   
 }
@@ -193,7 +211,7 @@
 
 .div-scroll-auto{
     overflow-y: auto;   
-    max-height: 100%;
+    max-height: 89%;
 }
 
 #guardarEdit {
