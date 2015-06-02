@@ -1656,194 +1656,155 @@ $(document).ready(function () {
         var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
         console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + nomeCapa + "\t Pagina:" + nomePagina);
 
-        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
+        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
 
-
-
-        //ponto de Situação: tenho idmodelo, nome da capa, nome da pagina
-        //recolher da bd os dados refentes às páginas do modelo
-
-
-
-
-        // (des)selecionar user para participar no projeto
-        $("body").on("click", "#removeButton", function () {
-            //$(".userSelect").append($(".userSelect option:selected").get(0));
-            //$("#alluser option:selected").css("display", "none");
-            var valor = $(".userSelect option:selected").prop("value");
-            $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
-
-        });
-
-        // Avancar no projeto 
-        $("body").on("click", "#btProjAvancar", function () {
-            //Nome do projeto
-            var nomeProj = $("#nomeProj").val();
-
-            //array com os utilizadores do projeto
-            var users = [];
-            $(".userList.userSelect option").each(function () {
-                users.push($(this).prop("value"));
-            });
-
-
-
-            //retirar a opcao por defeio
-            users = users.splice(1);
-
-            //id modelo utilizado
-            var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
-
-            var nomeCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
-            var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
-            console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + nomeCapa + "\t Pagina:" + nomePagina);
-
-            addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
-
-
-
-            //ponto de Situação: tenho idmodelo, nome da capa, nome da pagina
-            //recolher da bd os dados refentes às páginas do modelo
-
-
-
-            defer.done(function () {
-                modelo = nomePagina,
-                        CarregaModelo(modelo)
-            });
-
-            CarregaModelo(nomeCapa, nomePagina);
-            //CarregaModelo(modelo)
-
-        });
-
-        function CarregaModelo(modelo, nomePagina) {
-
-            var idNum = (Object.keys(hash).length + 1);
-            console.log(idNum);
-            $("body").append(wait);
-            $.ajax({
-                type: "get",
-                url: "/getCodModel",
-                data: {
-                    model: modelo
-                },
-                contentType: "application/json; charset=utf-8",
-                dataType: 'json',
-                success: function (data) {
-                    $("body").find("#loading").remove();
-                    Addtab(modelo, idNum);
-                    $(".txtTab" + idNum).html(data[0].htmltext);
-                    refactorTab(modelo, idNum);
-                    addtohash(idNum);
-                    socket.emit('TabsChanged', {
-                        //remover ou adicionar
-                        op: "adicionar",
-                        //tab
-                        tab: tabTest,
-                        //posiçao
-                        pos: (Object.keys(hash).length),
-                        //modelo
-                        modelo: modelo,
-                        //numero de elementos do modelo
-                        noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                        creator: userNumber
-                    });
-                    $("body").find("#divchangemodel").remove();
-                    // Foco na ultima pagina adicionada
-                    $("body").find("a[href^='#page']:last").click();
-                    console.log(hash);
-
-                    //-------
-                    idNum = (Object.keys(hash).length + 1);
-                    console.log(idNum);
-                    $("body").append(wait);
-                    $.ajax({
-                        type: "get",
-                        url: "/getCodModel",
-                        data: {
-                            model: nomePagina
-                        },
-                        contentType: "application/json; charset=utf-8",
-                        dataType: 'json',
-                        success: function (data) {
-                            $("body").find("#loading").remove();
-                            Addtab(modelo, idNum);
-                            $(".txtTab" + idNum).html(data[0].htmltext);
-                            refactorTab(modelo, idNum);
-                            addtohash(idNum);
-                            socket.emit('TabsChanged', {
-                                //remover ou adicionar
-                                op: "adicionar",
-                                //tab
-                                tab: tabTest,
-                                //posiçao
-                                pos: (Object.keys(hash).length),
-                                //modelo
-                                modelo: modelo,
-                                //numero de elementos do modelo
-                                noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                                creator: userNumber
-                            });
-                            $("body").find("#divchangemodel").remove();
-                            // Foco na ultima pagina adicionada
-                            $("body").find("a[href^='#page']:last").click();
-
-                            //Reduzir tamanho da div das tabs
-                            $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                            $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
-
-                            //Adicionar a div com o texto de ajuda		
-                            $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
-                                    "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                    "<div id='divTxtAjuda'  contenteditable='true'></div>" +
-                                    "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
-
-                            $(".containerTxtAjuda").animate({
-                                opacity: 1,
-                            }, 1000, function () {
-                                // Animation complete.
-                            });
-
-
-                            $("#divTxtAjuda").focus();
-                            console.log(hash);
-                        },
-                        error: function (error) {
-                            $("body").find("#loading").remove();
-                            alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-                            console.log(JSON.stringify(error));
-                        }
-                    });
-                    //-------
-
-
-
-                },
-                error: function (error) {
-                    $("body").find("#loading").remove();
-                    alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-                    console.log(JSON.stringify(error));
-                }
-            });
+        CarregaModelo(nomeCapa,nomePagina);
+    });
+    //ponto de Situação: tenho idmodelo, nome da capa, nome da pagina
+    //recolher da bd os dados refentes às páginas do modelo
 
 
 
 
-
-        }
-
-
-        /*
-         * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
-         */
+    // (des)selecionar user para participar no projeto
+    $("body").on("click", "#removeButton", function () {
+        //$(".userSelect").append($(".userSelect option:selected").get(0));
+        //$("#alluser option:selected").css("display", "none");
+        var valor = $(".userSelect option:selected").prop("value");
+        $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
 
     });
-    $(window).resize(function () {
-        ajustElements();
-    });
+
+
+    function CarregaModelo(modelo, nomePagina) {
+
+        var idNum = (Object.keys(hash).length + 1);
+        console.log(idNum);
+        $("body").append(wait);
+        $.ajax({
+            type: "get",
+            url: "/getCodModel",
+            data: {
+                model: modelo
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $("body").find("#loading").remove();
+                Addtab(modelo, idNum);
+                $(".txtTab" + idNum).html(data[0].htmltext);
+                refactorTab(modelo, idNum);
+                addtohash(idNum);
+                socket.emit('TabsChanged', {
+                    //remover ou adicionar
+                    op: "adicionar",
+                    //tab
+                    tab: tabTest,
+                    //posiçao
+                    pos: (Object.keys(hash).length),
+                    //modelo
+                    modelo: modelo,
+                    //numero de elementos do modelo
+                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                    creator: userNumber
+                });
+                $("body").find("#divchangemodel").remove();
+                // Foco na ultima pagina adicionada
+                $("body").find("a[href^='#page']:last").click();
+                console.log(hash);
+
+                //-------
+                idNum = (Object.keys(hash).length + 1);
+                console.log(idNum);
+                $("body").append(wait);
+                $.ajax({
+                    type: "get",
+                    url: "/getCodModel",
+                    data: {
+                        model: nomePagina
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        $("body").find("#loading").remove();
+                        Addtab(modelo, idNum);
+                        $(".txtTab" + idNum).html(data[0].htmltext);
+                        refactorTab(modelo, idNum);
+                        addtohash(idNum);
+                        socket.emit('TabsChanged', {
+                            //remover ou adicionar
+                            op: "adicionar",
+                            //tab
+                            tab: tabTest,
+                            //posiçao
+                            pos: (Object.keys(hash).length),
+                            //modelo
+                            modelo: modelo,
+                            //numero de elementos do modelo
+                            noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                            creator: userNumber
+                        });
+                        $("body").find("#divchangemodel").remove();
+                        // Foco na ultima pagina adicionada
+                        $("body").find("a[href^='#page']:last").click();
+
+                        //Reduzir tamanho da div das tabs
+                        $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                        $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+
+                        //Adicionar a div com o texto de ajuda		
+                        $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                "<div id='divTxtAjuda'  contenteditable='true'></div>" +
+                                "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
+
+                        $(".containerTxtAjuda").animate({
+                            opacity: 1,
+                        }, 1000, function () {
+                            // Animation complete.
+                        });
+
+
+                        $("#divTxtAjuda").focus();
+                        console.log(hash);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                //-------
+
+
+
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                console.log(JSON.stringify(error));
+            }
+        });
+
+
+
+
+
+    }
+
+
+    /*
+     * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
+     */
 
 });
+
+// });  
+$(window).resize(function () {
+    ajustElements();
+});
+
+
 
 /*
  * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
