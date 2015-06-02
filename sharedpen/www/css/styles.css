@@ -180,7 +180,7 @@ body, #div-login{
 }
 
 #SelectPageStyle {
-	height: 200px;
+	height: 80%;
 	overflow-y: scroll;
 }
 .table-striped tbody tr:nth-child(odd) td {
@@ -194,4 +194,25 @@ body, #div-login{
 #SelectPageStyle > div > div.col-xs-4.col-sm-4.col-md-4.nomeProj > button {
 	margin: auto auto;
 	top:50%; left:50%;
+}
+
+.containerTxtAjuda {
+	height: 94%;
+	margin-top: 2%;
+	opacity: 0;
+}
+
+#divTxtAjuda {
+	height: 78%;
+	margin:auto;
+	margin-bottom: 2px;
+	-moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    background-color: white;
+    background-color: -moz-field;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px 0 lightgray inset;  
+    font: -moz-field;
+	overflow-y: scroll;
+	
 }
