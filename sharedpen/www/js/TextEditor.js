@@ -1,11 +1,11 @@
-var TextEditor = function (idpai, user, cor, socketCreator, socket) {
+var TextEditor = function (idpai, user, cor, socketCreator, userNum) {
     this.idpai = idpai;
     this.user = user;
     this.cor = cor;
-    if(typeof socket !== "undefined")
-        this.socketId = socket;
+    this.socketId = userNum;
     this.valPId = 1;
     this.atualPara = "";
+    this.creator = socketCreator;
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
     }
@@ -115,9 +115,9 @@ function getCaretPosition(editableDiv) {
  * @returns {undefined}
  */
 function setCaretAtEditor(editor, linha, coluna) {
-    console.log(editor);
-    console.log(linha);
-    console.log(coluna);
+//    console.log(editor);
+//    console.log(linha);
+//    console.log(coluna);
     var el = document.getElementById(editor);
     var range = document.createRange();
     var sel = window.getSelection();
