@@ -48,8 +48,8 @@
 }
 
 .avatar-mini{
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
 }
 
 .goback-logo{
@@ -159,11 +159,20 @@
     width:220%;
 }
 
+.text-left{
+    display: inline-block;
+    text-align: left;   
+}
+
 #Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser {
     width: 100%;
     height: 50px;
     font-size: auto;
     margin-bottom: 10px;
+}
+
+#gerirEntitiesTable{
+    font-size: 18px;   
 }
     
 #guardarEdit {

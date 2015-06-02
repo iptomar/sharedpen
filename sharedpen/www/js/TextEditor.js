@@ -62,6 +62,14 @@ TextEditor.prototype.getTextEditor = function () {
     return alltextP;
 };
 
+TextEditor.prototype.getTextEditorForHtml = function () {
+    var alltextP = "";
+    $('#' + this.idpai).children('p').each(function () {
+        alltextP += this.outerHTML;
+    });
+    return alltextP;
+};
+
 TextEditor.prototype.getSizePUtilizado = function () {
     var size = $('#' + this.idpai + "-" + 1).height() + 10;
     $('#' + this.idpai).children('p').each(function () {

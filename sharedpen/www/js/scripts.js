@@ -2059,34 +2059,36 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-                            htmlVar += "<tr>";
-                            htmlVar += "<td>" + data[i].id_user + "</td>" +
-                                    "<td>" + data[i].username + "</td>" +
-                                    "<td>" + data[i].nome_aluno + "</td>" +
-                                    "<td>" + data[i].num_aluno + "</td>" +
-                                    "<td>" + data[i].turma + "</td>" +
-                                    "<td>" + data[i].ano + "</td>" +
-                                    "<td>" + data[i].nome_escola + "</td>" +
-                                    //"<td>"+data[i].avatar+"</td>"+
-                                    '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
-                                    '<img class="text-center image" src="../img/edit_28.png">' +
-                                    '</div>' +
-                                    '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_28.png"></td>' +
-                                    "</tr>";
-                        }
 
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id_user+"</td>" +
+                                "<td>" + '<img class="text-center avatar-mini" src="' +data[i].avatar +'"></td>'+
+								"<td>"+data[i].username+"</td>" +
+                                "<td>"+data[i].nome_aluno+"</td>" +
+                                "<td>"+data[i].num_aluno+"</td>" +
+                                "<td>"+data[i].turma+"</td>" +
+                                "<td>"+data[i].ano+"</td>" +
+                                "<td>"+data[i].nome_escola+"</td>" +
+                                //"<td>"+data[i].avatar+"</td>"+
+                                '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id_user +' src="../img/delete_40.png"></td>'+
+                                "</tr>";
+						}
+                        
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                        console.log(JSON.stringify(error));
-                    }
-                });
-
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
                 break;
 
             case "GerirProfessor.html":
@@ -2098,26 +2100,34 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-                            htmlVar += "<tr>";
-                            htmlVar += "<td>" + data[i].id + "</td>" +
-                                    "<td>" + data[i].username + "</td>" +
-                                    "<td>" + data[i].nome_professor + "</td>" +
-                                    "<td>" + data[i].email + "</td>" +
-                                    "<td>" + data[i].nome_agrupamento + "</td>" +
-                                    "<td>" + data[i].avatar + "</td>" +
-                                    "</tr>";
-                        }
 
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id+"</td>" +
+                                "<td>" + '<img class="text-center avatar-mini" src="' +data[i].avatar +'"></td>'+
+								"<td>"+data[i].username+"</td>" +
+                                "<td>"+data[i].nome_professor+"</td>" +
+                                "<td>"+data[i].email+"</td>" +
+                                "<td>"+data[i].nome_agrupamento+"</td>" +
+                            
+                            '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
+                                "</tr>";
+						}
+                        
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                        console.log(JSON.stringify(error));
-                    }
-                });
-
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
                 break;
 
             case "GerirEscolas.html":
@@ -2129,25 +2139,32 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-                            htmlVar += "<tr>";
-                            htmlVar += "<td>" + data[i].id + "</td>" +
-                                    "<td>" + data[i].nome_escola + "</td>" +
-                                    "<td>" + data[i].morada + "</td>" +
-                                    "<td>" + data[i].contacto + "</td>" +
-                                    "<td>" + data[i].nome_agrupamento + "</td>" +
-                                    "</tr>";
-                        }
-
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id+"</td>" +
+								"<td>"+data[i].nome_escola+"</td>" +
+                                "<td>"+data[i].morada+"</td>" +
+                                "<td>"+data[i].contacto+"</td>" +
+                                "<td>"+data[i].nome_agrupamento+"</td>" +
+                            
+                            '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
+                                "</tr>";
+						}
+                        
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                        console.log(JSON.stringify(error));
-                    }
-                });
-
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});
+                
                 break;
             case "GerirAgrupamentos.html":
                 $("body").append(wait);
@@ -2158,22 +2175,29 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-                            htmlVar += "<tr>";
-                            htmlVar += "<td>" + data[i].id + "</td>" +
-                                    "<td>" + data[i].nome + "</td>" +
-                                    "</tr>";
-                        }
 
+                            htmlVar+="<tr>";
+							htmlVar += "<td>"+data[i].id+"</td>" +
+								"<td>"+data[i].nome+"</td>" +
+                            
+                            '<td class="image">'+
+                                '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">'+
+                                '<img class="text-center image" src="../img/edit_40.png">'+
+                                '</div>'+
+                                '</td>'+
+                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
+                                "</tr>";
+						}
+                        
                         $("body").find("#loading").remove();
-                        $("body").find("#gerirUsersTable").append(htmlVar);
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                        console.log(JSON.stringify(error));
-                    }
-                });
-
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+											},
+					error: function (error) {
+						$("body").find("#loading").remove();
+						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+						console.log(JSON.stringify(error));
+					}
+				});                
                 break;
             default:
                 $('#bt_PDF').css({
