@@ -127,11 +127,13 @@ function setCaretAtEditor(editor, linha, coluna) {
 //    console.log(linha);
 //    console.log(coluna);
     var el = document.getElementById(editor);
-    var range = document.createRange();
-    var sel = window.getSelection();
-    range.setStart(el.childNodes[linha], coluna);
-    range.collapse(true);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    el.focus();
+    if (typeof el.childNodes[linha] !== "undefined") {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.setStart(el.childNodes[linha], coluna);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        el.focus();
+    }
 }

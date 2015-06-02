@@ -412,7 +412,6 @@ $(document).ready(function () {
             } else {
                 Addtab(data.modelo, data.pos);
                 hash[".txtTab" + data.pos] = castTab(data.tab);
-                console.log("Change-------------- " + data.creator);
                 updateTab(data.pos, ".txtTab" + data.pos, data.creator);
             }
         }
@@ -719,97 +718,102 @@ $(document).ready(function () {
 
     $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
-console.log((tmpArrayProj[idProj]));
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+
         hash = JSON.parse(tmpArrayProj[idProj]);
 
-        var layout = $(this).data("layout");
-        var folder = $(this).data("folder");
+//        var layout = $(this).data("layout");
+//        var folder = $(this).data("folder");
+//
+//        var local = "#contentor";
+//        var skt = socket;
+//
+//        $(local).load("./" + folder + "/" + layout, function () {
+//            switch (layout) {
+//                case "Livro.html":
+//                    $('#bt_PDF').css({
+//                        'visibility': "visible"
+//                    });
+//                    $('#bt_PRE').css({
+//                        'visibility': "visible"
+//                    });
+//                    $('#bt_HTML').css({
+//                        'visibility': "visible"
+//                    });
+//                    break;
+//                case "CriarLivro.html":
+//                    $("body").append(wait);
+//                    $.ajax({
+//                        type: "GET",
+//                        url: "/getModelsPage",
+//                        dataType: 'json',
+//                        success: function (data) {
+//                            var listLayout = "<div>";
+//                            for (var i = 0, max = data.length; i < max; i++) {
+//                                listLayout += "<figure>" +
+//                                        "<img class='selectModelo btnmodels-style' alt='' src='" +
+//                                        (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+//                                        "' data-model='" + data[i].nome + "'/>" +
+//                                        "<figcaption> " + data[i].nome + " </figcaption>" +
+//                                        "</figure>";
+//                            }
+//                            listLayout += "</div>";
+//                            $("body").find("#loading").remove();
+//                            $("body").find("#painelModelos").append(listLayout);
+//
+//                        },
+//                        error: function (error) {
+//                            $("body").find("#loading").remove();
+//                            alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
+//                            console.log(JSON.stringify(error));
+//                        }
+//                    });
+//                    break;
+//                case "CriarPoema.html":
+//
+//                    break;
+//                default:
+//                    $('#bt_PDF').css({
+//                        'visibility': "hidden"
+//                    });
+//                    $('#bt_PRE').css({
+//                        'visibility': "hidden"
+//                    });
+//                    $('#bt_HTML').css({
+//                        'visibility': "hidden"
+//                    });
+//                    break;
+//            }
 
-        var local = "#contentor";
-        var skt = socket;
-
-        $(local).load("./" + folder + "/" + layout, function () {
-            switch (layout) {
-                case "Livro.html":
-                    $('#bt_PDF').css({
-                        'visibility': "visible"
-                    });
-                    $('#bt_PRE').css({
-                        'visibility': "visible"
-                    });
-                    $('#bt_HTML').css({
-                        'visibility': "visible"
-                    });
-                    break;
-                case "CriarLivro.html":
-                    $("body").append(wait);
-                    $.ajax({
-                        type: "GET",
-                        url: "/getModelsPage",
-                        dataType: 'json',
-                        success: function (data) {
-                            var listLayout = "<div>";
-                            for (var i = 0, max = data.length; i < max; i++) {
-                                listLayout += "<figure>" +
-                                        "<img class='selectModelo btnmodels-style' alt='' src='" +
-                                        (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
-                                        "' data-model='" + data[i].nome + "'/>" +
-                                        "<figcaption> " + data[i].nome + " </figcaption>" +
-                                        "</figure>";
-                            }
-                            listLayout += "</div>";
-                            $("body").find("#loading").remove();
-                            $("body").find("#painelModelos").append(listLayout);
-
-                        },
-                        error: function (error) {
-                            $("body").find("#loading").remove();
-                            alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
-                            console.log(JSON.stringify(error));
-                        }
-                    });
-                    break;
-                case "CriarPoema.html":
-
-                    break;
-                default:
-                    $('#bt_PDF').css({
-                        'visibility': "hidden"
-                    });
-                    $('#bt_PRE').css({
-                        'visibility': "hidden"
-                    });
-                    $('#bt_HTML').css({
-                        'visibility': "hidden"
-                    });
-                    break;
-            }
-
-            var newHash = {};
-            for (var item in hash) {
-                newHash[item] = castTab(hash[item]);
-            }
-
-            hash = newHash;
+//            var newHash = {};
+//            for (var item in hash) {
+//                newHash[item] = castTab(hash[item]);
+//            }
+//
+//            hash = newHash;
             var i = 0;
             for (var item in hash) {
                 i++;
                 console.log(hash[item].modelo);
                 Addtab(hash[item].modelo, i);
-                doLoad(i, hash[item].modelo, socket.id)
+                updateTab(i, ".txtTab" + i, userNumber);
+//                doLoad(i, hash[item].modelo, socket.id)
             }
             //            console.log(hash);
             socket.emit('storedhash', {
                 storedhash: hash
             });
-        });
+//        });
 
 
-        function doLoad(i, modelo, id) {
-            $(".txtTab" + i).load("./html_models/" + modelo, function () {
-                updateTab(i, ".txtTab" + i, id);
-            });
-        }
+//        function doLoad(i, modelo, id) {
+//            $(".txtTab" + i).load("./html_models/" + modelo, function () {
+//                updateTab(i, ".txtTab" + i, id);
+//            });
+//        }
 
 
     });
@@ -1784,12 +1788,14 @@ function updateTab(i, key, creator) {
                     }
                 } else {
 //                    console.log("update Editable");
-                    if ($("#" + elemento).attr('class').indexOf('editable') !== -1) {
-                        $("#" + elemento).addClass(elemento);
-                        var txtedit = new TextEditor(elemento, username, userColor, (creator === null ? hash[key].modelo.arrayElem[elemento].editor.creator : creator), userNumber);
-                        hash[key].modelo.arrayElem[elemento].editor = txtedit;
+                    if (typeof $("#" + elemento).attr('class') !== "undefined") {
+                        if ($("#" + elemento).attr('class').indexOf('editable') !== -1) {
+                            $("#" + elemento).addClass(elemento);
+                            var txtedit = new TextEditor(elemento, username, userColor, (creator === null ? hash[key].modelo.arrayElem[elemento].editor.creator : creator), userNumber);
+                            hash[key].modelo.arrayElem[elemento].editor = txtedit;
 //                        console.log(hash[key].modelo.arrayElem[elemento]);
-                        txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
+                            txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
+                        }
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                 }
@@ -2060,35 +2066,35 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
 
-                            htmlVar+="<tr>";
-							htmlVar += "<td>"+data[i].id_user+"</td>" +
-                                "<td>" + '<img class="text-center avatar-mini" src="' +data[i].avatar +'"></td>'+
-								"<td>"+data[i].username+"</td>" +
-                                "<td>"+data[i].nome_aluno+"</td>" +
-                                "<td>"+data[i].num_aluno+"</td>" +
-                                "<td>"+data[i].turma+"</td>" +
-                                "<td>"+data[i].ano+"</td>" +
-                                "<td>"+data[i].nome_escola+"</td>" +
-                                //"<td>"+data[i].avatar+"</td>"+
-                                '<td class="image">'+
-                                '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">'+
-                                '<img class="text-center image" src="../img/edit_40.png">'+
-                                '</div>'+
-                                '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id_user +' src="../img/delete_40.png"></td>'+
-                                "</tr>";
-						}
-                        
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id_user + "</td>" +
+                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                    "<td>" + data[i].username + "</td>" +
+                                    "<td>" + data[i].nome_aluno + "</td>" +
+                                    "<td>" + data[i].num_aluno + "</td>" +
+                                    "<td>" + data[i].turma + "</td>" +
+                                    "<td>" + data[i].ano + "</td>" +
+                                    "<td>" + data[i].nome_escola + "</td>" +
+                                    //"<td>"+data[i].avatar+"</td>"+
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
+
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-											},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
-                
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+
                 break;
 
             case "GerirProfessor.html":
@@ -2101,33 +2107,32 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
 
-                            htmlVar+="<tr>";
-							htmlVar += "<td>"+data[i].id+"</td>" +
-                                "<td>" + '<img class="text-center avatar-mini" src="' +data[i].avatar +'"></td>'+
-								"<td>"+data[i].username+"</td>" +
-                                "<td>"+data[i].nome_professor+"</td>" +
-                                "<td>"+data[i].email+"</td>" +
-                                "<td>"+data[i].nome_agrupamento+"</td>" +
-                            
-                            '<td class="image">'+
-                                '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">'+
-                                '<img class="text-center image" src="../img/edit_40.png">'+
-                                '</div>'+
-                                '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
-                                "</tr>";
-						}
-                        
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                    "<td>" + data[i].username + "</td>" +
+                                    "<td>" + data[i].nome_professor + "</td>" +
+                                    "<td>" + data[i].email + "</td>" +
+                                    "<td>" + data[i].nome_agrupamento + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
+
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-											},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
-                
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+
                 break;
 
             case "GerirEscolas.html":
@@ -2139,32 +2144,31 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-                            htmlVar+="<tr>";
-							htmlVar += "<td>"+data[i].id+"</td>" +
-								"<td>"+data[i].nome_escola+"</td>" +
-                                "<td>"+data[i].morada+"</td>" +
-                                "<td>"+data[i].contacto+"</td>" +
-                                "<td>"+data[i].nome_agrupamento+"</td>" +
-                            
-                            '<td class="image">'+
-                                '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">'+
-                                '<img class="text-center image" src="../img/edit_40.png">'+
-                                '</div>'+
-                                '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
-                                "</tr>";
-						}
-                        
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                    "<td>" + data[i].nome_escola + "</td>" +
+                                    "<td>" + data[i].morada + "</td>" +
+                                    "<td>" + data[i].contacto + "</td>" +
+                                    "<td>" + data[i].nome_agrupamento + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
+
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-											},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});
-                
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+
                 break;
             case "GerirAgrupamentos.html":
                 $("body").append(wait);
@@ -2176,28 +2180,27 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
 
-                            htmlVar+="<tr>";
-							htmlVar += "<td>"+data[i].id+"</td>" +
-								"<td>"+data[i].nome+"</td>" +
-                            
-                            '<td class="image">'+
-                                '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">'+
-                                '<img class="text-center image" src="../img/edit_40.png">'+
-                                '</div>'+
-                                '</td>'+
-                                '<td class="image"><img class="text-center image" rel='+ data[i].id +' src="../img/delete_40.png"></td>'+
-                                "</tr>";
-						}
-                        
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                    "<td>" + data[i].nome + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
+
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-											},
-					error: function (error) {
-						$("body").find("#loading").remove();
-						alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-						console.log(JSON.stringify(error));
-					}
-				});                
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
                 break;
             default:
                 $('#bt_PDF').css({
