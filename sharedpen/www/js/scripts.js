@@ -27,7 +27,159 @@ var folderArray = ["html_Work_Models"];
 var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
+var tempId_aluno = "";
 $(document).ready(function () {
+
+    //backoffice
+
+    $("body").on('click', "#guardarEdit", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        alert();
+        $.ajax({
+            type: "POST",
+            url: "/updateAluno",
+            data: {
+                image: $("#userImage").attr('src'),
+                id: $("#Id_aluno_edit").val(),
+                username: $("#username_aluno_edit").val(),
+                nomeAluno: $("#nome_aluno_edit").val(),
+                numAluno: $("#numero_aluno_edit").val(),
+                turma: $("#turma_aluno_edit").val(),
+                ano: $("#ano_aluno_edit").val()
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                //alert(data);
+                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+
+            },
+            error: function (error) {
+                // alert("ERRO HASH");
+                //console.log(JSON.stringify(error));
+            }
+        });
+
+        //console.log($(this).attr("rel"));    
+        //alert($(this).attr("rel"));
+        //addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
+//            $("body").append(wait);
+//            //alert("UserID"+$(this).attr("rel"))
+//                $.ajax({
+//                    type: "GET",
+//                    url: "/getAluno/"+$(this).attr("rel"),
+//                    dataType: 'json',
+//                    success: function (data) {
+//                        //tempId_aluno=data[i].id_user;
+//                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+//                        //for (var i = 0, max = data.length; i < max; i++) {
+//                        //alert();
+//                        //alert("ID USER:"+data);
+//                       $("#Id_aluno_edit").val(data[0].id_user);
+//                        $("#username_aluno_edit").val(data[0].username);
+//                        $("#nome_aluno_edit").val(data[0].nome_aluno);
+//                        $("#numero_aluno_edit").val(data[0].num_aluno);
+//                        $("#turma_aluno_edit").val(data[0].turma);
+//                        $("#ano_aluno_edit").val(data[0].ano);
+//                        //$("#escola_aluno_edit").val(data[0].nome_escola);
+//                        $("#escola_aluno_edit").append(
+//        $('<option></option>').val(data[0].nome_escola).html(data[0].nome_escola);
+//    );
+//                        
+
+//                            htmlVar += "<tr>";
+//                            htmlVar += "<td>" + data.id_user + "</td>" +
+//                                    "<td>" + '<img class="text-center avatar-mini" src="' + data.avatar + '"></td>' +
+//                                    "<td>" + data[i].username + "</td>" +
+//                                    "<td>" + data[i].nome_aluno + "</td>" +
+//                                    "<td>" + data[i].num_aluno + "</td>" +
+//                                    "<td>" + data[i].turma + "</td>" +
+//                                    "<td>" + data[i].ano + "</td>" +
+//                                    "<td>" + data[i].nome_escola + "</td>" +
+//                                    //"<td>"+data[i].avatar+"</td>"+
+//                                    '<td class="image">' +
+//                                    '<div rel='+ data[i].id_user +' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
+//                                    '<img class="text-center image" src="../img/edit_40.png">' +
+//                                    '</div>' +
+//                                    '</td>' +
+//                                '<td><a class="linkDeleteUser" rel=' + data[i].id_user + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
+//                                    "</tr>";
+        //}
+//
+//                        $("body").find("#loading").remove();
+////                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+//                        
+//                    },
+//                    error: function (error) {
+//                        $("body").find("#loading").remove();
+//                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+//                        console.log(JSON.stringify(error));
+//                    }
+//                });
+    });
+
+
+    $("body").on('click', ".editInfo", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        //console.log($(this).attr("rel"));    
+        //alert($(this).attr("rel"));
+        addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
+        $("body").append(wait);
+        //alert("UserID"+$(this).attr("rel"))
+        $.ajax({
+            type: "GET",
+            url: "/getAluno/" + $(this).attr("rel"),
+            dataType: 'json',
+            success: function (data) {
+                //tempId_aluno=data[i].id_user;
+                var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                //for (var i = 0, max = data.length; i < max; i++) {
+                //alert();
+                //alert("ID USER:"+data);
+                $("#userImage").attr('src', data[0].avatar);
+                $("#Id_aluno_edit").val(data[0].id_user);
+                $("#username_aluno_edit").val(data[0].username);
+                $("#nome_aluno_edit").val(data[0].nome_aluno);
+                $("#numero_aluno_edit").val(data[0].num_aluno);
+                $("#turma_aluno_edit").val(data[0].turma);
+                $("#ano_aluno_edit").val(data[0].ano);
+                //$("#escola_aluno_edit").val(data[0].nome_escola);
+                $("#escola_aluno_edit").append(
+                        $('<option></option>').val(data[0].nome_escola).html(data[0].nome_escola));
+
+
+//                            htmlVar += "<tr>";
+//                            htmlVar += "<td>" + data.id_user + "</td>" +
+//                                    "<td>" + '<img class="text-center avatar-mini" src="' + data.avatar + '"></td>' +
+//                                    "<td>" + data[i].username + "</td>" +
+//                                    "<td>" + data[i].nome_aluno + "</td>" +
+//                                    "<td>" + data[i].num_aluno + "</td>" +
+//                                    "<td>" + data[i].turma + "</td>" +
+//                                    "<td>" + data[i].ano + "</td>" +
+//                                    "<td>" + data[i].nome_escola + "</td>" +
+//                                    //"<td>"+data[i].avatar+"</td>"+
+//                                    '<td class="image">' +
+//                                    '<div rel='+ data[i].id_user +' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
+//                                    '<img class="text-center image" src="../img/edit_40.png">' +
+//                                    '</div>' +
+//                                    '</td>' +
+//                                '<td><a class="linkDeleteUser" rel=' + data[i].id_user + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
+//                                    "</tr>";
+                //}
+
+                $("body").find("#loading").remove();
+//                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                console.log(JSON.stringify(error));
+            }
+        });
+    });
 
     $.ajaxSetup({async: false});
     /**
@@ -1220,7 +1372,6 @@ $(document).ready(function () {
     //Adiciona a tab do poema
     $("body").on("click", '.imgPoema', function () {
         /**folder: $(self).attr("data-folder"),
-         >>>>>>> origin/master
          imagensdotema: $(self).attr("imagensdotema"),
          idObj: "",**/
         AddPoema(LivroPoemas, $(this).attr("src"));
@@ -1260,6 +1411,42 @@ $(document).ready(function () {
         }
     });
 
+    $("body").on("click", ".adicionarEntity", function () {
+        $("body").append(wait);
+        $.ajax({
+            type: "GET",
+            url: "/getCriationPage",
+            dataType: 'json',
+            success: function (data) {
+                var htmlModel = "";
+
+                switch ($(this).attr("id")) {
+                    case "adicionarAluno":
+
+                        break;
+                    case "adicionarProfessor":
+
+                        break;
+                    case "adicionarEscola":
+
+                        break;
+                    case "adicionarAgrupamento":
+
+                        break;
+                    default:
+                        break;
+                }
+                $("body").append(htmlModel);
+                $("body").find("#loading").remove();
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar os modelos selecionado.\n\Tente novamente.");
+                console.log(JSON.stringify(error));
+            }
+        });
+    });
+
     $("body").on("click", ".selectModelo", function () {
         if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
@@ -1274,8 +1461,8 @@ $(document).ready(function () {
 
     $("body").on("click", "#guardarModeloLivro", function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
-        var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
-        var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-idmodel");
+        var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-model");
+        var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-model");
         if (nomeProj.trim() === "") {
             alert("Introduza um nome para o Projeto.");
             return;
@@ -1486,144 +1673,171 @@ $(document).ready(function () {
 
 
 
-        /*var defer = $.when(
-         CarregaModelo(modelo , nomePagina)
-         );
-         
-         
-         
-         defer.done(function () {
-         modelo = nomePagina,
-         CarregaModelo(modelo)
-         });*/
 
-        CarregaModelo(nomeCapa, nomePagina);
-        //CarregaModelo(modelo)
+        // (des)selecionar user para participar no projeto
+        $("body").on("click", "#removeButton", function () {
+            //$(".userSelect").append($(".userSelect option:selected").get(0));
+            //$("#alluser option:selected").css("display", "none");
+            var valor = $(".userSelect option:selected").prop("value");
+            $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
 
-    });
-
-    function CarregaModelo(modelo, nomePagina) {
-
-        var idNum = (Object.keys(hash).length + 1);
-        console.log(idNum);
-        $("body").append(wait);
-        $.ajax({
-            type: "get",
-            url: "/getCodModel",
-            data: {
-                model: modelo
-            },
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
-                $("body").find("#loading").remove();
-                Addtab(modelo, idNum);
-                $(".txtTab" + idNum).html(data[0].htmltext);
-                refactorTab(modelo, idNum);
-                addtohash(idNum);
-                socket.emit('TabsChanged', {
-                    //remover ou adicionar
-                    op: "adicionar",
-                    //tab
-                    tab: tabTest,
-                    //posiçao
-                    pos: (Object.keys(hash).length),
-                    //modelo
-                    modelo: modelo,
-                    //numero de elementos do modelo
-                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                    creator: userNumber
-                });
-                $("body").find("#divchangemodel").remove();
-                // Foco na ultima pagina adicionada
-                $("body").find("a[href^='#page']:last").click();
-                console.log(hash);
-
-                //-------
-                idNum = (Object.keys(hash).length + 1);
-                console.log(idNum);
-                $("body").append(wait);
-                $.ajax({
-                    type: "get",
-                    url: "/getCodModel",
-                    data: {
-                        model: nomePagina
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    success: function (data) {
-                        $("body").find("#loading").remove();
-                        Addtab(modelo, idNum);
-                        $(".txtTab" + idNum).html(data[0].htmltext);
-                        refactorTab(modelo, idNum);
-                        addtohash(idNum);
-                        socket.emit('TabsChanged', {
-                            //remover ou adicionar
-                            op: "adicionar",
-                            //tab
-                            tab: tabTest,
-                            //posiçao
-                            pos: (Object.keys(hash).length),
-                            //modelo
-                            modelo: modelo,
-                            //numero de elementos do modelo
-                            noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                            creator: userNumber
-                        });
-                        $("body").find("#divchangemodel").remove();
-                        // Foco na ultima pagina adicionada
-                        $("body").find("a[href^='#page']:last").click();
-
-                        //Reduzir tamanho da div das tabs
-                        $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                        $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
-
-                        //Adicionar a div com o texto de ajuda		
-                        $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
-                                "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                "<div id='divTxtAjuda'  contenteditable='true'></div>" +
-                                "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
-
-                        $(".containerTxtAjuda").animate({
-                            opacity: 1,
-                        }, 1000, function () {
-                            // Animation complete.
-                        });
-
-
-                        $("#divTxtAjuda").focus();
-                        console.log(hash);
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-                        console.log(JSON.stringify(error));
-                    }
-                });
-                //-------
-
-
-
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-                console.log(JSON.stringify(error));
-            }
         });
 
+        // Avancar no projeto 
+        $("body").on("click", "#btProjAvancar", function () {
+            //Nome do projeto
+            var nomeProj = $("#nomeProj").val();
+
+            //array com os utilizadores do projeto
+            var users = [];
+            $(".userList.userSelect option").each(function () {
+                users.push($(this).prop("value"));
+            });
 
 
 
+            //retirar a opcao por defeio
+            users = users.splice(1);
 
-    }
+            //id modelo utilizado
+            var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
+
+            var nomeCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
+            var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
+            console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + nomeCapa + "\t Pagina:" + nomePagina);
+
+            addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
 
 
-    /*
-     * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
-     */
 
+            //ponto de Situação: tenho idmodelo, nome da capa, nome da pagina
+            //recolher da bd os dados refentes às páginas do modelo
+
+
+
+            defer.done(function () {
+                modelo = nomePagina,
+                        CarregaModelo(modelo)
+            });
+
+            CarregaModelo(nomeCapa, nomePagina);
+            //CarregaModelo(modelo)
+
+        });
+
+        function CarregaModelo(modelo, nomePagina) {
+
+            var idNum = (Object.keys(hash).length + 1);
+            console.log(idNum);
+            $("body").append(wait);
+            $.ajax({
+                type: "get",
+                url: "/getCodModel",
+                data: {
+                    model: modelo
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    $("body").find("#loading").remove();
+                    Addtab(modelo, idNum);
+                    $(".txtTab" + idNum).html(data[0].htmltext);
+                    refactorTab(modelo, idNum);
+                    addtohash(idNum);
+                    socket.emit('TabsChanged', {
+                        //remover ou adicionar
+                        op: "adicionar",
+                        //tab
+                        tab: tabTest,
+                        //posiçao
+                        pos: (Object.keys(hash).length),
+                        //modelo
+                        modelo: modelo,
+                        //numero de elementos do modelo
+                        noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                        creator: userNumber
+                    });
+                    $("body").find("#divchangemodel").remove();
+                    // Foco na ultima pagina adicionada
+                    $("body").find("a[href^='#page']:last").click();
+                    console.log(hash);
+
+                    //-------
+                    idNum = (Object.keys(hash).length + 1);
+                    console.log(idNum);
+                    $("body").append(wait);
+                    $.ajax({
+                        type: "get",
+                        url: "/getCodModel",
+                        data: {
+                            model: nomePagina
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        success: function (data) {
+                            $("body").find("#loading").remove();
+                            Addtab(modelo, idNum);
+                            $(".txtTab" + idNum).html(data[0].htmltext);
+                            refactorTab(modelo, idNum);
+                            addtohash(idNum);
+                            socket.emit('TabsChanged', {
+                                //remover ou adicionar
+                                op: "adicionar",
+                                //tab
+                                tab: tabTest,
+                                //posiçao
+                                pos: (Object.keys(hash).length),
+                                //modelo
+                                modelo: modelo,
+                                //numero de elementos do modelo
+                                noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                                creator: userNumber
+                            });
+                            $("body").find("#divchangemodel").remove();
+                            // Foco na ultima pagina adicionada
+                            $("body").find("a[href^='#page']:last").click();
+
+                            //Reduzir tamanho da div das tabs
+                            $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                            $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+
+                            //Adicionar a div com o texto de ajuda		
+                            $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                    "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                    "<div id='divTxtAjuda'  contenteditable='true'></div>" +
+                                    "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
+
+                            $(".containerTxtAjuda").animate({
+                                opacity: 1,
+                            }, 1000, function () {
+                                // Animation complete.
+                            });
+
+
+                            $("#divTxtAjuda").focus();
+                            console.log(hash);
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                            console.log(JSON.stringify(error));
+                        }
+                    });
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+        /*
+         * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
+         */
+
+    });
 });
+
 $(window).resize(function () {
     ajustElements();
 });
@@ -1634,7 +1848,6 @@ $(window).resize(function () {
 // Code taken from MatthewCrumley (http://stackoverflow.com/a/934925/298479)
 /**
  *
- 
  * @param {type} img
  * @returns {unresolved} */
 function getBase64Image(img) {
@@ -1666,7 +1879,6 @@ function toObject(arr) {
 
 /**
  *
- 
  * @param {type} tabToCast
  * @returns {Object|castTab.tab} */
 function castTab(tabToCast) {
@@ -1693,7 +1905,6 @@ function castTab(tabToCast) {
 
 /**
  *
- 
  * @param {type} sckt
  * @param {type} data
  * @returns {undefined} */
@@ -1703,7 +1914,6 @@ function getFilesToFolder(sckt, data) {
 
 /**
  * Poe o modelo no Html so e executado quando recebe alguma coisa de outro cliente
- 
  * @param {type} i
  * @param {type} key
  * @returns {undefined} */
@@ -1801,7 +2011,6 @@ function Addtab(html, idNum) {
 /**
  * Função que carrega o modelo para a tab e altera os id's de toda a tab
  * para id's relacionados com o numero da tab
- 
  * @param {type} html   pagina html a ser carregada
  * @param {type} idNum  numeor da tab para alterar os id's da tab
  * @returns {undefined} */
@@ -1859,7 +2068,6 @@ function addtohash(idNum) {
 
 /**
  * Remove a tab correspondente ao <li>
- 
  * @param {type} liElem
  * @returns {undefined} */
 function removeTab(liElem) {
@@ -1911,7 +2119,6 @@ function removeTab(liElem) {
 
 /**
  * Função para reorganizar o hash
- 
  * @param {type} liElem
  * @returns {undefined} */
 function refactorHash(liElem) {
@@ -1949,7 +2156,6 @@ function refactorHash(liElem) {
 /**
  * Função que recebe um array a uma chave e devolve o objeto dessa posição se
  * existir e não nulkl
- 
  * @param {type} array  array para a pesquisa
  * @param {type} id     valor a ser encontrado
  * @returns {value} */
@@ -1965,7 +2171,6 @@ function getArrayElementObj(array, id) {
 
 /**
  *
- 
  * @param {type} local
  * @param {type} folder
  * @param {type} layout
@@ -2028,6 +2233,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     url: "/getsAlunos",
                     dataType: 'json',
                     success: function (data) {
+                        //tempId_aluno=data[i].id_user;
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
 
@@ -2042,16 +2248,17 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].nome_escola + "</td>" +
                                     //"<td>"+data[i].avatar+"</td>"+
                                     '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<div rel=' + data[i].id_user + ' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                                    '<td><a class="linkDeleteUser" rel=' + data[i].id_user + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
                                     "</tr>";
                         }
 
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
+
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -2153,12 +2360,14 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                    '<td><a class="linkDeleteUser" rel=' + data[i].id + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
+                                    //'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
 
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
+
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -2167,6 +2376,42 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     }
                 });
                 break;
+
+//                case "EditarAluno.html":
+//                $("body").append(wait);
+//                $.ajax({
+//                    type: "GET",
+//                    url: "/getAluno/",//+ $(this).attr('rel'),
+//                    dataType: 'json',
+//                    success: function (data) {
+////                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+////                        for (var i = 0, max = data.length; i < max; i++) {
+////
+////                            htmlVar += "<tr>";
+////                            htmlVar += "<td>" + data[i].id + "</td>" +
+////                                    "<td>" + data[i].nome + "</td>" +
+////                                    '<td class="image">' +
+////                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
+////                                    '<img class="text-center image" src="../img/edit_40.png">' +
+////                                    '</div>' +
+////                                    '</td>' +
+////                                    '<td><a class="linkDeleteUser" rel=' + data[i].id + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
+////                                    //'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+////                                    "</tr>";
+////                        }
+//
+//                        $("body").find("#loading").remove();
+////                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+//                        
+//                    },
+//                    error: function (error) {
+//                        $("body").find("#loading").remove();
+//                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+//                        console.log(JSON.stringify(error));
+//                    }
+//                });
+//                break;
+
             default:
                 $('#bt_PDF').css({
                     'visibility': "hidden"
@@ -2183,10 +2428,49 @@ function addLayoutToDiv(local, folder, layout, stk) {
     });
 }
 
+// Delete User
+//function deleteUser(event) {
+//
+//    event.preventDefault();
+//
+//    // Pop up a confirmation dialog
+//    var confirmation = confirm('Are you sure you want to delete this user?');
+//
+//    alert();
+//    // Check and make sure the user confirmed
+//    if (confirmation === true) {
+//
+//        // If they did, do our delete
+//        $.ajax({
+//            type: 'GET',
+//            url: '/users/deleteuser/' + $(this).attr('rel')
+//        }).done(function( response ) {
+//
+//            // Check for a successful (blank) response
+//            if (response.msg === '') {
+//            }
+//            else {
+//                alert('Error: ' + response.msg);
+//            }
+//
+//            // Update the table
+//            populateTable();
+//
+//        });
+//
+//    }
+//    else {
+//
+//        // If they said no to the confirm, do nothing
+//        return false;
+//
+//    }
+//
+//};
+
 
 /**
  * Ajusta os elementos do ecram principal
- 
  * @returns {undefined} */
 function ajustElements() {
     $("#contentor").css({

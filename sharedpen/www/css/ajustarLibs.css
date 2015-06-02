@@ -191,6 +191,11 @@
     font-size: 18px;   
 }
 
+.div-table-db{
+    overflow-y: auto;   
+    max-height: 100%;
+}
+
 #guardarEdit {
     margin-top: 20px;   
 }
