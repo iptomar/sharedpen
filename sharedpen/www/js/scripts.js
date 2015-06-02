@@ -1410,6 +1410,25 @@ $(document).ready(function () {
 				break;
 		}
 	});
+    
+    $("body").on("click", ".adicionarEntity", function () {
+		switch ($(this).attr("id")) {
+			case "adicionarAluno":
+				
+				break;
+			case "adicionarProfessor":
+				
+				break;
+			case "adicionarEscola":
+                
+				break;
+			case "adicionarAgrupamento":
+				
+				break;
+			default:
+				break;
+		}
+	});
 
 	$("body").on("click", ".selectModelo", function () {
 		if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {

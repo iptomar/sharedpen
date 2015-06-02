@@ -191,7 +191,7 @@
     font-size: 18px;   
 }
 
-.div-table-db{
+.div-scroll-auto{
     overflow-y: auto;   
     max-height: 100%;
 }
