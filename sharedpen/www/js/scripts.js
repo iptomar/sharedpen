@@ -698,9 +698,18 @@ $(document).ready(function () {
                     var htmlLine = "<tr class='actve'>" +
                             "<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
                             "<td>" + data[proj].tipo + "</td>" +
-                            "<td class='image'><img class='text-center image' src='../img/edit_28.png'></td>" +
-                            "<td class='image'><img class='text-center image' src='../img/delete_28.png'></td>" +
-                            "<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>" +
+                            "<td class='image'>"+
+                            "<div class='carregarLayout' data-folder='html' data-layout='EditarProjecto.html'>" +
+                            '<img class="text-center image" src="../img/edit_40.png">' +
+                            "</div>" +
+                            "</td>" +
+                            "<td class='image'><img class='text-center image' src='../img/delete_40.png'></td>" +
+                            
+                            "<td class='image'>" +
+                            "<div class='carregarLayout' data-folder='html' data-layout='AvaliarProjecto.html'>" +
+                                "<img class='text-center image' src='../img/avaliar_40.png'></td>" +
+                            "</div>" +
+                            "</td>" +
                             "</tr>";
                     //faz o append do html gerado
                     $("body").find("#meusProjTable").append(htmlLine);
