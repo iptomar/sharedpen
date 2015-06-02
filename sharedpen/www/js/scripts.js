@@ -1715,6 +1715,7 @@ $(document).ready(function () {
         var nomeCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
         var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
 
+        //Limpar hash local e do server
         hash = {};
         socket.emit('storedhash', {
             storedhash: hash
