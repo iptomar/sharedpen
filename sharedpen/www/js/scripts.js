@@ -488,7 +488,7 @@ $(document).ready(function () {
         var i = 0;
         for (var key in hash) {
             i++;
-            Addtab(hash[key].nomeModelo, i);
+            Addtab(hash[key].numModelo, i);
             updateTab(i, key, null);
         }
     });
@@ -651,7 +651,7 @@ $(document).ready(function () {
 
     $("body").on('click', ".btnmodels", function () {
 
-        var modelo = $(this).data('model');
+        var modelo = $(this).data('idmodel');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
         $.ajax({
@@ -681,6 +681,7 @@ $(document).ready(function () {
                     noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
                     creator: userNumber
                 });
+                $("body").find("#loading").remove();
                 $("body").find("#divchangemodel").remove();
                 // Foco na ultima pagina adicionada
                 $("body").find("a[href^='#page']:last").click();
@@ -709,6 +710,7 @@ $(document).ready(function () {
                     htmlModel += "<figure>" +
                             "<img class='btnmodels btnmodels-style' alt='' src='" +
                             (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                            "' data-idmodel='" + data[i].id +
                             "' data-model='" + data[i].nome + "'/>" +
                             "<figcaption> " + data[i].nome + " </figcaption>" +
                             "</figure>";
@@ -892,6 +894,7 @@ $(document).ready(function () {
             newHash[item] = castTab(hash[item]);
         }
         hash = newHash;
+        console.log(hash);
         var i = 0;
         for (var item in hash) {
             i++;
@@ -1450,21 +1453,23 @@ $(document).ready(function () {
         if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
             $("body").find("#ModeloSelectCapa").attr("data-model", $(this).data("model"));
+            $("body").find("#ModeloSelectCapa").attr("data-idmodel", $(this).data("idmodel"));
         } else {
             $("body").find("#ModeloSelectPagina").attr("src", $(this).attr("src"));
             $("body").find("#ModeloSelectPagina").attr("data-model", $(this).data("model"));
+            $("body").find("#ModeloSelectPagina").attr("data-idmodel", $(this).data("idmodel"));
         }
     });
 
     $("body").on("click", "#guardarModeloLivro", function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
-        var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-model");
-        var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-model");
+        var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
+        var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-idmodel");
         if (nomeProj.trim() === "") {
             alert("Introduza um nome para o Projeto.");
             return;
         }
-        if (modelProjC.length === 0 || modelProjP.length === 0) {
+        if (typeof modelProjC === "undefined" || typeof modelProjP === "undefined") {
             alert("Selecione um modelo para a capa ou para as paginas do livro.");
             return;
         }
@@ -1486,8 +1491,8 @@ $(document).ready(function () {
             url: "/saveModelLivro",
             data: {
                 nomeProjeto: nomeProj,
-                nomeModeloC: modelProjC,
-                nomeModeloP: modelProjP,
+                numModeloC: modelProjC,
+                numModeloP: modelProjP,
                 textHtml: textAjuda,
                 stylesLivro: formatText
             },
@@ -1501,6 +1506,13 @@ $(document).ready(function () {
                     $("body").find("#ModeloSelectPagina").attr("src", "");
                     $("body").find("#ModeloSelectPagina").attr("data-model", "");
                     $("body").find("#textAjudaLivro").html("");
+                    $("body").find(".textResultado").css({
+                        "font-family": "Times New Roman",
+                        "font-size": "14px",
+                        "text-align": "left",
+                        "color": "black",
+                        "background-color": "transparent"
+                    });
                 } else {
                     alert("O nome do livro já existe na base da dados.")
                     $("body").find("#loading").remove();
@@ -1551,14 +1563,13 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 for (var i = 0, max = data.length; i < max; i++) {
-                    tmpModels[data[i].nome] = (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon);
+                    tmpModels[data[i].id] = (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon);
                 }
                 $("body").find("#loading").remove();
-
             },
             error: function (error) {
                 $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os Modelos para as paginas.\nTente Novamente.")
+                alert("Erro ao tentar carregar os Modelos para as paginas.\nTente Novamente.");
                 console.log(JSON.stringify(error));
             }
         });
@@ -1573,7 +1584,7 @@ $(document).ready(function () {
             success: function (data) {
                 var html = "";
                 for (var i = 0, max = data.length; i < max; i++) {
-                    html += "<tr data-select='false' data-idModel='" + data[i].idmodelo + "' data-modelCapa='" + data[i].nome_modeloCapa + "' data-modelPagina='" + data[i].nome_modeloPagina + "'>" +
+                    html += "<tr data-select='false' data-idmodel='" + data[i].idmodelo + "' data-modelCapa='" + data[i].nome_modeloCapa + "' data-modelPagina='" + data[i].nome_modeloPagina + "'>" +
                             "<td class='bs-checkbox'><input name='radioName' type='radio'></td>" +
                             "<td style='text-align: center;'>" + data[i].nome_livro + "</td>" +
                             "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].nome_modeloCapa] +
@@ -1592,9 +1603,6 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
-
-
     });
 
 
@@ -1626,7 +1634,6 @@ $(document).ready(function () {
     // Avancar no projeto 
     $("body").on("click", "#btProjAvancar", function () {
 
-
         //Nome do projeto
         var nomeProj = $("#nomeProj").val();
 
@@ -1636,7 +1643,6 @@ $(document).ready(function () {
             alert("Nome do Projeto Inválido");
             return;
         }
-
 
         $("#contentor").attr("NomeProj", nomeProj);
 
@@ -1656,8 +1662,6 @@ $(document).ready(function () {
         }
         $("#contentor").attr("ProjUser", users);
 
-
-
         //id modelo utilizado
         var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
 
@@ -1668,9 +1672,9 @@ $(document).ready(function () {
 
         $("#contentor").attr("idmodel", idmodel);
 
-        var nomeCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
-        var nomePagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
-        console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + nomeCapa + "\t Pagina:" + nomePagina);
+        var numCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
+        var numPagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
+        console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + numCapa + "\t Pagina:" + numPagina);
 
         for (item in hash) {
             removeTab(hash[item].id);
@@ -1685,30 +1689,7 @@ $(document).ready(function () {
 
         addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
 
-
-
-        //ponto de Situação: tenho idmodelo, nome da capa, nome da pagina
-        //recolher da bd os dados refentes às páginas do modelo
-
-
-
-        /*var defer = $.when(
-         CarregaModelo(modelo , nomePagina)
-         );
-         
-         // (des)selecionar user para participar no projeto
-         $("body").on("click", "#removeButton", function () {
-         //$(".userSelect").append($(".userSelect option:selected").get(0));
-         //$("#alluser option:selected").css("display", "none");
-         var valor = $(".userSelect option:selected").prop("value");
-         $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
-         
-         
-         defer.done(function () {
-         modelo = nomePagina,
-         CarregaModelo(modelo)
-         });*/
-        CarregaModelo(nomeCapa, nomePagina);
+        CarregaModelo(numCapa, numPagina);
         //CarregaModelo(modelo)
 
     });
@@ -1945,7 +1926,7 @@ function castTab(tabToCast) {
     //tabToCast = tabToCast[;
 
     var tab = $.extend(new Tab(), tabToCast);
-    //    console.log(tabToCast.nomeModelo);
+    //    console.log(tabToCast.numModelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
     for (var item in tabToCast.modelo.arrayElem) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
@@ -1981,13 +1962,13 @@ function updateTab(i, key, creator) {
         type: "get",
         url: "/getCodModel",
         data: {
-            model: hash[key].nomeModelo
+            model: hash[key].numModelo
         },
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (data) {
             $(".txtTab" + i).append(data[0].htmltext);
-            refactorTab(hash[key].nomeModelo, i);
+            refactorTab(hash[key].numModelo, i);
             for (var elemento in hash[key].modelo.arrayElem) {
                 if (hash[key].modelo.arrayElem[elemento].elementType === "IMG") {
                     $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
@@ -2270,6 +2251,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             listLayout += "<figure>" +
                                     "<img class='selectModelo btnmodels-style' alt='' src='" +
                                     (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                    "' data-idmodel='" + data[i].id +
                                     "' data-model='" + data[i].nome + "'/>" +
                                     "<figcaption> " + data[i].nome + " </figcaption>" +
                                     "</figure>";
