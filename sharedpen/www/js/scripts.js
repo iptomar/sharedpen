@@ -2473,3 +2473,4 @@ function ajustElements() {
 		height: $(window).height() * 0.89
 	});
 }
+});
