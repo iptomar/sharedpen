@@ -1,9 +1,17 @@
+var Projecto = function(id, tabID, hash){
+    
+    this.id=id;
+    this.tab[tabID] = hash;
+    
+}
 
-var Tab = function (id, noElement, nomeModelo) {
+
+var Tab = function (id, noElement, nomeModelo,projID) {
     this.id = id;
     this.modelo = new Modelo(noElement);
     this.nomeModelo = nomeModelo;
     this.poema;
+    this.projID=projID;
 };
 
 var Modelo = function (noElement) {
