@@ -40,6 +40,7 @@ $(document).ready(function () {
                 type: "POST",
                 url: "/updateAluno",
                 data: {
+                    image: $("#userImage").attr('src'),
                     id:$("#Id_aluno_edit").val(),
                         username:$("#username_aluno_edit").val(),
                         nomeAluno:$("#nome_aluno_edit").val(),
@@ -51,6 +52,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
                     //alert(data);
+                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
 
                 },
                 error: function (error) {
@@ -136,7 +138,8 @@ $(document).ready(function () {
                         //for (var i = 0, max = data.length; i < max; i++) {
                         //alert();
                         //alert("ID USER:"+data);
-                       $("#Id_aluno_edit").val(data[0].id_user);
+                        $("#userImage").attr('src',data[0].avatar);
+                        $("#Id_aluno_edit").val(data[0].id_user);
                         $("#username_aluno_edit").val(data[0].username);
                         $("#nome_aluno_edit").val(data[0].nome_aluno);
                         $("#numero_aluno_edit").val(data[0].num_aluno);
