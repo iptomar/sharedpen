@@ -1409,22 +1409,39 @@ $(document).ready(function () {
 	});
     
     $("body").on("click", ".adicionarEntity", function () {
-		switch ($(this).attr("id")) {
-			case "adicionarAluno":
-				
-				break;
-			case "adicionarProfessor":
-				
-				break;
-			case "adicionarEscola":
+        $("body").append(wait);
+		$.ajax({
+			type: "GET",
+			url: "/getCriationPage",
+			dataType: 'json',
+			success: function (data) {
+				var htmlModel = "";
                 
-				break;
-			case "adicionarAgrupamento":
-				
-				break;
-			default:
-				break;
-		}
+              switch ($(this).attr("id")) {
+                case "adicionarAluno":
+
+                    break;
+                case "adicionarProfessor":
+
+                    break;
+                case "adicionarEscola":
+
+                    break;
+                case "adicionarAgrupamento":
+
+                    break;
+                default:
+                    break;
+		      }
+				$("body").append(htmlModel);
+				$("body").find("#loading").remove();
+			},
+			error: function (error) {
+				$("body").find("#loading").remove();
+				alert("Erro ao tentar carregar os modelos selecionado.\n\Tente novamente.");
+				console.log(JSON.stringify(error));
+			}
+		});
 	});
 
 	$("body").on("click", ".selectModelo", function () {
