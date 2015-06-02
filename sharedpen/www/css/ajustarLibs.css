@@ -68,7 +68,7 @@
 }
 
 #userImage{
-    width: 400px;
+1    width: 400px;
     height: 400px;
     margin-left: 100px;
 }
@@ -107,6 +107,22 @@
     background-image: url(../img/add.png);
     background-repeat: no-repeat;
     background-position:center;
+}
+
+#Avaliar_btn {
+    background-image: url(../img/check.png);
+    background-repeat: no-repeat;
+    background-position:right;
+    
+    float:right;
+    border-radius: 10px;
+    margin-left: 208px;
+    
+    width: 200px;
+    height:80px;
+    
+    font-size: 40px;
+    text-align: left;
 }
 
 .tabspace{

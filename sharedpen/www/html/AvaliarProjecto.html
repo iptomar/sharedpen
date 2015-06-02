@@ -11,15 +11,15 @@
                 <td>
                     <div id="SideInfo" class="div-side">
                         <label form="inputEmail" class="sr-only">Nome</label>
-                        <input  id="" class="form-control" placeholder="Nome" autofocus="" disabled>
+                        <input  id="Nome_Aluno_Avaliar" class="form-control" placeholder="Nome" autofocus="" disabled>
                         <label form="inputEmail" class="sr-only">Numero</label>
-                        <input  id="" class="form-control" placeholder="Numero" autofocus="" disabled>
+                        <input  id="Numero_Aluno_Avaliar" class="form-control" placeholder="Numero" autofocus="" disabled>
                         <label form="inputEmail" class="sr-only">Ano</label>
-                        <input  id="" class="form-control" placeholder="Ano" autofocus="" disabled>
+                        <input  id="Ano_Aluno_Avaliar" class="form-control" placeholder="Ano" autofocus="" disabled>
                         <label form="inputEmail" class="sr-only">Turma</label>
-                        <input  id="" class="form-control" placeholder="Turma" autofocus="" disabled>
+                        <input  id="Turma_Aluno_Avaliar" class="form-control" placeholder="Turma" autofocus="" disabled>
                         <label form="inputEmail" class="sr-only">Escola</label>
-                        <input  id="" class="form-control" placeholder="Escola" autofocus="" disabled>
+                        <input  id="Escola_Aluno_Avaliar" class="form-control" placeholder="Escola" autofocus="" disabled>
                     </div>
                 </td>
             </tr>
@@ -27,7 +27,7 @@
                 <td>    
                     <div id="users-avaliar" class="div-users"> 
                         <h2 class="h2">Selecção de Alunos</h2>
-                        <select class="userList" size="20">
+                        <select class="userList" size="18">
                             <option value="Aluno1">Aluno1</option>
                             <option value="Aluno1">Aluno1</option>
                             <option value="Aluno1">Aluno1</option>
@@ -89,15 +89,24 @@
             </tr>   
             </table>
             <div class="div-side">
-                <h5 class="h5">Valor a atribuir:</h5>
-                <select id="ValorAvaliacao" class="form-control margin-top-bottom select-table-cell grey-select" placeholder="ValorAvaliacao" autofocus="">
-                <option selected>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </select>
+                <table>
+                <tr>
+                    <td>
+                        <h5 class="h5">Valor a atribuir:</h5>
+                        <select id="ValorAvaliacao" class="form-control margin-top-bottom select-table-cell grey-select" placeholder="ValorAvaliacao" autofocus="">
+                        <option selected>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input id="Avaliar_btn" class="btn-primary" type="button" value="Avaliar">
+                    </td>
+                </tr>    
+                </table>
             </div>
         </div>
     <div class="div-half-max-width"></div>
