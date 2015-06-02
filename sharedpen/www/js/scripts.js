@@ -28,7 +28,7 @@ var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
 $(document).ready(function () {
-
+    $.ajaxSetup({async: false});
     /**
      * Configuracao das opcoes do popup de online / offline de novos clientes
      */
@@ -686,14 +686,14 @@ $(document).ready(function () {
             data: {
                 id: myID
             },
+            async: true,
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                $("body").find("#loading").remove();
                 //insere todos os projectos no html!!!!
                 for (var proj in data) {
                     //guarda os arrays dos projetos
-                    console.log(data[proj].id);
+//                    console.log(data[proj].id);
                     tmpArrayProj[data[proj].id] = data[proj].array;
                     var htmlLine = "<tr class='actve'>" +
                             "<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
@@ -703,8 +703,9 @@ $(document).ready(function () {
                             "<td class='image'><img class='text-center image' src='../img/avaliar.png'></td>" +
                             "</tr>";
                     //faz o append do html gerado
-                    $("#meusProjTable").append(htmlLine);
+                    $("body").find("#meusProjTable").append(htmlLine);
                 }
+                $("body").find("#loading").remove();
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -725,95 +726,21 @@ $(document).ready(function () {
 
         hash = JSON.parse(tmpArrayProj[idProj]);
 
-//        var layout = $(this).data("layout");
-//        var folder = $(this).data("folder");
-//
-//        var local = "#contentor";
-//        var skt = socket;
-//
-//        $(local).load("./" + folder + "/" + layout, function () {
-//            switch (layout) {
-//                case "Livro.html":
-//                    $('#bt_PDF').css({
-//                        'visibility': "visible"
-//                    });
-//                    $('#bt_PRE').css({
-//                        'visibility': "visible"
-//                    });
-//                    $('#bt_HTML').css({
-//                        'visibility': "visible"
-//                    });
-//                    break;
-//                case "CriarLivro.html":
-//                    $("body").append(wait);
-//                    $.ajax({
-//                        type: "GET",
-//                        url: "/getModelsPage",
-//                        dataType: 'json',
-//                        success: function (data) {
-//                            var listLayout = "<div>";
-//                            for (var i = 0, max = data.length; i < max; i++) {
-//                                listLayout += "<figure>" +
-//                                        "<img class='selectModelo btnmodels-style' alt='' src='" +
-//                                        (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
-//                                        "' data-model='" + data[i].nome + "'/>" +
-//                                        "<figcaption> " + data[i].nome + " </figcaption>" +
-//                                        "</figure>";
-//                            }
-//                            listLayout += "</div>";
-//                            $("body").find("#loading").remove();
-//                            $("body").find("#painelModelos").append(listLayout);
-//
-//                        },
-//                        error: function (error) {
-//                            $("body").find("#loading").remove();
-//                            alert("Erro ao tentar carregar os Modelos para s paginas.\nTente Novamente.")
-//                            console.log(JSON.stringify(error));
-//                        }
-//                    });
-//                    break;
-//                case "CriarPoema.html":
-//
-//                    break;
-//                default:
-//                    $('#bt_PDF').css({
-//                        'visibility': "hidden"
-//                    });
-//                    $('#bt_PRE').css({
-//                        'visibility': "hidden"
-//                    });
-//                    $('#bt_HTML').css({
-//                        'visibility': "hidden"
-//                    });
-//                    break;
-//            }
-
-//            var newHash = {};
-//            for (var item in hash) {
-//                newHash[item] = castTab(hash[item]);
-//            }
-//
-//            hash = newHash;
-            var i = 0;
-            for (var item in hash) {
-                i++;
-                console.log(hash[item].modelo);
-                Addtab(hash[item].modelo, i);
-                updateTab(i, ".txtTab" + i, userNumber);
-//                doLoad(i, hash[item].modelo, socket.id)
-            }
-            //            console.log(hash);
-            socket.emit('storedhash', {
-                storedhash: hash
-            });
-//        });
-
-
-//        function doLoad(i, modelo, id) {
-//            $(".txtTab" + i).load("./html_models/" + modelo, function () {
-//                updateTab(i, ".txtTab" + i, id);
-//            });
-//        }
+        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+        var newHash = {};
+        for (var item in hash) {
+            newHash[item] = castTab(hash[item]);
+        }
+        hash = newHash;
+        var i = 0;
+        for (var item in hash) {
+            i++;
+            Addtab(hash[item].modelo, i);
+            updateTab(i, ".txtTab" + i, userNumber);
+        }
+        socket.emit('storedhash', {
+            storedhash: hash
+        });
 
 
     });
@@ -1995,7 +1922,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
             case "Livro.html":
-                stk.emit("getAllTabs");
+                if (stk !== null) {
+                    stk.emit("getAllTabs");
+                }
                 $('#bt_PDF').css({
                     'visibility': "visible"
                 });
