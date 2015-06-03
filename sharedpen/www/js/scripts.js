@@ -131,7 +131,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 //tempId_aluno=data[i].id_user;
-                var htmlVar;/
+                var htmlVar;
                 //alert();
                 //alert("ID USER:"+data);
                 //$("#userImage").attr('src', data[0].avatar);
