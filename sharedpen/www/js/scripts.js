@@ -681,7 +681,7 @@ $(document).ready(function () {
                     noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
                     creator: userNumber,
                     //por id da nova TAB
-                    idProj : tabTest.projID
+                    idProj: tabTest.projID
                 });
                 $("body").find("#loading").remove();
                 $("body").find("#divchangemodel").remove();
@@ -925,7 +925,7 @@ $(document).ready(function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            if (imgId !== "userImage" && imgId !== "image" && imgId!== "add-Entity-Image") {
+            if (imgId !== "userImage" && imgId !== "image" && imgId !== "add-Entity-Image") {
                 // envia as informacoes da nova imagem para os outros clientes
                 socket.emit('msgappend', {
                     id: imgId,
@@ -1428,163 +1428,160 @@ $(document).ready(function () {
                 var newHeader = "";
                 switch (id) {
                     case "adicionarAluno":
-                    newHeader ="Adicionar Novo Aluno";
-                    newSrc = newSrc + "userAluno.png";
-                    htmlModel = '<form class="form-horizontal">'+
-                          '<div class="form-group">'+
-                            '<label for="Id_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="Id_aluno_add" disabled >'+
-                            '</div>'+
-                          '</div>'+
-                          '<div class="form-group">'+
-                            '<label for="username_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="username_aluno_add" autofocus>'+
-                            '</div>'+
-                          '</div> '+
-                           '<div class="form-group">'+
-                            '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
-                            '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="password_aluno_add" autofocus>'+
-                            '</div>'+
-                          '</div> '+
-                          '<div class="form-group">'+
-                            '<label for="nome_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="nome_aluno_add"  >'+
-                            '</div>'+
-                          '</div>  '+
-                          '<div class="form-group">'+
-                           ' <label for="numero_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>'+
-                            '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="numero_aluno_add"  >'+
-                            '</div>'+
-                          '</div>   '+
-                          '<div class="form-group">'+
-                            '<label for="turma_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>'+
-                            '<div class="col-sm-10">'+
-                              '<select id="turma_aluno_add" class="form-control"  >'+
-                                    '<option selected disabled>Seleccione a Turma</option>'+
-                                '</select>'+
-                            '</div>'+
-                          '</div>'+
-                          '<div class="form-group">'+
-                            '<label for="ano_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>'+
-                            '<div class="col-sm-10">'+
-                              '<select id="ano_aluno_add" class="form-control"  >'+
-                                    '<option selected disabled>Seleccione o Ano</option>'+
-                                '</select>'+
-                            '</div>' +
-                          '</div>'   +
-                        '</form>' +
-                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Aluno">';
+                        newHeader = "Adicionar Novo Aluno";
+                        newSrc = newSrc + "userAluno.png";
+                        htmlModel = '<form class="form-horizontal">' +
+                                '<div class="form-group">' +
+                                '<label for="Id_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="Id_aluno_add" disabled >' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="username_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="username_aluno_add" autofocus>' +
+                                '</div>' +
+                                '</div> ' +
+                                '<div class="form-group">' +
+                                '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>' +
+                                '<div class="col-sm-10">' +
+                                ' <input class="form-control" id="password_aluno_add" autofocus>' +
+                                '</div>' +
+                                '</div> ' +
+                                '<div class="form-group">' +
+                                '<label for="nome_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="nome_aluno_add"  >' +
+                                '</div>' +
+                                '</div>  ' +
+                                '<div class="form-group">' +
+                                ' <label for="numero_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>' +
+                                '<div class="col-sm-10">' +
+                                ' <input class="form-control" id="numero_aluno_add"  >' +
+                                '</div>' +
+                                '</div>   ' +
+                                '<div class="form-group">' +
+                                '<label for="turma_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>' +
+                                '<div class="col-sm-10">' +
+                                '<select id="turma_aluno_add" class="form-control"  >' +
+                                '<option selected disabled>Seleccione a Turma</option>' +
+                                '</select>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="ano_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>' +
+                                '<div class="col-sm-10">' +
+                                '<select id="ano_aluno_add" class="form-control"  >' +
+                                '<option selected disabled>Seleccione o Ano</option>' +
+                                '</select>' +
+                                '</div>' +
+                                '</div>' +
+                                '</form>' +
+                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Aluno">';
                         break;
                     case "adicionarProfessor":
-                        newHeader ="Adicionar Novo Professor";
+                        newHeader = "Adicionar Novo Professor";
                         newSrc = newSrc + "userProf.png";
-                        htmlModel = '<form class="form-horizontal">'+
-                          '<div class="form-group">'+
-                            '<label for="Id_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>'+
-                            '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="Id_Professor_add" disabled >'+
-                            '</div>'+
-                            '</div>'+
-                          '<div class="form-group">'+
-                            '<label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="username_Professor_add" autofocus>'+
-                            '</div>'+
-                          '</div>  '+
-                          '<div class="form-group">'+
-                            '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="password_aluno_add" autofocus>'+
-                            '</div>'+
-                          '</div>'+
-                          '<div class="form-group">'+
-                            '<label for="Nome_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="Nome_Professor_add"  >'+
-                            '</div>'+
-                          '</div>  '+
-                          '<div class="form-group">'+
-                            '<label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
-                            '<div class="col-sm-10">'+
-                              '<select id="Agrupamento_Professor_add" class="form-control"  >'+
-                                    '<option selected disabled>Seleccione o Agrupamento</option>'+
-                                '</select>'+
-                           ' </div>'+
-                          '</div>'+
-                        '</form>'+
-
-
-                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Professor">';
+                        htmlModel = '<form class="form-horizontal">' +
+                                '<div class="form-group">' +
+                                '<label for="Id_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>' +
+                                '<div class="col-sm-10">' +
+                                ' <input class="form-control" id="Id_Professor_add" disabled >' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="username_Professor_add" autofocus>' +
+                                '</div>' +
+                                '</div>  ' +
+                                '<div class="form-group">' +
+                                '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="password_aluno_add" autofocus>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="Nome_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="Nome_Professor_add"  >' +
+                                '</div>' +
+                                '</div>  ' +
+                                '<div class="form-group">' +
+                                '<label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>' +
+                                '<div class="col-sm-10">' +
+                                '<select id="Agrupamento_Professor_add" class="form-control"  >' +
+                                '<option selected disabled>Seleccione o Agrupamento</option>' +
+                                '</select>' +
+                                ' </div>' +
+                                '</div>' +
+                                '</form>' +
+                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Professor">';
                         break;
                     case "adicionarEscola":
-                            newHeader ="Adicionar Nova Escola";
-                            newSrc= newSrc + "userEscola.png";   
-                            htmlModel = '<form class="form-horizontal">'+
-                                '<div class="form-group">'+
-                                '<label for="id_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>'+
-                                '<div class="col-sm-10">'+
-                                 ' <input class="form-control" id="Id_Escola_add" disabled >'+
-                                '</div>'+
-                              '</div>'+
-                              '<div class="form-group">'+
-                                '<label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
-                                '<div class="col-sm-10">'+
-                                  '<input class="form-control" id="Nome_Escola_add" autofocus>'+
-                                '</div>'+
-                              '</div>'+
-                                '<div class="form-group">'+
-                                '<label for="Morada_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label>'+
-                                '<div class="col-sm-10">'+
-                                  '<input class="form-control" id="Morada_Escola_add" autofocus>'+
-                                '</div>'+
-                              '</div> '+
-                                '<div class="form-group">'+
-                                '<label for="Contacto_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label>'+
-                                '<div class="col-sm-10">'+
-                                  '<input class="form-control" id="Contacto_Escola_add" autofocus>'+
-                                '</div>'+
-                              '</div>'+
-                                '<div class="form-group">'+
-                                '<label for="Agrupamento_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>'+
-                                '<div class="col-sm-10">'+
-                                '<select id="Agrupamento_Escola_add" class="form-control"  >'+
-                                    '<option selected disabled>Seleccione o Agrupamento</option>'+
-                                '</select>'+
-                                '</div>'+
-                              '</div> '+
-                            '</form>'+
-
-                 '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Escola">';
+                        newHeader = "Adicionar Nova Escola";
+                        newSrc = newSrc + "userEscola.png";
+                        htmlModel = '<form class="form-horizontal">' +
+                                '<div class="form-group">' +
+                                '<label for="id_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>' +
+                                '<div class="col-sm-10">' +
+                                ' <input class="form-control" id="Id_Escola_add" disabled >' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="Nome_Escola_add" autofocus>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="Morada_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="Morada_Escola_add" autofocus>' +
+                                '</div>' +
+                                '</div> ' +
+                                '<div class="form-group">' +
+                                '<label for="Contacto_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="Contacto_Escola_add" autofocus>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="Agrupamento_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>' +
+                                '<div class="col-sm-10">' +
+                                '<select id="Agrupamento_Escola_add" class="form-control"  >' +
+                                '<option selected disabled>Seleccione o Agrupamento</option>' +
+                                '</select>' +
+                                '</div>' +
+                                '</div> ' +
+                                '</form>' +
+                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Escola">';
                         break;
                     case "adicionarAgrupamento":
-                            newHeader ="Adicionar Novo Agrupamento";
-                            newSrc= newSrc + "userAgrupamento.png";
-                            htmlModel ='<form class="form-horizontal">'+
-                          '<div class="form-group">'+
-                            '<label for="Id_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>'+
-                            '<div class="col-sm-10">'+
-                             ' <input class="form-control" id="Id_Agrupamento_add" disabled >'+
-                            '</div>'+
-                          '</div>'+
-                          '<div class="form-group">'+
-                            '<label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>'+
-                            '<div class="col-sm-10">'+
-                              '<input class="form-control" id="Nome_Agrupamento_add" autofocus>'+
-                            '</div>'+
-                          '</div>'+  
-                        '</form>' +
-                        '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Agrupamento">';
-                
+                        newHeader = "Adicionar Novo Agrupamento";
+                        newSrc = newSrc + "userAgrupamento.png";
+                        htmlModel = '<form class="form-horizontal">' +
+                                '<div class="form-group">' +
+                                '<label for="Id_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>' +
+                                '<div class="col-sm-10">' +
+                                ' <input class="form-control" id="Id_Agrupamento_add" disabled >' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '<label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
+                                '<div class="col-sm-10">' +
+                                '<input class="form-control" id="Nome_Agrupamento_add" autofocus>' +
+                                '</div>' +
+                                '</div>' +
+                                '</form>' +
+                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Agrupamento">';
+
                         break;
                     default:
                         break;
                 }
-                
+
                 $("body").find("#add-Entity-Header").append(newHeader);
                 $("body").find("#add-Entity-Image").attr("src", newSrc);
                 $("body").find("#div-Adicionar-Entity").append(htmlModel);
@@ -1799,7 +1796,7 @@ $(document).ready(function () {
             usersid.push($(this).prop("value"));
         });
 
-		
+
         //retirar a opcao por defeio
         //users = users.splice(1);
 
@@ -1822,7 +1819,7 @@ $(document).ready(function () {
 
         var numCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
         var numPagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
-        console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "Capa:" + numCapa + "\t Pagina:" + numPagina);
+        console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "\nCapa:" + numCapa + "\t Pagina:" + numPagina);
 
         //Limpar hash local e do server
         hash = {};
@@ -1833,9 +1830,99 @@ $(document).ready(function () {
 
         addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
 
-        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", socket);
+        var idNum = (Object.keys(hash).length + 1);
+        $("body").append(wait);
+        $.ajax({
+            type: "get",
+            url: "/getCodTwoModels",
+            data: {
+                modelcapa: numCapa,
+                modelpage: numPagina
+            },
+            async: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $("body").find("#loading").remove();
+                for (var i in data) {
+                console.log("-"+data[i].id + "- -" + numCapa + "-");
+                    if (typeof data[i].id === numCapa) {
+                        Addtab(numCapa, idNum);
+                        $(".txtTab" + idNum).html(data[i].htmltext);
+                        refactorTab(numCapa, idNum);
+                        addtohash(idNum);
+                        socket.emit('TabsChanged', {
+                            //remover ou adicionar
+                            op: "adicionar",
+                            //tab
+                            tab: tabTest,
+                            //posiçao
+                            pos: (Object.keys(hash).length),
+                            //modelo
+                            modelo: numCapa,
+                            //numero de elementos do modelo
+                            noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                            creator: userNumber,
+                    idProj: tabTest.projID
+                        });
+                        $("body").find("#divchangemodel").remove();
+                        // Foco na ultima pagina adicionada
+                        $("body").find("a[href^='#page']:last").click();
+                        console.log(hash);
+                    } else if (typeof data[i].id === numPagina) {
+                        idNum = (Object.keys(hash).length + 1);
+                        Addtab(numPagina, idNum);
+                        $(".txtTab" + idNum).html(data[0].htmltext);
+                        refactorTab(numPagina, idNum);
+                        addtohash(idNum);
+                        socket.emit('TabsChanged', {
+                            //remover ou adicionar
+                            op: "adicionar",
+                            //tab
+                            tab: tabTest,
+                            //posiçao
+                            pos: (Object.keys(hash).length),
+                            //modelo
+                            modelo: modelo,
+                            //numero de elementos do modelo
+                            noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                            creator: userNumber
+                        });
+                        $("body").find("#divchangemodel").remove();
+                        // Foco na ultima pagina adicionada
+                        $("body").find("a[href^='#page']:last").click();
 
-        CarregaModelo(numCapa, numPagina);
+                        //Reduzir tamanho da div das tabs
+                        $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                        $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+
+                        //Adicionar a div com o texto de ajuda		
+                        $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                "<div id='divTxtAjuda'  contenteditable='true'></div>" +
+                                "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
+
+                        $(".containerTxtAjuda").animate({
+                            opacity: 1,
+                        }, 1000, function () {
+                            // Animation complete.
+                        });
+                        $("#divTxtAjuda").focus();
+                        console.log(hash);
+                    } else {
+                        console.log("erro");
+                    }
+
+                }
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                console.log(JSON.stringify(error));
+            }
+        });
+
+//        CarregaModelo(numCapa, numPagina);
         //CarregaModelo(modelo)
 
     });
@@ -1847,13 +1934,14 @@ $(document).ready(function () {
         $("body").append(wait);
         $.ajax({
             type: "get",
-            url: "/getCodModel",
+            url: "/getCodModels",
             data: {
-                model: modelo
+                modelcapa: modelo
             },
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
+                console.log(data);
                 $("body").find("#loading").remove();
                 Addtab(modelo, idNum);
                 $(".txtTab" + idNum).html(data[0].htmltext);
@@ -1938,7 +2026,6 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-                //-------
 
 
 
@@ -1949,72 +2036,71 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
-
-
-        $("body").on("click", "#btGuardarProjeto", function () {
-
-            $("body").append(wait);
-            var nomeP = $("#contentor").attr("NomeProj");
-            var usersP = $("#contentor").attr("projuser").split(",");
-            var idmodel = $("#contentor").attr("idmodel")
-            var idTmp = textToNumber(username);
-			console.log(idTmp);
-			idTmp = 1;
-            var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
-            var typeP = "Público";
-            var hashtoSave;
-
-
-            hashtoSave = hash;
-
-            for (item in hashtoSave) {
-             	for (elem in hashtoSave[item].modelo.arrayElem) {
-             		if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
-             		var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
-             
-             		var newchar = '\\"'
-             			conteudo = conteudo.split('"').join(newchar);
-             			newchar = '\\/'
-             		conteudo = conteudo.split('/').join(newchar);
-             	hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
-             
-             	}
-             }
-             }
-
-            $.ajax({
-                type: "POST",
-                url: "/saveProjLivro",
-                data: {
-                    nomeProjeto: nomeP,
-                    idCreator: idTmp,
-                    text: textHelp,
-                    tipo: typeP,
-                    idmodel: idmodel,
-                    array: hashtoSave,
-                    texto: textHelp
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data === "Ok") {
-                        alert("Projeto Gravado");
-                    } else {
-                        alert("O nome do livro já existe na base da dados.")
-                        $("body").find("#loading").remove();
-                    }
-                },
-                error: function (error) {
-                    $("body").find("#loading").remove();
-                    console.log(JSON.stringify(error));
-                }
-            });
-        });
-
-
-
-
     }
+
+
+    $("body").on("click", "#btGuardarProjeto", function () {
+
+        $("body").append(wait);
+        var nomeP = $("#contentor").attr("NomeProj");
+        var usersP = $("#contentor").attr("projuser").split(",");
+        var idmodel = $("#contentor").attr("idmodel");
+        var idTmp = textToNumber(username);
+        console.log(idTmp);
+        idTmp = 1;
+        var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
+        var typeP = "Público";
+        var hashtoSave;
+
+
+        hashtoSave = hash;
+
+        for (item in hashtoSave) {
+            for (elem in hashtoSave[item].modelo.arrayElem) {
+                if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
+                    var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+
+                    var newchar = '\\"'
+                    conteudo = conteudo.split('"').join(newchar);
+                    newchar = '\\/'
+                    conteudo = conteudo.split('/').join(newchar);
+                    hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
+
+                }
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/saveProjLivro",
+            data: {
+                nomeProjeto: nomeP,
+                idCreator: idTmp,
+                text: textHelp,
+                tipo: typeP,
+                idmodel: idmodel,
+                array: hashtoSave,
+                texto: textHelp
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data === "Ok") {
+                    alert("Projeto Gravado");
+                } else {
+                    alert("O nome do livro já existe na base da dados.")
+                    $("body").find("#loading").remove();
+                }
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                console.log(JSON.stringify(error));
+            }
+        });
+    });
+
+
+
+
 
 
     /*
