@@ -27,7 +27,6 @@ var folderArray = ["html_Work_Models"];
 var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
-var tempId_aluno = "";
 $(document).ready(function () {
 
     //backoffice
@@ -35,7 +34,6 @@ $(document).ready(function () {
     $("body").on('click', "#guardarEdit", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        alert();
         $.ajax({
             type: "POST",
             url: "/updateAluno",
@@ -60,6 +58,8 @@ $(document).ready(function () {
                 //console.log(JSON.stringify(error));
             }
         });
+        
+        //$("body").on('click', "#inputSearch", searchUtilizadores());
 
         //console.log($(this).attr("rel"));    
         //alert($(this).attr("rel"));
@@ -123,6 +123,7 @@ $(document).ready(function () {
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
         e.preventDefault();
+        alert($(this).attr("rel"));
         //console.log($(this).attr("rel"));    
         //alert($(this).attr("rel"));
         addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
@@ -134,11 +135,12 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 //tempId_aluno=data[i].id_user;
+                alert(data[0]);
                 var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                 //for (var i = 0, max = data.length; i < max; i++) {
                 //alert();
                 //alert("ID USER:"+data);
-                $("#userImage").attr('src', data[0].avatar);
+                //$("#userImage").attr('src', data[0].avatar);
                 $("#Id_aluno_edit").val(data[0].id_user);
                 $("#username_aluno_edit").val(data[0].username);
                 $("#nome_aluno_edit").val(data[0].nome_aluno);
@@ -2395,7 +2397,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     url: "/getsAlunos",
                     dataType: 'json',
                     success: function (data) {
-                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+                        var htmlVar;
                         for (var i = 0, max = data.length; i < max; i++) {
 
                             htmlVar += "<tr>";
@@ -2404,21 +2406,23 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].username + "</td>" +
                                     "<td>" + data[i].nome_aluno + "</td>" +
                                     "<td>" + data[i].num_aluno + "</td>" +
-                                    "<td>" + data[i].turma + "</td>" +
                                     "<td>" + data[i].ano + "</td>" +
+                                    "<td>" + data[i].turma + "</td>" +
                                     "<td>" + data[i].nome_escola + "</td>" +
                                     //"<td>"+data[i].avatar+"</td>"+
                                     '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<div rel=' + data[i].id_user + ' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                                    '<td class="image"><img class="text-center image"  src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
 
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
+                        //INPUT SEARCH
+                        
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -2542,24 +2546,24 @@ function addLayoutToDiv(local, folder, layout, stk) {
 //                    url: "/getAluno/",//+ $(this).attr('rel'),
 //                    dataType: 'json',
 //                    success: function (data) {
-////                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-////                        for (var i = 0, max = data.length; i < max; i++) {
-////
-////                            htmlVar += "<tr>";
-////                            htmlVar += "<td>" + data[i].id + "</td>" +
-////                                    "<td>" + data[i].nome + "</td>" +
-////                                    '<td class="image">' +
-////                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
-////                                    '<img class="text-center image" src="../img/edit_40.png">' +
-////                                    '</div>' +
-////                                    '</td>' +
-////                                    '<td><a class="linkDeleteUser" rel=' + data[i].id + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
-////                                    //'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
-////                                    "</tr>";
-////                        }
+//                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
+//                        for (var i = 0, max = data.length; i < max; i++) {
+//
+//                            htmlVar += "<tr>";
+//                            htmlVar += "<td>" + data[i].id + "</td>" +
+//                                    "<td>" + data[i].nome + "</td>" +
+//                                    '<td class="image">' +
+//                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
+//                                    '<img class="text-center image" src="../img/edit_40.png">' +
+//                                    '</div>' +
+//                                    '</td>' +
+//                                    '<td><a class="linkDeleteUser" rel=' + data[i].id + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
+//                                    //'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+//                                    "</tr>";
+//                        }
 //
 //                        $("body").find("#loading").remove();
-////                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+//    s                    $("body").find("#gerirEntitiesTable").append(htmlVar);
 //                        
 //                    },
 //                    error: function (error) {
@@ -2584,6 +2588,50 @@ function addLayoutToDiv(local, folder, layout, stk) {
         }
 
     });
+}
+
+function searchUtilizadores(data, txt){
+    switch (type) {
+            case aluno:
+            
+            $("body").append(wait);
+            
+            var htmlVar="";
+            var search="";
+                        
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            search = "/"+txt+"/g";
+                            if(data[i].username === txt)
+
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id_user + "</td>" +
+                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                    "<td>" + data[i].username + "</td>" +
+                                    "<td>" + data[i].nome_aluno + "</td>" +
+                                    "<td>" + data[i].num_aluno + "</td>" +
+                                    "<td>" + data[i].turma + "</td>" +
+                                    "<td>" + data[i].ano + "</td>" +
+                                    "<td>" + data[i].nome_escola + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                        }
+
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+            
+            break;
+            case professor:
+            break;
+            case escola:
+            break;
+            case agrupamento:
+            break;
+    }
 }
 
 // Delete User
