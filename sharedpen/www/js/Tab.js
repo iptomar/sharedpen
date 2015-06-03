@@ -10,7 +10,7 @@ var Tab = function (id, noElement, numModelo) {
     this.modelo = new Modelo(noElement);
     this.numModelo = numModelo;
     this.poema;
-    this.projID = projID;
+//    this.projID = projID;
 };
 
 var Modelo = function (noElement) {

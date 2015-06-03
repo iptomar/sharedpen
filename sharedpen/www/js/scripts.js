@@ -1846,8 +1846,8 @@ $(document).ready(function () {
             success: function (data) {
                 $("body").find("#loading").remove();
                 for (var i in data) {
-                console.log("-"+data[i].id + "- -" + numCapa + "-");
-                    if (typeof data[i].id === numCapa) {
+                    console.log("-" + data[i].id + "- -" + numCapa + "-");
+                    if (data[i].id == numCapa) {
                         Addtab(numCapa, idNum);
                         $(".txtTab" + idNum).html(data[i].htmltext);
                         refactorTab(numCapa, idNum);
@@ -1864,13 +1864,13 @@ $(document).ready(function () {
                             //numero de elementos do modelo
                             noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
                             creator: userNumber,
-                    idProj: tabTest.projID
+                            idProj: tabTest.projID
                         });
                         $("body").find("#divchangemodel").remove();
                         // Foco na ultima pagina adicionada
                         $("body").find("a[href^='#page']:last").click();
                         console.log(hash);
-                    } else if (typeof data[i].id === numPagina) {
+                    } else if (data[i].id == numPagina) {
                         idNum = (Object.keys(hash).length + 1);
                         Addtab(numPagina, idNum);
                         $(".txtTab" + idNum).html(data[0].htmltext);
@@ -1910,10 +1910,7 @@ $(document).ready(function () {
                         });
                         $("#divTxtAjuda").focus();
                         console.log(hash);
-                    } else {
-                        console.log("erro");
                     }
-
                 }
             },
             error: function (error) {
@@ -1922,122 +1919,7 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
-//        CarregaModelo(numCapa, numPagina);
-        //CarregaModelo(modelo)
-
     });
-
-    function CarregaModelo(modelo, nomePagina) {
-
-        var idNum = (Object.keys(hash).length + 1);
-        console.log(idNum);
-        $("body").append(wait);
-        $.ajax({
-            type: "get",
-            url: "/getCodModels",
-            data: {
-                modelcapa: modelo
-            },
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
-                console.log(data);
-                $("body").find("#loading").remove();
-                Addtab(modelo, idNum);
-                $(".txtTab" + idNum).html(data[0].htmltext);
-                refactorTab(modelo, idNum);
-                addtohash(idNum);
-                socket.emit('TabsChanged', {
-                    //remover ou adicionar
-                    op: "adicionar",
-                    //tab
-                    tab: tabTest,
-                    //posiçao
-                    pos: (Object.keys(hash).length),
-                    //modelo
-                    modelo: modelo,
-                    //numero de elementos do modelo
-                    noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                    creator: userNumber
-                });
-                $("body").find("#divchangemodel").remove();
-                // Foco na ultima pagina adicionada
-                $("body").find("a[href^='#page']:last").click();
-                console.log(hash);
-
-                //-------
-                idNum = (Object.keys(hash).length + 1);
-                console.log(idNum);
-                $("body").append(wait);
-                $.ajax({
-                    type: "get",
-                    url: "/getCodModel",
-                    data: {
-                        model: nomePagina
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    success: function (data) {
-                        $("body").find("#loading").remove();
-                        Addtab(modelo, idNum);
-                        $(".txtTab" + idNum).html(data[0].htmltext);
-                        refactorTab(modelo, idNum);
-                        addtohash(idNum);
-                        socket.emit('TabsChanged', {
-                            //remover ou adicionar
-                            op: "adicionar",
-                            //tab
-                            tab: tabTest,
-                            //posiçao
-                            pos: (Object.keys(hash).length),
-                            //modelo
-                            modelo: modelo,
-                            //numero de elementos do modelo
-                            noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
-                            creator: userNumber
-                        });
-                        $("body").find("#divchangemodel").remove();
-                        // Foco na ultima pagina adicionada
-                        $("body").find("a[href^='#page']:last").click();
-
-                        //Reduzir tamanho da div das tabs
-                        $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                        $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
-
-                        //Adicionar a div com o texto de ajuda		
-                        $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
-                                "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                "<div id='divTxtAjuda'  contenteditable='true'></div>" +
-                                "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
-
-                        $(".containerTxtAjuda").animate({
-                            opacity: 1,
-                        }, 1000, function () {
-                            // Animation complete.
-                        });
-
-
-                        $("#divTxtAjuda").focus();
-                        console.log(hash);
-                    },
-                    error: function (error) {
-                        $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-                        console.log(JSON.stringify(error));
-                    }
-                });
-
-
-
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
-                console.log(JSON.stringify(error));
-            }
-        });
-    }
 
 
     $("body").on("click", "#btGuardarProjeto", function () {
