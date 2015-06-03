@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     //backoffice
 
-    $("body").on('click', "#guardarEdit", function (e) {
+    $("body").on('click', "#guardarEditAluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
         $.ajax({
@@ -123,21 +123,15 @@ $(document).ready(function () {
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        alert($(this).attr("rel"));
-        //console.log($(this).attr("rel"));    
-        //alert($(this).attr("rel"));
         addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
         $("body").append(wait);
-        //alert("UserID"+$(this).attr("rel"))
         $.ajax({
             type: "GET",
             url: "/getAluno/" + $(this).attr("rel"),
             dataType: 'json',
             success: function (data) {
                 //tempId_aluno=data[i].id_user;
-                alert(data[0]);
-                var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-                //for (var i = 0, max = data.length; i < max; i++) {
+                var htmlVar;/
                 //alert();
                 //alert("ID USER:"+data);
                 //$("#userImage").attr('src', data[0].avatar);
@@ -2390,6 +2384,14 @@ function addLayoutToDiv(local, folder, layout, stk) {
             case "CriarPoema.html":
 
                 break;
+                
+                
+    /**
+    * -----------------------------------------------------------BACKOFFICE--------------------------------------------------------------
+    */
+
+    //-------------------------------GERIR-----------------------------------------
+ 
             case "GerirAluno.html":
                 $("body").append(wait);
                 $.ajax({
@@ -2399,7 +2401,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;
                         for (var i = 0, max = data.length; i < max; i++) {
-
                             htmlVar += "<tr>";
                             htmlVar += "<td>" + data[i].id_user + "</td>" +
                                     "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
@@ -2409,7 +2410,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].ano + "</td>" +
                                     "<td>" + data[i].turma + "</td>" +
                                     "<td>" + data[i].nome_escola + "</td>" +
-                                    //"<td>"+data[i].avatar+"</td>"+
                                     '<td class="image">' +
                                     '<div rel=' + data[i].id_user + ' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
@@ -2418,11 +2418,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<td class="image"><img class="text-center image"  src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
-
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        //INPUT SEARCH
-                        
+
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -2430,7 +2428,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
-
                 break;
 
             case "GerirProfessor.html":
@@ -2539,41 +2536,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 });
                 break;
 
-//                case "EditarAluno.html":
-//                $("body").append(wait);
-//                $.ajax({
-//                    type: "GET",
-//                    url: "/getAluno/",//+ $(this).attr('rel'),
-//                    dataType: 'json',
-//                    success: function (data) {
-//                        var htmlVar;// = "<td>"+data[0].id_user+"</td>";
-//                        for (var i = 0, max = data.length; i < max; i++) {
-//
-//                            htmlVar += "<tr>";
-//                            htmlVar += "<td>" + data[i].id + "</td>" +
-//                                    "<td>" + data[i].nome + "</td>" +
-//                                    '<td class="image">' +
-//                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
-//                                    '<img class="text-center image" src="../img/edit_40.png">' +
-//                                    '</div>' +
-//                                    '</td>' +
-//                                    '<td><a class="linkDeleteUser" rel=' + data[i].id + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
-//                                    //'<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
-//                                    "</tr>";
-//                        }
-//
-//                        $("body").find("#loading").remove();
-//    s                    $("body").find("#gerirEntitiesTable").append(htmlVar);
-//                        
-//                    },
-//                    error: function (error) {
-//                        $("body").find("#loading").remove();
-//                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-//                        console.log(JSON.stringify(error));
-//                    }
-//                });
-//                break;
-
             default:
                 $('#bt_PDF').css({
                     'visibility': "hidden"
@@ -2586,7 +2548,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 });
                 break;
         }
-
     });
 }
 
