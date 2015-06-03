@@ -1733,12 +1733,12 @@ $(document).ready(function () {
             success: function (data) {
                 var html = "";
                 for (var i = 0, max = data.length; i < max; i++) {
-                    html += "<tr data-select='false' data-idmodel='" + data[i].idmodelo + "' data-modelCapa='" + data[i].nome_modeloCapa + "' data-modelPagina='" + data[i].nome_modeloPagina + "'>" +
+                    html += "<tr data-select='false' data-idmodel='" + data[i].idmodelo + "' data-modelCapa='" + data[i].num_modeloCapa + "' data-modelPagina='" + data[i].num_modeloPagina + "'>" +
                             "<td class='bs-checkbox'><input name='radioName' type='radio'></td>" +
                             "<td style='text-align: center;'>" + data[i].nome_livro + "</td>" +
-                            "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].nome_modeloCapa] +
+                            "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].num_modeloCapa] +
                             "'/></td>" +
-                            "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].nome_modeloPagina] +
+                            "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].num_modeloPagina] +
                             "'/></td>" +
                             "</tr>";
                 }
