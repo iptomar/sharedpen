@@ -1106,6 +1106,7 @@ $(document).ready(function () {
             pages.push(page);
         });
         socket.emit("saveAsHtml", pages);
+		window.open("./livro/Livro.html");
     });
 
 
