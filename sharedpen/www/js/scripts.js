@@ -31,6 +31,7 @@ $(document).ready(function () {
 
     //backoffice
 
+    
     $("body").on('click', "#guardarEditAluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -57,6 +58,34 @@ $(document).ready(function () {
                 // alert("ERRO HASH");
                 //console.log(JSON.stringify(error));
             }
+        });
+        });
+        
+        $("body").on('click', "#guardarEditProfessor", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateProfessores",
+            data: {
+                avatar: $("#userImage").attr('src'),
+                id: $("#Id_Professor_edit").val(),
+                username: $("#username_Professor_edit").val(),
+                nome: $("#Nome_Professor_edit").val(),
+                id_agrupamento: $("#Agrupamento_Professor_edit").val(),
+                email: $("#Email_Professor_edit").val()
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+
+            },
+            error: function (error) {
+                // alert("ERRO HASH");
+                //console.log(JSON.stringify(error));
+            }
+        });
         });
         
         //$("body").on('click', "#inputSearch", searchUtilizadores());
@@ -117,64 +146,102 @@ $(document).ready(function () {
 //                        console.log(JSON.stringify(error));
 //                    }
 //                });
-    });
+//    });
 
 
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getAluno/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                //tempId_aluno=data[i].id_user;
-                var htmlVar;
-                //alert();
-                //alert("ID USER:"+data);
-                //$("#userImage").attr('src', data[0].avatar);
-                $("#Id_aluno_edit").val(data[0].id_user);
-                $("#username_aluno_edit").val(data[0].username);
-                $("#nome_aluno_edit").val(data[0].nome_aluno);
-                $("#numero_aluno_edit").val(data[0].num_aluno);
-                $("#turma_aluno_edit").val(data[0].turma);
-                $("#ano_aluno_edit").val(data[0].ano);
-                //$("#escola_aluno_edit").val(data[0].nome_escola);
-                $("#escola_aluno_edit").append(
-                        $('<option></option>').val(data[0].nome_escola).html(data[0].nome_escola));
+        var type= $(this).data("type");
+        switch(type){
+                
+               case "aluno":
+                
+                    
+                    addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
+                if (currentPosition != backArray.length) {
+            backArray.splice(currentPosition, backArray.length - currentPosition);
+            folderArray.splice(currentPosition, folderArray.length - currentPosition);
+        }
 
+        backArray.push($(this).data("layout"));
+        folderArray.push($(this).data("folder"));
 
-//                            htmlVar += "<tr>";
-//                            htmlVar += "<td>" + data.id_user + "</td>" +
-//                                    "<td>" + '<img class="text-center avatar-mini" src="' + data.avatar + '"></td>' +
-//                                    "<td>" + data[i].username + "</td>" +
-//                                    "<td>" + data[i].nome_aluno + "</td>" +
-//                                    "<td>" + data[i].num_aluno + "</td>" +
-//                                    "<td>" + data[i].turma + "</td>" +
-//                                    "<td>" + data[i].ano + "</td>" +
-//                                    "<td>" + data[i].nome_escola + "</td>" +
-//                                    //"<td>"+data[i].avatar+"</td>"+
-//                                    '<td class="image">' +
-//                                    '<div rel='+ data[i].id_user +' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
-//                                    '<img class="text-center image" src="../img/edit_40.png">' +
-//                                    '</div>' +
-//                                    '</td>' +
-//                                '<td><a class="linkDeleteUser" rel=' + data[i].id_user + '><img class="text-center image" src="../img/delete_40.png"></a></td>' +
-//                                    "</tr>";
-                //}
+        currentPosition += 1;
+                    $("body").append(wait);
+                    $.ajax({
+                        type: "GET",
+                        url: "/getAluno/" + $(this).attr("rel"),
+                        dataType: 'json',
+                        success: function (data) {
+                            var htmlVar;
+                            //$("#userImage").attr('src', data[0].avatar);
+                            $("#Id_aluno_edit").val(data[0].id_user);
+                            $("#username_aluno_edit").val(data[0].username);
+                            $("#nome_aluno_edit").val(data[0].nome_aluno);
+                            $("#numero_aluno_edit").val(data[0].num_aluno);
+                            $("#turma_aluno_edit").val(data[0].turma);
+                            $("#ano_aluno_edit").val(data[0].ano);
+                            $("#escola_aluno_edit").append(
+                                $('<option></option>').val(data[0].nome_escola).html(data[0].nome_escola));
 
-                $("body").find("#loading").remove();
-//                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                            $("body").find("#loading").remove();
 
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                            console.log(JSON.stringify(error));
+                        }
+                    });
+                    
+                break;
+                
+                
+                case "professor":
+                
+                    
+                    addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
+                    if (currentPosition != backArray.length) {
+                        backArray.splice(currentPosition, backArray.length - currentPosition);
+                        folderArray.splice(currentPosition, folderArray.length - currentPosition);
+                    }
+
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getProfessores/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        //$("#userImage").attr('src', data[0].avatar);
+                        $("#Id_Professor_edit").val(data[0].id);
+                        $("#username_Professor_edit").val(data[0].username);
+                        $("#Nome_Professor_edit").val(data[0].nome_professor);
+                        $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
+                        $("#Email_Professor_edit").val(data[0].email);
+                        
+                        
+                        $("body").find("#loading").remove();
+                        
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                    
+                break; 
+                
+        }
+            
+        
+        
     });
 
     $.ajaxSetup({async: false});
@@ -2411,7 +2478,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].turma + "</td>" +
                                     "<td>" + data[i].nome_escola + "</td>" +
                                     '<td class="image">' +
-                                    '<div rel=' + data[i].id_user + ' class="editInfo" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<div rel=' + data[i].id_user + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
@@ -2448,7 +2515,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].email + "</td>" +
                                     "<td>" + data[i].nome_agrupamento + "</td>" +
                                     '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarProfessor.html">' +
+                                    '<div rel="'+data[i].id+'" class="editInfo" data-type="professor" data-folder="html" data-layout="EditarProfessor.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
