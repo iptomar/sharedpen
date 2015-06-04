@@ -52,7 +52,6 @@ $(document).ready(function () {
             success: function (data) {
                 //alert(data);
                 addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-
             },
             error: function (error) {
                 // alert("ERRO HASH");
@@ -79,7 +78,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-
             },
             error: function (error) {
                 // alert("ERRO HASH");
@@ -95,9 +93,6 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: "/updateEscolas",
-            
-            
-            
             data: {
                 id: $("#Id_Escola_edit").val(),
                 nome: $("#Nome_Escola_edit").val(),
@@ -117,7 +112,26 @@ $(document).ready(function () {
         });
         });
     
-    
+        $("body").on('click', "#guardarEditAgrupamento", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateAgrupamentos",
+            data: {
+                id: $("#Id_Agrupamento_edit").val(),
+                nome: $("#Nome_Agrupamento_edit").val(),
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
+            },
+            error: function (error) {
+        
+            }
+        });
+        });
     
     
         //$("body").on('click', "#inputSearch", searchUtilizadores());
@@ -300,6 +314,43 @@ $(document).ready(function () {
                         $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
 
                         
+                        $("body").find("#loading").remove();
+                        
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                    
+                break; 
+                
+                 case "agrupamento":
+                
+                    
+                    addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
+                    if (currentPosition != backArray.length) {
+                        backArray.splice(currentPosition, backArray.length - currentPosition);
+                        folderArray.splice(currentPosition, folderArray.length - currentPosition);
+                    }
+
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getAgrupamentos/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        //$("#userImage").attr('src', data[0].avatar);
+                        $("#Id_Agrupamento_edit").val(data[0].id);
+                        $("#Nome_Agrupamento_edit").val(data[0].nome);
+    
+                   
                         $("body").find("#loading").remove();
                         
                     },
@@ -2657,7 +2708,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             htmlVar += "<td>" + data[i].id + "</td>" +
                                     "<td>" + data[i].nome + "</td>" +
                                     '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAgrupamento.html">' +
+                                    '<div rel=' + data[i].id + ' class="editInfo" data-type="agrupamento" data-folder="html" data-layout="EditarAgrupamento.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
