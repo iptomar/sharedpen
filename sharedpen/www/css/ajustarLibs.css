@@ -141,7 +141,13 @@
     margin-bottom:5px;
 }
 
+.default-display-none{
+    visibility: initial;
+}
 
+.btn-margin-top{
+    margin-top: 10px;   
+}
 
 .tabspace{
     margin-left: 50px;   

@@ -1618,152 +1618,31 @@ $(document).ready(function () {
                     case "adicionarAluno":
                         newHeader = "Adicionar Novo Aluno";
                         newSrc = newSrc + "userAluno.png";
-                        htmlModel = '<form class="form-horizontal">' +
-                                '<div class="form-group">' +
-                                '<label for="Id_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">IdUser</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="Id_aluno_add" disabled >' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="username_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="username_aluno_add" autofocus>' +
-                                '</div>' +
-                                '</div> ' +
-                                '<div class="form-group">' +
-                                '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>' +
-                                '<div class="col-sm-10">' +
-                                ' <input class="form-control" id="password_aluno_add" autofocus>' +
-                                '</div>' +
-                                '</div> ' +
-                                '<div class="form-group">' +
-                                '<label for="nome_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="nome_aluno_add"  >' +
-                                '</div>' +
-                                '</div>  ' +
-                                '<div class="form-group">' +
-                                ' <label for="numero_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label>' +
-                                '<div class="col-sm-10">' +
-                                ' <input class="form-control" id="numero_aluno_add"  >' +
-                                '</div>' +
-                                '</div>   ' +
-                                '<div class="form-group">' +
-                                '<label for="turma_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label>' +
-                                '<div class="col-sm-10">' +
-                                '<select id="turma_aluno_add" class="form-control"  >' +
-                                '<option selected disabled>Seleccione a Turma</option>' +
-                                '</select>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="ano_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label>' +
-                                '<div class="col-sm-10">' +
-                                '<select id="ano_aluno_add" class="form-control"  >' +
-                                '<option selected disabled>Seleccione o Ano</option>' +
-                                '</select>' +
-                                '</div>' +
-                                '</div>' +
-                                '</form>' +
-                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Aluno">';
+                        htmlModel = "";
+                        $("body").find("#form-professor").css("display", "none");
+                        $("body").find("#form-escola").css("display", "none");
+                        $("body").find("#form-agrupamento").css("display", "none");
                         break;
                     case "adicionarProfessor":
                         newHeader = "Adicionar Novo Professor";
                         newSrc = newSrc + "userProf.png";
-                        htmlModel = '<form class="form-horizontal">' +
-                                '<div class="form-group">' +
-                                '<label for="Id_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>' +
-                                '<div class="col-sm-10">' +
-                                ' <input class="form-control" id="Id_Professor_add" disabled >' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="username_Professor_add" autofocus>' +
-                                '</div>' +
-                                '</div>  ' +
-                                '<div class="form-group">' +
-                                '<label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="password_aluno_add" autofocus>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="Nome_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="Nome_Professor_add"  >' +
-                                '</div>' +
-                                '</div>  ' +
-                                '<div class="form-group">' +
-                                '<label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>' +
-                                '<div class="col-sm-10">' +
-                                '<select id="Agrupamento_Professor_add" class="form-control"  >' +
-                                '<option selected disabled>Seleccione o Agrupamento</option>' +
-                                '</select>' +
-                                ' </div>' +
-                                '</div>' +
-                                '</form>' +
-                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Professor">';
+                        $("body").find("#form-aluno").css("display", "none");
+                        $("body").find("#form-escola").css("display", "none");
+                        $("body").find("#form-agrupamento").css("display", "none");
                         break;
                     case "adicionarEscola":
                         newHeader = "Adicionar Nova Escola";
                         newSrc = newSrc + "userEscola.png";
-                        htmlModel = '<form class="form-horizontal">' +
-                                '<div class="form-group">' +
-                                '<label for="id_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label>' +
-                                '<div class="col-sm-10">' +
-                                ' <input class="form-control" id="Id_Escola_add" disabled >' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="Nome_Escola_add" autofocus>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="Morada_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="Morada_Escola_add" autofocus>' +
-                                '</div>' +
-                                '</div> ' +
-                                '<div class="form-group">' +
-                                '<label for="Contacto_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="Contacto_Escola_add" autofocus>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="Agrupamento_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label>' +
-                                '<div class="col-sm-10">' +
-                                '<select id="Agrupamento_Escola_add" class="form-control"  >' +
-                                '<option selected disabled>Seleccione o Agrupamento</option>' +
-                                '</select>' +
-                                '</div>' +
-                                '</div> ' +
-                                '</form>' +
-                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Escola">';
+                        $("body").find("#form-aluno").css("display", "none");
+                        $("body").find("#form-professor").css("display", "none");
+                        $("body").find("#form-agrupamento").css("display", "none");
                         break;
                     case "adicionarAgrupamento":
                         newHeader = "Adicionar Novo Agrupamento";
                         newSrc = newSrc + "userAgrupamento.png";
-                        htmlModel = '<form class="form-horizontal">' +
-                                '<div class="form-group">' +
-                                '<label for="Id_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>' +
-                                '<div class="col-sm-10">' +
-                                ' <input class="form-control" id="Id_Agrupamento_add" disabled >' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="form-group">' +
-                                '<label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>' +
-                                '<div class="col-sm-10">' +
-                                '<input class="form-control" id="Nome_Agrupamento_add" autofocus>' +
-                                '</div>' +
-                                '</div>' +
-                                '</form>' +
-                                '<input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round" rel="Agrupamento">';
+                        $("body").find("#form-aluno").css("display", "none");
+                        $("body").find("#form-professor").css("display", "none");
+                        $("body").find("#form-escola").css("display", "none");
 
                         break;
                     default:
