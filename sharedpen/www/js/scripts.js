@@ -88,6 +88,38 @@ $(document).ready(function () {
         });
         });
         
+    
+        $("body").on('click', "#guardarEditEscola", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateEscolas",
+            
+            
+            
+            data: {
+                id: $("#Id_Escola_edit").val(),
+                nome: $("#Nome_Escola_edit").val(),
+                morada: $("#Morada_Escola_edit").val(),
+                contacto: $("#Contacto_Escola_edit").val(),
+                id_agrupamento: $("#Agrupamento_Escola_edit").val()
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
+
+            },
+            error: function (error) {
+        
+            }
+        });
+        });
+    
+    
+    
+    
         //$("body").on('click', "#inputSearch", searchUtilizadores());
 
         //console.log($(this).attr("rel"));    
@@ -147,7 +179,6 @@ $(document).ready(function () {
 //                    }
 //                });
 //    });
-
 
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
@@ -238,6 +269,48 @@ $(document).ready(function () {
                     
                 break; 
                 
+                
+                
+                
+                case "escola":
+                
+                    
+                    addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
+                    if (currentPosition != backArray.length) {
+                        backArray.splice(currentPosition, backArray.length - currentPosition);
+                        folderArray.splice(currentPosition, folderArray.length - currentPosition);
+                    }
+
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getEscolas/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        //$("#userImage").attr('src', data[0].avatar);
+                        $("#Id_Escola_edit").val(data[0].id);
+                        $("#Nome_Escola_edit").val(data[0].nome);
+                        $("#Morada_Escola_edit").val(data[0].morada);
+                        $("#Contacto_Escola_edit").val(data[0].contacto);
+                        $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
+
+                        
+                        $("body").find("#loading").remove();
+                        
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                    
+                break; 
         }
             
         
@@ -2551,7 +2624,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].contacto + "</td>" +
                                     "<td>" + data[i].nome_agrupamento + "</td>" +
                                     '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">' +
+                                    '<div rel=' + data[i].id + ' class="editInfo" data-type="escola" data-folder="html" data-layout="EditarEscola.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
