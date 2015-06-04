@@ -1606,11 +1606,6 @@ $(document).ready(function () {
     $("body").on("click", ".adicionarEntity", function () {
         var id = $(this).attr("id");
         $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getCriationPage",
-            dataType: 'json',
-            success: function (data) {
                 var htmlModel = "";
                 var newSrc = "../img/";
                 var newHeader = "";
@@ -1653,13 +1648,7 @@ $(document).ready(function () {
                 $("body").find("#add-Entity-Image").attr("src", newSrc);
                 $("body").find("#div-Adicionar-Entity").append(htmlModel);
                 $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os modelos selecionado.\n\Tente novamente.");
-                console.log(JSON.stringify(error));
-            }
-        });
+            
     });
 
     $("body").on("click", ".selectModelo", function () {
