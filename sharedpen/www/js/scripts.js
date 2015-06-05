@@ -33,7 +33,6 @@ $(document).ready(function () {
     $("body").on('click', "#guardarEditAluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        alert($("#escola_aluno_edit option:selected").text());
         $.ajax({
             type: "POST",
             url: "/updateAluno",
@@ -70,7 +69,7 @@ $(document).ready(function () {
                 id: $("#Id_Professor_edit").val(),
                 username: $("#username_Professor_edit").val(),
                 nome: $("#Nome_Professor_edit").val(),
-                id_agrupamento: $("#Agrupamento_Professor_edit").val(),
+                id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
                 email: $("#Email_Professor_edit").val()
             },
             // contentType: "application/json; charset=utf-8",
@@ -350,6 +349,25 @@ $(document).ready(function () {
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
+                    url: "/getsAllAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar="";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                           htmlVar += "<option value="+data[i].id+">"+ data[i].nome+    "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#Agrupamento_Professor_edit").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });  
+                
+                $.ajax({
+                    type: "GET",
                     url: "/getProfessores/" + $(this).attr("rel"),
                     dataType: 'json',
                     success: function (data) {
@@ -358,9 +376,10 @@ $(document).ready(function () {
                         $("#Id_Professor_edit").val(data[0].id);
                         $("#username_Professor_edit").val(data[0].username);
                         $("#Nome_Professor_edit").val(data[0].nome_professor);
-                        $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
                         $("#Email_Professor_edit").val(data[0].email);
+                        $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
                         $("body").find("#loading").remove();
+
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
