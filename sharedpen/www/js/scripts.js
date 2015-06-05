@@ -47,15 +47,12 @@ $(document).ready(function () {
                 turma: $("#turma_aluno_edit").val(),
                 ano: $("#ano_aluno_edit").val()
             },
-            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                //alert(data);
                 addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
             },
             error: function (error) {
-                // alert("ERRO HASH");
-                //console.log(JSON.stringify(error));
+                console.log(JSON.stringify(error));
             }
         });
         });
@@ -113,7 +110,6 @@ $(document).ready(function () {
             }
         });
         });
-    
         //fazer update a agrupamento
         $("body").on('click', "#guardarEditAgrupamento", function (e) {
         e.stopPropagation();
@@ -129,6 +125,35 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
+            },
+            error: function (error) {
+        
+            }
+        });
+        });
+    
+    $("body").on('click', ".editState", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var est;
+            if($(this).find("img").attr("src")=="../img/green.png"){
+                    est=0;
+                }
+        else{
+            est=1;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/updateState",
+            data: {
+                user_id: $(this).attr("rel"),
+                type: $(this).data("type"),
+                state:est
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
             },
             error: function (error) {
         
@@ -2439,7 +2464,17 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image"  src="../img/delete_40.png"></td>' +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id_user + ' class="editState" data-type="aluno">' +
+                                    '<img class="text-center image" width="35"';
+                            if(data[i].active == "1"){
+                                htmlVar +=' src="../img/green.png">';
+                            }
+                            else{
+                                htmlVar +=' src="../img/red.png">';
+                            }
+                                    '</div>' +
+                                    '</td>' +
                                     "</tr>";
                         }
                         $("body").find("#loading").remove();
@@ -2619,46 +2654,6 @@ function searchUtilizadores(data, txt){
             break;
     }
 }
-
-// Delete User
-//function deleteUser(event) {
-//
-//    event.preventDefault();
-//
-//    // Pop up a confirmation dialog
-//    var confirmation = confirm('Are you sure you want to delete this user?');
-//
-//    alert();
-//    // Check and make sure the user confirmed
-//    if (confirmation === true) {
-//
-//        // If they did, do our delete
-//        $.ajax({
-//            type: 'GET',
-//            url: '/users/deleteuser/' + $(this).attr('rel')
-//        }).done(function( response ) {
-//
-//            // Check for a successful (blank) response
-//            if (response.msg === '') {
-//            }
-//            else {
-//                alert('Error: ' + response.msg);
-//            }
-//
-//            // Update the table
-//            populateTable();
-//
-//        });
-//
-//    }
-//    else {
-//
-//        // If they said no to the confirm, do nothing
-//        return false;
-//
-//    }
-//
-//};
 
 /**
  * Ajusta os elementos do ecram principal
