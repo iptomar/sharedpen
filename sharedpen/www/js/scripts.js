@@ -2606,7 +2606,7 @@ function searchUtilizadores(data, txt) {
                                     '</td>' +
                                     '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
                                     "</tr>";
-                        }
+                
 
             break;
         case professor:
