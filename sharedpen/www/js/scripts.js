@@ -33,6 +33,7 @@ $(document).ready(function () {
     $("body").on('click', "#guardarEditAluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
+        alert($("#escola_aluno_edit").find("selected").val());
         $.ajax({
             type: "POST",
             url: "/updateAluno",
@@ -172,7 +173,6 @@ $(document).ready(function () {
             }
         });
         });
-    btnAdicionarEntity
     $("body").on('click', "#btnAdicionarEntity", function (e) {
         e.stopPropagation();
         e.preventDefault();
