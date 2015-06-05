@@ -33,7 +33,7 @@ $(document).ready(function () {
     $("body").on('click', "#guardarEditAluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        alert($("#escola_aluno_edit").find("selected").val());
+        alert($("#escola_aluno_edit option:selected").text());
         $.ajax({
             type: "POST",
             url: "/updateAluno",
@@ -45,7 +45,7 @@ $(document).ready(function () {
                 numAluno: $("#numero_aluno_edit").val(),
                 turma: $("#turma_aluno_edit").val(),
                 ano: $("#ano_aluno_edit").val(),
-                id_escola: $("#escola_aluno_edit").find("selected").val()
+                id_escola: $("#escola_aluno_edit option:selected").val()
 
             },
             dataType: 'json',
