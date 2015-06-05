@@ -28,10 +28,8 @@ var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
 $(document).ready(function () {
-
-    //backoffice
-
-
+    //--------------------------BACKOFFICE----------------------------------------
+    //fazer update a aluno
     $("body").on('click', "#guardarEditAluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -60,6 +58,7 @@ $(document).ready(function () {
         });
     });
 
+    //fazer update a professor
     $("body").on('click', "#guardarEditProfessor", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -86,7 +85,7 @@ $(document).ready(function () {
         });
     });
 
-
+    //fazer update a escola
     $("body").on('click', "#guardarEditEscola", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -112,6 +111,7 @@ $(document).ready(function () {
         });
     });
 
+    //fazer update a agrupamento
     $("body").on('click', "#guardarEditAgrupamento", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -201,17 +201,13 @@ $(document).ready(function () {
         switch (type) {
 
             case "aluno":
-
-
                 addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
-
                 currentPosition += 1;
                 $("body").append(wait);
                 $.ajax({
@@ -229,9 +225,7 @@ $(document).ready(function () {
                         $("#ano_aluno_edit").val(data[0].ano);
                         $("#escola_aluno_edit").append(
                                 $('<option></option>').val(data[0].nome_escola).html(data[0].nome_escola));
-
                         $("body").find("#loading").remove();
-
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -239,22 +233,16 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-
                 break;
 
-
             case "professor":
-
-
                 addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
-
                 currentPosition += 1;
                 $("body").append(wait);
                 $.ajax({
@@ -269,10 +257,7 @@ $(document).ready(function () {
                         $("#Nome_Professor_edit").val(data[0].nome_professor);
                         $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
                         $("#Email_Professor_edit").val(data[0].email);
-
-
                         $("body").find("#loading").remove();
-
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -280,24 +265,15 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-
                 break;
-
-
-
-
             case "escola":
-
-
                 addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
-
                 currentPosition += 1;
                 $("body").append(wait);
                 $.ajax({
@@ -312,10 +288,7 @@ $(document).ready(function () {
                         $("#Morada_Escola_edit").val(data[0].morada);
                         $("#Contacto_Escola_edit").val(data[0].contacto);
                         $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
-
-
                         $("body").find("#loading").remove();
-
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -323,21 +296,16 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-
                 break;
 
             case "agrupamento":
-
-
                 addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
-
                 currentPosition += 1;
                 $("body").append(wait);
                 $.ajax({
@@ -349,10 +317,7 @@ $(document).ready(function () {
                         //$("#userImage").attr('src', data[0].avatar);
                         $("#Id_Agrupamento_edit").val(data[0].id);
                         $("#Nome_Agrupamento_edit").val(data[0].nome);
-
-
                         $("body").find("#loading").remove();
-
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -360,12 +325,7 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-
-                break;
         }
-
-
-
     });
 
     $.ajaxSetup({async: false});
@@ -2515,6 +2475,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 });
 
                 break;
+
             case "GerirAgrupamentos.html":
                 $("body").append(wait);
                 $.ajax({
