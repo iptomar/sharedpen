@@ -133,6 +133,8 @@ $(document).ready(function () {
     $("body").on('click', ".editState", function (e) {
         e.stopPropagation();
         e.preventDefault();
+        var tipo=$(this).data("type");
+        var user =$(this).attr("rel");
         var est;
             if($(this).find("img").attr("src")=="../img/green.png"){
                     est=0;
@@ -144,14 +146,65 @@ $(document).ready(function () {
             type: "POST",
             url: "/updateState",
             data: {
-                user_id: $(this).attr("rel"),
-                type: $(this).data("type"),
+                user_id: user,
+                type: tipo,
                 state:est
             },
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                switch (tipo){
+                        case "aluno":
+                            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                        
+                        break;
+                        case "professor":
+                        alert();
+                            addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                        break;
+                }
+                
+            },
+            error: function (error) {
+        
+            }
+        });
+        });
+    btnAdicionarEntity
+    $("body").on('click', "#btnAdicionarEntity", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var tipo=$(this).data("type");
+        var user =$(this).attr("rel");
+        var est;
+            if($(this).find("img").attr("src")=="../img/green.png"){
+                    est=0;
+                }
+        else{
+            est=1;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/updateState",
+            data: {
+                user_id: user,
+                type: tipo,
+                state:est
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                switch (tipo){
+                        case "aluno":
+                            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                        
+                        break;
+                        case "professor":
+                        alert();
+                            addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                        break;
+                }
+                
             },
             error: function (error) {
         
@@ -2462,7 +2515,17 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
+                                '<td class="image">' +
+                                    '<div rel=' + data[i].id + ' class="editState" data-type="professor">' +
+                                    '<img class="text-center image" width="35"';
+                            if(data[i].active == "1"){
+                                htmlVar +=' src="../img/green.png">';
+                            }
+                            else{
+                                htmlVar +=' src="../img/red.png">';
+                            }
+                                    '</div>' +
+                                    '</td>' +
                                     "</tr>";
                         }
 
