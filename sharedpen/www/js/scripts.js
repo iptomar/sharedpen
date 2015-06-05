@@ -43,7 +43,9 @@ $(document).ready(function () {
                 nomeAluno: $("#nome_aluno_edit").val(),
                 numAluno: $("#numero_aluno_edit").val(),
                 turma: $("#turma_aluno_edit").val(),
-                ano: $("#ano_aluno_edit").val()
+                ano: $("#ano_aluno_edit").val(),
+                id_escola: $("#escola_aluno_edit").find("selected").val()
+
             },
             dataType: 'json',
             success: function (data) {
@@ -293,19 +295,39 @@ $(document).ready(function () {
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
+                    url: "/getAllEscolas",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar="";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                           htmlVar += "<option value="+data[i].id+">"+ data[i].nome+    "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#escola_aluno_edit").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });  
+
+                $.ajax({
+                    type: "GET",
                     url: "/getAluno/" + $(this).attr("rel"),
                     dataType: 'json',
                     success: function (data) {
-                        var htmlVar;
-                        //$("#userImage").attr('src', data[0].avatar);
                         $("#Id_aluno_edit").val(data[0].id_user);
                         $("#username_aluno_edit").val(data[0].username);
                         $("#nome_aluno_edit").val(data[0].nome_aluno);
                         $("#numero_aluno_edit").val(data[0].num_aluno);
                         $("#turma_aluno_edit").val(data[0].turma);
                         $("#ano_aluno_edit").val(data[0].ano);
-                        $("#escola_aluno_edit").append(
-                                $('<option></option>').val(data[0].nome_escola).html(data[0].nome_escola));
+
+                        //$('#escola_aluno_edit select').val(data[0].id_escola);
+                        //$('#escola_aluno_edit option').eq(data[0].id_escola).prop('selected', true);
+                        $("#escola_aluno_edit").val(data[0].id_escola);
+
                         $("body").find("#loading").remove();
                     },
                     error: function (error) {
@@ -2631,32 +2653,23 @@ function searchUtilizadores(data, txt) {
 
             $("body").append(wait);
 
-            var htmlVar = "";
-            var search = "";
-
-            for (var i = 0, max = data.length; i < max; i++) {
-                search = "/" + txt + "/g";
-                if (data[i].username === txt)
-                    htmlVar += "<tr>";
-                htmlVar += "<td>" + data[i].id_user + "</td>" +
-                        "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                        "<td>" + data[i].username + "</td>" +
-                        "<td>" + data[i].nome_aluno + "</td>" +
-                        "<td>" + data[i].num_aluno + "</td>" +
-                        "<td>" + data[i].turma + "</td>" +
-                        "<td>" + data[i].ano + "</td>" +
-                        "<td>" + data[i].nome_escola + "</td>" +
-                        '<td class="image">' +
-                        '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
-                        '<img class="text-center image" src="../img/edit_40.png">' +
-                        '</div>' +
-                        '</td>' +
-                        '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
-                        "</tr>";
-            }
-
-            $("body").find("#loading").remove();
-            $("body").find("#gerirEntitiesTable").append(htmlVar);
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id_user + "</td>" +
+                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                    "<td>" + data[i].username + "</td>" +
+                                    "<td>" + data[i].nome_aluno + "</td>" +
+                                    "<td>" + data[i].num_aluno + "</td>" +
+                                    "<td>" + data[i].turma + "</td>" +
+                                    "<td>" + data[i].ano + "</td>" +
+                                    "<td>" + data[i].id_escola + "</td>" +
+                                    '<td class="image">' +
+                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<img class="text-center image" src="../img/edit_40.png">' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                                    "</tr>";
+                
 
             break;
         case professor:
