@@ -130,19 +130,19 @@ $(document).ready(function () {
 
             }
         });
-        });
-    
+    });
+
     $("body").on('click', ".editState", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        var tipo=$(this).data("type");
-        var user =$(this).attr("rel");
+        var tipo = $(this).data("type");
+        var user = $(this).attr("rel");
         var est;
-            if($(this).find("img").attr("src")=="../img/green.png"){
-                    est=0;
-                }
-        else{
-            est=1;
+        if ($(this).find("img").attr("src") == "../img/green.png") {
+            est = 0;
+        }
+        else {
+            est = 1;
         }
         $.ajax({
             type: "POST",
@@ -150,39 +150,39 @@ $(document).ready(function () {
             data: {
                 user_id: user,
                 type: tipo,
-                state:est
+                state: est
             },
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                switch (tipo){
-                        case "aluno":
-                            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                        
+                switch (tipo) {
+                    case "aluno":
+                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+
                         break;
-                        case "professor":
+                    case "professor":
                         alert();
-                            addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                        addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
                         break;
                 }
-                
+
             },
             error: function (error) {
-        
+
             }
         });
-        });
+    });
     $("body").on('click', "#btnAdicionarEntity", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        var tipo=$(this).data("type");
-        var user =$(this).attr("rel");
+        var tipo = $(this).data("type");
+        var user = $(this).attr("rel");
         var est;
-            if($(this).find("img").attr("src")=="../img/green.png"){
-                    est=0;
-                }
-        else{
-            est=1;
+        if ($(this).find("img").attr("src") == "../img/green.png") {
+            est = 0;
+        }
+        else {
+            est = 1;
         }
         $.ajax({
             type: "POST",
@@ -190,31 +190,31 @@ $(document).ready(function () {
             data: {
                 user_id: user,
                 type: tipo,
-                state:est
+                state: est
             },
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                switch (tipo){
-                        case "aluno":
-                            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                        
+                switch (tipo) {
+                    case "aluno":
+                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+
                         break;
-                        case "professor":
+                    case "professor":
                         alert();
-                            addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                        addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
                         break;
                 }
-                
+
             },
             error: function (error) {
-        
+
             }
         });
-        });
-    
-    
-        //$("body").on('click', "#inputSearch", searchUtilizadores());
+    });
+
+
+    //$("body").on('click', "#inputSearch", searchUtilizadores());
 
     //$("body").on('click', "#inputSearch", searchUtilizadores());
 
@@ -297,9 +297,9 @@ $(document).ready(function () {
                     url: "/getAllEscolas",
                     dataType: 'json',
                     success: function (data) {
-                        var htmlVar="";
+                        var htmlVar = "";
                         for (var i = 0, max = data.length; i < max; i++) {
-                           htmlVar += "<option value="+data[i].id+">"+ data[i].nome+    "</option>";
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
                         }
                         $("body").find("#loading").remove();
                         $("body").find("#escola_aluno_edit").append(htmlVar);
@@ -309,7 +309,7 @@ $(document).ready(function () {
                         alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
                         console.log(JSON.stringify(error));
                     }
-                });  
+                });
 
                 $.ajax({
                     type: "GET",
@@ -352,9 +352,9 @@ $(document).ready(function () {
                     url: "/getsAllAgrupamentos",
                     dataType: 'json',
                     success: function (data) {
-                        var htmlVar="";
+                        var htmlVar = "";
                         for (var i = 0, max = data.length; i < max; i++) {
-                           htmlVar += "<option value="+data[i].id+">"+ data[i].nome+    "</option>";
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
                         }
                         $("body").find("#loading").remove();
                         $("body").find("#Agrupamento_Professor_edit").append(htmlVar);
@@ -364,8 +364,8 @@ $(document).ready(function () {
                         alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
                         console.log(JSON.stringify(error));
                     }
-                });  
-                
+                });
+
                 $.ajax({
                     type: "GET",
                     url: "/getProfessores/" + $(this).attr("rel"),
@@ -1359,7 +1359,13 @@ $(document).ready(function () {
                 } else if (idDiv.indexOf("image") !== -1) {
                     page += "<div>" + $(this)[0].outerHTML + "</div>";
                 } else if (idDiv.indexOf("canvas") !== -1) {
-                    page += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
+                    var idToll = "." + $(this).parent().parent().attr('class').split(' ')[1];
+                    var iddd = $(this).attr('id');
+                    var tabNumber = iddd.match(/\d+/)[0];
+                    var thisId = "tab" + tabNumber + "-Mycanvas";
+                    var drawCanvas = hash[idToll].modelo.arrayElem[thisId];
+                    console.log(drawCanvas.drawObj.getImgCanvas());
+                    page += "<div>" + drawCanvas.drawObj.getImgCanvas() + "</div>";
                 }
             });
             pages.push(page);
@@ -2509,16 +2515,16 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                '<td class="image">' +
-                                '<div rel=' + data[i].id_user + ' class="editState" data-type="aluno">' +
+                                    '<td class="image">' +
+                                    '<div rel=' + data[i].id_user + ' class="editState" data-type="aluno">' +
                                     '<img class="text-center image" width="35"';
-                            if(data[i].active == "1"){
-                                htmlVar +=' src="../img/green.png">';
+                            if (data[i].active == "1") {
+                                htmlVar += ' src="../img/green.png">';
                             }
-                            else{
-                                htmlVar +=' src="../img/red.png">';
+                            else {
+                                htmlVar += ' src="../img/red.png">';
                             }
-                                    '</div>' +
+                            '</div>' +
                                     '</td>' +
                                     "</tr>";
                         }
@@ -2556,16 +2562,16 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                '<td class="image">' +
+                                    '<td class="image">' +
                                     '<div rel=' + data[i].id + ' class="editState" data-type="professor">' +
                                     '<img class="text-center image" width="35"';
-                            if(data[i].active == "1"){
-                                htmlVar +=' src="../img/green.png">';
+                            if (data[i].active == "1") {
+                                htmlVar += ' src="../img/green.png">';
                             }
-                            else{
-                                htmlVar +=' src="../img/red.png">';
+                            else {
+                                htmlVar += ' src="../img/red.png">';
                             }
-                                    '</div>' +
+                            '</div>' +
                                     '</td>' +
                                     "</tr>";
                         }
@@ -2672,23 +2678,23 @@ function searchUtilizadores(data, txt) {
 
             $("body").append(wait);
 
-                            htmlVar += "<tr>";
-                            htmlVar += "<td>" + data[i].id_user + "</td>" +
-                                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                                    "<td>" + data[i].username + "</td>" +
-                                    "<td>" + data[i].nome_aluno + "</td>" +
-                                    "<td>" + data[i].num_aluno + "</td>" +
-                                    "<td>" + data[i].turma + "</td>" +
-                                    "<td>" + data[i].ano + "</td>" +
-                                    "<td>" + data[i].id_escola + "</td>" +
-                                    '<td class="image">' +
-                                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
-                                    '<img class="text-center image" src="../img/edit_40.png">' +
-                                    '</div>' +
-                                    '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
-                                    "</tr>";
-                
+            htmlVar += "<tr>";
+            htmlVar += "<td>" + data[i].id_user + "</td>" +
+                    "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                    "<td>" + data[i].username + "</td>" +
+                    "<td>" + data[i].nome_aluno + "</td>" +
+                    "<td>" + data[i].num_aluno + "</td>" +
+                    "<td>" + data[i].turma + "</td>" +
+                    "<td>" + data[i].ano + "</td>" +
+                    "<td>" + data[i].id_escola + "</td>" +
+                    '<td class="image">' +
+                    '<div class="carregarLayout" data-folder="html" data-layout="EditarAluno.html">' +
+                    '<img class="text-center image" src="../img/edit_40.png">' +
+                    '</div>' +
+                    '</td>' +
+                    '<td class="image"><img class="text-center image" rel=' + data[i].id_user + ' src="../img/delete_40.png"></td>' +
+                    "</tr>";
+
 
             break;
         case professor:

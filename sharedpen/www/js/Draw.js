@@ -230,9 +230,44 @@ Draw.prototype.setApagarTudo = function (obj) {
 };
 
 Draw.prototype.getImgCanvas = function () {
+//    var canvas = document.getElementById(this.id);
+//    var ctx = canvas.getContext("2d");
+//    var image = new Image();
+//    var img = new Image();
+//    var a = "data:image/png;base64,";
+//    if (typeof this.ArrayCanvasClients !== "undefined") {
+//        for (var i in   this.ArrayCanvasClients) {
+//            var canvas2 = this.VerificaUser(i);
+//            var ctx2 = canvas2.getContext('2d');
+//            img.src = canvas2.toDataURL("image/png");
+//           console.log(img.src);
+//            
+//        }
+//    }
+////    console.log(a);
+////    image.src = canvas.toDataURL("image/png");
+////    return canvas.
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
     var image = new Image();
     image.src = canvas.toDataURL("image/png");
     return canvas.toDataURL("image/png");
 };
+//var canvas = document.getElementById('canvas');
+//var context = canvas.getContext('2d');
+//Image img1 = new Image();
+//Image img2 = new Image();
+//
+//img1.onload = function() {
+//    canvas.width = img1.width;
+//    canvas.height = img1.height;
+//    img2.src = 'imgfile2.png';
+//};
+//img2.onload = function() {
+//    context.globalAlpha = 1.0;
+//    context.drawImage(img1, 0, 0);
+//    context.globalAlpha = 0.5; //Remove if pngs have alpha
+//    context.drawImage(img2, 0, 0);
+//};        
+//
+//img1.src = 'imgfile1.png';
