@@ -505,10 +505,11 @@ $(document).ready(function () {
             socket.emit("myname", username);
             userColor = hexToRgb(0, socket.id, username);
             var data = {
-                folder: "html_Work_Models",
+                folder: "Menu_Navegacao",
                 idtab: "",
                 idObj: ""
             };
+            console.log("before getfiles2folderfunction");
             getFilesToFolder(socket, data);
             $("#msg1").focus();
         } else {
@@ -1537,7 +1538,7 @@ $(document).ready(function () {
                     });
                 }
                 break;
-            case "html_Work_Models":
+            case "Menu_Navegacao":
                 var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
                 for (var i = 0, max = data.length; i < max; i++) {
                     allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
@@ -1641,7 +1642,7 @@ $(document).ready(function () {
                 });
                 LivroPoemas = new Array();
                 var data = {
-                    folder: "html_Work_Models",
+                    folder: "Menu_Navegacao",
                     idtab: "",
                     idObj: ""
                 };
@@ -2017,7 +2018,7 @@ $(document).ready(function () {
         });
 
 
-        addLayoutToDiv("#contentor", "html", "Livro.html", null);
+        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
 
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -2219,6 +2220,7 @@ function castTab(tabToCast) {
  * @param {type} data
  * @returns {undefined} */
 function getFilesToFolder(sckt, data) {
+    console.log("inside getfilestofolder funtion");
     sckt.emit("getFiles2Folder", data);
 }
 
