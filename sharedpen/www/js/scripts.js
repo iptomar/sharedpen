@@ -779,6 +779,7 @@ $(document).ready(function () {
                     if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
                         e.preventDefault(); //Prevent default browser behavior
                         edit.createPara(edit.socketId, e.target.id);
+                        var kk = Object.keys(hash);
                         socket.emit('msgappend', {
                             html: $("#" + edit.idpai).html(),
                             textSinc: $(e.target).text(),
@@ -787,7 +788,8 @@ $(document).ready(function () {
                             id: edit.idpai,
                             novoPara: true,
                             idPara: e.target.id,
-                            parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
+                            parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1],
+                            'Pid' : hash[kk[0]].projID
                         });
                     } else {
                         alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
@@ -810,6 +812,8 @@ $(document).ready(function () {
                 e.preventDefault(); //Prevent default browser behavior
             }
             edit.atualPara = e.target.id;
+            console.log(hash[".txtTab1"].projID)
+            var kk = Object.keys(hash);
             socket.emit('msgappend', {
                 html: $("#" + edit.idpai).html(),
                 textSinc: $(e.target).text(),
@@ -818,7 +822,8 @@ $(document).ready(function () {
                 id: edit.idpai,
                 novoPara: newPara,
                 idPara: e.target.id,
-                parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1]
+                parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1],
+                'Pid' : hash[kk[0]].projID
             });
             newPara = false;
         }
@@ -844,7 +849,10 @@ $(document).ready(function () {
 
     $("body").on('click', "#bt_guardar", function () {
         var hashtoSave;
-        socket.emit('reqHash', {});
+        var kk = Object.keys(hash);
+        socket.emit('reqHash', {
+            id: hash[kk[0]].projID
+        });
 
         socket.on('getHash', function (data) {
             hashtoSave = data.hashh
@@ -943,7 +951,7 @@ $(document).ready(function () {
                     noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
                     creator: userNumber,
                     //por id da nova TAB
-                    idProj: tabTest.projID
+                    Pid: tabTest.projID
                 });
                 $("body").find("#loading").remove();
                 $("body").find("#divchangemodel").remove();
@@ -1154,6 +1162,9 @@ $(document).ready(function () {
         for (var item in hash) {
             newHash[item] = castTab(hash[item]);
         }
+        for (var item in newHash) {
+            newHash[item].projID = idProj ;
+        }
         hash = newHash;
         console.log(hash);
         var i = 0;
@@ -1163,9 +1174,9 @@ $(document).ready(function () {
             updateTab(i, ".txtTab" + i, userNumber);
         }
         socket.emit('storedhash', {
-            storedhash: hash
+            storedhash: hash,
+            id: idProj
         });
-
 
     });
 
@@ -1186,12 +1197,14 @@ $(document).ready(function () {
             $("body").find('#' + imgId).attr('src', evt.target.result);
             if (imgId !== "userImage" && imgId !== "image" && imgId !== "add-Entity-Image") {
                 // envia as informacoes da nova imagem para os outros clientes
+                var kk = Object.keys(hash);
                 socket.emit('msgappend', {
                     id: imgId,
                     name: file.name,
                     'imageData': evt.target.result,
                     'tipo': $("body").find('#' + imgId).prop("tagName"),
-                    'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1]
+                    'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1],
+                    'Pid' : hash[kk[0]].projID
 
                 });
             }
@@ -1240,12 +1253,14 @@ $(document).ready(function () {
             reader.onload = function (evt) {
                 if (idImg !== "userImage" && idImg !== "image") {
                     // envia as informacoes da nova imagem para os outros clientes
+                    var kk = Object.keys(hash);
                     socket.emit('msgappend', {
                         id: idImg,
                         name: file.name,
                         'imageData': evt.target.result,
                         'tipo': $("body").find('#' + idImg).prop("tagName"),
-                        'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1]
+                        'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1],
+                        'Pid' : hash[kk[0]].projID
                     });
                 }
                 $("body").find('#' + idImg).attr('src', evt.target.result);
@@ -1414,6 +1429,7 @@ $(document).ready(function () {
         var imgSrc = $(this).children("img").attr("src");
         var imgData = getBase64Image(imgSrc);
         hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(imgData);
+        var kk = Object.keys(hash);
         socket.emit('drawClick', {
             id: cnv,
             type: "backgoundImage",
@@ -1422,7 +1438,8 @@ $(document).ready(function () {
             socket: socket.id,
             canvas: imgSrc,
             parent: Thid,
-            image: imgData
+            image: imgData,
+            Pid: hash[kk[0]].projID
         });
         $("#divGaleria").animate({
             "left": "-30%"
@@ -2435,12 +2452,15 @@ function getArrayElementObj(array, id) {
  * @param {type} stk
  * @returns {undefined} */
 function addLayoutToDiv(local, folder, layout, stk) {
-
+    var kk = Object.keys(hash);
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
+            
             case "Livro.html":
                 if (stk !== null) {
-                    stk.emit("getAllTabs");
+                    stk.emit("getAllTabs",{
+                        Pid: hash[kk[0]].projID
+                    });
                 }
                 $('#bt_PDF').css({
                     'visibility': "visible"
