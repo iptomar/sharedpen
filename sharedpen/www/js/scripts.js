@@ -2017,7 +2017,7 @@ $(document).ready(function () {
         });
 
 
-        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+        addLayoutToDiv("#contentor", "html", "Livro.html", null);
 
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
