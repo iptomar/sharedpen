@@ -23,7 +23,7 @@ var hash = {};
 var tabTest;
 var LivroPoemas = new Array();
 var backArray = ["home"];
-var folderArray = ["html_Work_Models"];
+var folderArray = ["Menu_Navegacao"];
 var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
