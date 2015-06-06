@@ -6,6 +6,7 @@ var TextEditor = function (idpai, user, cor, socketCreator, userNum) {
     this.valPId = 1;
     this.atualPara = "";
     this.creator = socketCreator;
+    
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
     }

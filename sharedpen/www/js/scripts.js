@@ -552,20 +552,23 @@ $(document).ready(function () {
      * evento do socket para desenhar o que recebe pelo socket
      */
     socket.on('draw', function (data) {
-        if (typeof hash["." + data.data.parent] !== "undefined") {
-            var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
-            cmvv.drawOtherUser(
-                    data.data.color,
-                    data.data.sizeCursor,
-                    data.data.x,
-                    data.data.y,
-                    data.data.type,
-                    data.data.socket,
-                    //envia a imagem
-                    data.data.image,
-                    data.data.apagar,
-                    data.data.apagarTudo
-                    );
+        var kk = Object.keys(hash)
+        if (hash[kk[0]].projID === data.Pid) {
+            if (typeof hash["." + data.data.parent] !== "undefined") {
+                var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
+                cmvv.drawOtherUser(
+                        data.data.color,
+                        data.data.sizeCursor,
+                        data.data.x,
+                        data.data.y,
+                        data.data.type,
+                        data.data.socket,
+                        //envia a imagem
+                        data.data.image,
+                        data.data.apagar,
+                        data.data.apagarTudo
+                        );
+            }
         }
     });
     /**
@@ -605,6 +608,7 @@ $(document).ready(function () {
             var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
             var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
             cmv.draw(x, y, type, sizeCurs);
+            var kk = Object.keys(hash);
             socket.emit('drawClick', {
                 id: thisId,
                 x: x,
@@ -617,7 +621,8 @@ $(document).ready(function () {
                 //imagem do meu canvas!!
                 canvas: hash[idToll].modelo.arrayElem[thisId].drawObj.getCanvas().toDataURL(),
                 parent: $(this).parent().parent().parent().attr('class').split(' ')[1],
-                apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo()
+                apagarTudo: hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getApagarTudo(),
+                Pid: hash[kk[0]].projID
             });
             //                        alert('Left Mouse button pressed.');
         } else if (e.which === 2) {
@@ -733,16 +738,20 @@ $(document).ready(function () {
     // recebe o codigo ASCII da tecla recebida, converte-a para
     // carater e adiciona-o na posicao coreta
     socket.on('msgappend', function (data) {
-        switch (data.tipo) {
-            case "IMG":
-                $("body").find('#' + data.id).attr('src', data.imageData);
-                break;
-            default:
-                if (typeof $("#" + data.id).parent().parent().attr('class') !== "undefined") {
-                    var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1]
-                    var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
-                    editor.setTextEditor(data);
-                }
+        //verificar se o projecto de onde foi emitido é o meu
+        var kk = Object.keys(hash);
+        if (data.Pid === hash[kk[0]].projID) {
+            switch (data.tipo) {
+                case "IMG":
+                    $("body").find('#' + data.id).attr('src', data.imageData);
+                    break;
+                default:
+                    if (typeof $("#" + data.id).parent().parent().attr('class') !== "undefined") {
+                        var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1]
+                        var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
+                        editor.setTextEditor(data);
+                    }
+            }
         }
     });
     /**
@@ -789,7 +798,7 @@ $(document).ready(function () {
                             novoPara: true,
                             idPara: e.target.id,
                             parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1],
-                            'Pid' : hash[kk[0]].projID
+                            'Pid': hash[kk[0]].projID
                         });
                     } else {
                         alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
@@ -823,7 +832,7 @@ $(document).ready(function () {
                 novoPara: newPara,
                 idPara: e.target.id,
                 parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1],
-                'Pid' : hash[kk[0]].projID
+                'Pid': hash[kk[0]].projID
             });
             newPara = false;
         }
@@ -833,13 +842,16 @@ $(document).ready(function () {
      * Evento gerado quando ha alteraçoes nas tabs
      */
     socket.on("TabsChanged", function (data) {
-        if ($.trim(username) !== "") {
-            if (data.op === "remover") {
-                removeTab(data.id);
-            } else {
-                Addtab(data.modelo, data.pos);
-                hash[".txtTab" + data.pos] = castTab(data.tab);
-                updateTab(data.pos, ".txtTab" + data.pos, data.creator);
+        var kk = Object.keys(hash);
+        if (hash[kk[0]].projID === data.Pid) {
+            if ($.trim(username) !== "") {
+                if (data.op === "remover") {
+                    removeTab(data.id);
+                } else {
+                    Addtab(data.modelo, data.pos);
+                    hash[".txtTab" + data.pos] = castTab(data.tab);
+                    updateTab(data.pos, ".txtTab" + data.pos, data.creator);
+                }
             }
         }
     });
@@ -850,11 +862,11 @@ $(document).ready(function () {
     $("body").on('click', "#bt_guardar", function () {
         var hashtoSave;
         var kk = Object.keys(hash);
-        socket.emit('reqHash', {
+        socket.emit('reqHashToSave', {
             id: hash[kk[0]].projID
         });
 
-        socket.on('getHash', function (data) {
+        socket.on('getHashToSave', function (data) {
             hashtoSave = data.hashh
 
             for (item in hashtoSave) {
@@ -938,6 +950,7 @@ $(document).ready(function () {
                 $(".txtTab" + idNum).html(data[0].htmltext);
                 refactorTab(modelo, idNum);
                 addtohash(idNum);
+                var kk = Object.keys(hash);
                 socket.emit('TabsChanged', {
                     //remover ou adicionar
                     op: "adicionar",
@@ -951,7 +964,7 @@ $(document).ready(function () {
                     noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
                     creator: userNumber,
                     //por id da nova TAB
-                    Pid: tabTest.projID
+                    Pid: hash[kk[0]].projID
                 });
                 $("body").find("#loading").remove();
                 $("body").find("#divchangemodel").remove();
@@ -1155,29 +1168,54 @@ $(document).ready(function () {
         tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
         tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
 
-        hash = JSON.parse(tmpArrayProj[idProj]);
-
-        addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-        var newHash = {};
-        for (var item in hash) {
-            newHash[item] = castTab(hash[item]);
-        }
-        for (var item in newHash) {
-            newHash[item].projID = idProj ;
-        }
-        hash = newHash;
-        console.log(hash);
-        var i = 0;
-        for (var item in hash) {
-            i++;
-            Addtab(hash[item].modelo, i);
-            updateTab(i, ".txtTab" + i, userNumber);
-        }
-        socket.emit('storedhash', {
-            storedhash: hash,
+        //verificar se o projecto existe no server
+        socket.emit('reqHash', {
             id: idProj
         });
 
+        var nHash;
+
+        socket.on('getHash', function (data) {
+            //verifica se esta vazio
+            var kk = Object.keys(hash);
+            if (typeof hash[kk[0]] === "undefined") {
+                nHash = data.hashh;
+                //se nao existir no servidor
+                if (typeof nHash === "undefined") {
+                    //vai buscar o da base de dados
+                    hash = JSON.parse(tmpArrayProj[idProj]);
+
+                    addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+                    var newHash = {};
+                    for (var item in hash) {
+                        newHash[item] = castTab(hash[item]);
+                    }
+                    for (var item in newHash) {
+                        newHash[item].projID = idProj;
+                    }
+                    hash = newHash;
+                } else {
+                    addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+                    //se ja existir no servidor
+                    //carrega o do servidor
+                    hash = nHash;
+                }
+                var i = 0;
+                for (var item in hash) {
+                    i++;
+                    Addtab(hash[item].modelo, i);
+                    updateTab(i, ".txtTab" + i, userNumber);
+                }
+                // so poe no servidor se nao existir
+                if (typeof nHash === "undefined") {
+                    //Para por no servidor o hash
+                    socket.emit('storedhash', {
+                        storedhash: hash,
+                        id: idProj
+                    });
+                }
+            }
+        });
     });
 
 
@@ -1204,7 +1242,7 @@ $(document).ready(function () {
                     'imageData': evt.target.result,
                     'tipo': $("body").find('#' + imgId).prop("tagName"),
                     'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1],
-                    'Pid' : hash[kk[0]].projID
+                    'Pid': hash[kk[0]].projID
 
                 });
             }
@@ -1260,7 +1298,7 @@ $(document).ready(function () {
                         'imageData': evt.target.result,
                         'tipo': $("body").find('#' + idImg).prop("tagName"),
                         'parent': $("#" + idImg).parent().parent().attr('class').split(' ')[1],
-                        'Pid' : hash[kk[0]].projID
+                        'Pid': hash[kk[0]].projID
                     });
                 }
                 $("body").find('#' + idImg).attr('src', evt.target.result);
@@ -2455,10 +2493,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
     var kk = Object.keys(hash);
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
-            
+
             case "Livro.html":
                 if (stk !== null) {
-                    stk.emit("getAllTabs",{
+                    stk.emit("getAllTabs", {
                         Pid: hash[kk[0]].projID
                     });
                 }
