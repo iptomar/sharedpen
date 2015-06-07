@@ -4,7 +4,7 @@
         <label form="nomeProjEdit" class="sr-only">Nome do Projecto</label>
         <input id="nomeProjEdit" class="form-control margin-top-bottom" placeholder="Nome do Projecto" autofocus="">
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 row dotted-round-div div-criarproj">
+    <div class="col-xs-12 col-sm-12 col-md-12 row dotted-round-div div-criarproj div-scroll-auto">
         <div class="col-xs-7 col-sm-7 col-md-7 tab-content"> 
             <h2 class="h2">Selecção de Utilizadores</h2>
             <div id="usersTabs" class="col-md-6">
@@ -19,43 +19,44 @@
                         <div class="tab-content">
                             <div class="tab-pane fade in active" id="tab1primary">
                                 <div id="listaUsers" class="col-xs-12 col-sm-12 col-md-12 div-users">
-                                    <select id="userAlunos" class="userList" size="18">
+                                    <select id="alluseralunos" class="userList" size="18">
                                         <optgroup label="Seleccione Alunos para adicionar"></optgroup>            
                                     </select>
                                     <table class="buttonTable">
                                         <tr>
-                                            <td><input id="addButton" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
+                                            <td><input id="addButtonAluno" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
                                         </tr>
                                         <tr>
-                                            <td><input id="removeButton" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
+                                            <td><input id="removeButtonAluno" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
                                         </tr>
                                     </table>
 
-                                    <select class="userList userSelect" size="18">
+                                    <select id="addedAlunos" class="userList userSelect" size="18">
                                         <optgroup label="Alunos adicionados ao Projecto"></optgroup>            
                                     </select>
                                 </div>  
                             </div>
                             <div class="tab-pane fade" id="tab2primary">
                                 <div id="listaUsers" class="col-xs-12 col-sm-12 col-md-12 div-users">
-                                    <select id="userProfessores" class="userList" size="18">
+                                    <select id="alluserProfessores" class="userList" size="18">
                                         <optgroup label="Seleccione Professores para adicionar"></optgroup>            
                                     </select>
                                     <table class="buttonTable">
                                         <tr>
-                                            <td><input id="addButton" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
+                                            <td><input id="addButtonProf" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
                                         </tr>
                                         <tr>
-                                            <td><input id="removeButton" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
+                                            <td><input id="removeButtonProf" class="changeUser btn btn-primary btn-round" type="button" value=""/></td>
                                         </tr>
                                     </table>
 
-                                    <select class="userList userSelect" size="18">
-                                        <optgroup label="Profssores adicionados ao Projecto"></optgroup>            
+                                    <select id="addedProfessores" class="userList userSelect" size="18">
+                                        <optgroup label="Professores adicionados ao Projecto"></optgroup>            
                                     </select>
                                 </div>  
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
         </div>

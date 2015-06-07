@@ -102,13 +102,13 @@
     text-align: center;
 }
 
-#removeButton{
+#removeButtonAluno, #removeButtonProf{
     background-image: url(../img/Minus.png);
     background-repeat: no-repeat;
     background-position:center;
 }
 
-#addButton{
+#addButtonAluno, #addButtonProf{
     background-image: url(../img/add.png);
     background-repeat: no-repeat;
     background-position:center;
@@ -193,7 +193,7 @@
 }
 
 .div-users{
-    min-width: 36.875em;
+    max-width:99%;
     height: 650px;
     margin-top: 5px;
     margin-bottom: 5px;

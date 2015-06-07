@@ -1952,16 +1952,29 @@ $(document).ready(function () {
     });
 
     // selecionar user para participar no projeto
-    $("body").on("click", "#addButton", function () {
-        $(".userSelect").append($("#alluser option:selected").get(0));
-        $("#alluser option:selected").hide(); //css("display", "none");
+    $("body").on("click", "#addButtonAluno", function () {
+        $("#addedAlunos").append($("#alluseralunos option:selected").get(0));
+        $("#alluseralunos option:selected").hide(); //css("display", "none");
     });
 
 
     // (des)selecionar user para participar no projeto
-    $("body").on("click", "#removeButton", function () {
-        var valor = $(".userSelect option:selected").prop("value");
-        $("#alluser option[value=" + valor + "]").show(); //css("display", "inline");
+    $("body").on("click", "#removeButtonAluno", function () {
+        var valor = $("#addedAlunos option:selected").prop("value");
+        console.log(valor);
+        $("#alluseralunos option[value=" + valor + "]").show(); //css("display", "inline");
+
+    });
+     $("body").on("click", "#addButtonProf", function () {
+        $("#addedProfessores").append($("#alluserProfessores option:selected").get(0));
+        $("#alluserProfessores option:selected").hide(); //css("display", "none");
+    });
+
+
+    // (des)selecionar user para participar no projeto
+    $("body").on("click", "#removeButtonProf", function () {
+        var valor = $("#addedProfessores option:selected").prop("value");
+        $("#alluserProfessores option[value=" + valor + "]").show(); //css("display", "inline");
 
     });
 
