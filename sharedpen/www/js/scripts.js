@@ -1136,7 +1136,7 @@ $(document).ready(function () {
                             "<td><a class='' href='#AbrirProj' data-idProj='" + data[proj].id + "' data-folder='html_Work_Models' data-layout='Livro.html'>" + data[proj].nome + "</a></td>" +
                             "<td>" + data[proj].tipo + "</td>" +
                             "<td class='image'>" +
-                            "<div class='carregarLayout' data-folder='html' data-layout='EditarProjecto.html'>" +
+                            "<div class='carregarLayout' data-folder='html' data-layout='EditarProjectos.html'>" +
                             '<img class="text-center image" src="../img/edit_40.png">' +
                             "</div>" +
                             "</td>" +
