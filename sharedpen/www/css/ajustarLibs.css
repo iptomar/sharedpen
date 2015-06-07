@@ -114,6 +114,23 @@
     background-position:center;
 }
 
+#EditarProj_btn {
+    background-image: url(../img/check.png);
+    background-repeat: no-repeat;
+    background-position:right;
+    
+    float:left;
+    border-radius: 10px;
+    margin-left: 180px;
+    margin-top: 280px;
+    
+    width: 200px;
+    height:80px;
+    
+    font-size: 40px;
+    text-align: left;
+}
+
 #Avaliar_btn {
     background-image: url(../img/check.png);
     background-repeat: no-repeat;
@@ -162,13 +179,12 @@
     border:1px solid lightgray;
     border-radius: 5px;
     list-style-type: none; 
-    max-height: 70%;
     max-width: 44%;
     width: 44%;
     overflow-y: scroll;
 }
 .buttonTable{
-    margin-top: 220px;
+    margin-top:120px;
     float:left;
 }
 
@@ -243,6 +259,18 @@
     width: 150px;
     Height: 150px;
     margin-left: 40px;
+}
+
+#usersTabs {
+ width:100%;
+}
+
+#unselectedTab {
+color: black;   
+}
+
+#listaUsers {
+ height: 400px;
 }
 
 #SideInfo {
