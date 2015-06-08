@@ -1881,12 +1881,35 @@ $(document).ready(function () {
                     //para cada aluno, carrega a informação
                     var htmlLine = "<option value=" + data[aluno].id_user + ">" + data[aluno].nome + "</option>";
                     //faz o append do html gerado
-                    $(".userList:first").append(htmlLine);
+                    $("#alluseralunos:first").append(htmlLine);
                 }
             },
             error: function (error) {
                 $("body").find("#loading").remove();
                 alert("Erro ao tentar carregar lista de alunos.");
+                console.log(JSON.stringify(error));
+            }
+        });
+        
+        $("body").append(wait);
+        $.ajax({
+            type: "GET",
+            url: "/getAllProfessor",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                $("body").find("#loading").remove();
+                //insere todos os professores no html!!!!
+                for (var prof in data) {
+                    //para cada professor, carrega a informação
+                    var htmlLine = "<option value=" + data[prof].id_user + ">" + data[prof].nome + "</option>";
+                    //faz o append do html gerado
+                    $("#alluserProfessores:first").append(htmlLine);
+                }
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar lista de professores.");
                 console.log(JSON.stringify(error));
             }
         });
