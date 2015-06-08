@@ -1205,7 +1205,7 @@ $(document).ready(function () {
                 for (var item in hash) {
                     i++;
                     Addtab(hash[item].modelo, i);
-                    updateTab(i, ".txtTab" + i, userNumber);
+                    updateTab(i, ".txtTab" + i, null);
                 }
                 // so poe no servidor se nao existir
                 if (typeof nHash === "undefined") {
