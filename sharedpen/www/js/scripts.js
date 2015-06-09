@@ -157,8 +157,38 @@ $(document).ready(function () {
             success: function (data) {
                 switch (tipo) {
                     case "aluno":
+                        var username = $("#username_aluno_add").val();
+        var password = $("#password_aluno_add").val();
+        var nome = $("#nome_aluno_add").val();
+        var numero = $("#numero_aluno_add").val();
+        var escola = $("#escola_aluno_add option:selected").val();
+        var ano = $("#ano_aluno_add").val();
+        var turma = $("#turma_aluno_add").val();
+        $.ajax({
+            type: "POST",
+            url: "/insertAluno",
+            data: {
+                //id: user,
+                type: tipo,
+                username: username,
+                password: password,
+                nome: nome,
+                numero: numero,
+                escola: escola,
+                ano: ano,
+                turma: turma
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                
                         addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
 
+            },
+            error: function (error) {
+
+            }
+        });
                         break;
                     case "professor":
                         alert();
@@ -176,41 +206,21 @@ $(document).ready(function () {
         e.stopPropagation();
         e.preventDefault();
         var tipo = $(this).data("type");
-        var user = $(this).attr("rel");
-        var est;
-        if ($(this).find("img").attr("src") == "../img/green.png") {
-            est = 0;
-        }
-        else {
-            est = 1;
-        }
-        $.ajax({
-            type: "POST",
-            url: "/updateState",
-            data: {
-                user_id: user,
-                type: tipo,
-                state: est
-            },
-            // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
+        
+        
                 switch (tipo) {
-                    case "aluno":
-                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                            case "aluno":
+                                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
 
-                        break;
-                    case "professor":
-                        alert();
-                        addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-                        break;
-                }
-
-            },
-            error: function (error) {
-
-            }
-        });
+                                break;
+                            case "professor":
+                                alert();
+                                addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                                break;
+                        }
+        
+        
+        
     });
 
 
