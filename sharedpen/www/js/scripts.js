@@ -2018,11 +2018,11 @@ $(document).ready(function () {
 
         //array com os utilizadores do projeto
         var usersid = [];
-        $("#addedAlunos").each(function () {
+        $("#addedAlunos > option").each(function () {
             usersid.push($(this).prop("value"));
         });
 
-        $("#addedProfessores").each(function () {
+        $("#addedProfessores > option").each(function () {
             usersid.push($(this).prop("value"));
         });
 
@@ -2165,9 +2165,11 @@ $(document).ready(function () {
                 if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
-                    alert(data);
+                    
+                    //Pedro F. tens aqui o id que querias
+                    console.log("id proj: "+data.toString().split("Ok")[1]);
                 } else {
-                    alert("O nome do livro já existe na base da dados.")
+                    alert("O nome do livro já existe na base da dados.");
                     $("body").find("#loading").remove();
                 }
             },
