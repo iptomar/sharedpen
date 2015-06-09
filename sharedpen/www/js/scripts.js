@@ -1739,6 +1739,7 @@ $(document).ready(function () {
 
     $("body").on("click", ".adicionarEntity", function () {
         var id = $(this).attr("id");
+        alert(id);
         $("body").append(wait);
         var htmlModel = "";
         var newSrc = "../img/";
