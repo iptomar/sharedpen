@@ -2157,13 +2157,15 @@ $(document).ready(function () {
                 tipo: typeP,
                 idmodel: idmodel,
                 array: hashtoSave,
-                texto: textHelp
+                texto: textHelp,
+                users: usersP
             },
             dataType: 'json',
             success: function (data) {
-                if (data === "Ok") {
+                if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
+                    alert(data);
                 } else {
                     alert("O nome do livro já existe na base da dados.")
                     $("body").find("#loading").remove();
