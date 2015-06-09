@@ -96,7 +96,7 @@ $(document).ready(function () {
                 nome: $("#Nome_Escola_edit").val(),
                 morada: $("#Morada_Escola_edit").val(),
                 contacto: $("#Contacto_Escola_edit").val(),
-                id_agrupamento: $("#Agrupamento_Escola_edit").val()
+                id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
             },
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
@@ -398,6 +398,24 @@ $(document).ready(function () {
                 folderArray.push($(this).data("folder"));
                 currentPosition += 1;
                 $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsAllAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#Agrupamento_Escola_edit").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
                 $.ajax({
                     type: "GET",
                     url: "/getEscolas/" + $(this).attr("rel"),
@@ -1805,6 +1823,24 @@ $(document).ready(function () {
                 $("body").find("#form-aluno").css("display", "none");
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
+                  $.ajax({
+                    type: "GET",
+                    url: "/getsAllAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#Agrupamento_Escola_add").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
                 break;
             case "adicionarAgrupamento":
                 newHeader = "Adicionar Novo Agrupamento";
