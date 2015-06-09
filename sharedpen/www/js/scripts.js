@@ -1749,7 +1749,6 @@ $(document).ready(function () {
 
     $("body").on("click", ".adicionarEntity", function () {
         var id = $(this).attr("id");
-        alert(id);
         $("body").append(wait);
         var htmlModel = "";
         var newSrc = "../img/";
@@ -1762,6 +1761,25 @@ $(document).ready(function () {
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-escola").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
+          
+                $.ajax({
+                    type: "GET",
+                    url: "/getAllEscolas",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#escola_aluno_add").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
                 break;
             case "adicionarProfessor":
                 newHeader = "Adicionar Novo Professor";
@@ -1769,6 +1787,27 @@ $(document).ready(function () {
                 $("body").find("#form-aluno").css("display", "none");
                 $("body").find("#form-escola").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
+                $.ajax({
+                    type: "GET",
+                    url: "/getsAllAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#Agrupamento_Professor_add").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                
+                
+                
                 break;
             case "adicionarEscola":
                 newHeader = "Adicionar Nova Escola";
