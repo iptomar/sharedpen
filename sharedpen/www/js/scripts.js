@@ -49,7 +49,9 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                $(".voltarLayout").click();
+                //addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                
             },
             error: function (error) {
                 console.log(JSON.stringify(error));
@@ -157,38 +159,7 @@ $(document).ready(function () {
             success: function (data) {
                 switch (tipo) {
                     case "aluno":
-                        var username = $("#username_aluno_add").val();
-        var password = $("#password_aluno_add").val();
-        var nome = $("#nome_aluno_add").val();
-        var numero = $("#numero_aluno_add").val();
-        var escola = $("#escola_aluno_add option:selected").val();
-        var ano = $("#ano_aluno_add").val();
-        var turma = $("#turma_aluno_add").val();
-        $.ajax({
-            type: "POST",
-            url: "/insertAluno",
-            data: {
-                //id: user,
-                type: tipo,
-                username: username,
-                password: password,
-                nome: nome,
-                numero: numero,
-                escola: escola,
-                ano: ano,
-                turma: turma
-            },
-            // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
-                
-                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-
-            },
-            error: function (error) {
-
-            }
-        });
+                        addLayoutToDiv("#contentor", "html", "GerirAlunos.html", socket);
                         break;
                     case "professor":
                         alert();
@@ -202,25 +173,53 @@ $(document).ready(function () {
             }
         });
     });
-    $("body").on('click', "#btnAdicionarEntity", function (e) {
+    $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
+                
         var tipo = $(this).data("type");
+        var avatar =$("#add-Entity-Image").attr('src');
+        var username = $("#username_aluno_add").val();
+        var password = $("#password_aluno_add").val();
+        var nome = $("#nome_aluno_add").val();
+        var numero = $("#numero_aluno_add").val();
+        var escola = $("#escola_aluno_add option:selected").val();
+        var ano = $("#ano_aluno_add").val();
+        var turma = $("#turma_aluno_add").val();
         
         
-                switch (tipo) {
-                            case "aluno":
-                                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+        
+        alert(numero);
+        $.ajax({
+            type: "POST",
+            url: "/insertAluno",
+            data: {
+                //id: user,
+                type: tipo,
+                username: username,
+                password: password,
+                nome: nome,
+                numero: numero,
+                id_escola: escola,
+                ano: ano,
+                turma: turma,
+                avatar:avatar
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                
+                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
 
-                                break;
-                            case "professor":
-                                alert();
-                                addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-                                break;
-                        }
-        
-        
-        
+            },
+            error: function (error) {
+
+            }
+        });
+                
+                
+                
+                        //addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
     });
 
 
