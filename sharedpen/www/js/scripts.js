@@ -2018,10 +2018,13 @@ $(document).ready(function () {
 
         //array com os utilizadores do projeto
         var usersid = [];
-        $(".userList.userSelect option").each(function () {
+        $("#addedAlunos").each(function () {
             usersid.push($(this).prop("value"));
         });
 
+        $("#addedProfessores").each(function () {
+            usersid.push($(this).prop("value"));
+        });
 
         //retirar a opcao por defeio
         //users = users.splice(1);
@@ -2123,7 +2126,7 @@ $(document).ready(function () {
         console.log(idTmp);
         idTmp = 1;
         var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
-        var typeP = "Público";
+        var typeP = "Livro";
         var hashtoSave;
 
 
@@ -2143,7 +2146,7 @@ $(document).ready(function () {
                 }
             }
         }
-
+        hashtoSave = JSON.stringify(hashtoSave); 
         $.ajax({
             type: "POST",
             url: "/saveProjLivro",
@@ -2159,6 +2162,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data === "Ok") {
+                    $("body").find("#loading").remove();
                     alert("Projeto Gravado");
                 } else {
                     alert("O nome do livro já existe na base da dados.")
