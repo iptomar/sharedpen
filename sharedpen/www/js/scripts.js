@@ -42,8 +42,8 @@ $(document).ready(function () {
                 username: $("#username_aluno_edit").val(),
                 nomeAluno: $("#nome_aluno_edit").val(),
                 numAluno: $("#numero_aluno_edit").val(),
-                turma: $("#turma_aluno_edit").val(),
-                ano: $("#ano_aluno_edit").val(),
+                turma: $("#turma_aluno_edit option:selected").val(),
+                ano: $("#ano_aluno_edit option:selected").val(),
                 id_escola: $("#escola_aluno_edit option:selected").val()
 
             },
