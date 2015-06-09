@@ -36,6 +36,31 @@
                <div class="col-sm-10">
                   <select id="turma_aluno_add" class="form-control"  >
                      <option selected disabled>Seleccione a Turma</option>
+                     <option id="A">A</option>
+                     <option id="B">B</option>
+                     <option id="C">C</option>
+                     <option id="D">D</option>
+                     <option id="E">E</option>
+                     <option id="F">F</option>
+                     <option id="G">G</option>
+                     <option id="H">H</option>
+                     <option id="I">I</option>
+                     <option id="J">J</option>
+                     <option id="K">K</option>
+                     <option id="L">L</option>
+                     <option id="M">M</option>
+                     <option id="N">N</option>
+                     <option id="O">O</option>
+                     <option id="P">P</option>
+                     <option id="Q">Q</option>
+                     <option id="R">R</option>
+                     <option id="S">S</option>
+                     <option id="U">U</option>
+                     <option id="V">V</option>
+                     <option id="W">W</option>
+                     <option id="X">X</option>
+                     <option id="Y">Y</option>
+                     <option id="Z">Z</option>
                   </select>
                </div>
             </div>
@@ -44,28 +69,35 @@
                <div class="col-sm-10">
                   <select id="ano_aluno_add" class="form-control"  >
                      <option selected disabled>Seleccione o Ano</option>
-                  </select>
+                     <option id="1">1</option>
+                     <option id="2">2</option>
+                     <option id="3">3</option>
+                     <option id="4">4</option>
+                     <option id="5">5</option>
+                     <option id="6">6</option>
+                     <option id="7">7</option>
+                     <option id="8">8</option>
+                     <option id="9">9</option>
+                     <option id="10">10</option>
+                     <option id="11">1</option>
+                     <option id="12">12</option>
+ 
+                   </select>
                </div>
                
             </div>
              <div class="form-group default-display-none">
                <label for="Escola_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">Escola</label> 
                <div class="col-sm-10"> 
-                  <select id="ano_aluno_add" class="form-control"  >
+                  <select id="escola_aluno_add" class="form-control"  >
                      <option selected disabled>Seleccione a Escola</option>
                   </select>
                </div>
-                 <input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Aluno">;
+                 <input id="btnAdicionarEntity_aluno" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Aluno">;
             </div>
              
          </form>
          <form id="form-professor" class="form-horizontal">
-            <div class="form-group default-display-none">
-               <label for="Id_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label> 
-               <div class="col-sm-10"> 
-                  <input class="form-control" id="Id_Professor_add" disabled > 
-               </div>
-            </div>
             <div class="form-group default-display-none">
                <label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label> 
                <div class="col-sm-10"> 
@@ -85,22 +117,22 @@
                </div>
             </div>
             <div class="form-group default-display-none">
+               <label for="Email_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">E-mail</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Email_Professor_add"  > 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
                <label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label> 
                <div class="col-sm-10">
                   <select id="Agrupamento_Professor_add" class="form-control"  >
                      <option selected disabled>Seleccione o Agrupamento</option>
                   </select>
                </div>
-               <input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Professor">;
+               <input id="btnAdicionarEntity_professor" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Professor">;
             </div>
          </form>
          <form id="form-escola" class="form-horizontal">
-            <div class="form-group default-display-none">
-               <label for="id_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">IdEscola</label> 
-               <div class="col-sm-10"> 
-                  <input class="form-control" id="Id_Escola_add" disabled > 
-               </div>
-            </div>
             <div class="form-group default-display-none">
                <label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label> 
                <div class="col-sm-10"> 
@@ -126,22 +158,17 @@
                      <option selected disabled>Seleccione o Agrupamento</option>
                   </select>
                </div>
-               <input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Escola">;
+               <input id="btnAdicionarEntity_escola" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Escola">;
             </div>
          </form>
          <form id="form-agrupamento" class="form-horizontal">
-            <div class="form-group default-display-none">
-               <label for="Id_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label> 
-               <div class="col-sm-10"> 
-                  <input class="form-control" id="Id_Agrupamento_add" disabled > 
-               </div>
-            </div>
+ 
             <div class="form-group default-display-none">
                <label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label> 
                <div class="col-sm-10"> 
                   <input class="form-control" id="Nome_Agrupamento_add" autofocus> 
                </div>
-               <input id="btnAdicionarEntity" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Agrupamento">;
+               <input id="btnAdicionarEntity_agrupamento" type="button" value="Adicionar" class="btn btn-primary btn-round btn-margin-top" rel="Agrupamento">;
             </div>
          </form>
       </div>
