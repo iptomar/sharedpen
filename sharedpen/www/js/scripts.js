@@ -1200,49 +1200,24 @@ $(document).ready(function () {
         socket.emit('reqHash', {
             id: idProj
         });
-
-        var nHash;
-
+  
+        hash = null;
+        
         socket.on('getHash', function (data) {
-            //verifica se esta vazio
-            var kk = Object.keys(hash);
-            if (typeof hash[kk[0]] === "undefined") {
-                nHash = data.hashh;
-                //se nao existir no servidor
-                if (typeof nHash === "undefined") {
-                    //vai buscar o da base de dados
-                    hash = JSON.parse(tmpArrayProj[idProj]);
-
-                    addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-                    var newHash = {};
-                    for (var item in hash) {
-                        newHash[item] = castTab(hash[item]);
-                    }
-                    for (var item in newHash) {
-                        newHash[item].projID = idProj;
-                    }
-                    hash = newHash;
-                } else {
-                    addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+            //adiciona o novo hash
+                hash = JSON.parse(data.hashh);
+            
+                addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
                     //se ja existir no servidor
                     //carrega o do servidor
-                    hash = nHash;
-                }
+                
                 var i = 0;
                 for (var item in hash) {
                     i++;
                     Addtab(hash[item].modelo, i);
                     updateTab(i, ".txtTab" + i, null);
                 }
-                // so poe no servidor se nao existir
-                if (typeof nHash === "undefined") {
-                    //Para por no servidor o hash
-                    socket.emit('storedhash', {
-                        storedhash: hash,
-                        id: idProj
-                    });
-                }
-            }
+            
         });
     });
 
