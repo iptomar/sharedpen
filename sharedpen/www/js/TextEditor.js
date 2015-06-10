@@ -9,6 +9,7 @@ var TextEditor = function (idpai, user, cor, socketCreator, userNum) {
     
     if (typeof socketCreator !== "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
+        alert(socketCreator);
     }
     $("#" + this.idpai).css({
         "font-size": "20px"

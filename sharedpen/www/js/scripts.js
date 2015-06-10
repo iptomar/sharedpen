@@ -51,7 +51,7 @@ $(document).ready(function () {
             success: function (data) {
                 $(".voltarLayout").click();
                 //addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                
+
             },
             error: function (error) {
                 console.log(JSON.stringify(error));
@@ -176,9 +176,9 @@ $(document).ready(function () {
     $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
-                
+
         var tipo = $(this).data("type");
-        var avatar =$("#add-Entity-Image").attr('src');
+        var avatar = $("#add-Entity-Image").attr('src');
         var username = $("#username_aluno_add").val();
         var password = $("#password_aluno_add").val();
         var nome = $("#nome_aluno_add").val();
@@ -186,9 +186,9 @@ $(document).ready(function () {
         var escola = $("#escola_aluno_add option:selected").val();
         var ano = $("#ano_aluno_add").val();
         var turma = $("#turma_aluno_add").val();
-        
-        
-        
+
+
+
         alert(numero);
         $.ajax({
             type: "POST",
@@ -203,23 +203,23 @@ $(document).ready(function () {
                 id_escola: escola,
                 ano: ano,
                 turma: turma,
-                avatar:avatar
+                avatar: avatar
             },
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                
-                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+
+                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
 
             },
             error: function (error) {
 
             }
         });
-                
-                
-                
-                        //addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+
+
+
+        //addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
     });
 
 
@@ -1198,26 +1198,33 @@ $(document).ready(function () {
 
         //verificar se o projecto existe no server
         socket.emit('reqHash', {
-            id: idProj
+            id: idProj,
+            username: username
         });
-  
+
         hash = null;
-        
+
         socket.on('getHash', function (data) {
-            //adiciona o novo hash
+            if (data.username === username) {
+                //adiciona o novo hash
                 hash = JSON.parse(data.hashh);
-            
+                //cast das tabs
+                var newHash = {};
+                for (var item in hash) {
+                    newHash[item] = castTab(hash[item]);
+                }
+                hash = newHash;
                 addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-                    //se ja existir no servidor
-                    //carrega o do servidor
-                
+                //se ja existir no servidor
+                //carrega o do servidor
+
                 var i = 0;
                 for (var item in hash) {
                     i++;
                     Addtab(hash[item].modelo, i);
                     updateTab(i, ".txtTab" + i, null);
                 }
-            
+            }
         });
     });
 
@@ -1753,7 +1760,7 @@ $(document).ready(function () {
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-escola").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
-          
+
                 $.ajax({
                     type: "GET",
                     url: "/getAllEscolas",
@@ -1797,9 +1804,9 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-                
-                
-                
+
+
+
                 break;
             case "adicionarEscola":
                 newHeader = "Adicionar Nova Escola";
@@ -1807,7 +1814,7 @@ $(document).ready(function () {
                 $("body").find("#form-aluno").css("display", "none");
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
-                  $.ajax({
+                $.ajax({
                     type: "GET",
                     url: "/getsAllAgrupamentos",
                     dataType: 'json',
@@ -1950,7 +1957,7 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-        
+
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -2048,7 +2055,7 @@ $(document).ready(function () {
         $("#alluseralunos option[value=" + valor + "]").show(); //css("display", "inline");
 
     });
-     $("body").on("click", "#addButtonProf", function () {
+    $("body").on("click", "#addButtonProf", function () {
         $("#addedProfessores").append($("#alluserProfessores option:selected").get(0));
         $("#alluserProfessores option:selected").hide(); //css("display", "none");
     });
@@ -2206,7 +2213,7 @@ $(document).ready(function () {
                 }
             }
         }
-        hashtoSave = JSON.stringify(hashtoSave); 
+        hashtoSave = JSON.stringify(hashtoSave);
         $.ajax({
             type: "POST",
             url: "/saveProjLivro",
@@ -2225,9 +2232,9 @@ $(document).ready(function () {
                 if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
-                    
+
                     //Pedro F. tens aqui o id que querias
-                    console.log("id proj: "+data.toString().split("Ok")[1]);
+                    console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
                     alert("O nome do livro já existe na base da dados.");
                     $("body").find("#loading").remove();
