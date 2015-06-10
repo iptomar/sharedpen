@@ -49,9 +49,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                $(".voltarLayout").click();
-                //addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                
+                $(".voltarLayout").click();                
             },
             error: function (error) {
                 console.log(JSON.stringify(error));
@@ -74,14 +72,12 @@ $(document).ready(function () {
                 id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
                 email: $("#Email_Professor_edit").val()
             },
-            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                $(".voltarLayout").click();
             },
             error: function (error) {
-                // alert("ERRO HASH");
-                //console.log(JSON.stringify(error));
+                console.log(JSON.stringify(error));
             }
         });
     });
@@ -100,14 +96,13 @@ $(document).ready(function () {
                 contacto: $("#Contacto_Escola_edit").val(),
                 id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
             },
-            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
+                $(".voltarLayout").click();
 
             },
             error: function (error) {
-
+                console.log(JSON.stringify(error));
             }
         });
     });
@@ -123,13 +118,12 @@ $(document).ready(function () {
                 id: $("#Id_Agrupamento_edit").val(),
                 nome: $("#Nome_Agrupamento_edit").val(),
             },
-            // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
+                $(".voltarLayout").click();
             },
             error: function (error) {
-
+                console.log(JSON.stringify(error));
             }
         });
     });
@@ -159,10 +153,9 @@ $(document).ready(function () {
             success: function (data) {
                 switch (tipo) {
                     case "aluno":
-                        addLayoutToDiv("#contentor", "html", "GerirAlunos.html", socket);
+                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
                         break;
                     case "professor":
-                        alert();
                         addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
                         break;
                 }
@@ -173,6 +166,7 @@ $(document).ready(function () {
             }
         });
     });
+    
     $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -188,8 +182,6 @@ $(document).ready(function () {
         var turma = $("#turma_aluno_add").val();
         
         
-        
-        alert(numero);
         $.ajax({
             type: "POST",
             url: "/insertAluno",
@@ -326,6 +318,7 @@ $(document).ready(function () {
                     dataType: 'json',
                     success: function (data) {
                         $("#Id_aluno_edit").val(data[0].id_user);
+                        $("#userImage").attr("src",data[0].avatar),
                         $("#username_aluno_edit").val(data[0].username);
                         $("#nome_aluno_edit").val(data[0].nome_aluno);
                         $("#numero_aluno_edit").val(data[0].num_aluno);
@@ -381,7 +374,7 @@ $(document).ready(function () {
                     dataType: 'json',
                     success: function (data) {
                         var htmlVar;
-                        //$("#userImage").attr('src', data[0].avatar);
+                        $("#userImage").attr("src",data[0].avatar),
                         $("#Id_Professor_edit").val(data[0].id);
                         $("#username_Professor_edit").val(data[0].username);
                         $("#Nome_Professor_edit").val(data[0].nome_professor);
@@ -2691,7 +2684,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         var htmlVar;
                         for (var i = 0, max = data.length; i < max; i++) {
                             htmlVar += "<tr>";
-                            htmlVar += "<td>" + data[i].id_user + "</td>" +
+                            htmlVar += "<td>" + data[i].id + "</td>" +
                                     "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
                                     "<td>" + data[i].username + "</td>" +
                                     "<td>" + data[i].nome_aluno + "</td>" +
@@ -2700,12 +2693,12 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     "<td>" + data[i].turma + "</td>" +
                                     "<td>" + data[i].nome_escola + "</td>" +
                                     '<td class="image">' +
-                                    '<div rel=' + data[i].id_user + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                    '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
                                     '<td class="image">' +
-                                    '<div rel=' + data[i].id_user + ' class="editState" data-type="aluno">' +
+                                    '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
                                     '<img class="text-center image" width="35"';
                             if (data[i].active == "1") {
                                 htmlVar += ' src="../img/green.png">';
