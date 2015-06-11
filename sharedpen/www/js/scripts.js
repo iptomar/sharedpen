@@ -2613,6 +2613,38 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         Pid: hash[kk[0]].projID
                     });
                 }
+
+                $.ajax({
+                    type: "GET",
+                    url: "/getProjectsbyID/" + hash[kk[0]].projID,
+                    async: true,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data[0].tipo === "Livro" || data[0].tipo === "Poema") {
+                            //Reduzir tamanho da div das tabs
+                            $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                            $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+
+                            //Adicionar a div com o texto de ajuda		
+                            $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                    "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                    "<div id='divTxtAjuda'>"+data[0].texto+"</div>" +
+                                    "</div>");
+
+                            $(".containerTxtAjuda").animate({
+                                opacity: 1,
+                            }, 1000, function () {
+                                // Animation complete.
+                            });
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(JSON.stringify(error));
+                    }
+                });
+
                 $('#bt_PDF').css({
                     'visibility': "visible"
                 });
