@@ -2192,7 +2192,7 @@ $(document).ready(function () {
         var idTmp = textToNumber(username);
         console.log(idTmp);
         idTmp = 1;
-        var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
+        var textHelp = $("#divTxtAjuda").text();
         var typeP = "Livro";
         var hashtoSave;
 
