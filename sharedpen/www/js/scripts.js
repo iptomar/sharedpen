@@ -388,7 +388,9 @@ $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
 });
 
 // procurar por Username de no aluno
-$("body").on('click', "#btSearch_aluno", function (e) {
+$("body").on('input', "#inputSearch_aluno", function (e) {
+    
+        $("body").append(wait);
     if ($("#inputSearch_aluno").val() == "") {
         addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
     } else {
@@ -438,7 +440,7 @@ $("body").on('click', "#btSearch_aluno", function (e) {
             }
         });
     }
-});
+$("body").find("#loading").remove();});
 //--------------------------BACKOFFICE-END---------------------------------------
     
     

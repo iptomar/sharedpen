@@ -220,6 +220,10 @@
     width:420%;
 }
 
+.search-text, input-group{
+    width:100%;   
+}
+
 .text-left{
     display: inline-block;
     text-align: left;   
