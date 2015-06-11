@@ -2613,8 +2613,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         Pid: hash[kk[0]].projID
                     });
                 }
-
-                $.ajax({
+                
+                if (typeof hash[kk[0]].projID != "undefonid") {
+                    $.ajax({
                     type: "GET",
                     url: "/getProjectsbyID/" + hash[kk[0]].projID,
                     async: true,
@@ -2644,6 +2645,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
+                }
 
                 $('#bt_PDF').css({
                     'visibility': "visible"
