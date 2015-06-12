@@ -386,6 +386,41 @@ $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
         error: function (error) {}
     });
 });
+    
+//criar professor
+$("body").on('click', "#btnAdicionarEntity_professor", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var tipo = $(this).data("type");
+    var avatar = $("#add-Entity-Image").attr('src');
+    var username = $("#username_Professor_add").val();
+    var password = $("#password_Professor_add").val();
+    var nome = $("#Nome_Professor_add").val();
+    var email = $("#Email_Professor_add").val();
+    var agrupamento = $("#Agrupamento_Professor_add option:selected").val();
+    $.ajax({
+        type: "POST",
+        url: "/insertProfessor",
+        data: {
+            //id: user,
+            type: tipo,
+            username: username,
+            password: password,
+            nome: nome,
+            email: email,
+            agrupamento: agrupamento,
+            avatar: avatar
+        },
+        // contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (data) {
+
+            $(".voltarLayout").click();
+            //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+        },
+        error: function (error) {}
+    });
+});
 
 // procurar por Username de no aluno
 $("body").on('input', "#inputSearch_aluno", function (e) {
