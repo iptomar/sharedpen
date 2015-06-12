@@ -300,7 +300,6 @@ $("body").on('click', ".editInfo", function (e) {
             dataType: 'json',
             success: function (data) {
                 var htmlVar;
-                //$("#userImage").attr('src', data[0].avatar);
                 $("#Id_Agrupamento_edit").val(data[0].id);
                 $("#Nome_Agrupamento_edit").val(data[0].nome);
                 $("body").find("#loading").remove();
@@ -475,61 +474,222 @@ $("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
         error: function (error) {}
     });
 });
-
 // procurar por Username de no aluno
-$("body").on('input', "#inputSearch_aluno", function (e) {
-    
+$("body").on('input', "#inputSearch", function (e) {
+    var type = $(this).data("type");
+    switch (type) {
+    case "aluno":
         $("body").append(wait);
-    if ($("#inputSearch_aluno").val() == "") {
-        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-    } else {
-        e.stopPropagation();
-        e.preventDefault();
-        $.ajax({
-            type: "GET",
-            url: "/searchAluno/" + $("#inputSearch_aluno").val(),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                $("#gerirEntitiesTable tr").remove();
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlVar += "<tr>";
-                    htmlVar += "<td>" + data[i].id + "</td>" +
-                        "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                        "<td>" + data[i].username + "</td>" +
-                        "<td>" + data[i].nome_aluno + "</td>" +
-                        "<td>" + data[i].num_aluno + "</td>" +
-                        "<td>" + data[i].ano + "</td>" +
-                        "<td>" + data[i].turma + "</td>" +
-                        "<td>" + data[i].nome_escola + "</td>" +
-                        '<td class="image">' +
-                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                        '<img class="text-center image" src="../img/edit_40.png">' +
+        if ($("#inputSearch").val() == "") {
+            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+            $("#inputSearch").focus();
+        } else {
+            e.stopPropagation();
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "/searchAluno/" + $("#inputSearch").val(),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $('#gerirEntitiesTable tbody').empty();
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlVar += "<tr>";
+                        htmlVar += "<td>" + data[i].id + "</td>" +
+                            "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                            "<td>" + data[i].username + "</td>" +
+                            "<td>" + data[i].nome_aluno + "</td>" +
+                            "<td>" + data[i].num_aluno + "</td>" +
+                            "<td>" + data[i].ano + "</td>" +
+                            "<td>" + data[i].turma + "</td>" +
+                            "<td>" + data[i].nome_escola + "</td>" +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                            '<img class="text-center image" src="../img/edit_40.png">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                            '<img class="text-center image" width="35"';
+                        if (data[i].active == "1") {
+                            htmlVar += ' src="../img/green.png">';
+                        } else {
+                            htmlVar += ' src="../img/red.png">';
+                        }
                         '</div>' +
                         '</td>' +
-                        '<td class="image">' +
-                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                        '<img class="text-center image" width="35"';
-                    if (data[i].active == "1") {
-                        htmlVar += ' src="../img/green.png">';
-                    } else {
-                        htmlVar += ' src="../img/red.png">';
+                        "</tr>";
                     }
-                    '</div>' +
-                    '</td>' +
-                    "</tr>";
+                    $("body").find("#loading").remove();
+                    $("body").find("#gerirEntitiesTable").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
                 }
-                $("body").find("#loading").remove();
-                $("body").find("#gerirEntitiesTable").append(htmlVar);
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
+            });
+        }
+        $("body").find("#loading").remove();
+        break;
+
+    case "professor":
+        $("body").append(wait);
+        if ($("#inputSearch").val() == "") {
+            addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+            $("#inputSearch").focus();
+        } else {
+            e.stopPropagation();
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "/searchProfessor/" + $("#inputSearch").val(),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $('#gerirEntitiesTable tbody').empty();
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlVar += "<tr>";
+                        htmlVar += "<td>" + data[i].id + "</td>" +
+                            "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                            "<td>" + data[i].username + "</td>" +
+                            "<td>" + data[i].nome_professor + "</td>" +
+                            "<td>" + data[i].email + "</td>" +
+                            "<td>" + data[i].nome_agrupamento + "</td>" +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                            '<img class="text-center image" src="../img/edit_40.png">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                            '<img class="text-center image" width="35"';
+                        if (data[i].active == "1") {
+                            htmlVar += ' src="../img/green.png">';
+                        } else {
+                            htmlVar += ' src="../img/red.png">';
+                        }
+                        '</div>' +
+                        '</td>' +
+                        "</tr>";
+                    }
+                    $("body").find("#loading").remove();
+                    $("body").find("#gerirEntitiesTable").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+        $("body").find("#loading").remove();
+        break;
+
+    case "escola":
+        $("body").append(wait);
+        if ($("#inputSearch").val() == "") {
+            addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
+            $("#inputSearch").focus();
+        } else {
+            e.stopPropagation();
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "/searchEscola/" + $("#inputSearch").val(),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $('#gerirEntitiesTable tbody').empty();
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlVar += "<tr>";
+                        htmlVar += 
+                            "<td>" + data[i].id + "</td>" +
+                            "<td>" + data[i].nome_escola + "</td>" +
+                            "<td>" + data[i].morada + "</td>" +
+                            "<td>" + data[i].contacto + "</td>" +
+                            "<td>" + data[i].nome_agrupamento + "</td>" +
+        
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                            '<img class="text-center image" src="../img/edit_40.png">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                            '<img class="text-center image" width="35"';
+                        if (data[i].active == "1") {
+                            htmlVar += ' src="../img/green.png">';
+                        } else {
+                            htmlVar += ' src="../img/red.png">';
+                        }
+                        '</div>' +
+                        '</td>' +
+                        "</tr>";
+                    }
+                    $("body").find("#loading").remove();
+                    $("body").find("#gerirEntitiesTable").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+        $("body").find("#loading").remove();
+        break;
+
+    case "agrupamento":
+        $("body").append(wait);
+        if ($("#inputSearch").val() == "") {
+            addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
+            $("#inputSearch").focus();
+        } else {
+            e.stopPropagation();
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "/searchAgrupamento/" + $("#inputSearch").val(),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $('#gerirEntitiesTable tbody').empty();
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlVar += "<tr>";
+                        htmlVar +=
+                            "<td>" + data[i].id + "</td>" +
+                            "<td>" + data[i].nome + "</td>" +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                            '<img class="text-center image" src="../img/edit_40.png">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td class="image">' +
+                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                            '<img class="text-center image" width="35"';
+                        if (data[i].active == "1") {
+                            htmlVar += ' src="../img/green.png">';
+                        } else {
+                            htmlVar += ' src="../img/red.png">';
+                        }
+                        '</div>' +
+                        '</td>' +
+                        "</tr>";
+                    }
+                    $("body").find("#loading").remove();
+                    $("body").find("#gerirEntitiesTable").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+        $("body").find("#loading").remove();
     }
-$("body").find("#loading").remove();});
+    });
 //--------------------------BACKOFFICE-END---------------------------------------
     
     
