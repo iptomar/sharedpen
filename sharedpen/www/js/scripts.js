@@ -421,6 +421,60 @@ $("body").on('click', "#btnAdicionarEntity_professor", function (e) {
         error: function (error) {}
     });
 });
+    
+    //criar escola
+$("body").on('click', "#btnAdicionarEntity_escola", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    //var avatar = $("#add-Entity-Image").attr('src');
+    var nome = $("#Nome_Escola_add").val();
+    var morada = $("#Morada_Escola_add").val();
+    var contacto = $("#Contacto_Escola_add").val();
+    var agrupamento = $("#Agrupamento_Escola_add option:selected").val();
+    $.ajax({
+        type: "POST",
+        url: "/insertEscola",
+        data: {
+            //id: user,
+            nome: nome,
+            morada: morada,
+            contacto: contacto,
+            agrupamento: agrupamento
+        },
+        // contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (data) {
+
+            $(".voltarLayout").click();
+            //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+        },
+        error: function (error) {}
+    });
+});
+    
+    //criar escola
+$("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    //var avatar = $("#add-Entity-Image").attr('src');
+    var nome = $("#Nome_Agrupamento_add").val();
+    $.ajax({
+        type: "POST",
+        url: "/insertAgrupamento",
+        data: {
+            //id: user,
+            nome: nome
+        },
+        // contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (data) {
+
+            $(".voltarLayout").click();
+            //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+        },
+        error: function (error) {}
+    });
+});
 
 // procurar por Username de no aluno
 $("body").on('input', "#inputSearch_aluno", function (e) {
