@@ -154,6 +154,7 @@ $("body").on('click', ".editInfo", function (e) {
                 }
                 $("body").find("#loading").remove();
                 $("body").find("#escola_aluno_edit").append(htmlVar);
+
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -310,6 +311,7 @@ $("body").on('click', ".editInfo", function (e) {
                 console.log(JSON.stringify(error));
             }
         });
+
     }
 });
 
