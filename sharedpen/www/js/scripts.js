@@ -313,6 +313,7 @@ $("body").on('click', ".editInfo", function (e) {
     }
 });
 
+
 //editar estado de um utilizador
 $("body").on('click', ".editState", function (e) {
     e.stopPropagation();
@@ -1414,49 +1415,31 @@ $("body").on('input', "#inputSearch", function (e) {
 
         //verificar se o projecto existe no server
         socket.emit('reqHash', {
-            id: idProj
+            id: idProj,
+            username: username
         });
 
-        var nHash;
+        hash = null;
 
         socket.on('getHash', function (data) {
-            //verifica se esta vazio
-            var kk = Object.keys(hash);
-            if (typeof hash[kk[0]] === "undefined") {
-                nHash = data.hashh;
-                //se nao existir no servidor
-                if (typeof nHash === "undefined") {
-                    //vai buscar o da base de dados
-                    hash = JSON.parse(tmpArrayProj[idProj]);
-
-                    addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-                    var newHash = {};
-                    for (var item in hash) {
-                        newHash[item] = castTab(hash[item]);
-                    }
-                    for (var item in newHash) {
-                        newHash[item].projID = idProj;
-                    }
-                    hash = newHash;
-                } else {
-                    addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-                    //se ja existir no servidor
-                    //carrega o do servidor
-                    hash = nHash;
+            if (data.username === username) {
+                //adiciona o novo hash
+                hash = JSON.parse(data.hashh);
+                //cast das tabs
+                var newHash = {};
+                for (var item in hash) {
+                    newHash[item] = castTab(hash[item]);
                 }
+                hash = newHash;
+                addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+                //se ja existir no servidor
+                //carrega o do servidor
+
                 var i = 0;
                 for (var item in hash) {
                     i++;
                     Addtab(hash[item].modelo, i);
                     updateTab(i, ".txtTab" + i, null);
-                }
-                // so poe no servidor se nao existir
-                if (typeof nHash === "undefined") {
-                    //Para por no servidor o hash
-                    socket.emit('storedhash', {
-                        storedhash: hash,
-                        id: idProj
-                    });
                 }
             }
         });
@@ -1994,7 +1977,7 @@ $("body").on('input', "#inputSearch", function (e) {
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-escola").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
-          
+
                 $.ajax({
                     type: "GET",
                     url: "/getAllEscolas",
@@ -2038,7 +2021,6 @@ $("body").on('input', "#inputSearch", function (e) {
                         console.log(JSON.stringify(error));
                     }
                 });
-                
                 break;
             case "adicionarEscola":
                 newHeader = "Adicionar Nova Escola";
@@ -2046,7 +2028,7 @@ $("body").on('input', "#inputSearch", function (e) {
                 $("body").find("#form-aluno").css("display", "none");
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
-                  $.ajax({
+                $.ajax({
                     type: "GET",
                     url: "/getsAllAgrupamentos",
                     dataType: 'json',
@@ -2189,7 +2171,7 @@ $("body").on('input', "#inputSearch", function (e) {
                 console.log(JSON.stringify(error));
             }
         });
-        
+
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -2287,7 +2269,7 @@ $("body").on('input', "#inputSearch", function (e) {
         $("#alluseralunos option[value=" + valor + "]").show(); //css("display", "inline");
 
     });
-     $("body").on("click", "#addButtonProf", function () {
+    $("body").on("click", "#addButtonProf", function () {
         $("#addedProfessores").append($("#alluserProfessores option:selected").get(0));
         $("#alluserProfessores option:selected").hide(); //css("display", "none");
     });
@@ -2424,7 +2406,7 @@ $("body").on('input', "#inputSearch", function (e) {
         var idTmp = textToNumber(username);
         console.log(idTmp);
         idTmp = 1;
-        var textHelp = "Ajuda exemplo";//$("#divTxtAjuda").text();
+        var textHelp = $("#divTxtAjuda").text();
         var typeP = "Livro";
         var hashtoSave;
 
@@ -2445,7 +2427,7 @@ $("body").on('input', "#inputSearch", function (e) {
                 }
             }
         }
-        hashtoSave = JSON.stringify(hashtoSave); 
+        hashtoSave = JSON.stringify(hashtoSave);
         $.ajax({
             type: "POST",
             url: "/saveProjLivro",
@@ -2464,9 +2446,9 @@ $("body").on('input', "#inputSearch", function (e) {
                 if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
-                    
+
                     //Pedro F. tens aqui o id que querias
-                    console.log("id proj: "+data.toString().split("Ok")[1]);
+                    console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
                     alert("O nome do livro já existe na base da dados.");
                     $("body").find("#loading").remove();
@@ -2845,6 +2827,40 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         Pid: hash[kk[0]].projID
                     });
                 }
+                
+                if (typeof hash[kk[0]].projID != "undefonid") {
+                    $.ajax({
+                    type: "GET",
+                    url: "/getProjectsbyID/" + hash[kk[0]].projID,
+                    async: true,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data[0].tipo === "Livro" || data[0].tipo === "Poema") {
+                            //Reduzir tamanho da div das tabs
+                            $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                            $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+
+                            //Adicionar a div com o texto de ajuda		
+                            $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                    "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                    "<div id='divTxtAjuda'>"+data[0].texto+"</div>" +
+                                    "</div>");
+
+                            $(".containerTxtAjuda").animate({
+                                opacity: 1,
+                            }, 1000, function () {
+                                // Animation complete.
+                            });
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                }
+
                 $('#bt_PDF').css({
                     'visibility': "visible"
                 });
