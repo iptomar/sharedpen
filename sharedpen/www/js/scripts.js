@@ -1655,7 +1655,6 @@ $(document).ready(function () {
                     var thisId = "tab" + tabNumber + "-Mycanvas";
                     var drawCanvas = hash[idToll].modelo.arrayElem[thisId];
 
-
                     var kk = Object.keys(hash);
                     socket.emit("reqCanvasIMG", {
                         Pid: hash[kk[0]].projID,
@@ -1663,11 +1662,27 @@ $(document).ready(function () {
                         id: "tab" + tabNumber + "-Mycanvas"
                     });
                     socket.on("getCanvasIMG", function (data) {
+                        var canvas = document.createElement("canvas");
+                        var ctx = canvas.getContext("2d");
+                        var image = new Image();
+
                         console.log("ola");
                         console.log(data.canvas);
-                    });
 
-                    //console.log(drawCanvas.drawObj.getImgCanvas());
+                        //  Draw imgCnv = data.canvas;
+                        var imgCnv = data.canvas;
+                        if (typeof this.ArrayCanvasImage !== "undefined") {
+                            //desenha o fundo
+                            ctx.drawImage(imgCnv.bgImg,0,0);
+                            //percorre todos os canvas e desenha num unico canvas
+                            for (var i in  imgCnv.ArrayCanvasImage) {
+                                var canvas2 = imgCnv.ArrayCanvasImage[i];                          
+                                ctx.drawImage(canvas2.toDataURL("image/png"),0,0);
+                            }
+                            image.src = canvas2.toDataURL("image/png");
+                            console.log(image);
+                        }
+                    });
                     page += "<div>" + drawCanvas.drawObj.getImgCanvas() + "</div>";
                 }
             });
