@@ -107,25 +107,25 @@ $(document).ready(function () {
     });
 
 //fazer update a agrupamento
-    $("body").on('click', "#guardarEditAgrupamento", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "/updateAgrupamentos",
-            data: {
-                id: $("#Id_Agrupamento_edit").val(),
-                nome: $("#Nome_Agrupamento_edit").val(),
-            },
-            dataType: 'json',
-            success: function (data) {
-                $(".voltarLayout").click();
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error));
-            }
-        });
-    });
+//    $("body").on('click', "#guardarEditAgrupamento", function (e) {
+//        e.stopPropagation();
+//        e.preventDefault();
+//        $.ajax({
+//            type: "POST",
+//            url: "/updateAgrupamentos",
+//            data: {
+//                id: $("#Id_Agrupamento_edit").val(),
+//                nome: $("#Nome_Agrupamento_edit").val(),
+//            },
+//            dataType: 'json',
+//            success: function (data) {
+//                $(".voltarLayout").click();
+//            },
+//            error: function (error) {
+//                console.log(JSON.stringify(error));
+//            }
+//        });
+//    });
 
 //editar aluno/professor/escola/agrupamento 
     $("body").on('click', ".editInfo", function (e) {
@@ -3128,7 +3128,23 @@ function addLayoutToDiv(local, folder, layout, stk) {
     });
 }
 
-
+function guardaredit(){
+      $.ajax({
+            type: "POST",
+            url: "/updateAgrupamentos",
+            data: {
+                id: $("#Id_Agrupamento_edit").val(),
+                nome: $("#Nome_Agrupamento_edit").val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(".voltarLayout").click();
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        })
+};
 /**
  * Ajusta os elementos do ecram principal
  

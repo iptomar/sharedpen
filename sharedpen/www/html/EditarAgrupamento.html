@@ -49,5 +49,9 @@
                 }
             }
         })
-        //.on('success.form.bv', guardarEditAgrupamento())
+        .on('success.form.bv', function(e) {
+       e.stopPropagation();
+        e.preventDefault();
+    guardaredit();
+    });
 </script>
