@@ -28,674 +28,678 @@ var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
 $(document).ready(function () {
-  
+
 //--------------------------BACKOFFICE----------------------------------------
 //fazer update a aluno
-$("body").on('click', "#guardarEditAluno", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/updateAluno",
-        data: {
-            image: $("#userImage").attr('src'),
-            id: $("#Id_aluno_edit").val(),
-            username: $("#username_aluno_edit").val(),
-            nomeAluno: $("#nome_aluno_edit").val(),
-            numAluno: $("#numero_aluno_edit").val(),
-            turma: $("#turma_aluno_edit option:selected").val(),
-            ano: $("#ano_aluno_edit option:selected").val(),
-            id_escola: $("#escola_aluno_edit option:selected").val()
-        },
-        dataType: 'json',
-        success: function (data) {
-            $(".voltarLayout").click();
-        },
-        error: function (error) {
-            console.log(JSON.stringify(error));
-        }
+    $("body").on('click', "#guardarEditAluno", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateAluno",
+            data: {
+                image: $("#userImage").attr('src'),
+                id: $("#Id_aluno_edit").val(),
+                username: $("#username_aluno_edit").val(),
+                nomeAluno: $("#nome_aluno_edit").val(),
+                numAluno: $("#numero_aluno_edit").val(),
+                turma: $("#turma_aluno_edit option:selected").val(),
+                ano: $("#ano_aluno_edit option:selected").val(),
+                id_escola: $("#escola_aluno_edit option:selected").val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(".voltarLayout").click();
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
     });
-});
 
 //fazer update a professor
-$("body").on('click', "#guardarEditProfessor", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/updateProfessores",
-        data: {
-            avatar: $("#userImage").attr('src'),
-            id: $("#Id_Professor_edit").val(),
-            username: $("#username_Professor_edit").val(),
-            nome: $("#Nome_Professor_edit").val(),
-            id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
-            email: $("#Email_Professor_edit").val()
-        },
-        dataType: 'json',
-        success: function (data) {
-            $(".voltarLayout").click();
-        },
-        error: function (error) {
-            console.log(JSON.stringify(error));
-        }
+    $("body").on('click', "#guardarEditProfessor", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateProfessores",
+            data: {
+                avatar: $("#userImage").attr('src'),
+                id: $("#Id_Professor_edit").val(),
+                username: $("#username_Professor_edit").val(),
+                nome: $("#Nome_Professor_edit").val(),
+                id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
+                email: $("#Email_Professor_edit").val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(".voltarLayout").click();
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
     });
-});
 
 //fazer update a escola
-$("body").on('click', "#guardarEditEscola", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/updateEscolas",
-        data: {
-            id: $("#Id_Escola_edit").val(),
-            nome: $("#Nome_Escola_edit").val(),
-            morada: $("#Morada_Escola_edit").val(),
-            contacto: $("#Contacto_Escola_edit").val(),
-            id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
-        },
-        dataType: 'json',
-        success: function (data) {
-            $(".voltarLayout").click();
-        },
-        error: function (error) {
-            console.log(JSON.stringify(error));
-        }
+    $("body").on('click', "#guardarEditEscola", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateEscolas",
+            data: {
+                id: $("#Id_Escola_edit").val(),
+                nome: $("#Nome_Escola_edit").val(),
+                morada: $("#Morada_Escola_edit").val(),
+                contacto: $("#Contacto_Escola_edit").val(),
+                id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(".voltarLayout").click();
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
     });
-});
 
 //fazer update a agrupamento
-$("body").on('click', "#guardarEditAgrupamento", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/updateAgrupamentos",
-        data: {
-            id: $("#Id_Agrupamento_edit").val(),
-            nome: $("#Nome_Agrupamento_edit").val(),
-        },
-        dataType: 'json',
-        success: function (data) {
-            $(".voltarLayout").click();
-        },
-        error: function (error) {
-            console.log(JSON.stringify(error));
-        }
+    $("body").on('click', "#guardarEditAgrupamento", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/updateAgrupamentos",
+            data: {
+                id: $("#Id_Agrupamento_edit").val(),
+                nome: $("#Nome_Agrupamento_edit").val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(".voltarLayout").click();
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
     });
-});
 
 //editar aluno/professor/escola/agrupamento 
-$("body").on('click', ".editInfo", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var type = $(this).data("type");
-    switch (type) {
-    case "aluno":
-        addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getAllEscolas",
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+    $("body").on('click', ".editInfo", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var type = $(this).data("type");
+        switch (type) {
+            case "aluno":
+                addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
+                if (currentPosition != backArray.length) {
+                    backArray.splice(currentPosition, backArray.length - currentPosition);
+                    folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-                $("body").find("#loading").remove();
-                $("body").find("#escola_aluno_edit").append(htmlVar);
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getAllEscolas",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#escola_aluno_edit").append(htmlVar);
 
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/getAluno/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                $("#Id_aluno_edit").val(data[0].id_user);
-                $("#userImage").attr("src", data[0].avatar),
-                    $("#username_aluno_edit").val(data[0].username);
-                $("#nome_aluno_edit").val(data[0].nome_aluno);
-                $("#numero_aluno_edit").val(data[0].num_aluno);
-                $("#turma_aluno_edit").val(data[0].turma);
-                $("#ano_aluno_edit").val(data[0].ano);
-                $("#escola_aluno_edit").val(data[0].id_escola);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        break;
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "/getAluno/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#Id_aluno_edit").val(data[0].id_user);
+                        $("#userImage").attr("src", data[0].avatar),
+                                $("#username_aluno_edit").val(data[0].username);
+                        $("#nome_aluno_edit").val(data[0].nome_aluno);
+                        $("#numero_aluno_edit").val(data[0].num_aluno);
+                        $("#turma_aluno_edit").val(data[0].turma);
+                        $("#ano_aluno_edit").val(data[0].ano);
+                        $("#escola_aluno_edit").val(data[0].id_escola);
+                        $("body").find("#loading").remove();
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                break;
 
-    case "professor":
-        addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getsAllAgrupamentos",
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+            case "professor":
+                addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
+                if (currentPosition != backArray.length) {
+                    backArray.splice(currentPosition, backArray.length - currentPosition);
+                    folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-                $("body").find("#loading").remove();
-                $("body").find("#Agrupamento_Professor_edit").append(htmlVar);
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/getProfessores/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                $("#userImage").attr("src", data[0].avatar),
-                    $("#Id_Professor_edit").val(data[0].id);
-                $("#username_Professor_edit").val(data[0].username);
-                $("#Nome_Professor_edit").val(data[0].nome_professor);
-                $("#Email_Professor_edit").val(data[0].email);
-                $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        break;
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsAllAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#Agrupamento_Professor_edit").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "/getProfessores/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        $("#userImage").attr("src", data[0].avatar),
+                                $("#Id_Professor_edit").val(data[0].id);
+                        $("#username_Professor_edit").val(data[0].username);
+                        $("#Nome_Professor_edit").val(data[0].nome_professor);
+                        $("#Email_Professor_edit").val(data[0].email);
+                        $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
+                        $("body").find("#loading").remove();
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                break;
 
-    case "escola":
-        addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getsAllAgrupamentos",
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+            case "escola":
+                addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
+                if (currentPosition != backArray.length) {
+                    backArray.splice(currentPosition, backArray.length - currentPosition);
+                    folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
-                $("body").find("#loading").remove();
-                $("body").find("#Agrupamento_Escola_edit").append(htmlVar);
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/getEscolas/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                //$("#userImage").attr('src', data[0].avatar);
-                $("#Id_Escola_edit").val(data[0].id);
-                $("#Nome_Escola_edit").val(data[0].nome);
-                $("#Morada_Escola_edit").val(data[0].morada);
-                $("#Contacto_Escola_edit").val(data[0].contacto);
-                $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        break;
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getsAllAgrupamentos",
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar = "";
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                        }
+                        $("body").find("#loading").remove();
+                        $("body").find("#Agrupamento_Escola_edit").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "/getEscolas/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        //$("#userImage").attr('src', data[0].avatar);
+                        $("#Id_Escola_edit").val(data[0].id);
+                        $("#Nome_Escola_edit").val(data[0].nome);
+                        $("#Morada_Escola_edit").val(data[0].morada);
+                        $("#Contacto_Escola_edit").val(data[0].contacto);
+                        $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
+                        $("body").find("#loading").remove();
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+                break;
 
-    case "agrupamento":
-        addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
+            case "agrupamento":
+                addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
+                if (currentPosition != backArray.length) {
+                    backArray.splice(currentPosition, backArray.length - currentPosition);
+                    folderArray.splice(currentPosition, folderArray.length - currentPosition);
+                }
+                backArray.push($(this).data("layout"));
+                folderArray.push($(this).data("folder"));
+                currentPosition += 1;
+                $("body").append(wait);
+                $.ajax({
+                    type: "GET",
+                    url: "/getAgrupamentos/" + $(this).attr("rel"),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        $("#Id_Agrupamento_edit").val(data[0].id);
+                        $("#Nome_Agrupamento_edit").val(data[0].nome);
+                        $("body").find("#loading").remove();
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+
         }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getAgrupamentos/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                $("#Id_Agrupamento_edit").val(data[0].id);
-                $("#Nome_Agrupamento_edit").val(data[0].nome);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-
-    }
-});
+    });
 
 
 //editar estado de um utilizador
-$("body").on('click', ".editState", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var tipo = $(this).data("type");
-    var user = $(this).attr("rel");
-    var est;
-    if ($(this).find("img").attr("src") == "../img/green.png") {
-        est = 0;
-    } else {
-        est = 1;
-    }
-    $.ajax({
-        type: "POST",
-        url: "/updateState",
-        data: {
-            user_id: user,
-            type: tipo,
-            state: est
-        },
-        dataType: 'json',
-        success: function (data) {
-            switch (tipo) {
-            case "aluno":
-                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                break;
-            case "professor":
-                addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-                break;
+    $("body").on('click', ".editState", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var tipo = $(this).data("type");
+        var user = $(this).attr("rel");
+        var est;
+        if ($(this).find("img").attr("src") == "../img/green.png") {
+            est = 0;
+        } else {
+            est = 1;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/updateState",
+            data: {
+                user_id: user,
+                type: tipo,
+                state: est
+            },
+            dataType: 'json',
+            success: function (data) {
+                switch (tipo) {
+                    case "aluno":
+                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                        break;
+                    case "professor":
+                        addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                        break;
+                }
+            },
+            error: function (error) {
             }
-        },
-        error: function (error) {}
+        });
     });
-});
 
 //criar aluno
-$("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var tipo = $(this).data("type");
-    var avatar = $("#add-Entity-Image").attr('src');
-    var username = $("#username_aluno_add").val();
-    var password = $("#password_aluno_add").val();
-    var nome = $("#nome_aluno_add").val();
-    var numero = $("#numero_aluno_add").val();
-    var escola = $("#escola_aluno_add option:selected").val();
-    var ano = $("#ano_aluno_add").val();
-    var turma = $("#turma_aluno_add").val();
-    $.ajax({
-        type: "POST",
-        url: "/insertAluno",
-        data: {
-            //id: user,
-            type: tipo,
-            username: username,
-            password: password,
-            nome: nome,
-            numero: numero,
-            id_escola: escola,
-            ano: ano,
-            turma: turma,
-            avatar: avatar
-        },
-        // contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        success: function (data) {
+    $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var tipo = $(this).data("type");
+        var avatar = $("#add-Entity-Image").attr('src');
+        var username = $("#username_aluno_add").val();
+        var password = $("#password_aluno_add").val();
+        var nome = $("#nome_aluno_add").val();
+        var numero = $("#numero_aluno_add").val();
+        var escola = $("#escola_aluno_add option:selected").val();
+        var ano = $("#ano_aluno_add").val();
+        var turma = $("#turma_aluno_add").val();
+        $.ajax({
+            type: "POST",
+            url: "/insertAluno",
+            data: {
+                //id: user,
+                type: tipo,
+                username: username,
+                password: password,
+                nome: nome,
+                numero: numero,
+                id_escola: escola,
+                ano: ano,
+                turma: turma,
+                avatar: avatar
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
 
-            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-        },
-        error: function (error) {}
+                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+            },
+            error: function (error) {
+            }
+        });
     });
-});
-    
+
 //criar professor
-$("body").on('click', "#btnAdicionarEntity_professor", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var tipo = $(this).data("type");
-    var avatar = $("#add-Entity-Image").attr('src');
-    var username = $("#username_Professor_add").val();
-    var password = $("#password_Professor_add").val();
-    var nome = $("#Nome_Professor_add").val();
-    var email = $("#Email_Professor_add").val();
-    var agrupamento = $("#Agrupamento_Professor_add option:selected").val();
-    $.ajax({
-        type: "POST",
-        url: "/insertProfessor",
-        data: {
-            //id: user,
-            type: tipo,
-            username: username,
-            password: password,
-            nome: nome,
-            email: email,
-            agrupamento: agrupamento,
-            avatar: avatar
-        },
-        // contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        success: function (data) {
+    $("body").on('click', "#btnAdicionarEntity_professor", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var tipo = $(this).data("type");
+        var avatar = $("#add-Entity-Image").attr('src');
+        var username = $("#username_Professor_add").val();
+        var password = $("#password_Professor_add").val();
+        var nome = $("#Nome_Professor_add").val();
+        var email = $("#Email_Professor_add").val();
+        var agrupamento = $("#Agrupamento_Professor_add option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "/insertProfessor",
+            data: {
+                //id: user,
+                type: tipo,
+                username: username,
+                password: password,
+                nome: nome,
+                email: email,
+                agrupamento: agrupamento,
+                avatar: avatar
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
 
-            $(".voltarLayout").click();
-            //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-        },
-        error: function (error) {}
+                $(".voltarLayout").click();
+                //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+            },
+            error: function (error) {
+            }
+        });
     });
-});
-    
+
     //criar escola
-$("body").on('click', "#btnAdicionarEntity_escola", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    //var avatar = $("#add-Entity-Image").attr('src');
-    var nome = $("#Nome_Escola_add").val();
-    var morada = $("#Morada_Escola_add").val();
-    var contacto = $("#Contacto_Escola_add").val();
-    var agrupamento = $("#Agrupamento_Escola_add option:selected").val();
-    $.ajax({
-        type: "POST",
-        url: "/insertEscola",
-        data: {
-            //id: user,
-            nome: nome,
-            morada: morada,
-            contacto: contacto,
-            agrupamento: agrupamento
-        },
-        // contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        success: function (data) {
+    $("body").on('click', "#btnAdicionarEntity_escola", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        //var avatar = $("#add-Entity-Image").attr('src');
+        var nome = $("#Nome_Escola_add").val();
+        var morada = $("#Morada_Escola_add").val();
+        var contacto = $("#Contacto_Escola_add").val();
+        var agrupamento = $("#Agrupamento_Escola_add option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "/insertEscola",
+            data: {
+                //id: user,
+                nome: nome,
+                morada: morada,
+                contacto: contacto,
+                agrupamento: agrupamento
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
 
-            $(".voltarLayout").click();
-            //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-        },
-        error: function (error) {}
+                $(".voltarLayout").click();
+                //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+            },
+            error: function (error) {
+            }
+        });
     });
-});
-    
+
     //criar escola
-$("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    //var avatar = $("#add-Entity-Image").attr('src');
-    var nome = $("#Nome_Agrupamento_add").val();
-    $.ajax({
-        type: "POST",
-        url: "/insertAgrupamento",
-        data: {
-            //id: user,
-            nome: nome
-        },
-        // contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        success: function (data) {
+    $("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        //var avatar = $("#add-Entity-Image").attr('src');
+        var nome = $("#Nome_Agrupamento_add").val();
+        $.ajax({
+            type: "POST",
+            url: "/insertAgrupamento",
+            data: {
+                //id: user,
+                nome: nome
+            },
+            // contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
 
-            $(".voltarLayout").click();
-            //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-        },
-        error: function (error) {}
+                $(".voltarLayout").click();
+                //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+            },
+            error: function (error) {
+            }
+        });
     });
-});
 // procurar por Username de no aluno
-$("body").on('input', "#inputSearch", function (e) {
-    var type = $(this).data("type");
-    switch (type) {
-    case "aluno":
-        $("body").append(wait);
-        if ($("#inputSearch").val() == "") {
-            addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-            $("#inputSearch").focus();
-        } else {
-            e.stopPropagation();
-            e.preventDefault();
-            $.ajax({
-                type: "GET",
-                url: "/searchAluno/" + $("#inputSearch").val(),
-                dataType: 'json',
-                success: function (data) {
-                    var htmlVar;
-                    $('#gerirEntitiesTable tbody').empty();
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        htmlVar += "<tr>";
-                        htmlVar += "<td>" + data[i].id + "</td>" +
-                            "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                            "<td>" + data[i].username + "</td>" +
-                            "<td>" + data[i].nome_aluno + "</td>" +
-                            "<td>" + data[i].num_aluno + "</td>" +
-                            "<td>" + data[i].ano + "</td>" +
-                            "<td>" + data[i].turma + "</td>" +
-                            "<td>" + data[i].nome_escola + "</td>" +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                            '<img class="text-center image" src="../img/edit_40.png">' +
-                            '</div>' +
-                            '</td>' +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                            '<img class="text-center image" width="35"';
-                        if (data[i].active == "1") {
-                            htmlVar += ' src="../img/green.png">';
-                        } else {
-                            htmlVar += ' src="../img/red.png">';
+    $("body").on('input', "#inputSearch", function (e) {
+        var type = $(this).data("type");
+        switch (type) {
+            case "aluno":
+                $("body").append(wait);
+                if ($("#inputSearch").val() == "") {
+                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                    $("#inputSearch").focus();
+                } else {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                        type: "GET",
+                        url: "/searchAluno/" + $("#inputSearch").val(),
+                        dataType: 'json',
+                        success: function (data) {
+                            var htmlVar;
+                            $('#gerirEntitiesTable tbody').empty();
+                            for (var i = 0, max = data.length; i < max; i++) {
+                                htmlVar += "<tr>";
+                                htmlVar += "<td>" + data[i].id + "</td>" +
+                                        "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                        "<td>" + data[i].username + "</td>" +
+                                        "<td>" + data[i].nome_aluno + "</td>" +
+                                        "<td>" + data[i].num_aluno + "</td>" +
+                                        "<td>" + data[i].ano + "</td>" +
+                                        "<td>" + data[i].turma + "</td>" +
+                                        "<td>" + data[i].nome_escola + "</td>" +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                        '<img class="text-center image" src="../img/edit_40.png">' +
+                                        '</div>' +
+                                        '</td>' +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                                        '<img class="text-center image" width="35"';
+                                if (data[i].active == "1") {
+                                    htmlVar += ' src="../img/green.png">';
+                                } else {
+                                    htmlVar += ' src="../img/red.png">';
+                                }
+                                '</div>' +
+                                        '</td>' +
+                                        "</tr>";
+                            }
+                            $("body").find("#loading").remove();
+                            $("body").find("#gerirEntitiesTable").append(htmlVar);
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                            console.log(JSON.stringify(error));
                         }
-                        '</div>' +
-                        '</td>' +
-                        "</tr>";
-                    }
-                    $("body").find("#loading").remove();
-                    $("body").find("#gerirEntitiesTable").append(htmlVar);
-                },
-                error: function (error) {
-                    $("body").find("#loading").remove();
-                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                    console.log(JSON.stringify(error));
+                    });
                 }
-            });
-        }
-        $("body").find("#loading").remove();
-        break;
+                $("body").find("#loading").remove();
+                break;
 
-    case "professor":
-        $("body").append(wait);
-        if ($("#inputSearch").val() == "") {
-            addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-            $("#inputSearch").focus();
-        } else {
-            e.stopPropagation();
-            e.preventDefault();
-            $.ajax({
-                type: "GET",
-                url: "/searchProfessor/" + $("#inputSearch").val(),
-                dataType: 'json',
-                success: function (data) {
-                    var htmlVar;
-                    $('#gerirEntitiesTable tbody').empty();
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        htmlVar += "<tr>";
-                        htmlVar += "<td>" + data[i].id + "</td>" +
-                            "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                            "<td>" + data[i].username + "</td>" +
-                            "<td>" + data[i].nome_professor + "</td>" +
-                            "<td>" + data[i].email + "</td>" +
-                            "<td>" + data[i].nome_agrupamento + "</td>" +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                            '<img class="text-center image" src="../img/edit_40.png">' +
-                            '</div>' +
-                            '</td>' +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                            '<img class="text-center image" width="35"';
-                        if (data[i].active == "1") {
-                            htmlVar += ' src="../img/green.png">';
-                        } else {
-                            htmlVar += ' src="../img/red.png">';
+            case "professor":
+                $("body").append(wait);
+                if ($("#inputSearch").val() == "") {
+                    addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                    $("#inputSearch").focus();
+                } else {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                        type: "GET",
+                        url: "/searchProfessor/" + $("#inputSearch").val(),
+                        dataType: 'json',
+                        success: function (data) {
+                            var htmlVar;
+                            $('#gerirEntitiesTable tbody').empty();
+                            for (var i = 0, max = data.length; i < max; i++) {
+                                htmlVar += "<tr>";
+                                htmlVar += "<td>" + data[i].id + "</td>" +
+                                        "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                        "<td>" + data[i].username + "</td>" +
+                                        "<td>" + data[i].nome_professor + "</td>" +
+                                        "<td>" + data[i].email + "</td>" +
+                                        "<td>" + data[i].nome_agrupamento + "</td>" +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                        '<img class="text-center image" src="../img/edit_40.png">' +
+                                        '</div>' +
+                                        '</td>' +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                                        '<img class="text-center image" width="35"';
+                                if (data[i].active == "1") {
+                                    htmlVar += ' src="../img/green.png">';
+                                } else {
+                                    htmlVar += ' src="../img/red.png">';
+                                }
+                                '</div>' +
+                                        '</td>' +
+                                        "</tr>";
+                            }
+                            $("body").find("#loading").remove();
+                            $("body").find("#gerirEntitiesTable").append(htmlVar);
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                            console.log(JSON.stringify(error));
                         }
-                        '</div>' +
-                        '</td>' +
-                        "</tr>";
-                    }
-                    $("body").find("#loading").remove();
-                    $("body").find("#gerirEntitiesTable").append(htmlVar);
-                },
-                error: function (error) {
-                    $("body").find("#loading").remove();
-                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                    console.log(JSON.stringify(error));
+                    });
                 }
-            });
-        }
-        $("body").find("#loading").remove();
-        break;
+                $("body").find("#loading").remove();
+                break;
 
-    case "escola":
-        $("body").append(wait);
-        if ($("#inputSearch").val() == "") {
-            addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
-            $("#inputSearch").focus();
-        } else {
-            e.stopPropagation();
-            e.preventDefault();
-            $.ajax({
-                type: "GET",
-                url: "/searchEscola/" + $("#inputSearch").val(),
-                dataType: 'json',
-                success: function (data) {
-                    var htmlVar;
-                    $('#gerirEntitiesTable tbody').empty();
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        htmlVar += "<tr>";
-                        htmlVar += 
-                            "<td>" + data[i].id + "</td>" +
-                            "<td>" + data[i].nome_escola + "</td>" +
-                            "<td>" + data[i].morada + "</td>" +
-                            "<td>" + data[i].contacto + "</td>" +
-                            "<td>" + data[i].nome_agrupamento + "</td>" +
-        
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                            '<img class="text-center image" src="../img/edit_40.png">' +
-                            '</div>' +
-                            '</td>' +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                            '<img class="text-center image" width="35"';
-                        if (data[i].active == "1") {
-                            htmlVar += ' src="../img/green.png">';
-                        } else {
-                            htmlVar += ' src="../img/red.png">';
+            case "escola":
+                $("body").append(wait);
+                if ($("#inputSearch").val() == "") {
+                    addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
+                    $("#inputSearch").focus();
+                } else {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                        type: "GET",
+                        url: "/searchEscola/" + $("#inputSearch").val(),
+                        dataType: 'json',
+                        success: function (data) {
+                            var htmlVar;
+                            $('#gerirEntitiesTable tbody').empty();
+                            for (var i = 0, max = data.length; i < max; i++) {
+                                htmlVar += "<tr>";
+                                htmlVar +=
+                                        "<td>" + data[i].id + "</td>" +
+                                        "<td>" + data[i].nome_escola + "</td>" +
+                                        "<td>" + data[i].morada + "</td>" +
+                                        "<td>" + data[i].contacto + "</td>" +
+                                        "<td>" + data[i].nome_agrupamento + "</td>" +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                        '<img class="text-center image" src="../img/edit_40.png">' +
+                                        '</div>' +
+                                        '</td>' +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                                        '<img class="text-center image" width="35"';
+                                if (data[i].active == "1") {
+                                    htmlVar += ' src="../img/green.png">';
+                                } else {
+                                    htmlVar += ' src="../img/red.png">';
+                                }
+                                '</div>' +
+                                        '</td>' +
+                                        "</tr>";
+                            }
+                            $("body").find("#loading").remove();
+                            $("body").find("#gerirEntitiesTable").append(htmlVar);
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                            console.log(JSON.stringify(error));
                         }
-                        '</div>' +
-                        '</td>' +
-                        "</tr>";
-                    }
-                    $("body").find("#loading").remove();
-                    $("body").find("#gerirEntitiesTable").append(htmlVar);
-                },
-                error: function (error) {
-                    $("body").find("#loading").remove();
-                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                    console.log(JSON.stringify(error));
+                    });
                 }
-            });
-        }
-        $("body").find("#loading").remove();
-        break;
+                $("body").find("#loading").remove();
+                break;
 
-    case "agrupamento":
-        $("body").append(wait);
-        if ($("#inputSearch").val() == "") {
-            addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
-            $("#inputSearch").focus();
-        } else {
-            e.stopPropagation();
-            e.preventDefault();
-            $.ajax({
-                type: "GET",
-                url: "/searchAgrupamento/" + $("#inputSearch").val(),
-                dataType: 'json',
-                success: function (data) {
-                    var htmlVar;
-                    $('#gerirEntitiesTable tbody').empty();
-                    for (var i = 0, max = data.length; i < max; i++) {
-                        htmlVar += "<tr>";
-                        htmlVar +=
-                            "<td>" + data[i].id + "</td>" +
-                            "<td>" + data[i].nome + "</td>" +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                            '<img class="text-center image" src="../img/edit_40.png">' +
-                            '</div>' +
-                            '</td>' +
-                            '<td class="image">' +
-                            '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                            '<img class="text-center image" width="35"';
-                        if (data[i].active == "1") {
-                            htmlVar += ' src="../img/green.png">';
-                        } else {
-                            htmlVar += ' src="../img/red.png">';
+            case "agrupamento":
+                $("body").append(wait);
+                if ($("#inputSearch").val() == "") {
+                    addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
+                    $("#inputSearch").focus();
+                } else {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                        type: "GET",
+                        url: "/searchAgrupamento/" + $("#inputSearch").val(),
+                        dataType: 'json',
+                        success: function (data) {
+                            var htmlVar;
+                            $('#gerirEntitiesTable tbody').empty();
+                            for (var i = 0, max = data.length; i < max; i++) {
+                                htmlVar += "<tr>";
+                                htmlVar +=
+                                        "<td>" + data[i].id + "</td>" +
+                                        "<td>" + data[i].nome + "</td>" +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                        '<img class="text-center image" src="../img/edit_40.png">' +
+                                        '</div>' +
+                                        '</td>' +
+                                        '<td class="image">' +
+                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                                        '<img class="text-center image" width="35"';
+                                if (data[i].active == "1") {
+                                    htmlVar += ' src="../img/green.png">';
+                                } else {
+                                    htmlVar += ' src="../img/red.png">';
+                                }
+                                '</div>' +
+                                        '</td>' +
+                                        "</tr>";
+                            }
+                            $("body").find("#loading").remove();
+                            $("body").find("#gerirEntitiesTable").append(htmlVar);
+                        },
+                        error: function (error) {
+                            $("body").find("#loading").remove();
+                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                            console.log(JSON.stringify(error));
                         }
-                        '</div>' +
-                        '</td>' +
-                        "</tr>";
-                    }
-                    $("body").find("#loading").remove();
-                    $("body").find("#gerirEntitiesTable").append(htmlVar);
-                },
-                error: function (error) {
-                    $("body").find("#loading").remove();
-                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                    console.log(JSON.stringify(error));
+                    });
                 }
-            });
+                $("body").find("#loading").remove();
         }
-        $("body").find("#loading").remove();
-    }
     });
 //--------------------------BACKOFFICE-END---------------------------------------
-    
-    
+
+
     $.ajaxSetup({async: false});
     /**
      * Configuracao das opcoes do popup de online / offline de novos clientes
@@ -800,7 +804,9 @@ $("body").on('input', "#inputSearch", function (e) {
      */
     socket.on('draw', function (data) {
         var kk = Object.keys(hash)
-        if (hash[kk[0]].projID === data.Pid) {
+        console.log(hash[kk[0]].projID);
+        console.log(data.data.Pid);
+        if (hash[kk[0]].projID === data.data.Pid) {
             if (typeof hash["." + data.data.parent] !== "undefined") {
                 var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
                 cmvv.drawOtherUser(
@@ -856,6 +862,7 @@ $("body").on('input', "#inputSearch", function (e) {
             var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
             cmv.draw(x, y, type, sizeCurs);
             var kk = Object.keys(hash);
+            console.log(hash[kk[0]].projID)
             socket.emit('drawClick', {
                 id: thisId,
                 x: x,
@@ -1604,6 +1611,7 @@ $("body").on('input', "#inputSearch", function (e) {
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
                 } else if (idDiv.indexOf("canvas") !== -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
+
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
 
                 }
@@ -1646,7 +1654,20 @@ $("body").on('input', "#inputSearch", function (e) {
                     var tabNumber = iddd.match(/\d+/)[0];
                     var thisId = "tab" + tabNumber + "-Mycanvas";
                     var drawCanvas = hash[idToll].modelo.arrayElem[thisId];
-                    console.log(drawCanvas.drawObj.getImgCanvas());
+
+
+                    var kk = Object.keys(hash);
+                    socket.emit("reqCanvasIMG", {
+                        Pid: hash[kk[0]].projID,
+                        parent: idToll,
+                        id: "tab" + tabNumber + "-Mycanvas"
+                    });
+                    socket.on("getCanvasIMG", function (data) {
+                        console.log("ola");
+                        console.log(data.canvas);
+                    });
+
+                    //console.log(drawCanvas.drawObj.getImgCanvas());
                     page += "<div>" + drawCanvas.drawObj.getImgCanvas() + "</div>";
                 }
             });
@@ -1655,7 +1676,6 @@ $("body").on('input', "#inputSearch", function (e) {
         socket.emit("saveAsHtml", pages);
         window.open("./livro/Livro.html");
     });
-
 
 
     // *******************************************************************
@@ -2829,38 +2849,38 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         Pid: hash[kk[0]].projID
                     });
                 }
-                
+
                 if (typeof hash[kk[0]].projID != "undefonid") {
                     $.ajax({
-                    type: "GET",
-                    url: "/getProjectsbyID/" + hash[kk[0]].projID,
-                    async: true,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data[0].tipo === "Livro" || data[0].tipo === "Poema") {
-                            //Reduzir tamanho da div das tabs
-                            $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                            $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+                        type: "GET",
+                        url: "/getProjectsbyID/" + hash[kk[0]].projID,
+                        async: true,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data[0].tipo === "Livro" || data[0].tipo === "Poema") {
+                                //Reduzir tamanho da div das tabs
+                                $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                                $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
 
-                            //Adicionar a div com o texto de ajuda		
-                            $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
-                                    "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                    "<div id='divTxtAjuda'>"+data[0].texto+"</div>" +
-                                    "</div>");
+                                //Adicionar a div com o texto de ajuda		
+                                $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                        "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                        "<div id='divTxtAjuda'>" + data[0].texto + "</div>" +
+                                        "</div>");
 
-                            $(".containerTxtAjuda").animate({
-                                opacity: 1,
-                            }, 1000, function () {
-                                // Animation complete.
-                            });
+                                $(".containerTxtAjuda").animate({
+                                    opacity: 1,
+                                }, 1000, function () {
+                                    // Animation complete.
+                                });
+                            }
+
+                        },
+                        error: function (error) {
+                            console.log(JSON.stringify(error));
                         }
-
-                    },
-                    error: function (error) {
-                        console.log(JSON.stringify(error));
-                    }
-                });
+                    });
                 }
 
                 $('#bt_PDF').css({
