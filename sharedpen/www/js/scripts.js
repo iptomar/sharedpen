@@ -706,7 +706,7 @@ $(document).ready(function () {
         reader.onload = function () {
             var dataURL = reader.result;
             hash["." + Thid].modelo.arrayElem[cnv].drawObj.imageCanvas(dataURL);
-            //            imageCanvas(dataURL, Thid);
+            var kk = Object.keys(hash);
             socket.emit('drawClick', {
                 id: cnv,
                 type: "backgoundImage",
@@ -715,7 +715,8 @@ $(document).ready(function () {
                 socket: socket.id,
                 canvas: dataURL,
                 parent: Thid,
-                image: dataURL
+                image: dataURL,
+                Pid: hash[kk[0]].projID
             });
         };
         reader.readAsDataURL(input.files[0]);
