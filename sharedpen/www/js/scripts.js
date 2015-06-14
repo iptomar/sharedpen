@@ -2865,7 +2865,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     });
                 }
 
-                if (typeof hash[kk[0]].projID != "undefonid") {
+                if (typeof hash[kk[0]] !== "undefined") {
                     $.ajax({
                         type: "GET",
                         url: "/getProjectsbyID/" + hash[kk[0]].projID,
