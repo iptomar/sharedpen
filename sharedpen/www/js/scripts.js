@@ -10,6 +10,7 @@ var socket = ""; // socket de comunicacao
 var username = ""; // nome do utilizador ligado
 var userColor = "";
 var userNumber = "";
+var avatarUser = "";
 var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["default", "Default"],
     ["white", "Branco"],
@@ -729,7 +730,7 @@ $(document).ready(function () {
     $("#username").focus();
     // ao carregar em enter no nome do utilizador carrega no button
     $("#username, #password").keydown(function (event) {
-        if (event.keyCode === 13) {
+        if (event.keyCode == 13) {
             $("#startlogin").click();
         }
     });
@@ -749,6 +750,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.length > 0) {
                     userNumber = data[0].id;
+                    avatarUser = data[0].avatar;
                     alert(data[0].role);
                     $("#div-login").remove();
                     $("#contentor").css({
@@ -758,7 +760,7 @@ $(document).ready(function () {
                             "<u><i><b>" +
                             username +
                             "</b></i></u>");
-                    socket.emit("myname", username);
+                    socket.emit("myname", username, avatarUser);
                     userColor = hexToRgb(0, socket.id, username);
                     var data = {
                         folder: "Menu_Navegacao",
@@ -801,14 +803,14 @@ $(document).ready(function () {
     ajustElements();
     // recebe as cordenadas dos outros utilizadores e movimenta a label dele
     // conforme as coordenadas recebidas
-    socket.on('useron', function (data, port, socketid) {
-        if (data !== "") {
-            if (typeof users[socketid] === "undefined") {
+    socket.on('useron', function (data, avatar, port, socketid) {
+        if (data != "") {
+            if (typeof users[socketid] == "undefined") {
                 users[socketid] = new Client($("#" + socketid), data, port, socketid);
                 $("#listaUsers").append(
                         "<p class='" +
                         socketid +
-                        "'><img class='imguser' src='./img/user.png'>" +
+                        "'><img class='imguser' src='" + avatar + "'>" +
                         data +
                         "</p>");
                 toastr.success(data, 'Online');
@@ -826,10 +828,10 @@ $(document).ready(function () {
      */
     socket.on('draw', function (data) {
         var kk = Object.keys(hash)
-        console.log(hash[kk[0]].projID);
-        console.log(data.data.Pid);
-        if (hash[kk[0]].projID === data.data.Pid) {
-            if (typeof hash["." + data.data.parent] !== "undefined") {
+//        console.log(hash[kk[0]].projID);
+//        console.log(data.data.Pid);
+        if (hash[kk[0]].projID == data.data.Pid) {
+            if (typeof hash["." + data.data.parent] != "undefined") {
                 var cmvv = hash["." + data.data.parent].modelo.arrayElem[data.data.id].drawObj;
                 cmvv.drawOtherUser(
                         data.data.color,
@@ -855,19 +857,19 @@ $(document).ready(function () {
         var tabNumber = iddd.match(/\d+/)[0];
         var thisId = "tab" + tabNumber + "-Mycanvas";
 
-        if (e.which === 1 ||
-                e.handleObj.type === "touchstart" ||
-                e.handleObj.type === "touchmove" ||
-                e.handleObj.type === "touchend") {
+        if (e.which == 1 ||
+                e.handleObj.type == "touchstart" ||
+                e.handleObj.type == "touchmove" ||
+                e.handleObj.type == "touchend") {
             var offset, type, x, y;
             type = e.handleObj.type;
             offset = $(this).offset();
             e.offsetX = e.clientX - offset.left;
             e.offsetY = e.clientY - offset.top;
 
-            if (e.handleObj.type === "touchstart" ||
-                    e.handleObj.type === "touchmove" ||
-                    e.handleObj.type === "touchend") {
+            if (e.handleObj.type == "touchstart" ||
+                    e.handleObj.type == "touchmove" ||
+                    e.handleObj.type == "touchend") {
                 //para apanhar o erro no touchend
                 try {
                     x = e.originalEvent.touches[0].pageX - offset.left;
@@ -884,7 +886,7 @@ $(document).ready(function () {
             var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
             cmv.draw(x, y, type, sizeCurs);
             var kk = Object.keys(hash);
-            console.log(hash[kk[0]].projID)
+//            console.log(hash[kk[0]].projID)
             socket.emit('drawClick', {
                 id: thisId,
                 x: x,
@@ -901,10 +903,10 @@ $(document).ready(function () {
                 Pid: hash[kk[0]].projID
             });
             //                        alert('Left Mouse button pressed.');
-        } else if (e.which === 2) {
+        } else if (e.which == 2) {
             //                        alert('Middle Mouse button pressed.');
-        } else if (e.which === 3 ||
-                e.handleObj.type === "doubletap") {
+        } else if (e.which == 3 ||
+                e.handleObj.type == "doubletap") {
             $(this).contextMenu({
                 menuSelector: "#toolbar",
                 menuSelected: function (invokedOn, selectedMenu) {
@@ -984,7 +986,7 @@ $(document).ready(function () {
      * Evento gerado quando recebe uma alteraÃ§ao de cores
      */
     socket.on('getcolor', function (data) {
-        if (data.cor === "default") {
+        if (data.cor == "default") {
             $('body').css('background-image', 'url(../img/background.png)');
         } else {
             $("body").css('background-image', 'none');
@@ -1016,14 +1018,14 @@ $(document).ready(function () {
     socket.on('msgappend', function (data) {
         //verificar se o projecto de onde foi emitido Ã© o meu
         var kk = Object.keys(hash);
-        if (data.Pid === hash[kk[0]].projID) {
+        if (data.Pid == hash[kk[0]].projID) {
             switch (data.tipo) {
                 case "IMG":
                     $("body").find('#' + data.id).attr('src', data.imageData);
                     break;
                 default:
-                    if (typeof $("#" + data.id).parent().parent().attr('class') !== "undefined") {
-                        var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1]
+                    if (typeof $("#" + data.id).parent().parent().attr('class') != "undefined") {
+                        var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1];
                         var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
                         editor.setTextEditor(data);
                     }
@@ -1056,20 +1058,20 @@ $(document).ready(function () {
         var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
         // console.log(listClassPAI);
         var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
-        if ($("#" + edit.idpai + " > #" + e.target.id).attr("class") !== edit.socketId) {
-            if (e.handleObj.type.charAt(0) === 'm' || e.handleObj.type.charAt(0) === 'c') {
+        if ($("#" + edit.idpai + " > #" + e.target.id).attr("class") != edit.userNum) {
+            if (e.handleObj.type.charAt(0) == 'm' || e.handleObj.type.charAt(0) == 'c') {
                 setCaretAtEditor(e.target.id, 0, $("#" + edit.idpai + " > #" + e.target.id).text().length);
             } else {
-                if (e.keyCode === edit.key.ENTER) {
+                if (e.keyCode == edit.key.ENTER) {
                     if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
                         e.preventDefault(); //Prevent default browser behavior
-                        edit.createPara(edit.socketId, e.target.id);
+                        edit.createPara(edit.userNum, e.target.id);
                         var kk = Object.keys(hash);
                         socket.emit('msgappend', {
                             html: $("#" + edit.idpai).html(),
                             textSinc: $(e.target).text(),
                             pos: 0,
-                            socketid: edit.socketId,
+                            socketid: edit.userNum,
                             id: edit.idpai,
                             novoPara: true,
                             idPara: e.target.id,
@@ -1077,7 +1079,7 @@ $(document).ready(function () {
                             'Pid': hash[kk[0]].projID
                         });
                     } else {
-                        alert("NÃ£o pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
+                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
                     }
                 } else {
                     e.preventDefault();
@@ -1085,25 +1087,25 @@ $(document).ready(function () {
             }
         } else {
             var newPara = false;
-            if (e.handleObj.type.charAt(0) === 'k' && e.keyCode === edit.key.ENTER) {
-                if (e.handleObj.type === 'keypress') {
+            if (e.handleObj.type.charAt(0) == 'k' && e.keyCode == edit.key.ENTER) {
+                if (e.handleObj.type == 'keypress') {
                     if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
-                        edit.createPara(edit.socketId, e.target.id);
+                        edit.createPara(edit.userNum, e.target.id);
                         newPara = true;
                     } else {
-                        alert("NÃ£o pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
+                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
                     }
                 }
                 e.preventDefault(); //Prevent default browser behavior
             }
             edit.atualPara = e.target.id;
-            console.log(hash[".txtTab1"].projID)
+//            console.log(hash[".txtTab1"].projID)
             var kk = Object.keys(hash);
             socket.emit('msgappend', {
                 html: $("#" + edit.idpai).html(),
                 textSinc: $(e.target).text(),
                 pos: 0,
-                socketid: edit.socketId,
+                socketid: edit.userNum,
                 id: edit.idpai,
                 novoPara: newPara,
                 idPara: e.target.id,
@@ -1119,9 +1121,9 @@ $(document).ready(function () {
      */
     socket.on("TabsChanged", function (data) {
         var kk = Object.keys(hash);
-        if (hash[kk[0]].projID === data.Pid) {
-            if ($.trim(username) !== "") {
-                if (data.op === "remover") {
+        if (hash[kk[0]].projID == data.Pid) {
+            if ($.trim(username) != "") {
+                if (data.op == "remover") {
                     removeTab(data.id);
                 } else {
                     Addtab(data.modelo, data.pos);
@@ -1270,7 +1272,7 @@ $(document).ready(function () {
                 for (var i = 0, max = data.length; i < max; i++) {
                     htmlModel += "<figure>" +
                             "<img class='btnmodels btnmodels-style' alt='' src='" +
-                            (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                            (data[i].icon == null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
                             "' data-idmodel='" + data[i].id +
                             "' data-model='" + data[i].nome + "'/>" +
                             "<figcaption> " + data[i].nome + " </figcaption>" +
@@ -1329,11 +1331,11 @@ $(document).ready(function () {
      */
     var countMsg = 0;
     socket.on('message', function (data) {
-        $('#panelChat').addNewText(data.user, data.data);
+        $('#panelChat').addNewText(data.user, data.data, data.avatar);
         $('#panelChat').animate({
             scrollTop: $('#panelChat').prop("scrollHeight")
         }, 500);
-        if ($("#divUsers").css("visibility") === "hidden") {
+        if ($("#divUsers").css("visibility") == "hidden") {
             $("#numMsg").html(++countMsg);
             $("#numMsg").css({
                 visibility: "visible"
@@ -1346,10 +1348,11 @@ $(document).ready(function () {
     $('#btnSendChat').click(function () {
         var chatMessage = $('#msgChat').val();
         //limpa input
-        if (chatMessage !== "")
+        if (chatMessage != "")
             socket.emit('message', {
                 'data': chatMessage,
-                'user': username
+                'user': username,
+                avatar: avatarUser
             });
         $('#msgChat').val('');
     });
@@ -1357,7 +1360,7 @@ $(document).ready(function () {
      * FunÃ§Ã£o para enviar mensagem com o enter
      */
     $('#msgChat').keydown(function (e) {
-        if (e.keyCode === 13) {
+        if (e.keyCode == 13) {
             $('#btnSendChat').click();
         }
     });
@@ -1367,12 +1370,12 @@ $(document).ready(function () {
     socket.on("OldmsgChat", function (data) {
         $("#panelChat").html("");
         var aux = data.split(",");
-        if (typeof aux[0] !== "undefined" && aux.length > 0) {
+        if (typeof aux[0] != "undefined" && aux.length > 0) {
             for (var i = 0, max = aux.length; i < max; i++) {
                 var aux2 = aux[i].split(":");
-                if (typeof aux2[1] !== "undefined") {
-                    $('#panelChat').addNewText(aux2[0], aux2[1].replace(",", ""));
-                    if ($("#divUsers").css("visibility") === "hidden") {
+                if (typeof aux2[1] != "undefined") {
+                    $('#panelChat').addNewText(aux2[0], aux2[1], aux2[2].replace(",", ""));
+                    if ($("#divUsers").css("visibility") == "hidden") {
                         $("#numMsg").html(++countMsg);
                         $("#numMsg").css({
                             visibility: "visible"
@@ -1453,7 +1456,7 @@ $(document).ready(function () {
         hash = null;
 
         socket.on('getHash', function (data) {
-            if (data.username === username) {
+            if (data.username == username) {
                 //adiciona o novo hash
                 hash = JSON.parse(data.hashh);
                 //cast das tabs
@@ -1491,7 +1494,7 @@ $(document).ready(function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            if (imgId !== "userImage" && imgId !== "image" && imgId !== "add-Entity-Image") {
+            if (imgId != "userImage" && imgId != "image" && imgId != "add-Entity-Image") {
                 // envia as informacoes da nova imagem para os outros clientes
                 var kk = Object.keys(hash);
                 socket.emit('msgappend', {
@@ -1529,16 +1532,16 @@ $(document).ready(function () {
         $.each(files, function (index, file) {
             // Some error messaging
             if (!files[index].type.match('image.*')) {
-                if (errMessage === 0) {
+                if (errMessage == 0) {
                     alert('Hey! Images only');
                     ++errMessage
-                } else if (errMessage === 1) {
+                } else if (errMessage == 1) {
                     alert('Stop it! Images only!');
                     ++errMessage
-                } else if (errMessage === 2) {
+                } else if (errMessage == 2) {
                     alert("Can't you read?! Images only!");
                     ++errMessage
-                } else if (errMessage === 3) {
+                } else if (errMessage == 3) {
                     alert("Fine! Keep dropping non-images.");
                     errMessage = 0;
                 }
@@ -1547,7 +1550,7 @@ $(document).ready(function () {
 
             var reader = new FileReader(file);
             reader.onload = function (evt) {
-                if (idImg !== "userImage" && idImg !== "image") {
+                if (idImg != "userImage" && idImg != "image") {
                     // envia as informacoes da nova imagem para os outros clientes
                     var kk = Object.keys(hash);
                     socket.emit('msgappend', {
@@ -1579,7 +1582,7 @@ $(document).ready(function () {
 
     socket.on('diconnected', function (socketid) {
         for (var item in users) {
-            if (users[item].getSocketId() === socketid) {
+            if (users[item].getSocketId() == socketid) {
                 var numid = users[item].getdivid();
                 toastr.warning(users[item].getUsername(), 'Offline');
                 users.splice(users[item], 1);
@@ -1603,7 +1606,7 @@ $(document).ready(function () {
         $('#tabs > li > a').each(function () {
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
-                if (idDiv.indexOf("input") !== -1) {
+                if (idDiv.indexOf("input") != -1) {
 
 
                     var listClass = $(this).attr("id");
@@ -1612,7 +1615,7 @@ $(document).ready(function () {
                     var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
                     textPdf += edit.getTextEditor();
 
-                } else if (idDiv.indexOf("image") !== -1) {
+                } else if (idDiv.indexOf("image") != -1) {
 
                     //console.log($(this)[0].outerHTML);
                     // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
@@ -1631,7 +1634,7 @@ $(document).ready(function () {
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
                     //teste imagem
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
-                } else if (idDiv.indexOf("canvas") !== -1) {
+                } else if (idDiv.indexOf("canvas") != -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
 
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
@@ -1658,19 +1661,21 @@ $(document).ready(function () {
     $('#bt_HTML').click(function () {
         var textPdf = "";
         var pages = [];
+        var usercontributes = [];
         $('#tabs > li > a').each(function () {
             var page = "";
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
-                if (idDiv.indexOf("input") !== -1) {
+                if (idDiv.indexOf("input") != -1) {
                     var listClass = $(this).attr("id");
                     var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
                     var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
                     page += edit.getTextEditorForHtml();
+                    usercontributes.push(edit.contributes(hash["." + listClassPAI].projID));
 
-                } else if (idDiv.indexOf("image") !== -1) {
+                } else if (idDiv.indexOf("image") != -1) {
                     page += "<div>" + $(this)[0].outerHTML + "</div>";
-                } else if (idDiv.indexOf("canvas") !== -1) {
+                } else if (idDiv.indexOf("canvas") != -1) {
                     var idToll = "." + $(this).parent().parent().attr('class').split(' ')[1];
                     var iddd = $(this).attr('id');
                     var tabNumber = iddd.match(/\d+/)[0];
@@ -1693,7 +1698,7 @@ $(document).ready(function () {
 
                         //  Draw imgCnv = data.canvas;
                         var imgCnv = data.canvas;
-                        if (typeof this.ArrayCanvasImage !== "undefined") {
+                        if (typeof this.ArrayCanvasImage != "undefined") {
                             //desenha o fundo
                             ctx.drawImage(imgCnv.bgImg, 0, 0);
                             //percorre todos os canvas e desenha num unico canvas
@@ -1710,8 +1715,9 @@ $(document).ready(function () {
             });
             pages.push(page);
         });
-        socket.emit("saveAsHtml", pages);
-        window.open("./livro/Livro.html");
+        console.log(usercontributes);
+//        socket.emit("saveAsHtml", pages);
+//        window.open("./livro/Livro.html");
     });
 
 
@@ -1719,7 +1725,7 @@ $(document).ready(function () {
     // botao chat
     // *******************************************************************
     $('#bt_Chat').click(function () {
-        if ($("#divUsers").css("visibility") === "hidden") {
+        if ($("#divUsers").css("visibility") == "hidden") {
             $("#divUsers").css({
                 'visibility': "visible"
             });
@@ -1798,7 +1804,7 @@ $(document).ready(function () {
         //Verifica se esta' a receber imagens de um certo tema
         switch (dataVals.folder) {
             case "galeria":
-                if ($("#divGaleria").css("visibility") === "hidden") {
+                if ($("#divGaleria").css("visibility") == "hidden") {
                     var imgList = '<div class="col-xs-12 col-sm-12 col-md-12">';
                     for (var i = 0, max = data.length; i < max; i++) {
                         imgList += '<div class="imageGaleria col-xs-4 col-sm-4 col-md-4 image" data-idpai="' + dataVals.idtab + '" data-idcnv="' + dataVals.idObj + '">';
@@ -1841,7 +1847,7 @@ $(document).ready(function () {
                         "<h1 class='text-center'>Temas</h1>";
                 for (var i = 0, max = data.length; i < max; i++) {
                     //se o nome retornado nao contem "." desduz-se que Ã© uma pasta
-                    if (data[i].indexOf(".") === -1) {
+                    if (data[i].indexOf(".") == -1) {
                         var pasta = data[i];
                         htmlModel += "<figure class='image'>" +
                                 "<img class='tema-img' data-folder='temaspoemas/" + pasta + "' alt='' imagensdotema='" + pasta + "' src='./img/temaspoema/" + pasta + ".png' '/>" +
@@ -1859,7 +1865,7 @@ $(document).ready(function () {
                         "<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
                 for (var i = 0, max = data.length; i < max; i++) {
                     //se o nome retornado nao contem "." desduz-se que Ã© uma pasta
-                    if (data[i].indexOf(".") === -1) {
+                    if (data[i].indexOf(".") == -1) {
                         var pasta = data[i];
                         htmlModel += "<figure class='image'>" +
                                 "<img class='tema-img' data-folder='showperfil/" + pasta + "' src='./img/showperfil/" + pasta + ".png' '/>" +
@@ -1871,7 +1877,7 @@ $(document).ready(function () {
                 $("body").append(htmlModel);
                 break;
             default:
-                if (typeof dataVals.imagensdotema !== "undefined" && dataVals.imagensdotema !== null) {
+                if (typeof dataVals.imagensdotema != "undefined" && dataVals.imagensdotema != null) {
                     //Verifica se existem imagens do tema
                     if (data.length > 0) {
                         $("body").find("#divchangemodel").remove();
@@ -2126,7 +2132,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".selectModelo", function () {
-        if (($("form input[type='radio']:checked").val()).toUpperCase() === "capa".toUpperCase()) {
+        if (($("form input[type='radio']:checked").val()).toUpperCase() == "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
             $("body").find("#ModeloSelectCapa").attr("data-model", $(this).data("model"));
             $("body").find("#ModeloSelectCapa").attr("data-idmodel", $(this).data("idmodel"));
@@ -2141,11 +2147,11 @@ $(document).ready(function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
         var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
         var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-idmodel");
-        if (nomeProj.trim() === "") {
+        if (nomeProj.trim() == "") {
             alert("Introduza um nome para o Projeto.");
             return;
         }
-        if (typeof modelProjC === "undefined" || typeof modelProjP === "undefined") {
+        if (typeof modelProjC == "undefined" || typeof modelProjP == "undefined") {
             alert("Selecione um modelo para a capa ou para as paginas do livro.");
             return;
         }
@@ -2174,7 +2180,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                if (data === "Ok") {
+                if (data == "Ok") {
                     $("body").find("#loading").remove();
                     $("body").find("#nomeProjeto").val("");
                     $("body").find("#ModeloSelectCapa").attr("src", "");
@@ -2262,7 +2268,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 for (var i = 0, max = data.length; i < max; i++) {
-                    tmpModels[data[i].id] = (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon);
+                    tmpModels[data[i].id] = (data[i].icon == null ? "./img/" + data[i].nome + ".png" : data[i].icon);
                 }
                 $("body").find("#loading").remove();
             },
@@ -2348,7 +2354,7 @@ $(document).ready(function () {
         var nomeProj = $("#nomeProj").val();
 
         //verificar o nome do projeto
-        if (nomeProj.trim() === "") {
+        if (nomeProj.trim() == "") {
             $("#nomeProj").focus();
             alert("Nome do Projeto InvÃ¡lido");
             return;
@@ -2370,7 +2376,7 @@ $(document).ready(function () {
         //users = users.splice(1);
 
         //verificar se foram selecionados alunos para participar no projeto
-        if (usersid.length === 0) {
+        if (usersid.length == 0) {
             alert("Escolha Utilizadores para participar no projeto");
             return;
         }
@@ -2379,7 +2385,7 @@ $(document).ready(function () {
         //id modelo utilizado
         var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
 
-        if (typeof idmodel === "undefined") {
+        if (typeof idmodel == "undefined") {
             alert("Escolha um modelo de projeto");
             return;
         }
@@ -2565,7 +2571,7 @@ function getBase64Image(img) {
 function toObject(arr) {
     var rv = {};
     for (var i = 0; i < arr.length; ++i)
-        if (arr[i] !== undefined)
+        if (arr[i] != undefined)
             rv[i] = arr[i];
     return rv;
 }
@@ -2586,9 +2592,9 @@ function castTab(tabToCast) {
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
     for (var item in tabToCast.modelo.arrayElem) {
         tab.modelo.arrayElem[item] = $.extend(new Element(), tabToCast.modelo.arrayElem[item]);
-        if (tab.modelo.arrayElem[item].elementType === "CANVAS") {
+        if (tab.modelo.arrayElem[item].elementType == "CANVAS") {
             tab.modelo.arrayElem[item].drawObj = $.extend(new Draw(), tabToCast.modelo.arrayElem[item].drawObj);
-        } else if (typeof tabToCast.modelo.arrayElem[item].editor !== "undefined") {
+        } else if (typeof tabToCast.modelo.arrayElem[item].editor != "undefined") {
             //console.log(socket);
             //tabToCast.modelo.arrayElem[item].socket = socket;
             tab.modelo.arrayElem[item].editor = $.extend(new TextEditor(), tabToCast.modelo.arrayElem[item].editor);
@@ -2624,15 +2630,15 @@ function updateTab(i, key, creator) {
             $(".txtTab" + i).append(data[0].htmltext);
             refactorTab(hash[key].numModelo, i);
             for (var elemento in hash[key].modelo.arrayElem) {
-                if (hash[key].modelo.arrayElem[elemento].elementType === "IMG") {
+                if (hash[key].modelo.arrayElem[elemento].elementType == "IMG") {
                     $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
 
-                } else if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
+                } else if (hash[key].modelo.arrayElem[elemento].elementType == "CANVAS") {
                     //cria o seu canvas!
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
 
                     //se o array nao estiver vazio (se nao tiver clientes canvas)
-                    if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage !== []) {
+                    if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage != []) {
                         for (var item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
                             //cria as canvas dos outros clientes
                             hash[key].modelo.arrayElem[elemento].drawObj.VerificaUser(item);
@@ -2647,17 +2653,17 @@ function updateTab(i, key, creator) {
 
                         }
                         //se tiver backgorund desenha o
-                        if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg !== "") {
+                        if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg != "") {
                             var imgg = hash[key].modelo.arrayElem[elemento].drawObj.bgImg;
                             hash[key].modelo.arrayElem[elemento].drawObj.imageCanvas(imgg);
                         }
                     }
                 } else {
                     //                    console.log("update Editable");
-                    if (typeof $("#" + elemento).attr('class') !== "undefined") {
-                        if ($("#" + elemento).attr('class').indexOf('editable') !== -1) {
+                    if (typeof $("#" + elemento).attr('class') != "undefined") {
+                        if ($("#" + elemento).attr('class').indexOf('editable') != -1) {
                             $("#" + elemento).addClass(elemento);
-                            var txtedit = new TextEditor(elemento, username, userColor, (creator === null ? hash[key].modelo.arrayElem[elemento].editor.creator : creator), userNumber);
+                            var txtedit = new TextEditor(elemento, username, userColor, (creator == null ? hash[key].modelo.arrayElem[elemento].editor.creator : creator), userNumber);
                             hash[key].modelo.arrayElem[elemento].editor = txtedit;
                             //                        console.log(hash[key].modelo.arrayElem[elemento]);
                             txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
@@ -2778,7 +2784,7 @@ function removeTab(liElem) {
     //para renomear Li
     $('#tabs').children('li').each(function () {
 
-        if ($(this).attr('id') !== "li-last" && $(this).attr('id') !== $('ul#tabs > li#li' + liElem).attr('id')) {
+        if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
             $(this).attr('id', "li" + i);
             $(this).children('a').attr('href', "#page" + i);
             var button = $(this).children('a').children();
@@ -2790,13 +2796,13 @@ function removeTab(liElem) {
     //para renomear o conteudo
     var i = 0;
     $('.tab-content').children('div').each(function () {
-        if ($(this).attr('id') !== $('div.tab-content div#page' + liElem)) {
+        if ($(this).attr('id') != $('div.tab-content div#page' + liElem)) {
             $(this).attr('id', "page" + (i + 1));
             var classs = $(this).children('div').attr('class').replace(/[0-9]/, (i + 1));
             $(this).children('div').attr('class', classs);
             $(this).children('div').children().find('*').each(function () {
                 //muda o id
-                if (typeof $(this).attr('id') !== "undefined") {
+                if (typeof $(this).attr('id') != "undefined") {
                     var id = $(this).attr('id').replace(/[0-9]/, (i + 1));
                     //coloca outro id
                     $(this).attr('id', id);
@@ -2807,7 +2813,7 @@ function removeTab(liElem) {
         }
     });
     // activa a tab anterior no caso de a actual ser eliminada
-    if (liElem > 1 && $("#li" + liElem).attr('class') === "active") {
+    if (liElem > 1 && $("#li" + liElem).attr('class') == "active") {
         $("body").find("a[href='#page" + (liElem - 1) + "']:last").click();
     }
     refactorHash(liElem);
@@ -2836,7 +2842,7 @@ function refactorHash(liElem) {
             hash1[newId].modelo.arrayElem[idd] = hash[key].modelo.arrayElem[elemento];
             hash1[newId].modelo.arrayElem[idd].id = hash[key].modelo.arrayElem[elemento].id.replace(/[0-9]/, (i + 1));
             hash1[newId].modelo.arrayElem[idd].conteudo = hash[key].modelo.arrayElem[elemento].conteudo;
-            if (hash[key].modelo.arrayElem[elemento].elementType === "CANVAS") {
+            if (hash[key].modelo.arrayElem[elemento].elementType == "CANVAS") {
                 hash1[newId].modelo.arrayElem[idd].drawObj.tabClass = hash[key].modelo.arrayElem[elemento].drawObj.tabClass.replace(/[0-9]/, (i + 1));
                 hash1[newId].modelo.arrayElem[idd].drawObj.page = hash[key].modelo.arrayElem[elemento].drawObj.page.replace(/[0-9]/, (i + 1));
                 hash1[newId].modelo.arrayElem[idd].drawObj.id = hash[key].modelo.arrayElem[elemento].drawObj.id.replace(/[0-9]/, (i + 1));
@@ -2860,7 +2866,7 @@ function refactorHash(liElem) {
 function getArrayElementObj(array, id) {
     var a = null;
     $.each(array, function (index, value) {
-        if (value.id === id) {
+        if (value.id == id) {
             a = value;
         }
     });
@@ -2881,13 +2887,13 @@ function addLayoutToDiv(local, folder, layout, stk) {
         switch (layout) {
 
             case "Livro.html":
-                if (stk !== null) {
+                if (stk != null) {
                     stk.emit("getAllTabs", {
                         Pid: hash[kk[0]].projID
                     });
                 }
 
-                if (typeof hash[kk[0]] !== "undefined") {
+                if (typeof hash[kk[0]] != "undefined") {
                     $.ajax({
                         type: "GET",
                         url: "/getProjectsbyID/" + hash[kk[0]].projID,
@@ -2895,7 +2901,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         contentType: "application/json; charset=utf-8",
                         dataType: 'json',
                         success: function (data) {
-                            if (data[0].tipo === "Livro" || data[0].tipo === "Poema") {
+                            if (data[0].tipo == "Livro" || data[0].tipo == "Poema") {
                                 //Reduzir tamanho da div das tabs
                                 $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                                 $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
@@ -2941,7 +2947,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         for (var i = 0, max = data.length; i < max; i++) {
                             listLayout += "<figure>" +
                                     "<img class='selectModelo btnmodels-style' alt='' src='" +
-                                    (data[i].icon === null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                    (data[i].icon == null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
                                     "' data-idmodel='" + data[i].id +
                                     "' data-model='" + data[i].nome + "'/>" +
                                     "<figcaption> " + data[i].nome + " </figcaption>" +

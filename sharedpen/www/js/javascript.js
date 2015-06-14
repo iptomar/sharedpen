@@ -21,9 +21,10 @@ $.fn.getCursorPosition = function () {
  * @param {type} val2
  * @returns {undefined}
  */
-$.fn.addNewText = function (val1, val2) {
+$.fn.addNewText = function (val1, val2, avatar) {
     this.append(
             "<div class='p_msg_chat'>" +
+            "<img class='imguser' alt='' + src='" + avatar + "'>" +
             "<p class = 'user_chat' > " +
             val1 +
             "</p> : <p class='msg_chat'>" +
