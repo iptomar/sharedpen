@@ -1079,7 +1079,7 @@ $(document).ready(function () {
                             'Pid': hash[kk[0]].projID
                         });
                     } else {
-                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
+                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
                     }
                 } else {
                     e.preventDefault();
@@ -1093,7 +1093,7 @@ $(document).ready(function () {
                         edit.createPara(edit.userNum, e.target.id);
                         newPara = true;
                     } else {
-                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
+                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
                     }
                 }
                 e.preventDefault(); //Prevent default browser behavior
@@ -1396,7 +1396,7 @@ $(document).ready(function () {
 
     //Click para ver os meus projectos atravÃ©s do data-layout
     $("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
-        var myID = 1;
+        var myID = userNumber;
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -1442,10 +1442,7 @@ $(document).ready(function () {
 
     $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
-        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
-        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
-        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
-        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace("'", "");
+        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace(/'/g, "");
 
         //verificar se o projecto existe no server
         socket.emit('reqHash', {
@@ -1715,11 +1712,36 @@ $(document).ready(function () {
             });
             pages.push(page);
         });
-        console.log(usercontributes);
-//        socket.emit("saveAsHtml", pages);
-//        window.open("./livro/Livro.html");
+        pages.pop();
+//        console.log(usercontributes);
+        $("body").append(wait);
+        $.ajax({
+            type: "POST",
+            url: "/saveContributes",
+            data: {
+                list: usercontributes
+            },
+            dataType: 'json',
+            success: function (data) {
+//                console.log(data);
+                var tableusers = "<table>";
+                tableusers += "<tr><th>Imagem</th><th>Nome</th></tr>";
+                for (var i in data) {
+                    tableusers += "<tr><td><img alt='' src='" + data[i].avatar + "'></td><td>" + data[i].nome + "</td></tr>";
+                }
+                tableusers += "</table>";
+                pages.push("<div>" + tableusers + "</div>");
+                socket.emit("saveAsHtml", pages);
+                window.open("./livro/Livro.html");
+                $("body").find("#loading").remove();
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                console.log(JSON.stringify(error));
+            }
+        });
     });
-
 
     // *******************************************************************
     // botao chat
@@ -2196,7 +2218,7 @@ $(document).ready(function () {
                         "background-color": "transparent"
                     });
                 } else {
-                    alert("O nome do livro jÃ¡ existe na base da dados.")
+                    alert("O nome do livro já existe na base da dados.")
                     $("body").find("#loading").remove();
                 }
             },
@@ -2356,7 +2378,7 @@ $(document).ready(function () {
         //verificar o nome do projeto
         if (nomeProj.trim() == "") {
             $("#nomeProj").focus();
-            alert("Nome do Projeto InvÃ¡lido");
+            alert("Nome do Projeto Inválido");
             return;
         }
 
@@ -2436,10 +2458,10 @@ $(document).ready(function () {
 
                         //Reduzir tamanho da div das tabs
                         $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                        $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+                        $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
 
                         //Adicionar a div com o texto de ajuda		
-                        $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                        $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                 "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
                                 "<div id='divTxtAjuda'  contenteditable='true'></div>" +
                                 "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
@@ -2470,7 +2492,7 @@ $(document).ready(function () {
         var idmodel = $("#contentor").attr("idmodel");
         var idTmp = textToNumber(username);
         console.log(idTmp);
-        idTmp = 1;
+        idTmp = userNumber;
         var textHelp = $("#divTxtAjuda").text();
         var typeP = "Livro";
         var hashtoSave;
@@ -2478,17 +2500,15 @@ $(document).ready(function () {
 
         hashtoSave = hash;
 
-        for (item in hashtoSave) {
-            for (elem in hashtoSave[item].modelo.arrayElem) {
+        for (var item in hashtoSave) {
+            for (var elem in hashtoSave[item].modelo.arrayElem) {
                 if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
                     var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
-
                     var newchar = '\\"'
                     conteudo = conteudo.split('"').join(newchar);
                     newchar = '\\/'
                     conteudo = conteudo.split('/').join(newchar);
-                    hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
-
+                    hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo;
                 }
             }
         }
@@ -2515,7 +2535,7 @@ $(document).ready(function () {
                     //Pedro F. tens aqui o id que querias
                     console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
-                    alert("O nome do livro jÃ¡ existe na base da dados.");
+                    alert("O nome do livro já existe na base da dados.");
                     $("body").find("#loading").remove();
                 }
             },
@@ -2610,7 +2630,7 @@ function castTab(tabToCast) {
  * @param {type} data
  * @returns {undefined} */
 function getFilesToFolder(sckt, data) {
-    console.log("inside getfilestofolder funtion");
+//    console.log("inside getfilestofolder funtion");
     sckt.emit("getFiles2Folder", data);
 }
 
@@ -2696,11 +2716,12 @@ function Addtab(html, idNum) {
             (idNum) +
             '"><a href="#page' +
             (idNum) +
-            '" role="tab" data-toggle="tab">PÃ¡gina ' +
+            '" role="tab" data-toggle="tab">Página ' +
             (idNum) +
-            ' <button type="button" id=' +
-            (idNum) +
-            ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
+//            ' <button type="button" id=' +
+//            (idNum) +
+//            ' class="btn btn-warning btn-xs xtab"><span>x</span></button>' +
+            '</a>');
     // Adiciona a pÃƒÂ¡gina depois da ÃƒÂºltima pÃƒÂ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' + idNum +
@@ -2904,10 +2925,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             if (data[0].tipo == "Livro" || data[0].tipo == "Poema") {
                                 //Reduzir tamanho da div das tabs
                                 $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                                $("#contentor > div").addClass("col-xs-7 col-sm-7 col-md-7");
+                                $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
 
                                 //Adicionar a div com o texto de ajuda		
-                                $("#contentor").append("<div class='containerTxtAjuda col-xs-5 col-sm-5 col-md-5'>" +
+                                $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                         "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
                                         "<div id='divTxtAjuda'>" + data[0].texto + "</div>" +
                                         "</div>");
