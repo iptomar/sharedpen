@@ -1,6 +1,6 @@
 /**
  *
- * Scrip com as Funçoes de autenticação, tabs e modelos, desenho, chat, e cor de background
+ * Scrip com as FunÃ§oes de autenticaÃ§Ã£o, tabs e modelos, desenho, chat, e cor de background
  */
 
 var wait = '<div id="loading"><div><img alt="" src="./../img/wait.gif"></div></div>';
@@ -720,7 +720,7 @@ $(document).ready(function () {
     };
 
 
-    // cria a ligação com o servidor que disponibiliza o socket
+    // cria a ligaÃ§Ã£o com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
     // Carrega o dropdown com a liosta das cores
@@ -728,53 +728,75 @@ $(document).ready(function () {
     // coloca o cursor para introduzir o nome do utilizador
     $("#username").focus();
     // ao carregar em enter no nome do utilizador carrega no button
-    $("#username").keydown(function (event) {
+    $("#username, #password").keydown(function (event) {
         if (event.keyCode === 13) {
             $("#startlogin").click();
         }
     });
     /**
-     * Funções relacionadas com a autenticação --------------------------------------------------------------------
+     * FunÃ§Ãµes relacionadas com a autenticaÃ§Ã£o --------------------------------------------------------------------
      */
 
     // evento de carregar no button para fazer o login
     $("#startlogin").click(function () {
         username = $("#username").val();
-        userNumber = username;
-        if ($.trim(username) !== "") {
-            $("#div-login").css({
-                display: "none"
-            });
-            $("#contentor").css({
-                display: "block"
-            });
-            $("#atualuser").html(
-                    "<u><i><b>" +
-                    username +
-                    "</b></i></u>");
-            socket.emit("myname", username);
-            userColor = hexToRgb(0, socket.id, username);
-            var data = {
-                folder: "Menu_Navegacao",
-                idtab: "",
-                idObj: ""
-            };
-            console.log("before getfiles2folderfunction");
-            getFilesToFolder(socket, data);
-            $("#msg1").focus();
-        } else {
-            $("#erro_name").html("Nome Incorreto!");
-            setTimeout(function () {
-                $("#erro_name").animate({
-                    opacity: 0
-                }, 2000, function () {
-                    $("#erro_name").html("");
-                    $("#erro_name").css({
-                        opacity: 1
+        $("body").append(wait);
+        $.ajax({
+            type: "GET",
+            url: "/loginuser/" + username + "/" + stringToMd5($("#password").val()),
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+                if (data.length > 0) {
+                    userNumber = data[0].id;
+                    alert(data[0].role);
+                    $("#div-login").remove();
+                    $("#contentor").css({
+                        display: "block"
                     });
-                });
-            }, 500);
-        }
+                    $("#atualuser").html(
+                            "<u><i><b>" +
+                            username +
+                            "</b></i></u>");
+                    socket.emit("myname", username);
+                    userColor = hexToRgb(0, socket.id, username);
+                    var data = {
+                        folder: "Menu_Navegacao",
+                        idtab: "",
+                        idObj: ""
+                    };
+//                    console.log("before getfiles2folderfunction");
+                    $("body").find("#loading").remove();
+                    getFilesToFolder(socket, data);
+                } else {
+                    alert("Esperimente\n" +
+                            "User = a, pass = a => Aluno\n" +
+                            "User = b, pass = b => Admin\n" +
+                            "User = c, pass = c => Professor")
+                    $("#erro_name").html("Nome Incorreto ou Password!");
+                    setTimeout(function () {
+                        $("#erro_name").animate({
+                            opacity: 0
+                        }, 2000, function () {
+                            $("#erro_name").html("");
+                            $("#erro_name").css({
+                                opacity: 1
+                            });
+                        });
+                    }, 500);
+                }
+            },
+            error: function (error) {
+                $("body").find("#loading").remove();
+                alert("Esperimente\n" +
+                        "User = a, pass = a => Aluno\n" +
+                        "User = b, pass = b => Admin\n" +
+                        "User = c, pass = c => Professor\n" +
+                        "O Nome de Utilizador ou PassWord Incorretos.\n" +
+                        "Tente Novamente.");
+                console.log(JSON.stringify(error));
+            }
+        });
     });
     ajustElements();
     // recebe as cordenadas dos outros utilizadores e movimenta a label dele
@@ -797,7 +819,7 @@ $(document).ready(function () {
         }
     });
     /**
-     * Funções relacionadas com o desenho -------------------------------------------------------------------------
+     * FunÃ§Ãµes relacionadas com o desenho -------------------------------------------------------------------------
      */
     /**
      * evento do socket para desenhar o que recebe pelo socket
@@ -947,7 +969,7 @@ $(document).ready(function () {
         reader.readAsDataURL(input.files[0]);
     });
     /*
-     * Funçoes relacionadas com as cores ----------------------------------------------------------------------
+     * FunÃ§oes relacionadas com as cores ----------------------------------------------------------------------
      */
 
     /**
@@ -959,7 +981,7 @@ $(document).ready(function () {
         });
     });
     /**
-     * Evento gerado quando recebe uma alteraçao de cores
+     * Evento gerado quando recebe uma alteraÃ§ao de cores
      */
     socket.on('getcolor', function (data) {
         if (data.cor === "default") {
@@ -983,7 +1005,7 @@ $(document).ready(function () {
         $("#colorpicker").val(data.cor);
     });
     /*
-     * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
+     * FunÃ§Ãµes relacionas com as Tabs e modelos --------------------------------------------------------------------------------
      */
 
     // *******************************************************************
@@ -992,7 +1014,7 @@ $(document).ready(function () {
     // recebe o codigo ASCII da tecla recebida, converte-a para
     // carater e adiciona-o na posicao coreta
     socket.on('msgappend', function (data) {
-        //verificar se o projecto de onde foi emitido é o meu
+        //verificar se o projecto de onde foi emitido Ã© o meu
         var kk = Object.keys(hash);
         if (data.Pid === hash[kk[0]].projID) {
             switch (data.tipo) {
@@ -1055,7 +1077,7 @@ $(document).ready(function () {
                             'Pid': hash[kk[0]].projID
                         });
                     } else {
-                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                        alert("NÃ£o pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
                     }
                 } else {
                     e.preventDefault();
@@ -1069,7 +1091,7 @@ $(document).ready(function () {
                         edit.createPara(edit.socketId, e.target.id);
                         newPara = true;
                     } else {
-                        alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
+                        alert("NÃ£o pode colocar mais nenhum paragrafo.\nSe for necessÃ¡rio crie uma nova folha.");
                     }
                 }
                 e.preventDefault(); //Prevent default browser behavior
@@ -1093,7 +1115,7 @@ $(document).ready(function () {
         edit.changeColorPUsers();
     });
     /**
-     * Evento gerado quando ha alteraçoes nas tabs
+     * Evento gerado quando ha alteraÃ§oes nas tabs
      */
     socket.on("TabsChanged", function (data) {
         var kk = Object.keys(hash);
@@ -1210,7 +1232,7 @@ $(document).ready(function () {
                     op: "adicionar",
                     //tab
                     tab: tabTest,
-                    //posiçao
+                    //posiÃ§ao
                     pos: (Object.keys(hash).length),
                     //modelo
                     modelo: modelo,
@@ -1233,7 +1255,7 @@ $(document).ready(function () {
         });
     });
     /**
-     * Evento onClik que gera a criaçao de uma nova Tab e respectivo modelo
+     * Evento onClik que gera a criaÃ§ao de uma nova Tab e respectivo modelo
      */
     $("body").on('click', 'a[href="#add-page"]', function () {
 
@@ -1266,7 +1288,7 @@ $(document).ready(function () {
         });
     });
     /**
-     * Funçao que remove tabs
+     * FunÃ§ao que remove tabs
      */
     $("body").on('click', '.xtab', function () {
         liElem = $(this).attr('id');
@@ -1299,7 +1321,7 @@ $(document).ready(function () {
         $("body").find("#divchangemodel").remove();
     });
     /*
-     * Funções relacionas com o Chat ---------------------------------------------------------------------------------------
+     * FunÃ§Ãµes relacionas com o Chat ---------------------------------------------------------------------------------------
      */
 
     /**
@@ -1319,7 +1341,7 @@ $(document).ready(function () {
         }
     });
     /**
-     * Função para enviar uma mensagem no chat
+     * FunÃ§Ã£o para enviar uma mensagem no chat
      */
     $('#btnSendChat').click(function () {
         var chatMessage = $('#msgChat').val();
@@ -1332,7 +1354,7 @@ $(document).ready(function () {
         $('#msgChat').val('');
     });
     /**
-     * Função para enviar mensagem com o enter
+     * FunÃ§Ã£o para enviar mensagem com o enter
      */
     $('#msgChat').keydown(function (e) {
         if (e.keyCode === 13) {
@@ -1364,12 +1386,12 @@ $(document).ready(function () {
         }, 500);
     });
     /*
-     * Fim Funções relacionas com o Chat -------------------------------------------------------------------------------
+     * Fim FunÃ§Ãµes relacionas com o Chat -------------------------------------------------------------------------------
      */
 
 
 
-    //Click para ver os meus projectos através do data-layout
+    //Click para ver os meus projectos atravÃ©s do data-layout
     $("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
         var myID = 1;
         $("body").append(wait);
@@ -1549,7 +1571,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Funçoes de logout -----------------------------------------------------------------------------------------------
+     * FunÃ§oes de logout -----------------------------------------------------------------------------------------------
      */
     /**
      * recebe o evento do socket com o socket id do cliente que se desligou
@@ -1630,7 +1652,7 @@ $(document).ready(function () {
 
 
     // *******************************************************************
-    // Botão de HTML
+    // BotÃ£o de HTML
     // *******************************************************************
 
     $('#bt_HTML').click(function () {
@@ -1673,11 +1695,11 @@ $(document).ready(function () {
                         var imgCnv = data.canvas;
                         if (typeof this.ArrayCanvasImage !== "undefined") {
                             //desenha o fundo
-                            ctx.drawImage(imgCnv.bgImg,0,0);
+                            ctx.drawImage(imgCnv.bgImg, 0, 0);
                             //percorre todos os canvas e desenha num unico canvas
                             for (var i in  imgCnv.ArrayCanvasImage) {
-                                var canvas2 = imgCnv.ArrayCanvasImage[i];                          
-                                ctx.drawImage(canvas2.toDataURL("image/png"),0,0);
+                                var canvas2 = imgCnv.ArrayCanvasImage[i];
+                                ctx.drawImage(canvas2.toDataURL("image/png"), 0, 0);
                             }
                             image.src = canvas2.toDataURL("image/png");
                             console.log(image);
@@ -1818,7 +1840,7 @@ $(document).ready(function () {
                         "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
                         "<h1 class='text-center'>Temas</h1>";
                 for (var i = 0, max = data.length; i < max; i++) {
-                    //se o nome retornado nao contem "." desduz-se que é uma pasta
+                    //se o nome retornado nao contem "." desduz-se que Ã© uma pasta
                     if (data[i].indexOf(".") === -1) {
                         var pasta = data[i];
                         htmlModel += "<figure class='image'>" +
@@ -1836,7 +1858,7 @@ $(document).ready(function () {
                         "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>" +
                         "<h1 class='text-center'>Bem-vindo ao teu Perfil," + username + "</h1>";
                 for (var i = 0, max = data.length; i < max; i++) {
-                    //se o nome retornado nao contem "." desduz-se que é uma pasta
+                    //se o nome retornado nao contem "." desduz-se que Ã© uma pasta
                     if (data[i].indexOf(".") === -1) {
                         var pasta = data[i];
                         htmlModel += "<figure class='image'>" +
@@ -1865,7 +1887,7 @@ $(document).ready(function () {
                         htmlModel += "</div></div></div></div>";
                         $("body").append(htmlModel);
                     } else
-                        alert("Não existem imagens do tema " + dataVals.imagensdotema);
+                        alert("NÃ£o existem imagens do tema " + dataVals.imagensdotema);
                 }
                 break;
         }
@@ -1917,7 +1939,7 @@ $(document).ready(function () {
         }
     });
 
-    //Mostrar os temas disponíveis para o poema
+    //Mostrar os temas disponÃ­veis para o poema
     $("body").on("click", 'a[href="#add-poema"]', function () {
         var data = {
             folder: "temaspoemas",
@@ -1947,7 +1969,7 @@ $(document).ready(function () {
         //        };
         //        getFilesToFolder(socket, data);
     });
-    //Mostrar os imagens disponíveis para o tema
+    //Mostrar os imagens disponÃ­veis para o tema
     $("body").on("click", '.tema-img', function () {
         var self = this;
         var data = {
@@ -2168,7 +2190,7 @@ $(document).ready(function () {
                         "background-color": "transparent"
                     });
                 } else {
-                    alert("O nome do livro já existe na base da dados.")
+                    alert("O nome do livro jÃ¡ existe na base da dados.")
                     $("body").find("#loading").remove();
                 }
             },
@@ -2196,7 +2218,7 @@ $(document).ready(function () {
                 $("body").find("#loading").remove();
                 //insere todos os alunos no html!!!!
                 for (var aluno in data) {
-                    //para cada aluno, carrega a informação
+                    //para cada aluno, carrega a informaÃ§Ã£o
                     var htmlLine = "<option value=" + data[aluno].id_user + ">" + data[aluno].nome + "</option>";
                     //faz o append do html gerado
                     $("#alluseralunos:first").append(htmlLine);
@@ -2219,7 +2241,7 @@ $(document).ready(function () {
                 $("body").find("#loading").remove();
                 //insere todos os professores no html!!!!
                 for (var prof in data) {
-                    //para cada professor, carrega a informação
+                    //para cada professor, carrega a informaÃ§Ã£o
                     var htmlLine = "<option value=" + data[prof].id_user + ">" + data[prof].nome + "</option>";
                     //faz o append do html gerado
                     $("#alluserProfessores:first").append(htmlLine);
@@ -2328,7 +2350,7 @@ $(document).ready(function () {
         //verificar o nome do projeto
         if (nomeProj.trim() === "") {
             $("#nomeProj").focus();
-            alert("Nome do Projeto Inválido");
+            alert("Nome do Projeto InvÃ¡lido");
             return;
         }
 
@@ -2487,7 +2509,7 @@ $(document).ready(function () {
                     //Pedro F. tens aqui o id que querias
                     console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
-                    alert("O nome do livro já existe na base da dados.");
+                    alert("O nome do livro jÃ¡ existe na base da dados.");
                     $("body").find("#loading").remove();
                 }
             },
@@ -2504,7 +2526,7 @@ $(document).ready(function () {
 
 
     /*
-     * Fim Funçoes de logout -----------------------------------------------------------------------------------------------
+     * Fim FunÃ§oes de logout -----------------------------------------------------------------------------------------------
      */
 
 });
@@ -2512,7 +2534,7 @@ $(window).resize(function () {
     ajustElements();
 });
 /*
- * Funções relacionas com as Tabs e modelos --------------------------------------------------------------------------------
+ * FunÃ§Ãµes relacionas com as Tabs e modelos --------------------------------------------------------------------------------
  */
 
 // Code taken from MatthewCrumley (http://stackoverflow.com/a/934925/298479)
@@ -2661,19 +2683,19 @@ function Addtab(html, idNum) {
     //console.log(html);
     //console.log(idNum);
     //var idNum = (Object.keys(hash).length + 1);
-    // Adiciona um separador antes do Ãºltimo (linha <li></li> antes do last-child)
+    // Adiciona um separador antes do ÃƒÂºltimo (linha <li></li> antes do last-child)
     //    console.log($('#tabs li:last-child').attr('id'));
     $('ul#tabs li:last-child').before(
             '<li id="li' +
             (idNum) +
             '"><a href="#page' +
             (idNum) +
-            '" role="tab" data-toggle="tab">Página ' +
+            '" role="tab" data-toggle="tab">PÃ¡gina ' +
             (idNum) +
             ' <button type="button" id=' +
             (idNum) +
             ' class="btn btn-warning btn-xs xtab"><span>x</span></button></a>');
-    // Adiciona a pÃ¡gina depois da Ãºltima pÃ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
+    // Adiciona a pÃƒÂ¡gina depois da ÃƒÂºltima pÃƒÂ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' + idNum +
             '"><div class="txtTab txtTab' + idNum + '"></div>' +
@@ -2681,7 +2703,7 @@ function Addtab(html, idNum) {
 }
 
 /**
- * Função que carrega o modelo para a tab e altera os id's de toda a tab
+ * FunÃ§Ã£o que carrega o modelo para a tab e altera os id's de toda a tab
  * para id's relacionados com o numero da tab
  
  * @param {type} html   pagina html a ser carregada
@@ -2792,7 +2814,7 @@ function removeTab(liElem) {
 }
 
 /**
- * Função para reorganizar o hash
+ * FunÃ§Ã£o para reorganizar o hash
  
  * @param {type} liElem
  * @returns {undefined} */
@@ -2829,8 +2851,8 @@ function refactorHash(liElem) {
 }
 
 /**
- * Função que recebe um array a uma chave e devolve o objeto dessa posição se
- * existir e não nulkl
+ * FunÃ§Ã£o que recebe um array a uma chave e devolve o objeto dessa posiÃ§Ã£o se
+ * existir e nÃ£o nulkl
  
  * @param {type} array  array para a pesquisa
  * @param {type} id     valor a ser encontrado
@@ -3128,23 +3150,24 @@ function addLayoutToDiv(local, folder, layout, stk) {
     });
 }
 
-function guardaredit(){
-      $.ajax({
-            type: "POST",
-            url: "/updateAgrupamentos",
-            data: {
-                id: $("#Id_Agrupamento_edit").val(),
-                nome: $("#Nome_Agrupamento_edit").val(),
-            },
-            dataType: 'json',
-            success: function (data) {
-                $(".voltarLayout").click();
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error));
-            }
-        })
-};
+function guardaredit() {
+    $.ajax({
+        type: "POST",
+        url: "/updateAgrupamentos",
+        data: {
+            id: $("#Id_Agrupamento_edit").val(),
+            nome: $("#Nome_Agrupamento_edit").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+            $(".voltarLayout").click();
+        },
+        error: function (error) {
+            console.log(JSON.stringify(error));
+        }
+    })
+}
+;
 /**
  * Ajusta os elementos do ecram principal
  

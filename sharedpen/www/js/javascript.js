@@ -159,3 +159,7 @@ $.fn.contextMenu = function (settings) {
     }
 
 };
+
+function stringToMd5(value) {
+    return CryptoJS.MD5(value).toString();
+}
