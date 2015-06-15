@@ -7,8 +7,8 @@ var TextEditor = function (idpai, user, cor, numCreator, userNum) {
     this.atualPara = "";
     this.creator = numCreator;
 
-    if (typeof this.creator != "undefined") {
-        $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + this.creator + '" contenteditable></p>');
+    if (typeof numCreator != "undefined") {
+        $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + numCreator + '" contenteditable></p>');
     }
     $("#" + this.idpai).css({
         "font-size": "20px"
