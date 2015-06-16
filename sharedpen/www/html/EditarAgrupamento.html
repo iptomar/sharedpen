@@ -32,18 +32,17 @@
 </form>
 <script>
     $('#EditarAgrupamento_form').bootstrapValidator({
-            message: 'Este Valor não é valido',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',
                 validating: 'glyphicon glyphicon-refresh'
             },
+                locale: 'pt_PT',
+
             fields: {
                 nome: {
-                    message: 'O Nome não é valido',
                     validators: {
                         notEmpty: {
-                            message: 'O nome é um campo obrigatório e não pode ficar vazio'
                         }
                     }
                 }
