@@ -2474,8 +2474,10 @@ $(document).ready(function () {
             alert("Escolha um modelo de projeto");
             return;
         }
-
+        
         $("#contentor").attr("idmodel", idmodel);
+        
+        $("#contentor").attr("tipoproj", $(".TipoProj > .active > input").val());
 
         var numCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
         var numPagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
@@ -2552,11 +2554,9 @@ $(document).ready(function () {
         var nomeP = $("#contentor").attr("NomeProj");
         var usersP = $("#contentor").attr("projuser").split(",");
         var idmodel = $("#contentor").attr("idmodel");
-        var idTmp = textToNumber(username);
-        console.log(idTmp);
-        idTmp = userNumber;
+        var idTmp = userNumber;
         var textHelp = $("#divTxtAjuda").text();
-        var typeP = "Livro";
+        var typeP = $("#contentor").attr("tipoproj");
         var hashtoSave;
 
 

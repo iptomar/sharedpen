@@ -8,13 +8,13 @@
     <div class="col-xs-12 col-sm-12 col-md-12 row dotted-round-div div-criarproj div-scroll-auto">
         <div class="col-xs-7 col-sm-7 col-md-7 tab-content"> 
             <h2 class="h2">Selecção de Utilizadores</h2>
-                        <div id="usersTabs" class="col-md-6">
+            <div id="usersTabs" class="col-md-6">
                 <div class="panel with-nav-tabs panel-primary">
                     <div class="panel-heading">
-                            <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs">
                             <li class="active"><a id="unselectedTab" href="#tab1primary" data-toggle="tab">Alunos</a></li>
-                                <li ><a id="unselectedTab" href="#tab2primary" data-toggle="tab">Professores</a></li>
-                            </ul>
+                            <li ><a id="unselectedTab" href="#tab2primary" data-toggle="tab">Professores</a></li>
+                        </ul>
                     </div>
                     <div class="panel-body">
                         <div class="tab-content">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
         </div>
         <div class="col-xs-5 col-sm-5 col-md-5">
             <div class="col-xs-12 col-sm-12 col-md-12 div-users">
@@ -78,6 +78,23 @@
                     </table>
                 </div>			
                 <div class="col-xs-12 col-sm-12 col-md-12 row">
+
+                       <!--
+                       Escolher o tipo de projecto
+                       -->
+                     <div class="btn-group TipoProj" data-toggle="buttons">
+                        <label class="btn btn-default">
+                            <input type="radio" id="q156" name="" value="Livro" /> Livro
+                        </label> 
+                        <label class="btn btn-default active">
+                            <input type="radio" id="q157" name="" value="Poema" checked="checked" /> Poema
+                        </label> 
+                        <label class="btn btn-default">
+                            <input type="radio" id="q158" name="" value="Jornal" /> Jornal
+                        </label> 
+                    </div>
+
+
                     <a href="#" id="btProjAvancar" class="btn btn-lg btn-primary">Avançar <span class="glyphicon glyphicon-arrow-right"></span></a>
                 </div>
             </div>
