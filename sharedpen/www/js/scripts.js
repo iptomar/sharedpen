@@ -127,7 +127,7 @@ $(document).ready(function () {
 //            }
 //        });
 //    });
-    
+
 //editar aluno/professor/escola/agrupamento 
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
@@ -195,7 +195,7 @@ $(document).ready(function () {
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
                 currentPosition += 1;
-                
+
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
@@ -235,71 +235,6 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-                
-                $("body").find('#EditarProfessor_form').bootstrapValidator({
-            //message: 'Este valor não é valido',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-                    locale: 'pt_PT',
-            fields: {
-                input_username: {
-                   // message: 'O Username não é valido',
-                    validators: {
-                        stringLength:{
-                            min:5,
-                            max:15,
-                           // message:'O username tem que ter entre 5 a 15 caracteres'
-                        },
-                        notEmpty: {
-                           // message: 'O Username é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                },
-                
-                input_password: {
-                    //message: 'A password não é valida',
-                    validators: {
-                        stringLength:{
-                            min:5,
-                            max:10,
-                        //    message:'A password tem que ter entre 5 a 15 caracteres'
-                        },
-                        notEmpty: {
-                          //  message: 'A password é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                },
-                input_nome: {
-                   // message: 'O nome não é valido',
-                    validators: {
-                        stringLength:{
-                            min:3,
-                            max:30,
-                         //   message:'O nome tem que ter entre 5 a 30 caracteres'
-                        },
-                        notEmpty: {
-                           // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                },
-                input_email: {
-                   // message: 'O nome não é valido',
-                    validators: {
-                        emailAddress:{
-                        
-                    },
-                        
-                        notEmpty: {
-                           // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                }
-                
-            }
-        });
                 break;
 
             case "escola":
@@ -378,8 +313,68 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-
         }
+        $("body").find('.validForm').bootstrapValidator({
+            //message: 'Este valor não é valido',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            locale: 'pt_PT',
+            fields: {
+                input_username: {
+                    // message: 'O Username não é valido',
+                    validators: {
+                        stringLength: {
+                            min: 5,
+                            max: 15,
+                            // message:'O username tem que ter entre 5 a 15 caracteres'
+                        },
+                        notEmpty: {
+                            // message: 'O Username é um campo obrigatório e não pode ficar vazio'
+                        }
+                    }
+                },
+                input_password: {
+                    //message: 'A password não é valida',
+                    validators: {
+                        stringLength: {
+                            min: 5,
+                            max: 10,
+                            //    message:'A password tem que ter entre 5 a 15 caracteres'
+                        },
+                        notEmpty: {
+                            //  message: 'A password é um campo obrigatório e não pode ficar vazio'
+                        }
+                    }
+                },
+                input_nome: {
+                    // message: 'O nome não é valido',
+                    validators: {
+                        stringLength: {
+                            min: 3,
+                            max: 30,
+                            //   message:'O nome tem que ter entre 5 a 30 caracteres'
+                        },
+                        notEmpty: {
+                            // message: 'O nome é um campo obrigatório e não pode ficar vazio'
+                        }
+                    }
+                },
+                input_email: {
+                    // message: 'O nome não é valido',
+                    validators: {
+                        emailAddress: {
+                        },
+                        notEmpty: {
+                            // message: 'O nome é um campo obrigatório e não pode ficar vazio'
+                        }
+                    }
+                }
+
+            }
+        });
     });
 
 
@@ -834,7 +829,6 @@ $(document).ready(function () {
                         idObj: ""
                     };
 //                    console.log("before getfiles2folderfunction");
-                    $("body").find("#loading").remove();
                     getFilesToFolder(socket, data);
                 } else {
                     alert("Esperimente\n" +
@@ -853,6 +847,7 @@ $(document).ready(function () {
                         });
                     }, 500);
                 }
+                $("body").find("#loading").remove();
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -3101,7 +3096,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         }
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        
+
 
                     },
                     error: function (error) {
@@ -3270,11 +3265,11 @@ function guardareditProf() {
         url: "/updateProfessores",
         data: {
             avatar: $("#userImage").attr('src'),
-                id: $("#Id_Professor_edit").val(),
-                username: $("#username_Professor_edit").val(),
-                nome: $("#Nome_Professor_edit").val(),
-                id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
-                email: $("#Email_Professor_edit").val()
+            id: $("#Id_Professor_edit").val(),
+            username: $("#username_Professor_edit").val(),
+            nome: $("#Nome_Professor_edit").val(),
+            id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
+            email: $("#Email_Professor_edit").val()
         },
         dataType: 'json',
         success: function (data) {

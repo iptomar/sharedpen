@@ -1,84 +1,54 @@
-<form id="EditarProfessor_form" class="form-horizontal">
-<div class="div-scroll-auto col-xs-12 col-sm-12 col-md-12">
-    <h1 class="h1">Editar Informações de Professor</h1>
-    <div class="margin-top-50">
-        <div class="div-half-max-width">
-            <input type="file" class="userAvatar" accept="image/*" />
-            <img id="userImage" class="dragandrophandler avatar-Image" alt="" src="../img/userProf.png">
-        </div>
-        <div class="div-half-max-width">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label for="Id_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>
-                <div class="col-sm-10">
-                  <input class="form-control" id="Id_Professor_edit" disabled >
+<form id="EditarProfessor_form" class="form-horizontal validForm">
+    <div class="div-scroll-auto col-xs-12 col-sm-12 col-md-12">
+        <h1 class="h1">Editar Informações de Professor</h1>
+        <div class="margin-top-50">
+            <div class="div-half-max-width">
+                <input type="file" class="userAvatar" accept="image/*" />
+                <img id="userImage" class="dragandrophandler avatar-Image" alt="" src="../img/userProf.png">
+            </div>
+            <div class="div-half-max-width">
+                <div class="form-group">
+                    <label for="Id_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdUser</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="Id_Professor_edit" disabled >
+                    </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="username_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>
-                <div class="col-sm-10">
-                  <input class="form-control" id="username_Professor_edit" name="input_username">
-                </div>
-              </div>  
-              <div class="form-group">
-                <label for="password_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>
-                <div class="col-sm-10">
-                  <input class="form-control" id="password_aluno_edit" name="input_password">
-                </div>
-              </div> 
+                <div class="form-group">
+                    <label for="username_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="username_Professor_edit" name="input_username">
+                    </div>
+                </div>  
+                <div class="form-group">
+                    <label for="password_aluno_edit" class="col-sm-2 control-label text-left" style="text-align:left">Password</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="password_aluno_edit" name="input_password">
+                    </div>
+                </div> 
 
-              <div class="form-group">
-                <label for="Nome_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>
-                <div class="col-sm-10">
-                  <input class="form-control" id="Nome_Professor_edit" name="input_nome" >
+                <div class="form-group">
+                    <label for="Nome_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="Nome_Professor_edit" name="input_nome" >
+                    </div>
+                </div>  
+                <div class="form-group">
+                    <label for="Email_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">E-Mail</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="Email_Professor_edit" name="input_email" >
+                    </div>
                 </div>
-              </div>  
-              <div class="form-group">
-                <label for="Email_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">E-Mail</label>
-                <div class="col-sm-10">
-                  <input class="form-control" id="Email_Professor_edit" name="input_email" >
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="Agrupamento_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">Escola</label>
-                <div class="col-sm-10">
+
+                <div class="form-group">
+                    <label for="Agrupamento_Professor_edit" class="col-sm-2 control-label text-left" style="text-align:left">Escola</label>
+                    <div class="col-sm-10">
                         <select id="Agrupamento_Professor_edit" class="form-control"  >
                         </select>
+                    </div>
                 </div>
-              </div>
-
-<!--            <button id="guardarEditProfessor" type="submit" value="Guardar Alterações" class="btn btn-primary btn-round">-->
+                <!--            <button id="guardarEditProfessor" type="submit" value="Guardar Alterações" class="btn btn-primary btn-round">-->
                 <button id="guardarEditProfessor" type="submit" class="btn btn-primary btn-round">Guardar Alterações</button>
+            </div>
         </div>
     </div>
-</div>
 </form>
-<!--
-    <script>
-    $('#EditarProfessor_form').bootstrapValidator({
-            message: 'Este valor não é valido',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                input_username: {
-                    message: 'O Username não é valido',
-                    validators: {
-                        notEmpty: {
-                            message: 'O Username é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                }
-            }
-        })
-        .on('success.form.bv', function(e) {
-       e.stopPropagation();
-        e.preventDefault();
-    guardareditProf();
-    });
-</script>
--->
-    

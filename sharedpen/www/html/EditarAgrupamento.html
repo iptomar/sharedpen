@@ -1,13 +1,9 @@
-<form id="EditarAgrupamento_form" class="form-horizontal">
-
+<form id="EditarAgrupamento_form" class="form-horizontal validForm">
     <div class="div-scroll-auto col-xs-12 col-sm-12 col-md-12">
         <h1 class="h1">Editar Informações de Agrupamento</h1>
         <div class="margin-top-50">
-            <div class="div-half-max-width">
-
-            </div>
+            <div class="div-half-max-width"></div>
             <div class="div-half-max-width" style="float:right">
-
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label for="Id_Agrupamento_edit" class="col-sm-2 control-label text-left" style="text-align:left">IdAgrupamento</label>
@@ -18,39 +14,12 @@
                     <div class="form-group">
                         <label for="Nome_Agrupamento_edit" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="Nome_Agrupamento_edit" name="nome">
+                            <input class="form-control" id="Nome_Agrupamento_edit" name="input_nome">
                         </div>
                     </div>
                 </div>
-                                <button id="guardarEditAgrupamento" type="submit" class="btn btn-primary btn-round">Guardar Alterações</button>
-
-
+                <button id="guardarEditAgrupamento" type="submit" class="btn btn-primary btn-round">Guardar Alterações</button>
             </div>
         </div>
     </div>
-
 </form>
-<script>
-    $('#EditarAgrupamento_form').bootstrapValidator({
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-                locale: 'pt_PT',
-
-            fields: {
-                nome: {
-                    validators: {
-                        notEmpty: {
-                        }
-                    }
-                }
-            }
-        })
-        .on('success.form.bv', function(e) {
-       e.stopPropagation();
-        e.preventDefault();
-    guardaredit();
-    });
-</script>
