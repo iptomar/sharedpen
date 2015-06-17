@@ -10,9 +10,6 @@ var TextEditor = function (idpai, user, cor, numCreator, userNum) {
     if (typeof numCreator != "undefined") {
         $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + numCreator + '" contenteditable></p>');
     }
-    $("#" + this.idpai).css({
-        "font-size": "20px"
-    });
 
     this.key = {
         'ENTER': 13
@@ -107,8 +104,7 @@ TextEditor.prototype.contributes = function (projId) {
 };
 
 TextEditor.prototype.styles = function (estilos) {
-    alert(estilos);
-   return;
+    $("body").find("#" + this.idpai).css(JSON.parse(estilos));
 };
 
 function getCaretPosition(editableDiv) {
