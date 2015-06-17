@@ -127,7 +127,7 @@ $(document).ready(function () {
 //            }
 //        });
 //    });
-    
+
 //editar aluno/professor/escola/agrupamento 
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
@@ -195,7 +195,7 @@ $(document).ready(function () {
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
                 currentPosition += 1;
-                
+
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
@@ -235,71 +235,68 @@ $(document).ready(function () {
                         console.log(JSON.stringify(error));
                     }
                 });
-                
+
                 $("body").find('#EditarProfessor_form').bootstrapValidator({
-            //message: 'Este valor não é valido',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-                    locale: 'pt_PT',
-            fields: {
-                input_username: {
-                   // message: 'O Username não é valido',
-                    validators: {
-                        stringLength:{
-                            min:5,
-                            max:15,
-                           // message:'O username tem que ter entre 5 a 15 caracteres'
-                        },
-                        notEmpty: {
-                           // message: 'O Username é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                },
-                
-                input_password: {
-                    //message: 'A password não é valida',
-                    validators: {
-                        stringLength:{
-                            min:5,
-                            max:10,
-                        //    message:'A password tem que ter entre 5 a 15 caracteres'
-                        },
-                        notEmpty: {
-                          //  message: 'A password é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                },
-                input_nome: {
-                   // message: 'O nome não é valido',
-                    validators: {
-                        stringLength:{
-                            min:3,
-                            max:30,
-                         //   message:'O nome tem que ter entre 5 a 30 caracteres'
-                        },
-                        notEmpty: {
-                           // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                        }
-                    }
-                },
-                input_email: {
-                   // message: 'O nome não é valido',
-                    validators: {
-                        emailAddress:{
-                        
+                    //message: 'Este valor não é valido',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
                     },
-                        
-                        notEmpty: {
-                           // message: 'O nome é um campo obrigatório e não pode ficar vazio'
+                    locale: 'pt_PT',
+                    fields: {
+                        input_username: {
+                            // message: 'O Username não é valido',
+                            validators: {
+                                stringLength: {
+                                    min: 5,
+                                    max: 15,
+                                    // message:'O username tem que ter entre 5 a 15 caracteres'
+                                },
+                                notEmpty: {
+                                    // message: 'O Username é um campo obrigatório e não pode ficar vazio'
+                                }
+                            }
+                        },
+                        input_password: {
+                            //message: 'A password não é valida',
+                            validators: {
+                                stringLength: {
+                                    min: 5,
+                                    max: 10,
+                                    //    message:'A password tem que ter entre 5 a 15 caracteres'
+                                },
+                                notEmpty: {
+                                    //  message: 'A password é um campo obrigatório e não pode ficar vazio'
+                                }
+                            }
+                        },
+                        input_nome: {
+                            // message: 'O nome não é valido',
+                            validators: {
+                                stringLength: {
+                                    min: 3,
+                                    max: 30,
+                                    //   message:'O nome tem que ter entre 5 a 30 caracteres'
+                                },
+                                notEmpty: {
+                                    // message: 'O nome é um campo obrigatório e não pode ficar vazio'
+                                }
+                            }
+                        },
+                        input_email: {
+                            // message: 'O nome não é valido',
+                            validators: {
+                                emailAddress: {
+                                },
+                                notEmpty: {
+                                    // message: 'O nome é um campo obrigatório e não pode ficar vazio'
+                                }
+                            }
                         }
+
                     }
-                }
-                
-            }
-        });
+                });
                 break;
 
             case "escola":
@@ -2512,20 +2509,10 @@ $(document).ready(function () {
                         $(".txtTab" + idNum).html(data[i].htmltext);
                         refactorTab(numCapa, idNum);
                         addtohash(idNum);
-                        // Foco na ultima pagina adicionada
-                        $("body").find("a[href^='#page']:last").click();
-                    } else if (data[i].id == numPagina) {
-                        idNum = (Object.keys(hash).length + 1);
-                        Addtab(numPagina, idNum);
-                        $(".txtTab" + idNum).html(data[i].htmltext);
-                        refactorTab(numPagina, idNum);
-                        addtohash(idNum);
-                        $("body").find("a[href^='#page']:last").click();
 
                         //Reduzir tamanho da div das tabs
                         $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                         $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
-
                         //Adicionar a div com o texto de ajuda		
                         $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                 "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
@@ -2538,6 +2525,15 @@ $(document).ready(function () {
                             // Animation complete.
                         });
                         $("#divTxtAjuda").focus();
+
+                    } else if (data[i].id == numPagina) {
+                        idNum = (Object.keys(hash).length + 1);
+                        Addtab(numPagina, idNum);
+                        $(".txtTab" + idNum).html(data[i].htmltext);
+                        refactorTab(numPagina, idNum);
+                        addtohash(idNum);
+
+                        $("body").find("a[href^='#page']:last").click();
                     }
                 }
             },
@@ -2993,11 +2989,38 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                                 $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
 
-                                //Adicionar a div com o texto de ajuda		
-                                $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
+                                var tmpAjuda = "<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                         "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                        "<div id='divTxtAjuda'>" + data[0].texto + "</div>" +
-                                        "</div>");
+                                        "<div id='divTxtAjuda'>";
+                                //Adicionar a div com o texto de ajuda		
+
+                                var tmpText = data[0].texto;
+                                if (data[0].tipo == "Poema") {
+                                    tmpText = tmpText.split(" ");
+                                    for (var i = 0, max = tmpText.length; i < max; i++) {
+                                        tmpAjuda += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + tmpText[i] + '</span></h3>';
+                                    }
+                                } else {
+                                    tmpAjuda += data[0].texto;
+                                }
+
+
+                                tmpAjuda += "</div>" + "</div>";
+                                $("#contentor").append(tmpAjuda);
+
+
+                                ///////////////////////
+//                                if (ajudas.length > 0) {
+//                                    var wordshelp = '<div class="help col-xs-4 col-sm-4 col-md-4 altura-poema" class="center-block" style="overflow-y: scroll;"> ' +
+//                                            '<h1 class="text-center"> AJUDA </h1>' +
+//                                            '<p>';
+//                                    for (var i in ajudas) {
+//                                        wordshelp += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + ajudas[i] + '</span></h3>';
+//                                    }
+//                                    wordshelp += '</p></div>';
+//                                    $("body").find("#page" + idNum).append(wordshelp);
+//                                }
+                                //////////////////////7
 
                                 $(".containerTxtAjuda").animate({
                                     opacity: 1,
@@ -3101,7 +3124,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         }
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        
+
 
                     },
                     error: function (error) {
@@ -3270,11 +3293,11 @@ function guardareditProf() {
         url: "/updateProfessores",
         data: {
             avatar: $("#userImage").attr('src'),
-                id: $("#Id_Professor_edit").val(),
-                username: $("#username_Professor_edit").val(),
-                nome: $("#Nome_Professor_edit").val(),
-                id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
-                email: $("#Email_Professor_edit").val()
+            id: $("#Id_Professor_edit").val(),
+            username: $("#username_Professor_edit").val(),
+            nome: $("#Nome_Professor_edit").val(),
+            id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
+            email: $("#Email_Professor_edit").val()
         },
         dataType: 'json',
         success: function (data) {
