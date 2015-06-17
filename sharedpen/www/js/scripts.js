@@ -23,8 +23,9 @@ var listaColor = [// array com as corres disponiveis para alterar o fundo
 var hash = {};
 var tabTest;
 var LivroPoemas = new Array();
+var listapages = [];
 var backArray = ["home"];
-var folderArray = ["Menu_Navegacao"];
+var folderArray = [listapages];
 var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
@@ -355,7 +356,7 @@ $(document).ready(function () {
                         stringLength: {
                             min: 3,
                             max: 30
-                            //   message:'O nome tem que ter entre 5 a 30 caracteres'
+                                    //   message:'O nome tem que ter entre 5 a 30 caracteres'
                         },
                         notEmpty: {
                             // message: 'O nome é um campo obrigatório e não pode ficar vazio'
@@ -823,13 +824,8 @@ $(document).ready(function () {
                             "</b></i></u>");
                     socket.emit("myname", username, avatarUser);
                     userColor = hexToRgb(0, socket.id, username);
-                    var data = {
-                        folder: "Menu_Navegacao",
-                        idtab: "",
-                        idObj: ""
-                    };
-//                    console.log("before getfiles2folderfunction");
-                    getFilesToFolder(socket, data);
+                    listapages = JSON.parse(data[0].pages);
+                    carregarPaginasLogin(listapages);
                 } else {
                     alert("Esperimente\n" +
                             "User = a, pass = a => Aluno\n" +
@@ -1865,19 +1861,14 @@ $(document).ready(function () {
 
     $("#homemenu").click(function () {
         backArray.push("home");
-        folderArray.push("Menu_Navegacao");
+        folderArray.push(listapages);
         currentPosition += 1;
         console.log(backArray);
         $('#bt_PDF, #bt_PRE, #bt_HTML').css({
             'visibility': "hidden"
         });
         LivroPoemas = new Array();
-        var data = {
-            folder: "Menu_Navegacao",
-            idtab: "",
-            idObj: ""
-        };
-        getFilesToFolder(socket, data);
+        carregarPaginasLogin(listapages);
     });
 
     //******************************************************************
@@ -1911,17 +1902,6 @@ $(document).ready(function () {
                         });
                     });
                 }
-                break;
-            case "Menu_Navegacao":
-                var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
-                for (var i = 0, max = data.length; i < max; i++) {
-                    allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="' + dataVals.folder + '" data-layout="' + data[i] + '">';
-                    allPages += '<figure class="image">';
-                    allPages += '<img src="./img/' + data[i].split(".")[0] + '.png" alt="">';
-                    allPages += '<figcaption> ' + data[i].split(".")[0] + ' </figcaption></figure></div>';
-                }
-                allPages += '</div>';
-                $("#contentor").html(allPages);
                 break;
             case "temaspoemas":
                 //Temas para os poemas
@@ -2015,12 +1995,8 @@ $(document).ready(function () {
                     'visibility': "hidden"
                 });
                 LivroPoemas = new Array();
-                var data = {
-                    folder: "Menu_Navegacao",
-                    idtab: "",
-                    idObj: ""
-                };
-                getFilesToFolder(socket, data);
+                carregarPaginasLogin(listapages);
+
             } else if (aux != "home" && aux != "") {
                 addLayoutToDiv("#contentor", folderArray[currentPosition - 1], aux, socket);
             }
@@ -2472,9 +2448,9 @@ $(document).ready(function () {
             alert("Escolha um modelo de projeto");
             return;
         }
-        
+
         $("#contentor").attr("idmodel", idmodel);
-        
+
         $("#contentor").attr("tipoproj", $(".TipoProj > .active > input").val());
 
         var numCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
@@ -2647,6 +2623,18 @@ function getBase64Image(img) {
     var dataURL = canvas.toDataURL("image/png");
     return dataURL;
 }
+function carregarPaginasLogin(vals) {
+    var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
+    for (var i = 0, max = vals.length; i < max; i++) {
+        allPages += '<div class="col-xs-4 col-sm-4 col-md-4  carregarLayout" data-folder="Menu_Navegacao" data-layout="' + vals[i] + '">';
+        allPages += '<figure class="image">';
+        allPages += '<img src="./img/' + vals[i].split(".")[0] + '.png" alt="">';
+        allPages += '<figcaption> ' + vals[i].split(".")[0] + ' </figcaption></figure></div>';
+    }
+    allPages += '</div>';
+    $("#contentor").html(allPages);
+}
+
 
 function toObject(arr) {
     var rv = {};
