@@ -354,7 +354,7 @@ $(document).ready(function () {
                     validators: {
                         stringLength: {
                             min: 3,
-                            max: 30,
+                            max: 30
                             //   message:'O nome tem que ter entre 5 a 30 caracteres'
                         },
                         notEmpty: {
@@ -2472,8 +2472,10 @@ $(document).ready(function () {
             alert("Escolha um modelo de projeto");
             return;
         }
-
+        
         $("#contentor").attr("idmodel", idmodel);
+        
+        $("#contentor").attr("tipoproj", $(".TipoProj > .active > input").val());
 
         var numCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
         var numPagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
@@ -2507,20 +2509,10 @@ $(document).ready(function () {
                         $(".txtTab" + idNum).html(data[i].htmltext);
                         refactorTab(numCapa, idNum);
                         addtohash(idNum);
-                        // Foco na ultima pagina adicionada
-                        $("body").find("a[href^='#page']:last").click();
-                    } else if (data[i].id == numPagina) {
-                        idNum = (Object.keys(hash).length + 1);
-                        Addtab(numPagina, idNum);
-                        $(".txtTab" + idNum).html(data[i].htmltext);
-                        refactorTab(numPagina, idNum);
-                        addtohash(idNum);
-                        $("body").find("a[href^='#page']:last").click();
 
                         //Reduzir tamanho da div das tabs
                         $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                         $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
-
                         //Adicionar a div com o texto de ajuda		
                         $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                 "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
@@ -2533,6 +2525,15 @@ $(document).ready(function () {
                             // Animation complete.
                         });
                         $("#divTxtAjuda").focus();
+
+                    } else if (data[i].id == numPagina) {
+                        idNum = (Object.keys(hash).length + 1);
+                        Addtab(numPagina, idNum);
+                        $(".txtTab" + idNum).html(data[i].htmltext);
+                        refactorTab(numPagina, idNum);
+                        addtohash(idNum);
+
+                        $("body").find("a[href^='#page']:last").click();
                     }
                 }
             },
@@ -2551,11 +2552,9 @@ $(document).ready(function () {
         var nomeP = $("#contentor").attr("NomeProj");
         var usersP = $("#contentor").attr("projuser").split(",");
         var idmodel = $("#contentor").attr("idmodel");
-        var idTmp = textToNumber(username);
-        console.log(idTmp);
-        idTmp = userNumber;
+        var idTmp = userNumber;
         var textHelp = $("#divTxtAjuda").text();
-        var typeP = "Livro";
+        var typeP = $("#contentor").attr("tipoproj");
         var hashtoSave;
 
 
@@ -2988,11 +2987,38 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                                 $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
 
-                                //Adicionar a div com o texto de ajuda		
-                                $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
+                                var tmpAjuda = "<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                         "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                        "<div id='divTxtAjuda'>" + data[0].texto + "</div>" +
-                                        "</div>");
+                                        "<div id='divTxtAjuda'>";
+                                //Adicionar a div com o texto de ajuda		
+
+                                var tmpText = data[0].texto;
+                                if (data[0].tipo == "Poema") {
+                                    tmpText = tmpText.split(" ");
+                                    for (var i = 0, max = tmpText.length; i < max; i++) {
+                                        tmpAjuda += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + tmpText[i] + '</span></h3>';
+                                    }
+                                } else {
+                                    tmpAjuda += data[0].texto;
+                                }
+
+
+                                tmpAjuda += "</div>" + "</div>";
+                                $("#contentor").append(tmpAjuda);
+
+
+                                ///////////////////////
+//                                if (ajudas.length > 0) {
+//                                    var wordshelp = '<div class="help col-xs-4 col-sm-4 col-md-4 altura-poema" class="center-block" style="overflow-y: scroll;"> ' +
+//                                            '<h1 class="text-center"> AJUDA </h1>' +
+//                                            '<p>';
+//                                    for (var i in ajudas) {
+//                                        wordshelp += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + ajudas[i] + '</span></h3>';
+//                                    }
+//                                    wordshelp += '</p></div>';
+//                                    $("body").find("#page" + idNum).append(wordshelp);
+//                                }
+                                //////////////////////7
 
                                 $(".containerTxtAjuda").animate({
                                     opacity: 1,
