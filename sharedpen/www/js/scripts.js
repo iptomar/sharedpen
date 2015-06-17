@@ -30,7 +30,7 @@ var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
 $(document).ready(function () {
-
+    
 //--------------------------BACKOFFICE----------------------------------------
 //fazer update a aluno
     $("body").on('click', "#guardarEditAluno", function (e) {
@@ -58,7 +58,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
 //fazer update a professor
     $("body").on('click', "#guardarEditProfessor", function (e) {
         e.stopPropagation();
@@ -83,7 +83,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
 //fazer update a escola
     $("body").on('click', "#guardarEditEscola", function (e) {
         e.stopPropagation();
@@ -107,7 +107,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
 //fazer update a agrupamento
 //    $("body").on('click', "#guardarEditAgrupamento", function (e) {        
 //        e.stopPropagation();
@@ -128,7 +128,7 @@ $(document).ready(function () {
 //            }
 //        });
 //    });
-
+    
 //editar aluno/professor/escola/agrupamento 
     $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
@@ -156,7 +156,7 @@ $(document).ready(function () {
                         }
                         $("body").find("#loading").remove();
                         $("body").find("#escola_aluno_edit").append(htmlVar);
-
+                        
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -186,7 +186,7 @@ $(document).ready(function () {
                     }
                 });
                 break;
-
+                
             case "professor":
                 addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
                 if (currentPosition != backArray.length) {
@@ -196,7 +196,7 @@ $(document).ready(function () {
                 backArray.push($(this).data("layout"));
                 folderArray.push($(this).data("folder"));
                 currentPosition += 1;
-
+                
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
@@ -237,7 +237,7 @@ $(document).ready(function () {
                     }
                 });
                 break;
-
+                
             case "escola":
                 addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
                 if (currentPosition != backArray.length) {
@@ -287,7 +287,7 @@ $(document).ready(function () {
                     }
                 });
                 break;
-
+                
             case "agrupamento":
                 addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
                 if (currentPosition != backArray.length) {
@@ -373,12 +373,12 @@ $(document).ready(function () {
                         }
                     }
                 }
-
+                
             }
         });
     });
-
-
+    
+    
 //editar estado de um utilizador
     $("body").on('click', ".editState", function (e) {
         e.stopPropagation();
@@ -414,7 +414,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
 //criar aluno
     $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
         e.stopPropagation();
@@ -446,14 +446,14 @@ $(document).ready(function () {
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-
+                
                 addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
             },
             error: function (error) {
             }
         });
     });
-
+    
 //criar professor
     $("body").on('click', "#btnAdicionarEntity_professor", function (e) {
         e.stopPropagation();
@@ -481,7 +481,7 @@ $(document).ready(function () {
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-
+                
                 $(".voltarLayout").click();
                 //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
             },
@@ -489,7 +489,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_escola", function (e) {
         e.stopPropagation();
@@ -512,7 +512,7 @@ $(document).ready(function () {
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-
+                
                 $(".voltarLayout").click();
                 //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
             },
@@ -520,7 +520,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
         e.stopPropagation();
@@ -537,7 +537,7 @@ $(document).ready(function () {
             // contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-
+                
                 $(".voltarLayout").click();
                 //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
             },
@@ -603,7 +603,7 @@ $(document).ready(function () {
                 }
                 $("body").find("#loading").remove();
                 break;
-
+                
             case "professor":
                 $("body").append(wait);
                 if ($("#inputSearch").val() == "") {
@@ -656,7 +656,7 @@ $(document).ready(function () {
                 }
                 $("body").find("#loading").remove();
                 break;
-
+                
             case "escola":
                 $("body").append(wait);
                 if ($("#inputSearch").val() == "") {
@@ -709,7 +709,7 @@ $(document).ready(function () {
                 }
                 $("body").find("#loading").remove();
                 break;
-
+                
             case "agrupamento":
                 $("body").append(wait);
                 if ($("#inputSearch").val() == "") {
@@ -761,8 +761,8 @@ $(document).ready(function () {
         }
     });
 //--------------------------BACKOFFICE-END---------------------------------------
-
-
+    
+    
     $.ajaxSetup({async: false});
     /**
      * Configuracao das opcoes do popup de online / offline de novos clientes
@@ -781,8 +781,8 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn"
     };
-
-
+    
+    
     // cria a ligaÃ§Ã£o com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
@@ -799,7 +799,7 @@ $(document).ready(function () {
     /**
      * FunÃ§Ãµes relacionadas com a autenticaÃ§Ã£o --------------------------------------------------------------------
      */
-
+    
     // evento de carregar no button para fazer o login
     $("#startlogin").click(function () {
         username = $("#username").val();
@@ -913,7 +913,7 @@ $(document).ready(function () {
         var iddd = $(this).attr('id');
         var tabNumber = iddd.match(/\d+/)[0];
         var thisId = "tab" + tabNumber + "-Mycanvas";
-
+        
         if (e.which == 1 ||
                 e.handleObj.type == "touchstart" ||
                 e.handleObj.type == "touchmove" ||
@@ -923,7 +923,7 @@ $(document).ready(function () {
             offset = $(this).offset();
             e.offsetX = e.clientX - offset.left;
             e.offsetY = e.clientY - offset.top;
-
+            
             if (e.handleObj.type == "touchstart" ||
                     e.handleObj.type == "touchmove" ||
                     e.handleObj.type == "touchend") {
@@ -933,12 +933,12 @@ $(document).ready(function () {
                     y = e.originalEvent.touches[0].pageY - offset.top;
                 } catch (err) {
                 }
-
+                
             } else {
                 x = e.offsetX;
                 y = e.offsetY;
             }
-
+            
             var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
             var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
             cmv.draw(x, y, type, sizeCurs);
@@ -1001,8 +1001,8 @@ $(document).ready(function () {
             //                        alert('Right Mouse button pressed.');
         }
         //                        alert('You have a strange Mouse!');
-
-
+        
+        
     });
     $("body").on('change', '#LoadImageCanvas', function (e) {
         var Thid = $("#LoadImageCanvas").attr('data-idpai');
@@ -1030,7 +1030,7 @@ $(document).ready(function () {
     /*
      * FunÃ§oes relacionadas com as cores ----------------------------------------------------------------------
      */
-
+    
     /**
      * Evento onChange da cor de fundo
      */
@@ -1066,7 +1066,7 @@ $(document).ready(function () {
     /*
      * FunÃ§Ãµes relacionas com as Tabs e modelos --------------------------------------------------------------------------------
      */
-
+    
     // *******************************************************************
     // dados recebidos pelo socket para o browser
     // *******************************************************************
@@ -1105,12 +1105,12 @@ $(document).ready(function () {
             updateTab(i, key, null);
         }
     });
-
+    
     /**
      *  envia o texto do editor para o servidor
      */
     $("body").on('keypress keyup mousedown mouseup click', '.editable', function (e) {
-
+        
         var listClass = $(this).attr("id");
         var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
         // console.log(listClassPAI);
@@ -1193,33 +1193,33 @@ $(document).ready(function () {
     /**
      * Evento que determina qual e o modelo escolhido
      */
-
+    
     $("body").on('click', "#bt_guardar", function () {
         var hashtoSave;
         var kk = Object.keys(hash);
         socket.emit('reqHashToSave', {
             id: hash[kk[0]].projID
         });
-
+        
         socket.on('getHashToSave', function (data) {
             hashtoSave = data.hashh
-
+            
             for (item in hashtoSave) {
                 for (elem in hashtoSave[item].modelo.arrayElem) {
                     if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
                         var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
-
+                        
                         var newchar = '\\"'
                         conteudo = conteudo.split('"').join(newchar);
                         newchar = '\\/'
                         conteudo = conteudo.split('/').join(newchar);
                         hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
-
+                        
                     }
                 }
             }
-
-
+            
+            
             $.ajax({
                 type: "POST",
                 url: "/setArray",
@@ -1230,18 +1230,18 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
                     //alert(data);
-
+                    
                 },
                 error: function (error) {
                     // alert("ERRO HASH");
                     //console.log(JSON.stringify(error));
                 }
             });
-
+            
         });
-
+        
     })
-
+    
     $("body").on('click', "#bt_getHash", function () {
         //alert(hash);
         $.ajax({
@@ -1252,9 +1252,9 @@ $(document).ready(function () {
                 console.log(data[0]);
                 //var ola =   JSON.parse('[object Object]');
                 // console.log(ola);
-
+                
                 var test = JSON.parse('' + data[0].array + '');
-
+                
                 console.log(test);
                 //for (var a in test) break;
                 //console.log("aaaaaaaaaaaaaa"+a);
@@ -1266,11 +1266,11 @@ $(document).ready(function () {
                 //console.log(JSON.stringify(error));
             }
         });
-
+        
     })
-
+    
     $("body").on('click', ".btnmodels", function () {
-
+        
         var modelo = $(this).data('idmodel');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -1317,7 +1317,7 @@ $(document).ready(function () {
      * Evento onClik que gera a criaÃ§ao de uma nova Tab e respectivo modelo
      */
     $("body").on('click', 'a[href="#add-page"]', function () {
-
+        
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -1363,7 +1363,7 @@ $(document).ready(function () {
         }
         return false;
     });
-
+    
     $("body").on('click', '.xpoema', function () {
         liElem = $(this).attr('id');
         // Mostra "Tem a certeza que quer apagar?" e espera que se carregue em "Ok"
@@ -1374,15 +1374,15 @@ $(document).ready(function () {
         }
         ;
     });
-
-
+    
+    
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
     /*
      * FunÃ§Ãµes relacionas com o Chat ---------------------------------------------------------------------------------------
      */
-
+    
     /**
      * Evento gerado quando um utilizador manda mensagem no chat
      */
@@ -1448,9 +1448,9 @@ $(document).ready(function () {
     /*
      * Fim FunÃ§Ãµes relacionas com o Chat -------------------------------------------------------------------------------
      */
-
-
-
+    
+    
+    
     //Click para ver os meus projectos atravÃ©s do data-layout
     $("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
         var myID = userNumber;
@@ -1494,21 +1494,21 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
+    
+    
+    
     $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
         tmpArrayProj[idProj] = tmpArrayProj[idProj].replace(/'/g, "");
-
+        
         //verificar se o projecto existe no server
         socket.emit('reqHash', {
             id: idProj,
             username: username
         });
-
+        
         hash = null;
-
+        
         socket.on('getHash', function (data) {
             if (data.username == username) {
                 //adiciona o novo hash
@@ -1522,7 +1522,7 @@ $(document).ready(function () {
                 addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
                 //se ja existir no servidor
                 //carrega o do servidor
-
+                
                 var i = 0;
                 for (var item in hash) {
                     i++;
@@ -1532,16 +1532,16 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     /**
      * Funcoes para drag and drop de imagens -----------------------------------------
      */
-
+    
     $(".container-fluid").on('change', 'input[type=file]', function (e) {
         var imgId = $(this).next().attr("id");
         var file = e.originalEvent.target.files[0],
@@ -1558,7 +1558,7 @@ $(document).ready(function () {
                     'tipo': $("body").find('#' + imgId).prop("tagName"),
                     'parent': $("#" + imgId).parent().parent().attr('class').split(' ')[1],
                     'Pid': hash[kk[0]].projID
-
+                            
                 });
             }
         };
@@ -1601,7 +1601,7 @@ $(document).ready(function () {
                 }
                 return false;
             }
-
+            
             var reader = new FileReader(file);
             reader.onload = function (evt) {
                 if (idImg != "userImage" && idImg != "image") {
@@ -1621,19 +1621,19 @@ $(document).ready(function () {
             reader.readAsDataURL(file);
         });
     });
-
+    
     // recebe a imagem e coloca-a de acordo com o id recebido
     socket.on('user image', function (data) {
         $("body").find('#' + data.id).attr("src", data.imageData);
     });
-
+    
     /**
      * FunÃ§oes de logout -----------------------------------------------------------------------------------------------
      */
     /**
      * recebe o evento do socket com o socket id do cliente que se desligou
      */
-
+    
     socket.on('diconnected', function (socketid) {
         for (var item in users) {
             if (users[item].getSocketId() == socketid) {
@@ -1650,68 +1650,68 @@ $(document).ready(function () {
     $('#bt_PDF, #bt_PRE, #bt_HTML').css({
         'visibility': "hidden"
     });
-
+    
     // *******************************************************************
     // Botao do pdf, Botao do Pre-visualizar
     // *******************************************************************
-
+    
     $('#bt_PRE, #bt_PDF').click(function () {
         var textPdf = "";
         $('#tabs > li > a').each(function () {
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
                 if (idDiv.indexOf("input") != -1) {
-
-
+                    
+                    
                     var listClass = $(this).attr("id");
                     var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
-
+                    
                     var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
                     textPdf += edit.getTextEditor();
-
+                    
                 } else if (idDiv.indexOf("image") != -1) {
-
+                    
                     //console.log($(this)[0].outerHTML);
                     // textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
-
+                    
                     // textPdf += '<img src="http://www.mensagenscomamor.com/images/interna/new/imagens_amor_2.jpg" >';
                     console.log($(this)[0].src);
-
+                    
                     socket.emit('user image', {
                         imageData: $(this)[0].src
                     });
-
-
+                    
+                    
                     textPdf += '<img src="http://localhost:8080/imgupload/img.jpg" >';
                     socket.emit('removeimage');
-
+                    
                     textPdf += "<div>" + $(this)[0].outerHTML + "</div>";
                     //teste imagem
                     //textPdf='<img src="https://valerianakamura.files.wordpress.com/2011/05/oti_imagem.jpg"/>';
                 } else if (idDiv.indexOf("canvas") != -1) {
                     console.log($("#" + idDiv).parent().parent().attr('class').split(' ')[1] + " - " + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]]);
-
+                    
                     textPdf += "<div>" + hash["." + $("#" + idDiv).parent().parent().attr('class').split(' ')[1]].modelo.arrayElem[this.id].drawObj.getImgCanvas() + "</div>";
-
+                    
                 }
             });
             //alert("PDF Criado")
         });
-
+        
         // var doc =jsPDF();
         //  doc.output("./Livro.pdf")
-
+        
         console.log(textPdf);
-
+        
         //PDF NO SERVIDOR
         socket.emit("convertToPdf", textPdf, "Livro.pdf");
     });
-
-
+    
+    
     // *******************************************************************
     // BotÃ£o de HTML
     // *******************************************************************
-
+    
     $('#bt_HTML').click(function () {
         var textPdf = "";
         var pages = [];
@@ -1726,7 +1726,7 @@ $(document).ready(function () {
                     var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
                     page += edit.getTextEditorForHtml();
                     usercontributes.push(edit.contributes(hash["." + listClassPAI].projID));
-
+                    
                 } else if (idDiv.indexOf("image") != -1) {
                     page += "<div>" + $(this)[0].outerHTML + "</div>";
                 } else if (idDiv.indexOf("canvas") != -1) {
@@ -1735,7 +1735,7 @@ $(document).ready(function () {
                     var tabNumber = iddd.match(/\d+/)[0];
                     var thisId = "tab" + tabNumber + "-Mycanvas";
                     var drawCanvas = hash[idToll].modelo.arrayElem[thisId];
-
+                    
                     var kk = Object.keys(hash);
                     socket.emit("reqCanvasIMG", {
                         Pid: hash[kk[0]].projID,
@@ -1746,10 +1746,10 @@ $(document).ready(function () {
                         var canvas = document.createElement("canvas");
                         var ctx = canvas.getContext("2d");
                         var image = new Image();
-
+                        
                         console.log("ola");
                         console.log(data.canvas);
-
+                        
                         //  Draw imgCnv = data.canvas;
                         var imgCnv = data.canvas;
                         if (typeof this.ArrayCanvasImage != "undefined") {
@@ -1799,7 +1799,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
     // *******************************************************************
     // botao chat
     // *******************************************************************
@@ -1831,7 +1831,7 @@ $(document).ready(function () {
             });
         }
     });
-
+    
     $("body").on("click", ".imageGaleria", function () {
         var Thid = $(this).attr('data-idpai').replace(".", "");
         var cnv = $(this).attr('data-idcnv');
@@ -1858,7 +1858,7 @@ $(document).ready(function () {
             });
         });
     });
-
+    
     $("#homemenu").click(function () {
         backArray.push("home");
         folderArray.push(listapages);
@@ -1870,7 +1870,7 @@ $(document).ready(function () {
         LivroPoemas = new Array();
         carregarPaginasLogin(listapages);
     });
-
+    
     //******************************************************************
     // Recebe a lista de ficheiros de uma determinada pasta
     //******************************************************************
@@ -1961,7 +1961,7 @@ $(document).ready(function () {
                 break;
         }
     });
-
+    
     $(".fecharGaleria").click(function () {
         $("#divGaleria").animate({
             "left": "-30%"
@@ -1971,21 +1971,21 @@ $(document).ready(function () {
             });
         });
     });
-
+    
     $("body").on("click", ".carregarLayout", function () {
         if (currentPosition != backArray.length) {
             backArray.splice(currentPosition, backArray.length - currentPosition);
             folderArray.splice(currentPosition, folderArray.length - currentPosition);
         }
-
+        
         backArray.push($(this).data("layout"));
         folderArray.push($(this).data("folder"));
-
+        
         currentPosition += 1;
         //console.log(backArray + " " + currentPosition);
         addLayoutToDiv("#contentor", $(this).data("folder"), $(this).data("layout"), socket);
     });
-
+    
     $("body").on("click", ".voltarLayout", function () {
         if (currentPosition - 1 >= 1) {
             currentPosition -= 1;
@@ -2003,7 +2003,7 @@ $(document).ready(function () {
             console.log(backArray + " " + currentPosition);
         }
     });
-
+    
     //Mostrar os temas disponÃ­veis para o poema
     $("body").on("click", 'a[href="#add-poema"]', function () {
         var data = {
@@ -2013,7 +2013,7 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
-
+    
     //adicionar palavra 'a ajuda do poema
     $("body").on('click', "div.help.col-xs-4.col-sm-4.col-md-4.altura-poema > h3 > span", function () {
         var idpage = $(this).parent().parent().parent().attr('id');
@@ -2023,8 +2023,8 @@ $(document).ready(function () {
             $(this).before('<span class="label label-info" style="float:left; margin: 3px;">' + text + '</span>');
         }
     });
-
-
+    
+    
     //Mostrar perfil do Utilizador
     $("body").on("click", 'a[href="#show-perfil"]', function () {
         //        var data = {
@@ -2044,7 +2044,7 @@ $(document).ready(function () {
         };
         getFilesToFolder(socket, data);
     });
-
+    
     //Adiciona a tab do poema
     $("body").on("click", '.imgPoema', function () {
         /**folder: $(self).attr("data-folder"),
@@ -2054,7 +2054,7 @@ $(document).ready(function () {
         $("body").find("#divchangemodel").remove();
         $("body").find("a[href^='#page']:last").click();
     });
-
+    
     $("body").on("click", ".dropdown-menu li a", function () {
         switch ($(this).data("type")) {
             case "font-family":
@@ -2086,7 +2086,7 @@ $(document).ready(function () {
                 break;
         }
     });
-
+    
     $("body").on("click", ".adicionarEntity", function () {
         var id = $(this).attr("id");
         $("body").append(wait);
@@ -2101,7 +2101,7 @@ $(document).ready(function () {
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-escola").css("display", "none");
                 $("body").find("#form-agrupamento").css("display", "none");
-
+                
                 $.ajax({
                     type: "GET",
                     url: "/getAllEscolas",
@@ -2177,19 +2177,19 @@ $(document).ready(function () {
                 $("body").find("#form-aluno").css("display", "none");
                 $("body").find("#form-professor").css("display", "none");
                 $("body").find("#form-escola").css("display", "none");
-
+                
                 break;
             default:
                 break;
         }
-
+        
         $("body").find("#add-Entity-Header").append(newHeader);
         $("body").find("#add-Entity-Image").attr("src", newSrc);
         $("body").find("#div-Adicionar-Entity").append(htmlModel);
         $("body").find("#loading").remove();
-
+        
     });
-
+    
     $("body").on("click", ".selectModelo", function () {
         if (($("form input[type='radio']:checked").val()).toUpperCase() == "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
@@ -2201,7 +2201,7 @@ $(document).ready(function () {
             $("body").find("#ModeloSelectPagina").attr("data-idmodel", $(this).data("idmodel"));
         }
     });
-
+    
     $("body").on("click", "#guardarModeloLivro", function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
         var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
@@ -2225,7 +2225,7 @@ $(document).ready(function () {
             "color": $("body").find(".textResultado").css("color"),
             "background-color": $("body").find(".textResultado").css("background-color")
         });
-
+        
         $("body").append(wait);
         $.ajax({
             type: "POST",
@@ -2265,11 +2265,11 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
+        
     });
-
-
-
+    
+    
+    
     // carregar lista de alunos
     $("body").on("click", "#contentor > div > div[data-layout='MenuCriarProjectos.html']", function () {
         tmpModels = [];
@@ -2282,9 +2282,10 @@ $(document).ready(function () {
             success: function (data) {
                 $("body").find("#loading").remove();
                 //insere todos os alunos no html!!!!
+                var htmlLine ="";
                 for (var aluno in data) {
                     //para cada aluno, carrega a informaÃ§Ã£o
-                    var htmlLine = "<option value=" + data[aluno].id_user + ">" + data[aluno].nome + "</option>";
+                    htmlLine = "<option value=" + data[aluno].id_user + ">" + data[aluno].nome + "</option>";
                     //faz o append do html gerado
                     $("#alluseralunos:first").append(htmlLine);
                 }
@@ -2295,7 +2296,7 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
+        
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -2305,9 +2306,10 @@ $(document).ready(function () {
             success: function (data) {
                 $("body").find("#loading").remove();
                 //insere todos os professores no html!!!!
+                var htmlLine ="";
                 for (var prof in data) {
                     //para cada professor, carrega a informaÃ§Ã£o
-                    var htmlLine = "<option value=" + data[prof].id_user + ">" + data[prof].nome + "</option>";
+                    htmlLine = "<option value=" + data[prof].id_user + ">" + data[prof].nome + "</option>";
                     //faz o append do html gerado
                     $("#alluserProfessores:first").append(htmlLine);
                 }
@@ -2318,7 +2320,7 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
+        
         //Carregar os modelos dos projetos para array
         $("body").append(wait);
         $.ajax({
@@ -2337,8 +2339,8 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
             }
         });
-
-
+        
+        
         //Carregar os modelos dos projetos para a interface
         $("body").append(wait);
         $.ajax({
@@ -2359,7 +2361,7 @@ $(document).ready(function () {
                 }
                 $("body").find("#SelectPageStyle > table").append(html);
                 $("body").find("#loading").remove();
-
+                
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -2368,82 +2370,87 @@ $(document).ready(function () {
             }
         });
     });
-
-
+    
+    
     //muda o data-select do element escolhido da tabela
     $("body").on("click", "#SelectPageStyle > table > tbody > tr > td.bs-checkbox > input[type='radio']", function () {
         $("#SelectPageStyle > table > tbody > tr").each(function (index, element) {
             $(element).get(0)["attributes"][0]["value"] = "false";
         });
-
+        
         $($(this).parent().parent()).get(0)["attributes"][0]["value"] = "true";
     });
-
+    
     // selecionar user para participar no projeto
     $("body").on("click", "#addButtonAluno", function () {
         $("#addedAlunos").append($("#alluseralunos option:selected").get(0));
-        $("#alluseralunos option:selected").hide(); //css("display", "none");
+        $("#alluseralunos option:selected").remove();
     });
-
-
+    
+    
     // (des)selecionar user para participar no projeto
     $("body").on("click", "#removeButtonAluno", function () {
-        var valor = $("#addedAlunos option:selected").prop("value");
-        console.log(valor);
-        $("#alluseralunos option[value=" + valor + "]").show(); //css("display", "inline");
-
+        var valor = $("#addedAlunos > option:selected").prop("value");
+        if (typeof valor !== "undefined") {
+            $("#alluseralunos").append("<option value=" + valor + ">" + $("#addedAlunos > option:selected").text() + "</option>");
+            $("body").find("#addedAlunos > option:selected").remove();        
+        }
+        
     });
     $("body").on("click", "#addButtonProf", function () {
         $("#addedProfessores").append($("#alluserProfessores option:selected").get(0));
-        $("#alluserProfessores option:selected").hide(); //css("display", "none");
+        $("#alluserProfessores option:selected").remove(); //css("display", "none");
     });
-
-
+    
+    
     // (des)selecionar user para participar no projeto
     $("body").on("click", "#removeButtonProf", function () {
         var valor = $("#addedProfessores option:selected").prop("value");
-        $("#alluserProfessores option[value=" + valor + "]").show(); //css("display", "inline");
-
+        if (typeof valor !== "undefined") {
+            $("#alluserProfessores").append("<option value=" + valor + ">" + $("#addedProfessores > option:selected").text() + "</option>");
+            $("body").find("#addedProfessores > option:selected").remove();        
+        }
+        
     });
-
+    
     // Avancar no projeto 
     $("body").on("click", "#btProjAvancar", function () {
-
+        
         //Nome do projeto
         var nomeProj = $("#nomeProj").val();
-
+        
         //verificar o nome do projeto
         if (nomeProj.trim() == "") {
             $("#nomeProj").focus();
             alert("Nome do Projeto Inválido");
             return;
         }
-
+        
         $("#contentor").attr("NomeProj", nomeProj);
-
+        
         //array com os utilizadores do projeto
         var usersid = [];
         $("#addedAlunos > option").each(function () {
             usersid.push($(this).prop("value"));
         });
-
+        
         $("#addedProfessores > option").each(function () {
             usersid.push($(this).prop("value"));
         });
-
+        
         //retirar a opcao por defeio
         //users = users.splice(1);
-
+        
         //verificar se foram selecionados alunos para participar no projeto
         if (usersid.length == 0) {
             alert("Escolha Utilizadores para participar no projeto");
             return;
         }
         $("#contentor").attr("projuser", usersid);
-
+        
         //id modelo utilizado
         var idmodel = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-idmodel");
-
+        
         if (typeof idmodel == "undefined") {
             alert("Escolha um modelo de projeto");
             return;
@@ -2452,25 +2459,25 @@ $(document).ready(function () {
         $("#contentor").attr("idmodel", idmodel);
 
         $("#contentor").attr("tipoproj", $(".TipoProj > .active > input").val());
-
+        
         var numCapa = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelcapa");
         var numPagina = $("#SelectPageStyle > table > tbody > tr[data-select='true']").attr("data-modelpagina");
         console.log("Nome do novo Projeto:" + nomeProj + "\n id users:" + users + "\n ID do modelo:" + idmodel + "\nCapa:" + numCapa + "\t Pagina:" + numPagina);
-
+        
         //Limpar hash local e do server
         hash = {};
         socket.emit('storedhash', {
             storedhash: hash
         });
-
-
+        
+        
         addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-
+        
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
         $.ajax({
             type: "GET",
-            url: "/getCodTwoModels/" + numCapa + "/" + numPagina,
+            url: "/getCodTwoModels/" + numCapa + "/" + numPagina + "/" + idmodel,
             async: true,
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
@@ -2480,9 +2487,9 @@ $(document).ready(function () {
                     if (data[i].id == numCapa) {
                         Addtab(numCapa, idNum);
                         $(".txtTab" + idNum).html(data[i].htmltext);
-                        refactorTab(numCapa, idNum);
+                        refactorTab(numCapa, idNum, data[0].texto);
                         addtohash(idNum);
-
+                        
                         //Reduzir tamanho da div das tabs
                         $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                         $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
@@ -2491,24 +2498,26 @@ $(document).ready(function () {
                                 "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
                                 "<div id='divTxtAjuda'  contenteditable='true'></div>" +
                                 "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
-
+                        
                         $(".containerTxtAjuda").animate({
                             opacity: 1,
                         }, 1000, function () {
                             // Animation complete.
                         });
                         $("#divTxtAjuda").focus();
-
+                        
                     } else if (data[i].id == numPagina) {
                         idNum = (Object.keys(hash).length + 1);
                         Addtab(numPagina, idNum);
                         $(".txtTab" + idNum).html(data[i].htmltext);
-                        refactorTab(numPagina, idNum);
+                        refactorTab(numPagina, idNum, data[0].texto);
                         addtohash(idNum);
                     }
                 }
+                                
+                $("#contentor").attr("tab", idmodel);
                 
-               $("body").find("a[href^='#page']:last").click();
+                $("body").find("a[href^='#page']:last").click();
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -2517,10 +2526,10 @@ $(document).ready(function () {
             }
         });
     });
-
-
+    
+    
     $("body").on("click", "#btGuardarProjeto", function () {
-
+        
         $("body").append(wait);
         var nomeP = $("#contentor").attr("NomeProj");
         var usersP = $("#contentor").attr("projuser").split(",");
@@ -2529,10 +2538,10 @@ $(document).ready(function () {
         var textHelp = $("#divTxtAjuda").text();
         var typeP = $("#contentor").attr("tipoproj");
         var hashtoSave;
-
-
+        
+        
         hashtoSave = hash;
-
+        
         for (var item in hashtoSave) {
             for (var elem in hashtoSave[item].modelo.arrayElem) {
                 if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
@@ -2564,20 +2573,20 @@ $(document).ready(function () {
                 if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
-
+                    
                     console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
                     $("body").find("#loading").remove();
                     alert("O nome do livro já existe na base da dados.");
                 }
                 
-                 var data = {
-                        folder: "Menu_Navegacao",
-                        idtab: "",
-                        idObj: ""
-                    };
+                var data = {
+                    folder: "Menu_Navegacao",
+                    idtab: "",
+                    idObj: ""
+                };
 //                    console.log("before getfiles2folderfunction");
-                    getFilesToFolder(socket, data);
+                getFilesToFolder(socket, data);
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -2585,16 +2594,16 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     /*
      * Fim FunÃ§oes de logout -----------------------------------------------------------------------------------------------
      */
-
+    
 });
 $(window).resize(function () {
     ajustElements();
@@ -2616,11 +2625,11 @@ function getBase64Image(img) {
     var canvas = document.createElement("canvas");
     canvas.width = img2.width;
     canvas.height = img2.height;
-
+    
     // Copy the image contents to the canvas
     var ctx = canvas.getContext("2d");
     ctx.drawImage(img2, 0, 0);
-
+    
     // Get the data-URL formatted image
     // Firefox supports PNG and JPEG. You could check img.src to guess the
     // original format, but be aware the using "image/jpg" will re-encode the image.
@@ -2658,7 +2667,7 @@ function castTab(tabToCast) {
     //tabToCast = tabToCast[".txtTab1"];
     //Faz o cast da Tab, e todos os seus elementos
     //tabToCast = tabToCast[;
-
+    
     var tab = $.extend(new Tab(), tabToCast);
     //    console.log(tabToCast.numModelo);
     tab.modelo = $.extend(new Modelo(), tabToCast.modelo);
@@ -2670,6 +2679,7 @@ function castTab(tabToCast) {
             //console.log(socket);
             //tabToCast.modelo.arrayElem[item].socket = socket;
             tab.modelo.arrayElem[item].editor = $.extend(new TextEditor(), tabToCast.modelo.arrayElem[item].editor);
+            tab.modelo.arrayElem[item].editor.styles(tab.styles);
         }
     }
     return tab;
@@ -2704,11 +2714,11 @@ function updateTab(i, key, creator) {
             for (var elemento in hash[key].modelo.arrayElem) {
                 if (hash[key].modelo.arrayElem[elemento].elementType == "IMG") {
                     $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
-
+                    
                 } else if (hash[key].modelo.arrayElem[elemento].elementType == "CANVAS") {
                     //cria o seu canvas!
                     hash[key].modelo.arrayElem[elemento].drawObj.init();
-
+                    
                     //se o array nao estiver vazio (se nao tiver clientes canvas)
                     if (hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage != []) {
                         for (var item in hash[key].modelo.arrayElem[elemento].drawObj.ArrayCanvasImage) {
@@ -2722,7 +2732,7 @@ function updateTab(i, key, creator) {
                             var ctx = dr.getContext('2d');
                             //pinta a imagem
                             ctx.drawImage(img, 0, 0);
-
+                            
                         }
                         //se tiver backgorund desenha o
                         if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg != "") {
@@ -2736,6 +2746,7 @@ function updateTab(i, key, creator) {
                         if ($("#" + elemento).attr('class').indexOf('editable') != -1) {
                             $("#" + elemento).addClass(elemento);
                             var txtedit = new TextEditor(elemento, username, userColor, (creator == null ? hash[key].modelo.arrayElem[elemento].editor.creator : creator), userNumber);
+                            txtedit.styles(hash[key].styles);
                             hash[key].modelo.arrayElem[elemento].editor = txtedit;
                             //                        console.log(hash[key].modelo.arrayElem[elemento]);
                             txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
@@ -2789,12 +2800,15 @@ function Addtab(html, idNum) {
  * @param {type} idNum  numeor da tab para alterar os id's da tab
  * @returns {undefined} */
 
-function refactorTab(html, idNum) {
-
+function refactorTab(html, idNum, estilos) {
+    
     //depois de carregar o html, vai buscar o numero de filhos q a div tem
     var numElements = $(".txtTab" + (idNum)).children('div').children().length;
     //cria tab no array
     tabTest = new Tab(".txtTab" + (idNum), numElements, html);
+    if (typeof estilos !== "undefined") {
+        tabTest.styles = estilos;
+    }
     var i = 0;
     $(".txtTab" + idNum).children('div').attr("id", "tab" + idNum + "-" + $(".txtTab" + idNum).children('div').attr('id'));
     $(".txtTab" + idNum).children('div').children().each(function () {
@@ -2812,30 +2826,32 @@ function refactorTab(html, idNum) {
  * @param {type} idNum
  * @returns {undefined} */
 function addtohash(idNum) {
-
+    
     $(".txtTab" + idNum).children('div').children().each(function () {
-
+        
         //vai buscar id atribuido
         var thID = $(this).attr("id");
         var thType = $(this).prop("tagName");
         var tabNumber = thID.match(/\d+/)[0];
         var newElementID = "tab" + tabNumber + "-Mycanvas";
         if ($(this).attr("id").match("tab" + tabNumber + "-canvasdr")) {
-
+            
             tabTest.modelo.arrayElem[newElementID] = new Element(newElementID, "CANVAS");
             tabTest.modelo.arrayElem[newElementID].createCanvasObj(".txtTab" + idNum, "#tab" + idNum + "-tabpage", this.id);
             tabTest.modelo.arrayElem[newElementID].drawObj.init();
-
+            
         } else if ($(this).attr("class").match("editable")) {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             var txtedit = new TextEditor($(this).attr("id"), username, userColor, userNumber, userNumber);
+            txtedit.styles(tabTest.styles);
             $(this).addClass(thID);
             tabTest.modelo.arrayElem[thID].editor = txtedit;
-
+            tabTest.modelo.arrayElem[thID].editor.styles(tabTest.styles);
+            
         } else {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
         }
-
+        
     });
     hash[tabTest.id] = tabTest;
 }
@@ -2846,7 +2862,7 @@ function addtohash(idNum) {
  * @param {type} liElem
  * @returns {undefined} */
 function removeTab(liElem) {
-
+    
     $('ul#tabs > li#li' + liElem).fadeOut(1000, function () {
         // Apaga o <li></li>(separador) com um efeito fadeout
         $(this).remove();
@@ -2856,7 +2872,7 @@ function removeTab(liElem) {
     var i = 1;
     //para renomear Li
     $('#tabs').children('li').each(function () {
-
+        
         if ($(this).attr('id') != "li-last" && $(this).attr('id') != $('ul#tabs > li#li' + liElem).attr('id')) {
             $(this).attr('id', "li" + i);
             $(this).children('a').attr('href', "#page" + i);
@@ -2958,14 +2974,14 @@ function addLayoutToDiv(local, folder, layout, stk) {
     var kk = Object.keys(hash);
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
-
+            
             case "Livro.html":
                 if (stk != null) {
                     stk.emit("getAllTabs", {
                         Pid: hash[kk[0]].projID
                     });
                 }
-
+                
                 if (typeof hash[kk[0]] != "undefined") {
                     $.ajax({
                         type: "GET",
@@ -2978,12 +2994,12 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 //Reduzir tamanho da div das tabs
                                 $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                                 $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
-
+                                
                                 var tmpAjuda = "<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
                                         "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
                                         "<div id='divTxtAjuda'>";
                                 //Adicionar a div com o texto de ajuda		
-
+                                
                                 var tmpText = data[0].texto;
                                 if (data[0].tipo == "Poema") {
                                     tmpText = tmpText.split(" ");
@@ -2993,12 +3009,12 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 } else {
                                     tmpAjuda += data[0].texto;
                                 }
-
-
+                                
+                                
                                 tmpAjuda += "</div>" + "</div>";
                                 $("#contentor").append(tmpAjuda);
-
-
+                                
+                                
                                 ///////////////////////
 //                                if (ajudas.length > 0) {
 //                                    var wordshelp = '<div class="help col-xs-4 col-sm-4 col-md-4 altura-poema" class="center-block" style="overflow-y: scroll;"> ' +
@@ -3011,21 +3027,21 @@ function addLayoutToDiv(local, folder, layout, stk) {
 //                                    $("body").find("#page" + idNum).append(wordshelp);
 //                                }
                                 //////////////////////7
-
+                                
                                 $(".containerTxtAjuda").animate({
                                     opacity: 1,
                                 }, 1000, function () {
                                     // Animation complete.
                                 });
                             }
-
+                            
                         },
                         error: function (error) {
                             console.log(JSON.stringify(error));
                         }
                     });
                 }
-
+                
                 $('#bt_PDF').css({
                     'visibility': "visible"
                 });
@@ -3056,7 +3072,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         listLayout += "</div>";
                         $("body").find("#loading").remove();
                         $("body").find("#painelModelos").append(listLayout);
-
+                        
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -3066,16 +3082,16 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 });
                 break;
             case "CriarPoema.html":
-
+                
                 break;
-
-
+                
+                
                 /**
                  * -----------------------------------------------------------BACKOFFICE--------------------------------------------------------------
                  */
-
+                
                 //-------------------------------GERIR-----------------------------------------
-
+                
             case "GerirAluno.html":
                 $("body").append(wait);
                 $.ajax({
@@ -3114,8 +3130,8 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         }
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-
-
+                        
+                        
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
@@ -3124,7 +3140,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     }
                 });
                 break;
-
+                
             case "GerirProfessor.html":
                 $("body").append(wait);
                 $.ajax({
@@ -3134,7 +3150,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-
+                            
                             htmlVar += "<tr>";
                             htmlVar += "<td>" + data[i].id + "</td>" +
                                     "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
@@ -3160,7 +3176,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '</td>' +
                                     "</tr>";
                         }
-
+                        
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
                     },
@@ -3170,9 +3186,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
-
+                
                 break;
-
+                
             case "GerirEscolas.html":
                 $("body").append(wait);
                 $.ajax({
@@ -3196,7 +3212,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
-
+                        
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
                     },
@@ -3206,9 +3222,9 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
-
+                
                 break;
-
+                
             case "GerirAgrupamentos.html":
                 $("body").append(wait);
                 $.ajax({
@@ -3218,7 +3234,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     success: function (data) {
                         var htmlVar;// = "<td>"+data[0].id_user+"</td>";
                         for (var i = 0, max = data.length; i < max; i++) {
-
+                            
                             htmlVar += "<tr>";
                             htmlVar += "<td>" + data[i].id + "</td>" +
                                     "<td>" + data[i].nome + "</td>" +
@@ -3230,7 +3246,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
-
+                        
                         $("body").find("#loading").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
                     },
@@ -3241,7 +3257,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     }
                 });
                 break;
-
+                
             default:
                 $('#bt_PDF').css({
                     'visibility': "hidden"

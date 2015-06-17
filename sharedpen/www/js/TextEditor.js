@@ -106,6 +106,11 @@ TextEditor.prototype.contributes = function (projId) {
     return contri;
 };
 
+TextEditor.prototype.styles = function (estilos) {
+    alert(estilos);
+   return;
+};
+
 function getCaretPosition(editableDiv) {
     var caretPos = 0, sel, range;
     if (window.getSelection) {

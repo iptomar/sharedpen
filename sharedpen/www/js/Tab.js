@@ -4,6 +4,7 @@ var Tab = function (id, noElement, numModelo) {
     this.numModelo = numModelo;
     this.poema;
     this.projID;
+    this.styles;
 };
 
 var Modelo = function (noElement) {
