@@ -2499,9 +2499,6 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
-                console.log("-------------------------------------");
-                console.log(data);
-                console.log("-------------------------------------");
                 $("body").find("#loading").remove();
                 for (var i in data) {
                     if (data[i].id == numCapa) {
@@ -2532,10 +2529,10 @@ $(document).ready(function () {
                         $(".txtTab" + idNum).html(data[i].htmltext);
                         refactorTab(numPagina, idNum);
                         addtohash(idNum);
-
-                        $("body").find("a[href^='#page']:last").click();
                     }
                 }
+                
+               $("body").find("a[href^='#page']:last").click();
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -2592,12 +2589,19 @@ $(document).ready(function () {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
 
-                    //Pedro F. tens aqui o id que querias
                     console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
-                    alert("O nome do livro já existe na base da dados.");
                     $("body").find("#loading").remove();
+                    alert("O nome do livro já existe na base da dados.");
                 }
+                
+                 var data = {
+                        folder: "Menu_Navegacao",
+                        idtab: "",
+                        idObj: ""
+                    };
+//                    console.log("before getfiles2folderfunction");
+                    getFilesToFolder(socket, data);
             },
             error: function (error) {
                 $("body").find("#loading").remove();
