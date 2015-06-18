@@ -29,6 +29,7 @@ var folderArray = [listapages];
 var tmpArrayProj = [];
 var tmpModels = [];
 var currentPosition = 1;
+var pass;
 $(document).ready(function () {
 
 //--------------------------BACKOFFICE----------------------------------------
@@ -38,6 +39,9 @@ $(document).ready(function () {
                   $("body").find('.validForm').on('success.form.bv', function (e) {
                       e.stopPropagation();
                       e.preventDefault();
+                      if(pass != $("#password_aluno_edit").val()){
+                          pass = stringToMd5($("#password_aluno_edit").val());
+                      }
                       $.ajax({
                           type: "POST",
                           url: "/updateAluno",
@@ -47,7 +51,7 @@ $(document).ready(function () {
                               username: $("#username_aluno_edit").val(),
                               nomeAluno: $("#nome_aluno_edit").val(),
                               numAluno: $("#numero_aluno_edit").val(),
-                              password: stringToMd5($("#password_aluno_edit").val()),
+                              password: pass,
                               turma: $("#turma_aluno_edit option:selected").val(),
                               ano: $("#ano_aluno_edit option:selected").val(),
                               id_escola: $("#escola_aluno_edit option:selected").val()
@@ -206,6 +210,7 @@ $("body").on('click', ".editInfo", function (e) {
                 $("#ano_aluno_edit").val(data[0].ano);
                 $("#escola_aluno_edit").val(data[0].id_escola);
                 $("#password_aluno_edit").val(data[0].password);
+                pass = data[0].password;
                 $("body").find("#loading").remove();
             },
             error: function (error) {
