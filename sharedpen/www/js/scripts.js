@@ -31,86 +31,84 @@ var tmpModels = [];
 var currentPosition = 1;
 var pass;
 $(document).ready(function () {
-
+    
 //--------------------------BACKOFFICE----------------------------------------
 //fazer update a aluno
-        $("body").on('click', "#guardarEditAluno", function (e) {
-                  validacaoFormAll();
-                  $("body").find('.validForm').on('success.form.bv', function (e) {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      if(pass != $("#password_aluno_edit").val()){
-                          pass = stringToMd5($("#password_aluno_edit").val());
-                      }
-                      $.ajax({
-                          type: "POST",
-                          url: "/updateAluno",
-                          data: {
-                              image: $("#userImage").attr('src'),
-                              id: $("#Id_aluno_edit").val(),
-                              username: $("#username_aluno_edit").val(),
-                              nomeAluno: $("#nome_aluno_edit").val(),
-                              numAluno: $("#numero_aluno_edit").val(),
-                              password: pass,
-                              turma: $("#turma_aluno_edit option:selected").val(),
-                              ano: $("#ano_aluno_edit option:selected").val(),
-                              id_escola: $("#escola_aluno_edit option:selected").val()
-                          },
-                          dataType: 'json',
-                          success: function (data) {
-                              $(".voltarLayout").click();
-                          },
-                          error: function (error) {
-                              console.log(JSON.stringify(error));
-                          }
-                      });
-                  });
- });
+$("body").on('click', "#guardarEditAluno", function (e) {
+    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
+        e.stopPropagation();
+        e.preventDefault();
+        //se a password nao foi alterada nao encripta, se foi incripta
+        if (pass != $("#password_aluno_edit").val()) {
+            pass = stringToMd5($("#password_aluno_edit").val());
+        }
+        //guardar os dados do aluno (updateAluno)
+        $.ajax({
+            type: "POST",
+            url: "/updateAluno",
+            data: {
+                image: $("#userImage").attr('src'),
+                id: $("#Id_aluno_edit").val(),
+                username: $("#username_aluno_edit").val(),
+                nomeAluno: $("#nome_aluno_edit").val(),
+                numAluno: $("#numero_aluno_edit").val(),
+                password: pass,
+                turma: $("#turma_aluno_edit option:selected").val(),
+                ano: $("#ano_aluno_edit option:selected").val(),
+                id_escola: $("#escola_aluno_edit option:selected").val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(".voltarLayout").click();//se successo voltar atras
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+    });
+});
+    
 //fazer update a professor
+$("body").on('click', "#guardarEditProfessor", function (e) {
+    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
+        e.stopPropagation();
+        e.preventDefault();
+        //guardar os dados do professor (updateProfessores)        
+        $.ajax({
+            type: "POST",
+            url: "/updateProfessores",
+            data: {
+                avatar: $("#userImage").attr('src'),
+                id: $("#Id_Professor_edit").val(),
+                username: $("#username_Professor_edit").val(),
+                nome: $("#Nome_Professor_edit").val(),
+                password: stringToMd5($("#password_Professor_edit").val()),
+                id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
+                email: $("#Email_Professor_edit").val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data === 'false') {//verifica se o username existe
+                    alert("Este Utilizador ja existe!!");
 
-    $("body").on('click', "#guardarEditProfessor", function (e) {
-    validacaoFormAll();
-         $("body").find('.validForm').on('success.form.bv', function (e) {
-             e.stopPropagation();
-             e.preventDefault();
-             $.ajax({
-                 type: "POST",
-                 url: "/updateProfessores",
-                 data: {
-                     avatar: $("#userImage").attr('src'),
-                     id: $("#Id_Professor_edit").val(),
-                     username: $("#username_Professor_edit").val(),
-                     nome: $("#Nome_Professor_edit").val(),
-                     password: stringToMd5($("#password_Professor_edit").val()),
-                     id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
-                     email: $("#Email_Professor_edit").val()
-                 },
-                 dataType: 'json',
-                 success: function (data) {
-                     if(data==='false'){
-                         alert("Este Utilizador ja existe!!");
-                         
-                     }
-                     else{
-                         $(".voltarLayout").click();
-                     }
-                 },
-                 error: function (error) {
-                     console.log(JSON.stringify(error));
-                 }
-             });
-         });
+                } else {
+                    $(".voltarLayout").click();
+                }
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+    });
 
- });
+});
 
 //fazer update a escola
 $("body").on('click', "#guardarEditEscola", function (e) {
-    validacaoFormAll();
-    $("body").find('.validForm').on('success.form.bv', function (e) {
-
-
+    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
         e.stopPropagation();
         e.preventDefault();
+        //guardar os dados da escola (updateEscolas)        
         $.ajax({
             type: "POST",
             url: "/updateEscolas",
@@ -135,11 +133,10 @@ $("body").on('click', "#guardarEditEscola", function (e) {
 
 //fazer update a agrupamento
 $("body").on('click', "#guardarEditAgrupamento", function (e) {
-    validacaoFormAll();
-    $("body").find('.validForm').on('success.form.bv', function (e) {
-
+    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
         e.stopPropagation();
         e.preventDefault();
+        //guardar os dados da agrupamento (updateAgrupamentos)        
         $.ajax({
             type: "POST",
             url: "/updateAgrupamentos",
@@ -157,15 +154,13 @@ $("body").on('click', "#guardarEditAgrupamento", function (e) {
         });
     });
 });
-
-    
     
     
 //editar aluno/professor/escola/agrupamento 
 $("body").on('click', ".editInfo", function (e) {
     e.stopPropagation();
     e.preventDefault();
-    var type = $(this).data("type");
+    var type = $(this).data("type");//verifica se é aluno/professor/escola/agrupamento ( no butao data-type="aluno")
     switch (type) {
     case "aluno":
         addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
@@ -177,18 +172,18 @@ $("body").on('click', ".editInfo", function (e) {
         folderArray.push($(this).data("folder"));
         currentPosition += 1;
         $("body").append(wait);
+        //adicionar informacao a dropdown (escolas)
         $.ajax({
             type: "GET",
             url: "/getAllEscolas",
             dataType: 'json',
             success: function (data) {
                 var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {
+                for (var i = 0, max = data.length; i < max; i++) {//adicionar options a dropdown (escolas)
                     htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
                 }
                 $("body").find("#loading").remove();
                 $("body").find("#escola_aluno_edit").append(htmlVar);
-
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -196,6 +191,7 @@ $("body").on('click', ".editInfo", function (e) {
                 console.log(JSON.stringify(error));
             }
         });
+        //preencher campos de editar aluno
         $.ajax({
             type: "GET",
             url: "/getAluno/" + $(this).attr("rel"),
@@ -203,7 +199,7 @@ $("body").on('click', ".editInfo", function (e) {
             success: function (data) {
                 $("#Id_aluno_edit").val(data[0].id_user);
                 $("#userImage").attr("src", data[0].avatar),
-                    $("#username_aluno_edit").val(data[0].username);
+                $("#username_aluno_edit").val(data[0].username);
                 $("#nome_aluno_edit").val(data[0].nome_aluno);
                 $("#numero_aluno_edit").val(data[0].num_aluno);
                 $("#turma_aluno_edit").val(data[0].turma);
@@ -230,7 +226,6 @@ $("body").on('click', ".editInfo", function (e) {
         backArray.push($(this).data("layout"));
         folderArray.push($(this).data("folder"));
         currentPosition += 1;
-
         $("body").append(wait);
         $.ajax({
             type: "GET",
@@ -307,7 +302,6 @@ $("body").on('click', ".editInfo", function (e) {
             dataType: 'json',
             success: function (data) {
                 var htmlVar;
-                //$("#userImage").attr('src', data[0].avatar);
                 $("#Id_Escola_edit").val(data[0].id);
                 $("#Nome_Escola_edit").val(data[0].nome);
                 $("#Morada_Escola_edit").val(data[0].morada);
@@ -675,16 +669,6 @@ $("body").on('click', ".editInfo", function (e) {
                                         '<img class="text-center image" src="../img/edit_40.png">' +
                                         '</div>' +
                                         '</td>' +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                                        '<img class="text-center image" width="35"';
-                                if (data[i].active == "1") {
-                                    htmlVar += ' src="../img/green.png">';
-                                } else {
-                                    htmlVar += ' src="../img/red.png">';
-                                }
-                                '</div>' +
-                                        '</td>' +
                                         "</tr>";
                             }
                             $("body").find("#loading").remove();
@@ -724,16 +708,6 @@ $("body").on('click', ".editInfo", function (e) {
                                         '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
                                         '<img class="text-center image" src="../img/edit_40.png">' +
                                         '</div>' +
-                                        '</td>' +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                                        '<img class="text-center image" width="35"';
-                                if (data[i].active == "1") {
-                                    htmlVar += ' src="../img/green.png">';
-                                } else {
-                                    htmlVar += ' src="../img/red.png">';
-                                }
-                                '</div>' +
                                         '</td>' +
                                         "</tr>";
                             }
@@ -3201,7 +3175,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
 
@@ -3235,7 +3208,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '<img class="text-center image" src="../img/edit_40.png">' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class="image"><img class="text-center image" rel=' + data[i].id + ' src="../img/delete_40.png"></td>' +
                                     "</tr>";
                         }
 
@@ -3335,9 +3307,11 @@ function validacaoFormAll(){
                      validators: {
                          notEmpty: {},
                          numeric : {},
-                         between : {
-                             min: 210000000,
-                             max: 999999999
+                         stringLength : {
+                             min: 9,
+                             max: 9,
+                             message: 'Por favor insira numero de telefone'
+
                          }
                      }
                  }, 
