@@ -61,7 +61,6 @@ $(document).ready(function () {
                           }
                       });
                   });
-
  });
 //fazer update a professor
 
@@ -84,7 +83,13 @@ $(document).ready(function () {
                  },
                  dataType: 'json',
                  success: function (data) {
-                     $(".voltarLayout").click();
+                     if(data==='false'){
+                         alert("Este Utilizador ja existe!!");
+                         
+                     }
+                     else{
+                         $(".voltarLayout").click();
+                     }
                  },
                  error: function (error) {
                      console.log(JSON.stringify(error));
