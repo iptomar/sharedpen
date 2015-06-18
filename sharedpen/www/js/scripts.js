@@ -45,6 +45,7 @@ $(document).ready(function () {
                 username: $("#username_aluno_edit").val(),
                 nomeAluno: $("#nome_aluno_edit").val(),
                 numAluno: $("#numero_aluno_edit").val(),
+                password: stringToMd5($("#password_aluno_edit").val()),
                 turma: $("#turma_aluno_edit option:selected").val(),
                 ano: $("#ano_aluno_edit option:selected").val(),
                 id_escola: $("#escola_aluno_edit option:selected").val()
@@ -71,6 +72,7 @@ $(document).ready(function () {
                 id: $("#Id_Professor_edit").val(),
                 username: $("#username_Professor_edit").val(),
                 nome: $("#Nome_Professor_edit").val(),
+                password: stringToMd5($("#password_Professor_edit").val()),
                 id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
                 email: $("#Email_Professor_edit").val()
             },
@@ -177,6 +179,7 @@ $(document).ready(function () {
                         $("#turma_aluno_edit").val(data[0].turma);
                         $("#ano_aluno_edit").val(data[0].ano);
                         $("#escola_aluno_edit").val(data[0].id_escola);
+                        $("#password_aluno_edit").val(data[0].password);
                         $("body").find("#loading").remove();
                     },
                     error: function (error) {
@@ -227,6 +230,7 @@ $(document).ready(function () {
                         $("#username_Professor_edit").val(data[0].username);
                         $("#Nome_Professor_edit").val(data[0].nome_professor);
                         $("#Email_Professor_edit").val(data[0].email);
+                        $("#password_Professor_edit").val(data[0].password);
                         $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
                         $("body").find("#loading").remove();
                     },
@@ -422,7 +426,7 @@ $(document).ready(function () {
         var tipo = $(this).data("type");
         var avatar = $("#add-Entity-Image").attr('src');
         var username = $("#username_aluno_add").val();
-        var password = $("#password_aluno_add").val();
+        var password = stringToMd5($("#password_aluno_add").val());
         var nome = $("#nome_aluno_add").val();
         var numero = $("#numero_aluno_add").val();
         var escola = $("#escola_aluno_add option:selected").val();
@@ -461,7 +465,7 @@ $(document).ready(function () {
         var tipo = $(this).data("type");
         var avatar = $("#add-Entity-Image").attr('src');
         var username = $("#username_Professor_add").val();
-        var password = $("#password_Professor_add").val();
+        var password = stringToMd5($("#password_Professor_add").val());
         var nome = $("#Nome_Professor_add").val();
         var email = $("#Email_Professor_add").val();
         var agrupamento = $("#Agrupamento_Professor_add option:selected").val();
