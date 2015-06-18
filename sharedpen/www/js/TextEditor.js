@@ -1,17 +1,15 @@
-var TextEditor = function (idpai, user, cor, socketCreator, userNum) {
+var TextEditor = function (idpai, user, cor, numCreator, userNum) {
     this.idpai = idpai;
     this.user = user;
     this.cor = cor;
-    this.socketId = userNum;
+    this.userNum = userNum;
     this.valPId = 1;
     this.atualPara = "";
-    this.creator = socketCreator;
-    if (typeof socketCreator !== "undefined") {
-        $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + socketCreator + '" contenteditable></p>');
+    this.creator = numCreator;
+
+    if (typeof numCreator != "undefined") {
+        $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + numCreator + '" contenteditable></p>');
     }
-    $("#" + this.idpai).css({
-        "font-size": "20px"
-    });
 
     this.key = {
         'ENTER': 13
@@ -20,10 +18,10 @@ var TextEditor = function (idpai, user, cor, socketCreator, userNum) {
 
 
 TextEditor.prototype.changeColorPUsers = function () {
-    $("#" + this.idpai + " > p:not(." + this.socketId + ")").css({
+    $("#" + this.idpai + " > p:not(." + this.userNum + ")").css({
         "color": "blue"
     });
-    $("#" + this.idpai + " > p." + this.socketId).css({
+    $("#" + this.idpai + " > p." + this.userNum).css({
         "color": "black"
     });
 };
@@ -37,7 +35,7 @@ TextEditor.prototype.createPara = function (sckid, idPara) {
             '" contenteditable></p>').insertAfter("#" +
             this.idpai +
             " > #" + idPara);
-    if (sckid === this.socketId) {
+    if (sckid == this.userNum) {
         $("#" + this.idpai + ' > p#' + this.idpai + "-" + (this.valPId - 1)).focus();
     }
 };
@@ -47,7 +45,7 @@ TextEditor.prototype.setTextEditor = function (data) {
         this.createPara(data.socketid, data.idPara);
     } else {
         $("#" + this.idpai + " > #" + data.idPara).html(data.textSinc);
-        if (data.idPara === this.atualPara) {
+        if (data.idPara == this.atualPara) {
             setCaretAtEditor(data.idPara, 0, data.textSinc.length);
         }
     }
@@ -90,20 +88,38 @@ TextEditor.prototype.setTextToEditor = function (text) {
     }
 };
 
+TextEditor.prototype.contributes = function (projId) {
+    var contri = [];
+    var pai = this.idpai;
+    $('#' + this.idpai).children('p').each(function () {
+        contri.push({
+            projecto: projId,
+            tab: pai,
+            editorPara: this.id,
+            user: $(this).attr("class"),
+            text: $(this).text()
+        });
+    });
+    return contri;
+};
+
+TextEditor.prototype.styles = function (estilos) {
+    $("body").find("#" + this.idpai).css(JSON.parse(estilos));
+};
+
 function getCaretPosition(editableDiv) {
-    var caretPos = 0,
-            sel, range;
+    var caretPos = 0, sel, range;
     if (window.getSelection) {
         sel = window.getSelection();
         if (sel.rangeCount) {
             range = sel.getRangeAt(0);
-            if (range.commonAncestorContainer.parentNode === editableDiv) {
+            if (range.commonAncestorContainer.parentNode == editableDiv) {
                 caretPos = range.endOffset;
             }
         }
     } else if (document.selection && document.selection.createRange) {
         range = document.selection.createRange();
-        if (range.parentElement() === editableDiv) {
+        if (range.parentElement() == editableDiv) {
             var tempEl = document.createElement("span");
             editableDiv.insertBefore(tempEl, editableDiv.firstChild);
             var tempRange = range.duplicate();
@@ -127,7 +143,7 @@ function setCaretAtEditor(editor, linha, coluna) {
 //    console.log(linha);
 //    console.log(coluna);
     var el = document.getElementById(editor);
-    if (typeof el.childNodes[linha] !== "undefined") {
+    if (typeof el.childNodes[linha] != "undefined") {
         var range = document.createRange();
         var sel = window.getSelection();
         range.setStart(el.childNodes[linha], coluna);

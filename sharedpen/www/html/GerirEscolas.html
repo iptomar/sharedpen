@@ -1,27 +1,25 @@
-<div class="col-xs-12 col-sm-12 col-md-12">
+<div class="div-table-db col-xs-12 col-sm-12 col-md-12">
     <h1 class="h1">Gestão de Escolas</h1>
+    <div class="col-md-4 col-md-offset-7">
+        <div class="input-group">
+            <input type="text" id="inputSearch" data-type="escola" class="form-control" placeholder="Search for...">
+        </div>
+    </div>
+    <br>
     <table id="gerirEntitiesTable" class="table table-condensed table-hover table-margin-top-bottom">
-        <th>Id</th>
-        <th>Nome</th>
-        <th>Morada</th>
-        <th>Contacto</th>
-        <th>Agrupamento</th>
-        <th>Editar</th>
-        <th>Apagar</th>
-        <!--
-         <tr class="actve">
-            <td>1</td>
-            <td>Escola 2</td>
-            <td>Rua da Segunda Escola</td>
-            <td>123456789</td>
-            <td>Agrupamento da Segunda Escola</td>
-            <td class="image">
-                <div class="carregarLayout" data-folder="html" data-layout="EditarEscola.html">
-                    <img class="text-center image" src="../img/edit_40.png">
-                </div>
-            </td>
-            <td class="image"><img class="text-center image" src="../img/delete_40.png"></td>
-        </tr>
-    !-->
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Morada</th>
+                <th>Contacto</th>
+                <th>Agrupamento</th>
+                <th>Editar</th>
+                <th>Apagar</th>
+            </tr>
+        </thead>
     </table>
-</div> 
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <input id="adicionarEscola" type="button" class="carregarLayout btn-primary adicionarEntity" data-folder="html" data-layout="AdicionarEntity.html" value="Adicionar Nova">
+</div>

@@ -1,9 +1,10 @@
-
-var Tab = function (id, noElement, nomeModelo) {
+var Tab = function (id, noElement, numModelo) {
     this.id = id;
     this.modelo = new Modelo(noElement);
-    this.nomeModelo = nomeModelo;
+    this.numModelo = numModelo;
     this.poema;
+    this.projID;
+    this.styles;
 };
 
 var Modelo = function (noElement) {

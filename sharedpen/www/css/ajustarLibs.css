@@ -80,6 +80,11 @@
     border-width: 2px; 
 }
 
+.div-table-db{
+    overflow-y: auto;   
+    max-height: 87%;
+}
+
 .margin-top-50{
     margin-top:50px;   
 }
@@ -97,16 +102,33 @@
     text-align: center;
 }
 
-#removeButton{
+#removeButtonAluno, #removeButtonProf{
     background-image: url(../img/Minus.png);
     background-repeat: no-repeat;
     background-position:center;
 }
 
-#addButton{
+#addButtonAluno, #addButtonProf{
     background-image: url(../img/add.png);
     background-repeat: no-repeat;
     background-position:center;
+}
+
+#EditarProj_btn {
+    background-image: url(../img/check.png);
+    background-repeat: no-repeat;
+    background-position:right;
+    
+    float:left;
+    border-radius: 10px;
+    margin-left: 180px;
+    margin-top: 280px;
+    
+    width: 200px;
+    height:80px;
+    
+    font-size: 40px;
+    text-align: left;
 }
 
 #Avaliar_btn {
@@ -116,13 +138,37 @@
     
     float:right;
     border-radius: 10px;
-    margin-left: 208px;
+    margin-left: 140px;
     
     width: 200px;
     height:80px;
     
     font-size: 40px;
     text-align: left;
+}
+
+#adicionarAluno, #adicionarProfessor,  #adicionarEscola, #adicionarAgrupamento{
+    background-image: url(../img/add.png);
+    background-repeat: no-repeat;
+    background-position:right;
+    
+    border-radius: 10px;
+    width: 200px;
+    height: 80px;
+    
+    font-size: 20px;
+    text-align: left;
+    
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.default-display-none{
+    visibility: initial;
+}
+
+.btn-margin-top{
+    margin-top: 10px;   
 }
 
 .tabspace{
@@ -133,13 +179,12 @@
     border:1px solid lightgray;
     border-radius: 5px;
     list-style-type: none; 
-    max-height: 70%;
     max-width: 44%;
     width: 44%;
     overflow-y: scroll;
 }
 .buttonTable{
-    margin-top: 220px;
+    margin-top:120px;
     float:left;
 }
 
@@ -147,8 +192,8 @@
     float:left;
 }
 
+
 .div-users{
-    min-width: 36.875em;
     height: 650px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -172,7 +217,11 @@
 
 #users-avaliar{
     height:20%; 
-    width:220%;
+    width:420%;
+}
+
+.search-text, input-group{
+    width:100%;   
 }
 
 .text-left{
@@ -180,15 +229,20 @@
     text-align: left;   
 }
 
-#Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser {
+#Escola,#Turma, #IdAgrupamento, #Agrupamento, #IdEscola, #Morada, #Contacto, #Pass, #Username, #Nome, #tipoUser, #guardarEdit, #Ano, #Numero, #IdUser, #btnAdicionarEntity {
     width: 100%;
     height: 50px;
     font-size: auto;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 #gerirEntitiesTable, #meusProjTable{
     font-size: 18px;   
+}
+
+.div-scroll-auto{
+    overflow-y: auto;   
+    max-height: 88%;
 }
 
 #guardarEdit {
@@ -208,11 +262,22 @@
 .SmallAvatar {
     width: 150px;
     Height: 150px;
+    margin-left: 40px;
 }
 
-#SideInfo {
-    margin-left: -80px;
+#usersTabs {
+ width:100%;
 }
+
+#unselectedTab {
+color: black;   
+}
+
+#listaUsers {
+ height: 400px;
+}
+
+
 .modal-backdrop {
     z-index: 0;
 }
