@@ -34,168 +34,39 @@ $(document).ready(function () {
 //--------------------------BACKOFFICE----------------------------------------
 //fazer update a aluno
         $("body").on('click', "#guardarEditAluno", function (e) {
-     $("body").find('.validForm').bootstrapValidator({
-             //message: 'Este valor não é valido',
-             feedbackIcons: {
-                 valid: 'glyphicon glyphicon-ok',
-                 invalid: 'glyphicon glyphicon-remove',
-                 validating: 'glyphicon glyphicon-refresh'
-             },
-             locale: 'pt_PT',
-             fields: {
-                 input_username: {
-                     // message: 'O Username não é valido',
-                     validators: {
-                         stringLength: {
-                             min: 5,
-                             max: 15,
-                             // message:'O username tem que ter entre 5 a 15 caracteres'
-                         },
-                         notEmpty: {
-                             // message: 'O Username é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 },
-                 input_password: {
-                     //message: 'A password não é valida',
-                     validators: {
-                         stringLength: {
-                             min: 5,
-                             max: 10,
-                             //    message:'A password tem que ter entre 5 a 15 caracteres'
-                         },
-                         notEmpty: {
-                             //  message: 'A password é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 },
-                 input_nome: {
-                     // message: 'O nome não é valido',
-                     validators: {
-                         stringLength: {
-                             min: 3,
-                             max: 30
-                                 //   message:'O nome tem que ter entre 5 a 30 caracteres'
-                         },
-                         notEmpty: {
-                             // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 },
-                 input_email: {
-                     // message: 'O nome não é valido',
-                     validators: {
-                         emailAddress: {},
-                         notEmpty: {
-                             // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 }
-
-             }
-         })
-         .on('success.form.bv', function (e) {
-             e.stopPropagation();
-             e.preventDefault();
-             $.ajax({
-                 type: "POST",
-                 url: "/updateAluno",
-                 data: {
-                     image: $("#userImage").attr('src'),
-                     id: $("#Id_aluno_edit").val(),
-                     username: $("#username_aluno_edit").val(),
-                     nomeAluno: $("#nome_aluno_edit").val(),
-                     numAluno: $("#numero_aluno_edit").val(),
-                     password: stringToMd5($("#password_aluno_edit").val()),
-                     turma: $("#turma_aluno_edit option:selected").val(),
-                     ano: $("#ano_aluno_edit option:selected").val(),
-                     id_escola: $("#escola_aluno_edit option:selected").val()
-                 },
-                 dataType: 'json',
-                 success: function (data) {
-                     if(data==='false'){
-                         alert("Este Utilizador ja existe!!");
-                         
-                     }
-                     else{
-                         $(".voltarLayout").click();
-                     }
-                 },
-                 error: function (error) {
-                     console.log(JSON.stringify(error));
-                 }
-             });
-         });
-
+                  validacaoFormAll();
+                  $("body").find('.validForm').on('success.form.bv', function (e) {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      $.ajax({
+                          type: "POST",
+                          url: "/updateAluno",
+                          data: {
+                              image: $("#userImage").attr('src'),
+                              id: $("#Id_aluno_edit").val(),
+                              username: $("#username_aluno_edit").val(),
+                              nomeAluno: $("#nome_aluno_edit").val(),
+                              numAluno: $("#numero_aluno_edit").val(),
+                              password: stringToMd5($("#password_aluno_edit").val()),
+                              turma: $("#turma_aluno_edit option:selected").val(),
+                              ano: $("#ano_aluno_edit option:selected").val(),
+                              id_escola: $("#escola_aluno_edit option:selected").val()
+                          },
+                          dataType: 'json',
+                          success: function (data) {
+                              $(".voltarLayout").click();
+                          },
+                          error: function (error) {
+                              console.log(JSON.stringify(error));
+                          }
+                      });
+                  });
  });
 //fazer update a professor
-  
-    
-    
-    
-    
-    $("body").on('click', "#guardarEditProfessor", function (e) {
-     $("body").find('.validForm').bootstrapValidator({
-             //message: 'Este valor não é valido',
-             feedbackIcons: {
-                 valid: 'glyphicon glyphicon-ok',
-                 invalid: 'glyphicon glyphicon-remove',
-                 validating: 'glyphicon glyphicon-refresh'
-             },
-             locale: 'pt_PT',
-             fields: {
-                 input_username: {
-                     // message: 'O Username não é valido',
-                     validators: {
-                         stringLength: {
-                             min: 5,
-                             max: 15,
-                             // message:'O username tem que ter entre 5 a 15 caracteres'
-                         },
-                         notEmpty: {
-                             // message: 'O Username é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 },
-                 input_password: {
-                     //message: 'A password não é valida',
-                     validators: {
-                         stringLength: {
-                             min: 5,
-                             max: 10,
-                             //    message:'A password tem que ter entre 5 a 15 caracteres'
-                         },
-                         notEmpty: {
-                             //  message: 'A password é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 },
-                 input_nome: {
-                     // message: 'O nome não é valido',
-                     validators: {
-                         stringLength: {
-                             min: 3,
-                             max: 30
-                                 //   message:'O nome tem que ter entre 5 a 30 caracteres'
-                         },
-                         notEmpty: {
-                             // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 },
-                 input_email: {
-                     // message: 'O nome não é valido',
-                     validators: {
-                         emailAddress: {},
-                         notEmpty: {
-                             // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                         }
-                     }
-                 }
 
-             }
-         })
-         .on('success.form.bv', function (e) {
+    $("body").on('click', "#guardarEditProfessor", function (e) {
+    validacaoFormAll();
+         $("body").find('.validForm').on('success.form.bv', function (e) {
              e.stopPropagation();
              e.preventDefault();
              $.ajax({
@@ -228,9 +99,12 @@ $(document).ready(function () {
 
  });
 
-
 //fazer update a escola
-    $("body").on('click', "#guardarEditEscola", function (e) {
+$("body").on('click', "#guardarEditEscola", function (e) {
+    validacaoFormAll();
+    $("body").find('.validForm').on('success.form.bv', function (e) {
+
+
         e.stopPropagation();
         e.preventDefault();
         $.ajax({
@@ -253,8 +127,13 @@ $(document).ready(function () {
         });
     });
 
+});
+
 //fazer update a agrupamento
-    $("body").on('click', "#guardarEditAgrupamento", function (e) {        
+$("body").on('click', "#guardarEditAgrupamento", function (e) {
+    validacaoFormAll();
+    $("body").find('.validForm').on('success.form.bv', function (e) {
+
         e.stopPropagation();
         e.preventDefault();
         $.ajax({
@@ -273,6 +152,7 @@ $(document).ready(function () {
             }
         });
     });
+});
 
 //editar aluno/professor/escola/agrupamento 
 $("body").on('click', ".editInfo", function (e) {
@@ -462,66 +342,7 @@ $("body").on('click', ".editInfo", function (e) {
             }
         });
     }
-    $("body").find('.validForm').bootstrapValidator({
-        //message: 'Este valor não é valido',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        locale: 'pt_PT',
-        fields: {
-            input_username: {
-                // message: 'O Username não é valido',
-                validators: {
-                    stringLength: {
-                        min: 5,
-                        max: 15,
-                        // message:'O username tem que ter entre 5 a 15 caracteres'
-                    },
-                    notEmpty: {
-                        // message: 'O Username é um campo obrigatório e não pode ficar vazio'
-                    }
-                }
-            },
-            input_password: {
-                //message: 'A password não é valida',
-                validators: {
-                    stringLength: {
-                        min: 5,
-                        max: 10,
-                        //    message:'A password tem que ter entre 5 a 15 caracteres'
-                    },
-                    notEmpty: {
-                        //  message: 'A password é um campo obrigatório e não pode ficar vazio'
-                    }
-                }
-            },
-            input_nome: {
-                // message: 'O nome não é valido',
-                validators: {
-                    stringLength: {
-                        min: 3,
-                        max: 30
-                            //   message:'O nome tem que ter entre 5 a 30 caracteres'
-                    },
-                    notEmpty: {
-                        // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                    }
-                }
-            },
-            input_email: {
-                // message: 'O nome não é valido',
-                validators: {
-                    emailAddress: {},
-                    notEmpty: {
-                        // message: 'O nome é um campo obrigatório e não pode ficar vazio'
-                    }
-                }
-            }
-
-        }
-    })
+    validacaoFormAll()
 });
     
 
@@ -3424,7 +3245,83 @@ function addLayoutToDiv(local, folder, layout, stk) {
 
 
 
-
+function validacaoFormAll(){
+    
+     $("body").find('.validForm').bootstrapValidator({
+             feedbackIcons: {
+                 valid: 'glyphicon glyphicon-ok',
+                 invalid: 'glyphicon glyphicon-remove',
+                 validating: 'glyphicon glyphicon-refresh'
+             },
+             locale: 'pt_PT',
+             fields: {
+                 input_username: {
+                     validators: {
+                         stringLength: {
+                             min: 3,
+                             max: 20,
+                         },
+                         notEmpty: {}
+                     }
+                 },
+                 input_password: {
+                     validators: {
+                         stringLength: {
+                             min: 5,
+                             max: 50,
+                         },
+                         notEmpty: {}
+                     }
+                 },
+                 input_nome: {
+                     validators: {
+                         stringLength: {
+                             min: 3,
+                             max: 40
+                         },
+                         notEmpty: {},
+                         regexp: {
+                             regexp: /^[a-z\s]+$/i,
+                         }
+                     }
+                 },
+                 input_email: {
+                      validators: {
+                         emailAddress: {},
+                         notEmpty: {}
+                      }
+                 },
+                 input_numero: {
+                     validators: {
+                         notEmpty: {},
+                         between : {
+                             min: 2,
+                             max: 50
+                         }
+                     }
+                 },
+                 input_morada: {
+                     validators: {
+                         notEmpty: {},
+                         stringLength : {
+                             min: 3,
+                             max: 30
+                         }
+                     }
+                 },
+                 input_contacto: {
+                     validators: {
+                         notEmpty: {},
+                         numeric : {},
+                         between : {
+                             min: 210000000,
+                             max: 999999999
+                         }
+                     }
+                 }        
+             }
+         })
+}
 
 
 /**
