@@ -149,6 +149,9 @@ $("body").on('click', "#guardarEditAgrupamento", function (e) {
     });
 });
 
+    
+    
+    
 //editar aluno/professor/escola/agrupamento 
 $("body").on('click', ".editInfo", function (e) {
     e.stopPropagation();
@@ -381,6 +384,9 @@ $("body").on('click', ".editInfo", function (e) {
 
 //criar aluno
     $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
+        validacaoFormAll();
+        $("body").find('.validForm').on('success.form.bv', function (e) {
+
         e.stopPropagation();
         e.preventDefault();
         var tipo = $(this).data("type");
@@ -417,10 +423,13 @@ $("body").on('click', ".editInfo", function (e) {
             }
         });
     });
+    });
 
 //criar professor
     $("body").on('click', "#btnAdicionarEntity_professor", function (e) {
-        e.stopPropagation();
+         validacaoFormAll();
+        $("body").find('.validForm').on('success.form.bv', function (e) {
+            e.stopPropagation();
         e.preventDefault();
         var tipo = $(this).data("type");
         var avatar = $("#add-Entity-Image").attr('src');
@@ -453,9 +462,12 @@ $("body").on('click', ".editInfo", function (e) {
             }
         });
     });
-
+});
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_escola", function (e) {
+         validacaoFormAll();
+        $("body").find('.validForm').on('success.form.bv', function (e) {
+
         e.stopPropagation();
         e.preventDefault();
         //var avatar = $("#add-Entity-Image").attr('src');
@@ -484,9 +496,12 @@ $("body").on('click', ".editInfo", function (e) {
             }
         });
     });
-
+});
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
+        validacaoFormAll();
+        $("body").find('.validForm').on('success.form.bv', function (e) {
+
         e.stopPropagation();
         e.preventDefault();
         //var avatar = $("#add-Entity-Image").attr('src');
@@ -509,6 +524,7 @@ $("body").on('click', ".editInfo", function (e) {
             }
         });
     });
+        });
 // procurar por Username de no aluno
     $("body").on('input', "#inputSearch", function (e) {
         var type = $(this).data("type");
@@ -2053,6 +2069,7 @@ $("body").on('click', ".editInfo", function (e) {
     });
 
     $("body").on("click", ".adicionarEntity", function () {
+        validacaoFormAll();
         var id = $(this).attr("id");
         $("body").append(wait);
         var htmlModel = "";
@@ -3313,7 +3330,12 @@ function validacaoFormAll(){
                              max: 999999999
                          }
                      }
-                 }        
+                 }, 
+                 select_choise: {
+                     validators: {
+                         notEmpty: {}
+                     }
+                 }
              }
          })
 }
