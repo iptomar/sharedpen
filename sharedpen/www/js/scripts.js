@@ -553,7 +553,7 @@ $(document).ready(function () {
         switch (type) {
             case "aluno":
                 $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
+                if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
                     addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
@@ -610,7 +610,7 @@ $(document).ready(function () {
 
             case "professor":
                 $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
+                if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
                     addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
@@ -665,7 +665,7 @@ $(document).ready(function () {
 
             case "escola":
                 $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
+                if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
                     addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket); 
                     $("#inputSearch").focus();
                 } else {
@@ -708,7 +708,7 @@ $(document).ready(function () {
 
             case "agrupamento":
                 $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
+                if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
                     addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
                     $("#inputSearch").focus();
                 } else {
