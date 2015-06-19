@@ -1,3 +1,18 @@
 .altura-poema {
     height:500px;	
 }
+
+#criarLivroPoema > div.col-xs-5.col-sm-5.col-md-5.novaImagemPoema > #image {
+	max-height: 300px;
+	width: auto;
+}
+
+#criarLivroPoema > div.col-xs-7.col-sm-7.col-md-7.textProf > div > p:nth-child(3)  {
+	overflow-y: scroll;
+	max-height: 300px;
+}
+
+#criarLivroPoema > div.col-xs-7.col-sm-7.col-md-7.textProf > div > p:nth-child(3) > input[type="text"] {
+	margin-top: 10px;
+}
+	

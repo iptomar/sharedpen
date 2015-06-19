@@ -9,7 +9,7 @@ var Poema = function (titulo, text, img) {
 	this.titulo = titulo;
 	this.text = text;
 	this.img = img;
-	this.palavras = ["Banana", "Orange", "Apple", "Mango"];
+	this.palavras = ["+"];
 };
 
 /**
@@ -136,6 +136,10 @@ function AddPoema(livro, img) {
 		"background-repeat": "no-repeat"
 	});
 
+	$('#page' + idNum + ' > div.help.col-xs-4.col-sm-4.col-md-4 > h3 > span').filter(function () {
+		return $(this).text() == "+";
+	}).addClass("image");
+
 }
 
 
@@ -159,4 +163,30 @@ function checkhits(idTexto, myfield) {
 			"text-decoration": "line-through"
 		});
 	}
+}
+
+function checkNomeProj(data){
+	if ($(data).val().trim() =="") {
+		$(data).next().removeClass("label-success");
+		$(data).next().addClass("label-danger");
+	} else {
+		$(data).next().removeClass("label-danger");
+		$(data).next().addClass("label-success");
+	}
+}
+
+function addPalavras(data){
+	$(data).prev().append("</br><input id='' type='text' maxlength='30'>");
+	$('#criarLivroPoema > div.col-xs-7.col-sm-7.col-md-7.textProf > div > p:nth-child(3) > input[type="text"]').last().focus();
+}
+
+function CriarLivroPoema(){
+	console.log("Nome do Projecto: " + $("#nomeProjeto").val());
+	console.log("Imagem: \n" + $("#image").attr("src"));
+	$('#criarLivroPoema > div.col-xs-7.col-sm-7.col-md-7.textProf > div > p:nth-child(3) > input[type="text"]').each(function( index ) {
+		if ($(this).val() != "") {
+			console.log("Palavra "+ index + ": " + $(this).val());		
+		}
+	});
 };
+

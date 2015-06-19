@@ -1,38 +1,21 @@
-<div class="div-scroll-auto col-xs-12 col-sm-12 col-md-12">
-    <h1 class="h1">Gestão de Utilizadores</h1>
+<div class="div-table-db col-xs-12 col-sm-12 col-md-12">
+    <h1 class="h1">Gestão de Agrupamentos</h1>
+    <div class="col-md-4 col-md-offset-7">
+        <div class="input-group">
+            <input type="text" id="inputSearch" data-type="agrupamento" class="form-control" placeholder="Search for...">
+        </div>
+    </div>
+    <br>
     <table id="gerirEntitiesTable" class="table table-condensed table-hover table-margin-top-bottom">
-        <th>Id</th>
-        <th>Nome</th>
-        <th>Contacto</th>
-        <th>Editar</th>
-        <th>Apagar</th>
-        <tr class="actve">
-            <td>0</td>
-            <td>Primeiro Agrupamento</td>
-            <td>123456789</td>
-            <td class="image"><img class="text-center image" src="../img/edit_40.png"></td>
-            <td class="image"><img class="text-center image" src="../img/delete_40.png"></td>
-        </tr>
-        <tr class="actve">
-            <td>1</td>
-            <td>Segundo Agrupamento</td>
-            <td>123456789</td>
-            <td class="image"><img class="text-center image" src="../img/edit_40.png"></td>
-            <td class="image"><img class="text-center image" src="../img/delete_40.png"></td>
-        </tr>
-        <tr class="actve">
-            <td>2</td>
-            <td>Terceiro Agrupamento</td>
-            <td>123456789</td>
-            <td class="image"><img class="text-center image" src="../img/edit_40.png"></td>
-            <td class="image"><img class="text-center image" src="../img/delete_40.png"></td>
-        </tr>
-        <tr class="actve">
-            <td>3</td>
-            <td>Quarto Agrupamento</td>
-            <td>123456789</td>
-            <td class="image"><img class="text-center image" src="../img/edit_40.png"></td>
-            <td class="image"><img class="text-center image" src="../img/delete_40.png"></td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
     </table>
-</div> 
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <input id="adicionarAgrupamento" type="button" class="carregarLayout btn-primary adicionarEntity" data-folder="html" data-layout="AdicionarEntity.html" value="Adicionar Novo">
+</div>

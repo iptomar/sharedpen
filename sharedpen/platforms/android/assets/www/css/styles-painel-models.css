@@ -1,11 +1,15 @@
-#divchangemodel { 
+#divchangemodel, #loading { 
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
 }
-#divchangemodel:before {
+
+#loading { 
+    z-index: 20;
+}
+#divchangemodel:before, #loading:before {
     content:'';
     position: absolute;
     top: 0;
@@ -34,6 +38,17 @@
     -moz-box-shadow:    inset 0 0 20px #000000;
     -webkit-box-shadow: inset 0 0 30px #000000;
     box-shadow:         inset 0 0 30px #000000;
+    padding: 30px;
+}
+
+#loading > div {
+    position: relative;
+    z-index: 30;
+    width: 40%;
+    height: 10%;
+    left: 30%;
+    top: 35%;
+    background-color: transparent;
     padding: 30px;
 }
 
@@ -74,9 +89,45 @@ figcaption {
 }
 
 .menu_BT{
- position: fixed;
+    position: fixed;
     left: 80%;
     top: 1%;
     height: auto;
     width: auto;
+}
+
+/*#criarLivro > div {
+    border: 1px solid black;
+}*/
+
+#textAjudaLivro, #nomeProjeto {
+    font-family: "Arial";
+    font-size: 18px;
+    text-align: justify;
+    color: black;
+    background-color: transparent;
+    border: 1px solid black;
+}
+#textAjudaLivro {
+    height: 300px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.textModelo, .textProf {
+    height: 400px;
+}
+
+.textResultado {
+    font-family: "Times New Roman";
+    font-size: 14px;
+    text-align: left;
+    color: black;
+    background-color: transparent;
+}
+
+#painelModelos > div {
+    height: 170px;
+    overflow: hidden;
+    overflow-y: scroll;
 }

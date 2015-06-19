@@ -1,156 +1,144 @@
-/**
- * 
- * @param {type} id
- * @param {type} user
- * @param {type} cor
- * @param {type} socketId
- * @param {type} socket
- * @returns {TextEditor}
- */
-var TextEditor = function (id, user, cor, socketId, socket) {
-    this.id = id;
-    this.newId;
+var TextEditor = function (idpai, user, cor, numCreator, userNum) {
+    this.idpai = idpai;
     this.user = user;
     this.cor = cor;
-    this.socketId = socketId;
-    this.socket = socket;
-    $('#' + id).summernote({
-        lang: "pt-PT",
-        width: $("#" + this.id).width(), // set editor width
-        height: $("#" + this.id).height(),
-        minHeight: $("#" + this.id).height(), // set minimum height of editor
-        maxHeight: $("#" + this.id).height(), // set maximum height of editor
-        tabsize: 5,
-//        styleWithSpan: true, // style with span (Chrome and FF only)
-//        disableLinkTarget: true, // hide link Target Checkbox
-//        disableDragAndDrop: false, // disable drag and drop event
-        disableResizeEditor: true, // disable resizing editor
-//        shortcuts: false, // enable keyboard shortcuts
-//        placeholder: false, // enable placeholder text
-//        prettifyHtml: true, // enable prettifying html while toggling codeview
-        idEdit: this.socketId,
-        idinput: this.id,
-        focus: true, //
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            // ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-            ['fontname', ['fontname']],
-            ['fontsize', ['fontsize']],
-            //['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-                    //['height', ['height']],
-                    //['table', ['table']],
-                    //['insert', ['link', 'picture', 'hr']]//,
-                    //['view', ['fullscreen', 'codeview']],
-                    //['help', ['help']]
-        ],
-        onChange: function ($editable, sHtml) {
-//            console.log($editable, sHtml);
-//            console.log('onChange', arguments, $('.summernote')[0] === this);
-            if ((this.id).indexOf("Poema") === -1) {                
-                socket.emit('msgappend', {
-                    'parent': $("#" + this.id).parent().parent().attr('class').split(' ')[1],
-                    'id': this.id,
-                    'html': $editable
-                });  
-            }
+    this.userNum = userNum;
+    this.valPId = 1;
+    this.atualPara = "";
+    this.creator = numCreator;
+
+    if (typeof numCreator != "undefined") {
+        $("#" + this.idpai).append('<p id="' + this.idpai + "-" + this.valPId++ + '" class="' + numCreator + '" contenteditable></p>');
+    }
+
+    this.key = {
+        'ENTER': 13
+    };
+};
+
+
+TextEditor.prototype.changeColorPUsers = function () {
+    $("#" + this.idpai + " > p:not(." + this.userNum + ")").css({
+        "color": "blue"
+    });
+    $("#" + this.idpai + " > p." + this.userNum).css({
+        "color": $("#" + this.idpai).css("color")
+    });
+};
+
+TextEditor.prototype.createPara = function (sckid, idPara) {
+    $('<p  id="' +
+            this.idpai + "-" +
+            this.valPId++ +
+            '" class="' +
+            sckid +
+            '" contenteditable></p>').insertAfter("#" +
+            this.idpai +
+            " > #" + idPara);
+    if (sckid == this.userNum) {
+        $("#" + this.idpai + ' > p#' + this.idpai + "-" + (this.valPId - 1)).focus();
+    }
+};
+
+TextEditor.prototype.setTextEditor = function (data) {
+    if (data.novoPara) {
+        this.createPara(data.socketid, data.idPara);
+    } else {
+        $("#" + this.idpai + " > #" + data.idPara).html(data.textSinc);
+        if (data.idPara == this.atualPara) {
+            setCaretAtEditor(data.idPara, 0, data.textSinc.length);
         }
-    });
-//    alert($('#note-editable_' + this.id).parent().attr("id"));
-//    alert($("#" + this.id).css('font-family'));
-    $('#note-editable_' + this.id).css({
-        'font-size': $("#" + this.id).css('font-size'),
-        'text-align': $("#" + this.id).css('text-align')
-    });
+    }
+    this.changeColorPUsers();
 };
 
-/**
- * 
- * @param {type} val
- * @returns {undefined}
- */
-TextEditor.prototype.setNewId = function (val) {
-    this.newId = val;
-};
-
-/**
- * 
- * @param {type} text
- * @returns {undefined}
- */
-TextEditor.prototype.setTextToEditor = function (text) {
-    $('#' + this.id).code(text);
-};
-
-/**
- * 
- * @returns {unresolved}
- */
 TextEditor.prototype.getTextEditor = function () {
-    return  $('#note-editable_' + this.id).code();
+    var alltextP = "";
+    $('#' + this.idpai).children('p').each(function () {
+        alltextP += $(this).text() + "\n";
+    });
+    return alltextP;
 };
-/**
- * 
- * @param {type} element
- * @returns {Number|document.body@call;createTextRange.text.length}
- */
-function getCaretCharacterOffsetWithin(element) {
-    var caretOffset = 0;
-    if (typeof window.getSelection != "undefined") {
-        var range = window.getSelection().getRangeAt(0);
-        var preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(element);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length;
-    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
-        var textRange = document.selection.createRange();
-        var preCaretTextRange = document.body.createTextRange();
-        preCaretTextRange.moveToElementText(element);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.text.length;
+
+TextEditor.prototype.getTextEditorForHtml = function () {
+    var alltextP = "";
+    $('#' + this.idpai).each(function () {
+        alltextP += this.outerHTML;
+    });
+    return alltextP;
+};
+
+TextEditor.prototype.getSizePUtilizado = function () {
+    var size = $('#' + this.idpai + "-" + 1).height() + 10;
+    $('#' + this.idpai).children('p').each(function () {
+        size += $(this).height() + 10;
+    });
+    return size;
+};
+
+TextEditor.prototype.setTextToEditor = function (text) {
+    var arrayTextp = text.split("</p>");
+    if (arrayTextp.length > 1) {
+        for (var i in arrayTextp) {
+            $("#" + this.idpai).append(arrayTextp[i] + "</p>");
+            this.valPId++;
+        }
+        this.valPId--;
+        this.changeColorPUsers();
     }
-    return caretOffset;
-}
+};
 
-/**
- * 
- * @param {type} idEditor
- * @returns {Number|document.body@call;createTextRange.text.length}
- */
-function showCaretPos(idEditor) {
-//    var el = document.getElementsByClassName("note-editable")[0];
-    var el = document.getElementById(idEditor);
-    return getCaretCharacterOffsetWithin(el);
-}
+TextEditor.prototype.contributes = function (projId) {
+    var contri = [];
+    var pai = this.idpai;
+    $('#' + this.idpai).children('p').each(function () {
+        contri.push({
+            projecto: projId,
+            tab: pai,
+            editorPara: this.id,
+            user: $(this).attr("class"),
+            text: $(this).text()
+        });
+    });
+    return contri;
+};
 
-/**
- * 
- * @param {type} idEditor
- * @param {type} caret
- * @returns {getElementAtCaret.element|jQuery|$|@exp;_$|Window.$}
- */
-function getElementAtCaret(idEditor, caret) {
-    var element;
-    var counter = 0;
-    var buffer;
-    var ps = $('p', "#" + idEditor + '.note-editable');
-    if (ps.length > 0) {
-        for (var paragrafo = 0; paragrafo < ps.length; paragrafo++) {
-            element = $(ps[paragrafo]);
-            var aux = element.contents();
-            for (var i = 0; i < aux.length; i++) {
-                counter += $(aux[i]).text().length;
-                if (counter >= caret) {
-                    return {
-                        element: element,
-                        paragrafo: paragrafo,
-                        pos: i
-                    };
-                }
+TextEditor.prototype.styles = function (estilos) {
+    if (typeof estilos != "undefined") {
+        var estilosArray = estilos.split(";");
+        var styles = "{";
+        for (var i in estilosArray) {
+            var sty = estilosArray[i].split(":");
+            styles += '"' + sty[0] + '" : "' + sty[1] + '",';
+        }
+        styles = styles.slice(0, -1);
+        styles += "}";
+        $("body").find("#" + this.idpai).css(JSON.parse(styles));
+    }
+};
+
+function getCaretPosition(editableDiv) {
+    var caretPos = 0, sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            if (range.commonAncestorContainer.parentNode == editableDiv) {
+                caretPos = range.endOffset;
             }
         }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        if (range.parentElement() == editableDiv) {
+            var tempEl = document.createElement("span");
+            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            var tempRange = range.duplicate();
+            tempRange.moveToElementText(tempEl);
+            tempRange.setEndPoint("EndToEnd", range);
+            caretPos = tempRange.text.length;
+        }
     }
+    return caretPos;
 }
 
 /**
@@ -161,92 +149,17 @@ function getElementAtCaret(idEditor, caret) {
  * @returns {undefined}
  */
 function setCaretAtEditor(editor, linha, coluna) {
+//    console.log(editor);
+//    console.log(linha);
+//    console.log(coluna);
     var el = document.getElementById(editor);
-    var range = document.createRange();
-    var sel = window.getSelection();
-    range.setStart(el.childNodes[linha], coluna);
-    range.collapse(true);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    el.focus();
+    if (typeof el.childNodes[linha] != "undefined") {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.setStart(el.childNodes[linha], coluna);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        el.focus();
+    }
 }
-
-// ----------------------  Exemplos de callbacks -------------------------
-//        airMode: true,
-//        onInit: function () {
-//            console.log('init', arguments, $('.summernote')[0] === this);
-//        },
-//        onFocus: function () {
-//            console.log('focus', arguments, $('.summernote')[0] === this);
-//        },
-//        onBlur: function () {
-//            console.log('blur', arguments, $('.summernote')[0] === this);
-//        },
-//        onKeydown: function () {
-//            var caret = showCaretPos();
-//            console.log(caret);
-//            console.log(getElementAtCaret(caret));
-//            console.log("before");
-// console.log('keydown', arguments, $('.summernote')[0] === this);
-
-//        }
-//        onKeyup: function () {
-//            console.log('keyup', arguments, $('.summernote')[0] === this);
-//        },
-//        onEnter: function () {
-//            console.log('enter', arguments, $('.summernote')[0] === this);
-//        },
-//        onMousedown: function () {
-//            console.log('onMousedown', arguments, $('.summernote')[0] === this);
-//        },
-//        onMouseup: function () {
-//            console.log('onMouseup', arguments, $('.summernote')[0] === this);
-//        },
-//        onScroll: function () {
-//            console.log('onscroll', arguments, $('.summernote')[0] === this);
-//        },
-//        onPaste: function () {
-//            console.log('paste', arguments, $('.summernote')[0] === this);
-//        },
-//        onBeforeCommand: function () {
-//            console.log("before");
-//        },
-//        onChange: function ($editable, sHtml) {
-//            console.log($editable, sHtml);
-//            console.log('onChange', arguments, $('.summernote')[0] === this);
-//        },
-//        onImageUpload: function () {
-//            console.log('onImageUpload', arguments, $('.summernote')[0] === this);
-//        },
-//        onImageUploadError: function () {
-//            console.log('onImageUploadError', arguments, $('.summernote')[0] === this);
-//        }
-//    }).on('summernote.init', function () {
-//        console.log('summernote.init', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.focus', function () {
-//        console.log('summernote.focus', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.blur', function () {
-//        console.log('summernote.blur', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.keydown', function () {
-//        console.log('summernote.keydown', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.keyup', function () {
-//        console.log('summernote.keyup', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.enter', function () {
-//        console.log('summernote.enter', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.mousedown', function () {
-//        console.log('summernote.mousedown', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.mouseup', function () {
-//        console.log('summernote.mouseup', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.scroll', function () {
-//        console.log('summernote.scroll', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.paste', function () {
-//        console.log('summernote.paste', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.before.command', function () {
-//        console.log('summernote.before.command', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.change', function () {
-//        console.log('summernote.change', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.image.upload', function () {
-//        console.log('summernote.image.upload', arguments, $('.summernote')[0] === this);
-//    }).on('summernote.image.upload.error', function () {
-//        console.log('summernote.image.error', arguments, $('.summernote')[0] === this);
-

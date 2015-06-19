@@ -162,7 +162,7 @@ body, #div-login{
     -ms-transition: all .25s ease; /* IE 9 */
     -o-transition: all .25s ease; /* Opera */
     transition: all .25s ease;
-    
+
     max-width: 100%;
     max-height: 100%;
 }
@@ -172,9 +172,52 @@ body, #div-login{
     -moz-transform:scale(.80); /* Firefox */
     -ms-transform:scale(.80); /* IE 9 */
     -o-transform:scale(.80); /* Opera */
-     transform:scale(.80);
+    transform:scale(.80);
 }
 
 .imageGaleria > img{
     width: 100%;
+}
+
+#SelectPageStyle {
+    height: 60%;
+    overflow-y: scroll;
+}
+.table-striped tbody tr:nth-child(odd) td {
+    background-color: deepskyblue;
+}
+
+.table-striped tbody tr.highlight td { 
+    background-color: darkblue;
+}
+
+#SelectPageStyle > div > div.col-xs-4.col-sm-4.col-md-4.nomeProj > button {
+    margin: auto auto;
+    top:50%;
+    left:50%;
+}
+
+.containerTxtAjuda {
+	height: 94%;
+	margin-top: 2%;
+	opacity: 0;
+}
+
+#divTxtAjuda {
+	height: 78%;
+	margin:auto;
+	margin-bottom: 2px;
+	-moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    background-color: white;
+    background-color: -moz-field;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px 0 lightgray inset;  
+    font: -moz-field;
+	overflow-y: scroll;
+	
+}
+
+.imguser {
+    width: 15%;
 }

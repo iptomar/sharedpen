@@ -1,0 +1,178 @@
+<div class="div-scroll-auto col-xs-12 col-sm-12 col-md-12">
+   <h1 id="add-Entity-Header" class="h1"></h1>
+   <div class="margin-top-50">
+      <div class="div-half-max-width">
+         <input type="file" class="userAvatar" accept="image/*" />
+         <img id="add-Entity-Image" class="dragandrophandler avatar-Image " alt="" src="../img/userImg.png">
+      </div>
+      <div id="div-Adicionar-Entity" class="div-half-max-width">
+         <form id="form-aluno" class="form-horizontal validForm">
+            <div class="form-group default-display-none">
+               <label for="username_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="username_aluno_add" name="input_username" > 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="password_aluno_add" type="password" name="input_password" autofocus> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="nome_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="nome_aluno_add"  name="input_nome"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="numero_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Numero</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="numero_aluno_add"  name="input_numero"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="turma_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Turma</label> 
+               <div class="col-sm-10">
+                  <select id="turma_aluno_add" class="form-control" name="select_choise" >
+                     <option value="">Seleccione a Turma</option>
+                     <option id="A">A</option>
+                     <option id="B">B</option>
+                     <option id="C">C</option>
+                     <option id="D">D</option>
+                     <option id="E">E</option>
+                     <option id="F">F</option>
+                     <option id="G">G</option>
+                     <option id="H">H</option>
+                     <option id="I">I</option>
+                     <option id="J">J</option>
+                     <option id="K">K</option>
+                     <option id="L">L</option>
+                     <option id="M">M</option>
+                     <option id="N">N</option>
+                     <option id="O">O</option>
+                     <option id="P">P</option>
+                     <option id="Q">Q</option>
+                     <option id="R">R</option>
+                     <option id="S">S</option>
+                     <option id="U">U</option>
+                     <option id="V">V</option>
+                     <option id="W">W</option>
+                     <option id="X">X</option>
+                     <option id="Y">Y</option>
+                     <option id="Z">Z</option>
+                  </select>
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="ano_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Ano</label> 
+               <div class="col-sm-10">
+                  <select id="ano_aluno_add" class="form-control" name="select_choise" >
+                     <option value="">Seleccione o Ano</option>
+                     <option id="1">1</option>
+                     <option id="2">2</option>
+                     <option id="3">3</option>
+                     <option id="4">4</option>
+                     <option id="5">5</option>
+                     <option id="6">6</option>
+                     <option id="7">7</option>
+                     <option id="8">8</option>
+                     <option id="9">9</option>
+                     <option id="10">10</option>
+                     <option id="11">11</option>
+                     <option id="12">12</option>
+                   </select>
+               </div>
+               
+            </div>
+             <div class="form-group default-display-none">
+               <label for="Escola_aluno_add" class="text-left col-sm-2 control-label" style="text-align:left">Escola</label> 
+               <div class="col-sm-10"> 
+                  <select id="escola_aluno_add" class="form-control"  name="select_choise">
+                     <option value="">Seleccione a Escola</option>
+                  </select>
+               </div>
+                          <button type="submit" class="btn btn-primary btn-round btn-margin-top" id="btnAdicionarEntity_aluno" rel="Aluno">Adicionar</button>
+            </div>
+             
+         </form>
+         <form id="form-professor" class="form-horizontal validForm">
+            <div class="form-group default-display-none">
+               <label for="username_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">UserName</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="username_Professor_add" name="input_username"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="password_aluno_add" class="col-sm-2 control-label text-left" style="text-align:left">Password</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="password_Professor_add" type="password" name="input_password"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="Nome_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Nome_Professor_add"  name="input_nome"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="Email_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">E-mail</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Email_Professor_add" name="input_email" > 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="Agrupamento_Professor_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label> 
+               <div class="col-sm-10">
+                  <select id="Agrupamento_Professor_add" class="form-control" name="select_choise" >
+                     <option value="">Seleccione o Agrupamento</option>
+                  </select>
+               </div>
+         <button type="submit" class="btn btn-primary btn-round btn-margin-top" id="btnAdicionarEntity_professor" rel="Professor">Adicionar</button>
+
+            </div>
+         </form>
+         <form id="form-escola" class="form-horizontal validForm">
+            <div class="form-group default-display-none">
+               <label for="Nome_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Nome_Escola_add" name="input_nome"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="Morada_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Morada</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Morada_Escola_add" name="input_morada"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="Contacto_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Contacto</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Contacto_Escola_add" name="input_contacto"> 
+               </div>
+            </div>
+            <div class="form-group default-display-none">
+               <label for="Agrupamento_Escola_add" class="col-sm-2 control-label text-left" style="text-align:left">Agrupamento</label> 
+               <div class="col-sm-10">
+                  <select id="Agrupamento_Escola_add" class="form-control" name="select_choise" >
+                     <option value="">Seleccione o Agrupamento</option>
+                  </select>
+               </div>
+               <button type="submit" class="btn btn-primary btn-round btn-margin-top" id="btnAdicionarEntity_escola" rel="Escola">Adicionar</button>
+
+            </div>
+         </form>
+         <form id="form-agrupamento" class="form-horizontal validForm">
+ 
+            <div class="form-group default-display-none">
+               <label for="Nome_Agrupamento_add" class="col-sm-2 control-label text-left" style="text-align:left">Nome</label> 
+               <div class="col-sm-10"> 
+                  <input class="form-control" id="Nome_Agrupamento_add" name="input_nome"> 
+               </div>
+                <button type="submit" class="btn btn-primary btn-round btn-margin-top" id="btnAdicionarEntity_agrupamento" rel="Agrupamento">Adicionar</button>
+
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

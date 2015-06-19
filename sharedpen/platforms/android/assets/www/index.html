@@ -11,8 +11,6 @@
         <link rel="stylesheet" href="./css/codemirror.min.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="./css/blackboard.min.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="./css/monokai.min.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="./css/summernote.css" type="text/css" media="screen" />
-
         <link rel="stylesheet" href="./css/toastr.css" type="text/css" media="screen" />
 
         <link rel="stylesheet" href="./css/styles-models.css" type="text/css" media="screen" />
@@ -21,9 +19,14 @@
         <link rel="stylesheet" href="./css/ajustarLibs.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="./css/styles.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="./css/poema.css" type="text/css" media="screen" />
+        <!--Validations-->
+        <link rel="stylesheet" href="./css/bootstrapValidator.min.css" type="text/css" media="screen" />
 
+        
         <script type="text/javascript" src="http://185.15.22.55:8080/socket.io/socket.io.js"></script>
-
+       <!--
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+ -->
         <!-- Bootstrap js -->
         <script type="text/javascript" src="./lib/jquery-1.11.2.js"></script>
         <script type="text/javascript" src="./lib/bootstrap.min.js"></script>
@@ -31,9 +34,9 @@
         <script type="text/javascript" src="./lib/codemirror.js"></script>
         <script type="text/javascript" src="./lib/xml.min.js"></script>
         <script type="text/javascript" src="./lib/formatting.min.js"></script>
-        <script type="text/javascript" src="./lib/summernote.js"></script>
+        <script type="text/javascript" src="./lib/md5.js"></script>
 
-       <!-- <script type="text/javascript" src="./js/ScriptsLayout.js"></script> -->
+        <!-- <script type="text/javascript" src="./js/ScriptsLayout.js"></script> -->
         <script type="text/javascript" src="./js/scripts.js"></script>
         <script type="text/javascript" src="./js/Client.js"></script>
         <script type="text/javascript" src="./js/Draw.js"></script>
@@ -41,9 +44,13 @@
         <script type="text/javascript" src="./js/Tab.js"></script>
         <script type="text/javascript" src="./js/TextEditor.js"></script>
 
-		<script type="text/javascript" src="./js/poema.js"></script>
-
-        <!-- pdf ------------------------------------>
+        <script type="text/javascript" src="./js/poema.js"></script>
+		<script type="text/javascript" src="./js/testes.js"></script>
+        <!--Validations-->
+		<script type="text/javascript" src="./js/bootstrapValidator.min.js"></script>
+		<script type="text/javascript" src="./js/pt_PT.js"></script>
+        
+        <!-- pdf -->
         <script type="text/javascript" src="./lib/jspdf.js"></script>
         <script type="text/javascript" src="./lib/FileSaver.js"></script>
         <script type="text/javascript" src="./lib/jspdf.plugin.standard_fonts_metrics.js"></script>
@@ -66,13 +73,18 @@
         <div class="container-fluid">
             <div id="menuBar" class="row cantosArrendondados shadowBox">
                 <div class="navbar-margin-top-bottom col-xs-2 col-sm-2 col-md-2 image voltarLayout"><img class="goback-logo" alt="" src="./img/pencil_logo2.png"></div>
-                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"></div>
                 <div id="homemenu" class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/home_48.png"></div>
-                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PRE" class="btn btn-info btn-round">Prev. Pdf</button></div>
-                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image"> <button type="button" id="bt_PDF" class="btn btn-info btn-round margin-top-bottom">Pdf</button></div>
-                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image"></div>
+                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PRE" class="btn btn-info btn-round margin-top-bottom">Prev. Pdf</button></div>
+                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_PDF" class="btn btn-info btn-round margin-top-bottom">Pdf</button></div>
+
+                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_HTML" class="btn btn-info btn-round margin-top-bottom">HTML</button></div>
+
+                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_guardar" class="btn btn-info btn-round margin-top-bottom">Save Livro</button></div>
+                <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"> <button type="button" id="bt_getHash" class="btn btn-info btn-round margin-top-bottom">Get Livro</button></div>
                 <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/email_48.png"></div>
+                <!--
                 <div class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/search_48.png"></div>
+              -->
                 <div id="usermenu" class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image carregarLayout" data-folder="html" data-layout="PerfilUtilizador.html" ><img alt="" src="./img/user_48.png"></div>
                 <div id="atualuser" class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right"></div>
                 <div id="bt_Chat" class="navbar-margin-top-bottom col-xs-1 col-sm-1 col-md-1 text-right image"><img alt="" src="./img/chat_msg_48.png"><div id="numMsg">0</div></div>
@@ -101,7 +113,7 @@
             </div>
             <div id="divGaleria"  class="col-xs-3 col-sm-3 col-md-3 cantosArrendondados shadowBox">
                 <h4>Galeria de Imagens
-                <input class="btn btn-info btn-round fecharGaleria" type="button" value="Fechar"></h4>
+                    <input class="btn btn-info btn-round fecharGaleria" type="button" value="Fechar"></h4>
                 <div class="well" id="panelGaleria">
                 </div>
             </div>

@@ -21,9 +21,10 @@ $.fn.getCursorPosition = function () {
  * @param {type} val2
  * @returns {undefined}
  */
-$.fn.addNewText = function (val1, val2) {
+$.fn.addNewText = function (val1, val2, avatar) {
     this.append(
             "<div class='p_msg_chat'>" +
+            "<img class='imguser' alt='' + src='" + avatar + "'>" +
             "<p class = 'user_chat' > " +
             val1 +
             "</p> : <p class='msg_chat'>" +
@@ -97,6 +98,16 @@ function hexToRgb(hex, s, n) {
     }
 }
 
+
+function textToNumber(nome){
+	var result="";
+	for (var i = 0, max = nome.length; i < max; i++) {
+        result += nome[i].charCodeAt(0);
+    }
+	return result;
+	
+}
+
 $.fn.contextMenu = function (settings) {
 
     return this.each(function () {
@@ -149,3 +160,7 @@ $.fn.contextMenu = function (settings) {
     }
 
 };
+
+function stringToMd5(value) {
+    return CryptoJS.MD5(value).toString();
+}

@@ -15,45 +15,131 @@ canvas{
     margin: auto;
 }
 
+.tabpage > .titulo, .titulo1, .titulo2, .titulo3, .titulo4, .titulo5, .titulo6, .titulo7 {
+	font-size: 32px;
+	text-align: center;
+}
+
 .tabpage > .titulo {
-    font-size: 32px;
-    text-align: center;
     width: 200mm;
-    height: 150px;
-    text-align: center;
+    height: 80mm;
     margin-top: 50px;
 }
 
+.tabpage > .titulo1 {
+    float: left;
+    width: 99mm;
+    height: 160mm;
+    margin-top: 50px;
+}
 
-.tabpage > .conteudo {
+.tabpage > .titulo2 {
     width: 200mm;
-    height: 275mm;
-} 
+    height: 70mm;
+    margin-top: 20px;
+}
+
+.tabpage > .titulo3 {
+	float: left;
+    width: 99mm;
+    height: 130mm;
+    margin-top: 50px;
+}
+
+.tabpage > .titulo4 {
+	float: left;
+    width: 99mm;
+    height: 130mm;
+    margin-top: 0px;
+}
+
+.tabpage > .titulo5 {
+	width: 200mm;
+    height: 150mm;
+    margin-top: 20px;
+}
+
+.tabpage > .titulo6 {
+	width: 200mm;
+    height: 80mm;
+    margin-top: 50px;
+}
+
+.tabpage > .titulo7 {
+	width: 200mm;
+    height: 80mm;
+    margin-top: 20px;
+}
 
 .tabpage > img {
-    height: 50%;
+	border: 1px solid black;                
+    -moz-box-shadow:    inset 0 0 5px #000000;
+    -webkit-box-shadow: inset 0 0 5px #000000;
+    box-shadow:         inset 0 0 5px #000000;
+}
+
+.tabpage > .image {
+    height: 160mm;
+	width: 200mm;
     margin-top: 50px;
 }
 
-.tabpage > div, .tabpage > img, .tabpagedraw > input {
+.tabpage > .image1 {
+    float: left;
+    height: 160mm;
+	width: 99mm;
+    margin-top: 50px;
+}
+
+.tabpage > .image2 {
+    height: 90mm;
+	width: 200mm;
+    margin-top: 50px;
+}
+
+.tabpage > .image3 {
+	float: left;
+    height: 130mm;
+	width: 99mm;
+    margin-top: 50px;
+}
+
+.tabpage > .image4 {
+	float: left;
+    height: 130mm;
+    margin-top: 0px;
+    width: 99mm;
+}
+
+.tabpage > .image5 {
+	display: block;
+    margin: 0 auto;
+    height: 100mm;
+    margin-top: 50px;
+    width: 100mm;
+}
+
+.tabpage > .image6 {
+	display: block;
+    margin: 0 auto;
+    height: 90mm;
+    margin-top: 20px;
+    width: 90mm;
+}
+
+.tabpage > .conteudo {
+	margin-top: 50px;
+    width: 200mm;
+    height: 260mm;
+} 
+
+.tabpage > div, .tabpagedraw > input {
     width: 100%;
     border: 1px solid black;                
     -moz-box-shadow:    inset 0 0 5px #000000;
     -webkit-box-shadow: inset 0 0 5px #000000;
     box-shadow:         inset 0 0 5px #000000;
 }
-
-.tabpage2 > div {
-    width: 200mm;
-    height: 250px;
-    border: 1px solid black;
-    text-align: center; 
-    font-family: 'Helvetica', Arial, Lucida Grande, sans-serif;
-}
-
-.tabpage2 > img {
-    margin: auto
-}		
 
 .tabpagedraw {
     border: 1px solid black;
@@ -87,4 +173,12 @@ input[type=file] {
     padding: 10px 10px 10px 10px;
     margin-bottom:10px;
     font-size:200%;
+}
+
+.tabpage > .empty {
+	float:left;
+	height: 0mm;
+    margin-top: 0px;
+    width: 200mm;
+	border: 0px;
 }

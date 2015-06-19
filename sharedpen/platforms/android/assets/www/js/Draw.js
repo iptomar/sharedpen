@@ -1,8 +1,9 @@
 var Draw = function (tabClass, page, id, counter) {
     this.counter = counter;
     this.tabClass = tabClass;
-    if (typeof tabClass !== "undefined")
+    if (typeof tabClass !== "undefined") {
         this.tabNumber = tabClass.match(/\d+/)[0];
+    }
     this.page = page;
     this.id = id;
     this.flag = false;
@@ -20,7 +21,6 @@ Draw.prototype.init = function () {
     var widthPai = $("#tab" + this.tabNumber + "-canvasdr").parent().width();
     var heightPai = $("#tab" + this.tabNumber + "-canvasdr").parent().height();
 
-
     //cria o canavs onde vao ser colocadas as imagens de fundo
     var cnv = document.createElement("canvas");
     cnv.setAttribute("id", "tab" + this.tabNumber + "-background");
@@ -37,16 +37,11 @@ Draw.prototype.init = function () {
     cnv.style.zIndex = "2";
     $("#tab" + this.tabNumber + "-canvasdr").append(cnv);
 
-
-
-
     var ctx = cnv.getContext("2d");
     ctx.fillStyle = "solid";
     ctx.strokeStyle = this.color;
     ctx.lineWidth = this.curSize;
     ctx.lineCap = "round";
-
-
 
     this.ArrayCanvasClients = {};
 };
@@ -99,7 +94,7 @@ Draw.prototype.draw = function (x, y, type, sizecur) {
     } else {
         this.paint(canvas, ctx, x, y, type, "destination-out");
         if (this.apagarTodos) {
-            for (item in this.ArrayCanvasClients) {
+            for (var item in this.ArrayCanvasClients) {
                 canvas = this.ArrayCanvasClients[item];
                 ctx = canvas.getContext('2d');
                 ctx.lineWidth = sizecur;
@@ -157,7 +152,7 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
         this.paint(canvas2, ctx2, x, y, type, "destination-out");
         if (apagarTudo) {
             this.tabNumber
-            for (item in this.ArrayCanvasClients) {
+            for (var item in this.ArrayCanvasClients) {
                 console.log(item);
                 canvas2 = this.ArrayCanvasClients[item];
                 ctx2 = canvas2.getContext('2d');
@@ -170,19 +165,14 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
             var ctx2 = canvas2.getContext('2d');
             ctx2.lineWidth = sizecur;
             this.paint(canvas2, ctx2, x, y, type, "destination-out");
-
         }
-
     }
     if (type === "backgoundImage") {
         this.imageCanvas(image);
     }
-
-
 };
 
 Draw.prototype.imageCanvas = function (dataURL) {
-    this.bgImg = dataURL;
     $("#tab" + this.tabNumber + "-background").css({
         "background": "url(" + dataURL + ")  no-repeat center center",
         "background-size": "100% auto"
@@ -231,22 +221,44 @@ Draw.prototype.setApagarTudo = function (obj) {
 };
 
 Draw.prototype.getImgCanvas = function () {
+//    var canvas = document.getElementById(this.id);
+//    var ctx = canvas.getContext("2d");
+//    var image = new Image();
+//    var img = new Image();
+//    var a = "data:image/png;base64,";
+//    if (typeof this.ArrayCanvasClients !== "undefined") {
+//        for (var i in   this.ArrayCanvasClients) {
+//            var canvas2 = this.VerificaUser(i);
+//            var ctx2 = canvas2.getContext('2d');
+//            img.src = canvas2.toDataURL("image/png");
+//           console.log(img.src);
+//            
+//        }
+//    }
+////    console.log(a);
+////    image.src = canvas.toDataURL("image/png");
+////    return canvas.
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
-    
-    var canvas2 = document.getElementById(this.id);
-    var ctx2 = canvas.getContext("2d");
-    
-    ctx.drawImage(this.bgImg, 0, 0);
-    console.log(this.ArrayCanvasClients)
-    
-    for (var item in this.ArrayCanvasClients) {
-        canvas2 = this.ArrayCanvasClients[item];
-        ctx2 = canvas2.getContext('2d');
-        ctx2.drawImage(canvas2.toDataURL("image/png"), 0, 0);
-    }
     var image = new Image();
-    image.src = canvas2.toDataURL("image/png");
-    console.log(image.src);
-    //return canvas.toDataURL("image/png");
+    image.src = canvas.toDataURL("image/png");
+    return canvas.toDataURL("image/png");
 };
+//var canvas = document.getElementById('canvas');
+//var context = canvas.getContext('2d');
+//Image img1 = new Image();
+//Image img2 = new Image();
+//
+//img1.onload = function() {
+//    canvas.width = img1.width;
+//    canvas.height = img1.height;
+//    img2.src = 'imgfile2.png';
+//};
+//img2.onload = function() {
+//    context.globalAlpha = 1.0;
+//    context.drawImage(img1, 0, 0);
+//    context.globalAlpha = 0.5; //Remove if pngs have alpha
+//    context.drawImage(img2, 0, 0);
+//};        
+//
+//img1.src = 'imgfile1.png';

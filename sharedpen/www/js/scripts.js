@@ -438,7 +438,6 @@ $(document).ready(function () {
                     turma: turma,
                     avatar: avatar
                 },
-                // contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
 
@@ -475,7 +474,6 @@ $(document).ready(function () {
                     agrupamento: agrupamento,
                     avatar: avatar
                 },
-                // contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
 
@@ -508,7 +506,6 @@ $(document).ready(function () {
                     contacto: contacto,
                     agrupamento: agrupamento
                 },
-                // contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
 
@@ -535,7 +532,6 @@ $(document).ready(function () {
                     //id: user,
                     nome: nome
                 },
-                // contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
 
@@ -1228,7 +1224,6 @@ $(document).ready(function () {
                 data: {
                     arrayy: JSON.stringify(hashtoSave)
                 },
-                // contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
                     //alert(data);
@@ -1279,7 +1274,6 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "/getCodModel/" + modelo,
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 $("body").find("#loading").remove();
@@ -1504,7 +1498,6 @@ $(document).ready(function () {
             type: "GET",
             url: "/getProjects/" + myID,
             async: true,
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 //insere todos os projectos no html!!!!
@@ -2350,7 +2343,6 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "/getAllAluno",
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 $("body").find("#loading").remove();
@@ -2374,7 +2366,6 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "/getAllProfessor",
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 $("body").find("#loading").remove();
@@ -2545,7 +2536,6 @@ $(document).ready(function () {
             type: "GET",
             url: "/getCodTwoModels/" + numCapa + "/" + numPagina + "/" + idmodel,
             async: true,
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (data) {
                 $("body").find("#loading").remove();
@@ -2755,7 +2745,6 @@ function updateTab(i, key, creator) {
     $.ajax({
         type: "GET",
         url: "/getCodModel/" + hash[key].numModelo,
-        contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (data) {
             $(".txtTab" + i).append(data[0].htmltext);
@@ -3040,7 +3029,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         type: "GET",
                         url: "/getProjectsbyID/" + hash[kk[0]].projID,
                         async: true,
-                        contentType: "application/json; charset=utf-8",
                         dataType: 'json',
                         success: function (data) {
                             if (data[0].tipo == "Livro" || data[0].tipo == "Poema") {
@@ -3132,7 +3120,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 
                 //-------------------------------GERIR-----------------------------------------
 
-            case "GerirAluno.html":
+            case "GerirAlunos.html":
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
@@ -3181,7 +3169,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 });
                 break;
 
-            case "GerirProfessor.html":
+            case "GerirProfessores.html":
                 $("body").append(wait);
                 $.ajax({
                     type: "GET",
