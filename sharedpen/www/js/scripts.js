@@ -1717,33 +1717,39 @@ $(document).ready(function () {
                     var drawCanvas = hash[idToll].modelo.arrayElem[thisId];
 
                     var kk = Object.keys(hash);
-                    socket.emit("reqCanvasIMG", {
-                        Pid: hash[kk[0]].projID,
-                        parent: idToll,
-                        id: "tab" + tabNumber + "-Mycanvas"
-                    });
-                    socket.on("getCanvasIMG", function (data) {
-                        var canvas = document.createElement("canvas");
-                        var ctx = canvas.getContext("2d");
-                        var image = new Image();
 
-//                        console.log("ola");
-//                        console.log(data.canvas);
+                    //tab number
+                    var tabNumber = thisId.match(/\d+/)[0];
+                    //canvas final!!
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    canvas.width = $("#tab" + tabNumber + "-canvasdr").children().first().attr("Width");
+                    canvas.height = $("#tab" + tabNumber + "-canvasdr").children().first().attr("Height");
+                    var h = $("#tab" + tabNumber + "-canvasdr").children().first().attr("Height");
+                    var w = $("#tab" + tabNumber + "-canvasdr").children().first().attr("Width");
+                    console.log(h + " | " + w);
+                    var imagee = new Image(h, w);
+                    //var imgAUX = new Image();
+                    var canvas2;
 
-                        //  Draw imgCnv = data.canvas;
-                        var imgCnv = data.canvas;
-                        if (typeof this.ArrayCanvasImage != "undefined") {
-                            //desenha o fundo
-                            ctx.drawImage(imgCnv.bgImg, 0, 0);
-                            //percorre todos os canvas e desenha num unico canvas
-                            for (var i in  imgCnv.ArrayCanvasImage) {
-                                var canvas2 = imgCnv.ArrayCanvasImage[i];
-                                ctx.drawImage(canvas2.toDataURL("image/png"), 0, 0);
-                            }
-                            image.src = canvas2.toDataURL("image/png");
-//                            console.log(image);
+
+                    //desenha o fundo
+                    //ctx.drawImage(imgCnv.bgImg, 0, 0);
+                    $("#tab" + tabNumber + "-canvasdr").children().each(function () {
+                        var imgAUX = new Image($(this).attr("Height"), $(this).attr("Width"));
+                        if ($(this).attr("id").match("background")) {
+                            var iimg = $(this).css("background-image");
+                            iimg = iimg.substring(4, iimg.length - 1);
+                            imgAUX.src = iimg;  
+                            ctx.drawImage(imgAUX, 0, 0);
+                        } else {
+                            canvas2 = document.getElementById($(this).attr("id"));
+                            imgAUX.src = canvas2.toDataURL();
+                            ctx.drawImage(imgAUX, 0, 0);
                         }
                     });
+
+                    imagee.src = canvas.toDataURL();
                     page += "<div>" + drawCanvas.drawObj.getImgCanvas() + "</div>";
                 }
             });
@@ -1768,8 +1774,8 @@ $(document).ready(function () {
                 }
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
-                socket.emit("saveAsHtml", pages);
-                window.open("./livro/Livro.html");
+                //socket.emit("saveAsHtml", pages);
+                //window.open("./livro/Livro.html");
                 $("body").find("#loading").remove();
             },
             error: function (error) {
