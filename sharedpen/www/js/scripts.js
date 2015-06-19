@@ -1733,8 +1733,6 @@ $(document).ready(function () {
                     });
 
                     imagee.src = canvas.toDataURL();
-                    console.log(imagee.src);
-
                     page += "<div>" + drawCanvas.drawObj.getImgCanvas() + "</div>";
                 }
             });
