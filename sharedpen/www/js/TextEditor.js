@@ -22,7 +22,7 @@ TextEditor.prototype.changeColorPUsers = function () {
         "color": "blue"
     });
     $("#" + this.idpai + " > p." + this.userNum).css({
-        "color": "black"
+        "color": $("#" + this.idpai).css("color")
     });
 };
 
@@ -104,7 +104,15 @@ TextEditor.prototype.contributes = function (projId) {
 };
 
 TextEditor.prototype.styles = function (estilos) {
-    $("body").find("#" + this.idpai).css(JSON.parse(estilos));
+    var estilosArray = estilos.split(";");
+    var styles = "{";
+    for (var i in estilosArray) {
+        var sty = estilosArray[i].split(":");
+        styles += '"' + sty[0] + '" : "' + sty[1] + '",';
+    }
+    styles = styles.slice(0,-1);
+    styles += "}";
+    $("body").find("#" + this.idpai).css(JSON.parse(styles));
 };
 
 function getCaretPosition(editableDiv) {

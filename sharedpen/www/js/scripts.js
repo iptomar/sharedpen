@@ -2184,14 +2184,12 @@ $("body").on('click', ".editInfo", function (e) {
         var fontName = $("body").find(".textResultado").css("font-family");
         fontName = fontName.replace("'", '');
         fontName = fontName.replace("'", '');
-        var formatText = JSON.stringify({
-            "font-family": fontName,
-            "font-size": $("body").find(".textResultado").css("font-size"),
-            "text-align": $("body").find(".textResultado").css("text-align"),
-            "color": $("body").find(".textResultado").css("color"),
-            "background-color": $("body").find(".textResultado").css("background-color")
-        });
-
+        var formatText = "font-family:" + fontName + ";" +
+                "font-size:" + $("body").find(".textResultado").css("font-size") + ";" +
+                "text-align:" + $("body").find(".textResultado").css("text-align") + ";" +
+                "color:" + $("body").find(".textResultado").css("color") + ";" +
+                "background-color:" + $("body").find(".textResultado").css("background-color");
+        ;
         $("body").append(wait);
         $.ajax({
             type: "POST",
@@ -2207,21 +2205,10 @@ $("body").on('click', ".editInfo", function (e) {
             success: function (data) {
                 if (data == "Ok") {
                     $("body").find("#loading").remove();
-                    $("body").find("#nomeProjeto").val("");
-                    $("body").find("#ModeloSelectCapa").attr("src", "");
-                    $("body").find("#ModeloSelectCapa").attr("data-model", "");
-                    $("body").find("#ModeloSelectPagina").attr("src", "");
-                    $("body").find("#ModeloSelectPagina").attr("data-model", "");
-                    $("body").find("#textAjudaLivro").html("");
-                    $("body").find(".textResultado").css({
-                        "font-family": "Times New Roman",
-                        "font-size": "14px",
-                        "text-align": "left",
-                        "color": "black",
-                        "background-color": "transparent"
-                    });
+                    alert("Livro Criado Com Sucesso!");
+                    addLayoutToDiv("#contentor", "Menu_Navegacao", "CriarLivro.html", null);
                 } else {
-                    alert("O nome do livro já existe na base da dados.")
+                    alert("O nome do livro já existe na base da dados.");
                     $("body").find("#loading").remove();
                 }
             },
@@ -2435,10 +2422,7 @@ $("body").on('click', ".editInfo", function (e) {
         socket.emit('storedhash', {
             storedhash: hash
         });
-
-
         addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
-
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
         $.ajax({
@@ -2512,11 +2496,10 @@ $("body").on('click', ".editInfo", function (e) {
             for (var elem in hashtoSave[item].modelo.arrayElem) {
                 if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
                     var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
-                    var newchar = '\\"'
+                    var newchar = '\\"';
                     conteudo = conteudo.split('"').join(newchar);
-                    newchar = '\\/'
+                    newchar = '\\/';
                     conteudo = conteudo.split('/').join(newchar);
-                    hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo;
                 }
             }
         }
@@ -2530,7 +2513,7 @@ $("body").on('click', ".editInfo", function (e) {
                 text: textHelp,
                 tipo: typeP,
                 idmodel: idmodel,
-                array: hashtoSave,
+                array: hashtoSave.replace(/'/g, "\\'"),
                 texto: textHelp,
                 users: usersP
             },
@@ -2539,20 +2522,12 @@ $("body").on('click', ".editInfo", function (e) {
                 if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
-
+                    addLayoutToDiv("#contentor", "Menu_Navegacao", "MenuCriarProjectos.html", socket);
                     console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
                     $("body").find("#loading").remove();
                     alert("O nome do livro já existe na base da dados.");
                 }
-
-                var data = {
-                    folder: "Menu_Navegacao",
-                    idtab: "",
-                    idObj: ""
-                };
-//                    console.log("before getfiles2folderfunction");
-                getFilesToFolder(socket, data);
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -3322,6 +3297,7 @@ function validacaoFormAll(){
                  }
              }
          })
+
 }
 
 
