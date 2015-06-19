@@ -553,7 +553,7 @@ $(document).ready(function () {
         switch (type) {
             case "aluno":
                 $("body").append(wait);
-                if ($("#inputSearch").val() == "" || $("#inputSearch").val() == " ")) {
+                if ($("#inputSearch").val() == "") {
                     addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
@@ -616,7 +616,7 @@ $(document).ready(function () {
                 } else {
                     e.stopPropagation();
                     e.preventDefault();
-                    $.ajax({7
+                    $.ajax({
                         type: "GET",
                         url: "/searchProfessor/" + $("#inputSearch").val(), //Chama a query de procurar professor por ID
                         dataType: 'json',
