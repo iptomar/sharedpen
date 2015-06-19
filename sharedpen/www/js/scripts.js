@@ -80,7 +80,7 @@ $(document).ready(function () {
             //guardar os dados do professor (updateProfessores)        
             $.ajax({
                 type: "POST",
-                url: "/updateProfessores",
+                url: "/updateProfessores", //Chama a query para realizar o update aos professores
                 data: {
                     avatar: $("#userImage").attr('src'),
                     id: $("#Id_Professor_edit").val(),
@@ -92,10 +92,11 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if (data === 'false') { //verifica se o username existe
+                    if (data === 'false') { //verifica se o username existe, mostra uma mensagem de alerta ao utilizador
                         alert("Este Utilizador ja existe!!");
 
                     } else {
+                        //Regressa ao menu anterior
                         $(".voltarLayout").click();
                     }
                 },
@@ -115,7 +116,7 @@ $(document).ready(function () {
             //guardar os dados da escola (updateEscolas)        
             $.ajax({
                 type: "POST",
-                url: "/updateEscolas",
+                url: "/updateEscolas", //Chama a query para realizar o update às escolas
                 data: {
                     id: $("#Id_Escola_edit").val(),
                     nome: $("#Nome_Escola_edit").val(),
@@ -148,7 +149,7 @@ $(document).ready(function () {
             //guardar os dados da agrupamento (updateAgrupamentos)        
             $.ajax({
                 type: "POST",
-                url: "/updateAgrupamentos",
+                url: "/updateAgrupamentos", //Chama a query para realizar o update aos agrupamentos
                 data: {
                     id: $("#Id_Agrupamento_edit").val(),
                     nome: $("#Nome_Agrupamento_edit").val()
@@ -178,8 +179,8 @@ $(document).ready(function () {
         var type = $(this).data("type"); //verifica se é aluno/professor/escola/agrupamento ( no butao data-type="aluno")
         switch (type) {
             case "aluno":
-                addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
-                if (currentPosition != backArray.length) {
+                addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket); //Carrega o layout
+                if (currentPosition != backArray.length) { 
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
@@ -190,7 +191,7 @@ $(document).ready(function () {
                 //adicionar informacao a dropdown (escolas)
                 $.ajax({
                     type: "GET",
-                    url: "/getAllEscolas",
+                    url: "/getAllEscolas", 
                     dataType: 'json',
                     success: function (data) {
                         var htmlVar = "";
@@ -224,7 +225,8 @@ $(document).ready(function () {
                         pass = data[0].password;
                         $("body").find("#loading").remove();
                     },
-                    error: function (error) {
+                    error: function (error) 
+                        //Remove o ecran de loading e apresenta uma mensagem de alerta de erro
                         $("body").find("#loading").remove();
                         alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
                         console.log(JSON.stringify(error));
@@ -233,7 +235,7 @@ $(document).ready(function () {
                 break;
 
             case "professor":
-                addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
+                addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket); //Carrega o layout
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
@@ -243,8 +245,9 @@ $(document).ready(function () {
                 currentPosition += 1;
                 $("body").append(wait);
                 $.ajax({
+                    //preencher campos do dropdown de editar (Agrupamentos)
                     type: "GET",
-                    url: "/getsAllAgrupamentos",
+                    url: "/getsAllAgrupamentos", 
                     dataType: 'json',
                     success: function (data) {
                         var htmlVar = "";
@@ -261,6 +264,7 @@ $(document).ready(function () {
                     }
                 });
                 $.ajax({
+                    //Mostra os dados dos professores
                     type: "GET",
                     url: "/getProfessores/" + $(this).attr("rel"),
                     dataType: 'json',
@@ -277,6 +281,7 @@ $(document).ready(function () {
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
+                        //Remove o ecran de loading e apresenta uma mensagem de alerta de erro
                         alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
                         console.log(JSON.stringify(error));
                     }
@@ -284,7 +289,7 @@ $(document).ready(function () {
                 break;
 
             case "escola":
-                addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
+                addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket); //Carrega o layout
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
@@ -293,6 +298,7 @@ $(document).ready(function () {
                 folderArray.push($(this).data("folder"));
                 currentPosition += 1;
                 $("body").append(wait);
+                //adicionar informacao a dropdown (agrupamentos)
                 $.ajax({
                     type: "GET",
                     url: "/getsAllAgrupamentos",
@@ -326,6 +332,7 @@ $(document).ready(function () {
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
+                        //Remove o ecran de loading e apresenta uma mensagem de alerta de erro
                         alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
                         console.log(JSON.stringify(error));
                     }
@@ -333,7 +340,7 @@ $(document).ready(function () {
                 break;
 
             case "agrupamento":
-                addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
+                addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket); //Carrega o layout
                 if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
@@ -403,7 +410,6 @@ $(document).ready(function () {
 
     //criar aluno
     $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
-        validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
 
             e.stopPropagation();
@@ -436,7 +442,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
 
-                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
                 },
                 error: function (error) {
                 }
@@ -446,7 +452,6 @@ $(document).ready(function () {
 
     //criar professor
     $("body").on('click', "#btnAdicionarEntity_professor", function (e) {
-        validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
             e.stopPropagation();
             e.preventDefault();
@@ -484,7 +489,6 @@ $(document).ready(function () {
     });
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_escola", function (e) {
-        validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
 
             e.stopPropagation();
@@ -518,7 +522,6 @@ $(document).ready(function () {
     });
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
-        validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
 
             e.stopPropagation();
@@ -544,25 +547,27 @@ $(document).ready(function () {
             });
         });
     });
-    // procurar por Username de no aluno
+    // procurar por Username de aluno
     $("body").on('input', "#inputSearch", function (e) {
         var type = $(this).data("type");
         switch (type) {
             case "aluno":
                 $("body").append(wait);
                 if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
                     e.stopPropagation();
                     e.preventDefault();
                     $.ajax({
                         type: "GET",
-                        url: "/searchAluno/" + $("#inputSearch").val(),
+                        url: "/searchAluno/" + $("#inputSearch").val(), //Chama a query de procurar aluno por ID
                         dataType: 'json',
                         success: function (data) {
+                            //Re-cria a tabela com os resultados de pesquisa
                             var htmlVar;
                             $('#gerirEntitiesTable tbody').empty();
+                             //Re-cria a tabela com os resultados de pesquisa
                             for (var i = 0, max = data.length; i < max; i++) {
                                 htmlVar += "<tr>";
                                 htmlVar += "<td>" + data[i].id + "</td>" +
@@ -606,18 +611,20 @@ $(document).ready(function () {
             case "professor":
                 $("body").append(wait);
                 if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                    addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
                     e.stopPropagation();
                     e.preventDefault();
-                    $.ajax({
+                    $.ajax({7
                         type: "GET",
-                        url: "/searchProfessor/" + $("#inputSearch").val(),
+                        url: "/searchProfessor/" + $("#inputSearch").val(), //Chama a query de procurar professor por ID
                         dataType: 'json',
                         success: function (data) {
+                            //Re-cria a tabela com os resultados de pesquisa
                             var htmlVar;
                             $('#gerirEntitiesTable tbody').empty();
+                             //Re-cria a tabela com os resultados de pesquisa
                             for (var i = 0, max = data.length; i < max; i++) {
                                 htmlVar += "<tr>";
                                 htmlVar += "<td>" + data[i].id + "</td>" +
@@ -659,14 +666,14 @@ $(document).ready(function () {
             case "escola":
                 $("body").append(wait);
                 if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
+                    addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket); 
                     $("#inputSearch").focus();
                 } else {
                     e.stopPropagation();
                     e.preventDefault();
                     $.ajax({
                         type: "GET",
-                        url: "/searchEscola/" + $("#inputSearch").val(),
+                        url: "/searchEscola/" + $("#inputSearch").val(), //Chama a query de procurar professor por ID
                         dataType: 'json',
                         success: function (data) {
                             var htmlVar;
@@ -3270,10 +3277,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
         }
     });
 }
-
+//Validação feita dos forms
 function validacaoFormAll() {
     $("body").find('.validForm').bootstrapValidator({
-        feedbackIcons: {
+        feedbackIcons: { //Ícones de validação (Gryphicons do bootstrap)
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
@@ -3282,11 +3289,11 @@ function validacaoFormAll() {
         fields: {
             input_username: {
                 validators: {
-                    stringLength: {
+                    stringLength: { // Tamanhho de string (chars)
                         min: 3,
                         max: 20,
                     },
-                    notEmpty: {}
+                    notEmpty: {} //Não-nulo
                 }
             },
             input_password: {
@@ -3307,7 +3314,7 @@ function validacaoFormAll() {
                     notEmpty: {}
                 }
             },
-            input_email: {
+            input_email: { //Validação de mail
                 validators: {
                     emailAddress: {},
                     notEmpty: {}
@@ -3316,7 +3323,7 @@ function validacaoFormAll() {
             input_numero: {
                 validators: {
                     notEmpty: {},
-                    between: {
+                    between: { //Intervalo de números
                         min: 2,
                         max: 50
                     }
@@ -3334,16 +3341,16 @@ function validacaoFormAll() {
             input_contacto: {
                 validators: {
                     notEmpty: {},
-                    numeric: {},
+                    numeric: {}, //Inserção de números obrigatório (Apenas numérico)
                     stringLength: {
                         min: 9,
                         max: 9,
-                        message: 'Por favor insira numero de telefone'
+                        message: 'Por favor insira numero de telefone' //É necessário mensagem de alerta
 
                     }
                 }
             },
-            select_choise: {
+            select_choise: { //Validação de dropdown (se for val="" dá mensagem)
                 validators: {
                     notEmpty: {}
                 }
