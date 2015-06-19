@@ -1544,7 +1544,7 @@ $(document).ready(function () {
 
     $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
-        tmpArrayProj[idProj] = tmpArrayProj[idProj].replace(/'/g, "");
+        //tmpArrayProj[idProj] = tmpArrayProj[idProj].replace(/'/g, "");
 
         //verificar se o projecto existe no server
         socket.emit('reqHash', {
@@ -1840,8 +1840,8 @@ $(document).ready(function () {
                 }
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
-                //socket.emit("saveAsHtml", pages);
-                //window.open("./livro/Livro.html");
+                socket.emit("saveAsHtml", pages);
+                window.open("./livro/Livro.html");
                 $("body").find("#loading").remove();
             },
             error: function (error) {
@@ -2308,6 +2308,39 @@ $(document).ready(function () {
 
     });
 
+     $("body").on("click", "#contentor > div > div[data-layout='MenuMeusProjectosAbertos.html']", function () {
+         //GET getProjParticipaByID
+         
+          $.ajax({
+        type: "GET",
+        url: "/getProjParticipaByID/" + userNumber,
+        dataType: 'json',
+        success: function (data) {
+            
+            for (var proj in data) {
+                console.log(data[proj].id);
+                    var htmlLine = "<tr class='active'>"+
+                           '<td><a href="#AbrirProj" data-idProj=' + data[proj].id + ' data-folder="html_Work_Models" data-layout="Livro.html">'+data[proj].nome+'</a></td>'+
+                            '<td>'+data[proj].tipo+'</td>'+
+                            '</tr>';
+                    //faz o append do html gerado
+                    $("body").find("#meusProjAbertosTable").append(htmlLine);
+                }
+            
+            //<tr class="active">
+            //<td><a href="">Exemplo de Livro</a></td>
+            //<td>Publico</td>
+            //</tr>
+            
+            
+        },
+        error: function (error) {
+            console.log(JSON.stringify(error));
+        }
+    });
+         
+         
+     });
 
 
     // carregar lista de alunos
