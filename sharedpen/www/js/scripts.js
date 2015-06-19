@@ -1295,35 +1295,78 @@ $(document).ready(function () {
     /**
      * Evento onClik que gera a criaÃ§ao de uma nova Tab e respectivo modelo
      */
-    $("body").on('click', 'a[href="#add-page"]', function () {
-
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getModelsPage",
-            dataType: 'json',
-            success: function (data) {
-                var htmlModel = "<div id='divchangemodel'>" +
-                        "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlModel += "<figure>" +
-                            "<img class='btnmodels btnmodels-style' alt='' src='" +
-                            (data[i].icon == null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
-                            "' data-idmodel='" + data[i].id +
-                            "' data-model='" + data[i].nome + "'/>" +
-                            "<figcaption> " + data[i].nome + " </figcaption>" +
-                            "</figure>";
+    $("body").on('click', 'a[href="#add-page"]', function (e) {
+        var obj = Object.keys(hash)[Object.keys(hash).length - 1];
+        if (hash[obj].projtipo.toUpperCase() == "Livro".toUpperCase() ||
+                hash[obj].projtipo.toUpperCase() == "Poema".toUpperCase()) {
+            var modelo = hash[obj].numModelo;
+            var idNum = (Object.keys(hash).length + 1);
+            $("body").append(wait);
+            $.ajax({
+                type: "GET",
+                url: "/getCodModel/" + modelo,
+                dataType: 'json',
+                success: function (data) {
+                    Addtab(modelo, idNum);
+                    $(".txtTab" + idNum).html(data[0].htmltext);
+                    refactorTab(modelo, idNum, hash[obj].styles);
+                    addtohash(idNum);
+                    var kk = Object.keys(hash);
+                    socket.emit('TabsChanged', {
+                        //remover ou adicionar
+                        op: "adicionar",
+                        //tab
+                        tab: tabTest,
+                        //posiÃ§ao
+                        pos: (Object.keys(hash).length),
+                        //modelo
+                        modelo: modelo,
+                        //numero de elementos do modelo
+                        noEl: $(".txtTab" + (hash.length + 1)).children('div').children().length,
+                        creator: userNumber,
+                        //por id da nova TAB
+                        Pid: hash[kk[0]].projID
+                    });
+                    $("body").find("#loading").remove();
+                    // Foco na ultima pagina adicionada
+                    $("body").find("a[href^='#page']:last").click();
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar o modelo selecionado.\n\Tente novamente.");
+                    console.log(JSON.stringify(error));
                 }
-                htmlModel += "</div></div></div></div>";
-                $("body").append(htmlModel);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os modelos selecionado.\n\Tente novamente.");
-                console.log(JSON.stringify(error));
-            }
-        });
+            });
+
+        } else if (hash[obj].projtipo.toUpperCase() == "Jornal".toUpperCase()) {
+            $("body").append(wait);
+            $.ajax({
+                type: "GET",
+                url: "/getModelsPage",
+                dataType: 'json',
+                success: function (data) {
+                    var htmlModel = "<div id='divchangemodel'>" +
+                            "<div><div><input class='btn-primary btn-round' id='btncancelmodels' type='button' value='Cancel'></div><div><div>";
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlModel += "<figure>" +
+                                "<img class='btnmodels btnmodels-style' alt='' src='" +
+                                (data[i].icon == null ? "./img/" + data[i].nome + ".png" : data[i].icon) +
+                                "' data-idmodel='" + data[i].id +
+                                "' data-model='" + data[i].nome + "'/>" +
+                                "<figcaption> " + data[i].nome + " </figcaption>" +
+                                "</figure>";
+                    }
+                    htmlModel += "</div></div></div></div>";
+                    $("body").append(htmlModel);
+                    $("body").find("#loading").remove();
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os modelos selecionado.\n\Tente novamente.");
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
     });
     /**
      * FunÃ§ao que remove tabs
@@ -1740,7 +1783,7 @@ $(document).ready(function () {
                         if ($(this).attr("id").match("background")) {
                             var iimg = $(this).css("background-image");
                             iimg = iimg.substring(4, iimg.length - 1);
-                            imgAUX.src = iimg;  
+                            imgAUX.src = iimg;
                             ctx.drawImage(imgAUX, 0, 0);
                         } else {
                             canvas2 = document.getElementById($(this).attr("id"));
@@ -2412,9 +2455,6 @@ $(document).ready(function () {
             usersid.push($(this).prop("value"));
         });
 
-        //retirar a opcao por defeio
-        //users = users.splice(1);
-
         //verificar se foram selecionados alunos para participar no projeto
         if (usersid.length == 0) {
             alert("Escolha Utilizadores para participar no projeto");
@@ -2440,10 +2480,9 @@ $(document).ready(function () {
 
         //Limpar hash local e do server
         hash = {};
-        socket.emit('storedhash', {
-            storedhash: hash
-        });
+
         addLayoutToDiv("#contentor", "html_Work_Models", "Livro.html", null);
+
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
         $.ajax({
@@ -2454,6 +2493,22 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 $("body").find("#loading").remove();
+                //Reduzir tamanho da div das tabs
+                $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
+                //Adicionar a div com o texto de ajuda		
+                $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
+                        "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                        "<div id='divTxtAjuda'  contenteditable='true'></div>" +
+                        "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
+
+                $(".containerTxtAjuda").animate({
+                    opacity: 1,
+                }, 1000, function () {
+                    // Animation complete.
+                });
+                $("#divTxtAjuda").focus();
+
                 for (var i in data) {
                     if (data[i].id == numCapa) {
                         Addtab(numCapa, idNum);
@@ -2461,21 +2516,6 @@ $(document).ready(function () {
                         refactorTab(numCapa, idNum, data[0].texto);
                         addtohash(idNum);
 
-                        //Reduzir tamanho da div das tabs
-                        $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                        $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
-                        //Adicionar a div com o texto de ajuda		
-                        $("#contentor").append("<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
-                                "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                "<div id='divTxtAjuda'  contenteditable='true'></div>" +
-                                "<a href='#' id='btGuardarProjeto' class='btn btn-lg btn-primary pull-right'>Guardar Projeto  <span class='glyphicon glyphicon glyphicon-saved'></span></a></div>");
-
-                        $(".containerTxtAjuda").animate({
-                            opacity: 1,
-                        }, 1000, function () {
-                            // Animation complete.
-                        });
-                        $("#divTxtAjuda").focus();
 
                     } else if (data[i].id == numPagina) {
                         idNum = (Object.keys(hash).length + 1);
@@ -2489,6 +2529,11 @@ $(document).ready(function () {
                 $("#contentor").attr("tab", idmodel);
 
                 $("body").find("a[href^='#page']:last").click();
+
+// remocao do botao de adicionar mais tabs
+                if (backArray[backArray.length - 1] == "MenuCriarProjectos.html") {
+                    $("body").find("#li-last").remove();
+                }
             },
             error: function (error) {
                 $("body").find("#loading").remove();
@@ -2529,7 +2574,7 @@ $(document).ready(function () {
                 if (data.indexOf("Ok") > -1) {
                     $("body").find("#loading").remove();
                     alert("Projeto Gravado");
-                    addLayoutToDiv("#contentor", "Menu_Navegacao", "MenuCriarProjectos.html", socket);
+                    $("#homemenu").click();
 //                    console.log("id proj: " + data.toString().split("Ok")[1]);
                 } else {
                     $("body").find("#loading").remove();
@@ -2782,6 +2827,9 @@ function addtohash(idNum) {
         var thType = $(this).prop("tagName");
         var tabNumber = thID.match(/\d+/)[0];
         var newElementID = "tab" + tabNumber + "-Mycanvas";
+        if (typeof hash[".txtTab1"] != "undefined") {
+            tabTest.styles = hash[".txtTab1"].styles;
+        }
         if ($(this).attr("id").match("tab" + tabNumber + "-canvasdr")) {
 
             tabTest.modelo.arrayElem[newElementID] = new Element(newElementID, "CANVAS");
@@ -2791,7 +2839,6 @@ function addtohash(idNum) {
         } else if ($(this).attr("class").match("editable")) {
             tabTest.modelo.arrayElem[thID] = new Element(thID, thType);
             var txtedit = new TextEditor($(this).attr("id"), username, userColor, userNumber, userNumber);
-            txtedit.styles(tabTest.styles);
             $(this).addClass(thID);
             tabTest.modelo.arrayElem[thID].editor = txtedit;
             tabTest.modelo.arrayElem[thID].editor.styles(tabTest.styles);
@@ -2802,6 +2849,8 @@ function addtohash(idNum) {
 
     });
     hash[tabTest.id] = tabTest;
+    hash[tabTest.id].projtipo = hash[".txtTab1"].projtipo;
+    hash[tabTest.id].styles = hash[".txtTab1"].styles;
 }
 
 /**
@@ -2962,19 +3011,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 tmpAjuda += "</div>" + "</div>";
                                 $("#contentor").append(tmpAjuda);
 
-
-                                ///////////////////////
-//                                if (ajudas.length > 0) {
-//                                    var wordshelp = '<div class="help col-xs-4 col-sm-4 col-md-4 altura-poema" class="center-block" style="overflow-y: scroll;"> ' +
-//                                            '<h1 class="text-center"> AJUDA </h1>' +
-//                                            '<p>';
-//                                    for (var i in ajudas) {
-//                                        wordshelp += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + ajudas[i] + '</span></h3>';
-//                                    }
-//                                    wordshelp += '</p></div>';
-//                                    $("body").find("#page" + idNum).append(wordshelp);
-//                                }
-                                //////////////////////7
 
                                 $(".containerTxtAjuda").animate({
                                     opacity: 1,

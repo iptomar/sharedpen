@@ -104,15 +104,17 @@ TextEditor.prototype.contributes = function (projId) {
 };
 
 TextEditor.prototype.styles = function (estilos) {
-    var estilosArray = estilos.split(";");
-    var styles = "{";
-    for (var i in estilosArray) {
-        var sty = estilosArray[i].split(":");
-        styles += '"' + sty[0] + '" : "' + sty[1] + '",';
+    if (typeof estilos != "undefined") {
+        var estilosArray = estilos.split(";");
+        var styles = "{";
+        for (var i in estilosArray) {
+            var sty = estilosArray[i].split(":");
+            styles += '"' + sty[0] + '" : "' + sty[1] + '",';
+        }
+        styles = styles.slice(0, -1);
+        styles += "}";
+        $("body").find("#" + this.idpai).css(JSON.parse(styles));
     }
-    styles = styles.slice(0,-1);
-    styles += "}";
-    $("body").find("#" + this.idpai).css(JSON.parse(styles));
 };
 
 function getCaretPosition(editableDiv) {
