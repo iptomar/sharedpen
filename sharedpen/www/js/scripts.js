@@ -225,7 +225,7 @@ $(document).ready(function () {
                         pass = data[0].password;
                         $("body").find("#loading").remove();
                     },
-                    error: function (error) 
+                    error: function (error) {
                         //Remove o ecran de loading e apresenta uma mensagem de alerta de erro
                         $("body").find("#loading").remove();
                         alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
@@ -553,7 +553,7 @@ $(document).ready(function () {
         switch (type) {
             case "aluno":
                 $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
+                if ($("#inputSearch").val() == "" || $("#inputSearch").val() == " ")) {
                     addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
