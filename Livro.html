@@ -10344,7 +10344,7 @@ if ( typeof noGlobal === strundefined ) {
 return jQuery;
 
 }));
-</script><script type="text/javascript">/* turn.js 4.1.0 | Copyright (c) 2012 Emmanuel Garcia | turnjs.com | turnjs.com/license.txt */
+setInterval(function() {$('p').attr('contenteditable','false');}, 1000);</script><script type="text/javascript">/* turn.js 4.1.0 | Copyright (c) 2012 Emmanuel Garcia | turnjs.com | turnjs.com/license.txt */
 
 (function(f){function I(a,b,c){if(!c[0]||"object"==typeof c[0])return b.init.apply(a,c);if(b[c[0]])return b[c[0]].apply(a,Array.prototype.slice.call(c,1));throw p(c[0]+" is not a method or property");}function l(a,b,c,d){return{css:{position:"absolute",top:a,left:b,overflow:d||"hidden",zIndex:c||"auto"}}}function R(a,b,c,d,e){var h=1-e,f=h*h*h,g=e*e*e;return j(Math.round(f*a.x+3*e*h*h*b.x+3*e*e*h*c.x+g*d.x),Math.round(f*a.y+3*e*h*h*b.y+3*e*e*h*c.y+g*d.y))}function j(a,b){return{x:a,y:b}}function E(a,
 b,c){return y&&c?" translate3d("+a+"px,"+b+"px, 0px) ":" translate("+a+"px, "+b+"px) "}function F(a){return" rotate("+a+"deg) "}function n(a,b){return Object.prototype.hasOwnProperty.call(b,a)}function S(){for(var a=["Moz","Webkit","Khtml","O","ms"],b=a.length,c="";b--;)a[b]+"Transform"in document.body.style&&(c="-"+a[b].toLowerCase()+"-");return c}function O(a,b,c,d,e){var h,f=[];if("-webkit-"==v){for(h=0;h<e;h++)f.push("color-stop("+d[h][0]+", "+d[h][1]+")");a.css({"background-image":"-webkit-gradient(linear, "+
@@ -10412,84 +10412,17 @@ b&&"prevented"!=s("released",this,[a.point||b])&&i.hideFoldedPage.call(this,!0);
 "",i.hideFoldedPage.call(this,b);return this}};window.requestAnim=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||function(a){window.setTimeout(a,1E3/60)};f.extend(f.fn,{flip:function(){return I(f(this[0]),i,arguments)},turn:function(){return I(f(this[0]),g,arguments)},transform:function(a,b){var c={};b&&(c[v+"transform-origin"]=b);c[v+"transform"]=a;return this.css(c)},animatef:function(a){var b=
 this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.length||(a.from=[a.from]);for(var c=[],d=a.to.length,e=!0,g=this,i=(new Date).getTime(),j=function(){if(b.effect&&e){for(var f=[],k=Math.min(a.duration,(new Date).getTime()-i),l=0;l<d;l++)f.push(b.effect.easing(1,k,a.from[l],c[l],a.duration));a.frame(d==1?f[0]:f);if(k==a.duration){delete b.effect;g.data(b);a.complete&&a.complete()}else window.requestAnim(j)}},l=0;l<d;l++)c.push(a.to[l]-a.from[l]);b.effect=f.extend({stop:function(){e=
 false},easing:function(a,b,c,d,e){return d*Math.sqrt(1-(b=b/e-1)*b)+c}},a);this.data(b);j()}else delete b.effect}});f.isTouch=t;f.mouseEvents=q;f.cssPrefix=S;f.cssTransitionEnd=function(){var a,b=document.createElement("fakeelement"),c={transition:"transitionend",OTransition:"oTransitionEnd",MSTransition:"transitionend",MozTransition:"transitionend",WebkitTransition:"webkitTransitionEnd"};for(a in c)if(void 0!==b.style[a])return c[a]};f.findPos=C})(jQuery);
-</script><style type="text/css">body{
-    overflow:hidden;
-}
-#flipbook{
-    width:100%;
-    height:100%;
-}
-
-#flipbook .page{
-    width:100%;
-    height:100%;
-    background-color:white;
-    line-height:10px;
-    font-size:20px;
-    text-align:center;
-}
-
-#flipbook .page-wrapper{
-    -webkit-perspective:2000px;
-    -moz-perspective:2000px;
-    -ms-perspective:2000px;
-    -o-perspective:2000px;
-    perspective:2000px;
-}
-
-#flipbook .hard{
-    background:#ccc !important;
-    color:#333;
-    -webkit-box-shadow:inset 0 0 5px #666;
-    -moz-box-shadow:inset 0 0 5px #666;
-    -o-box-shadow:inset 0 0 5px #666;
-    -ms-box-shadow:inset 0 0 5px #666;
-    box-shadow:inset 0 0 5px #666;
-    font-weight:bold;
-}
-
-#flipbook .odd{
-    background:-webkit-gradient(linear, right top, left top, color-stop(0.95, #FFF), color-stop(1, #DADADA));
-    background-image:-webkit-linear-gradient(right, #FFF 95%, #C4C4C4 100%);
-    background-image:-moz-linear-gradient(right, #FFF 95%, #C4C4C4 100%);
-    background-image:-ms-linear-gradient(right, #FFF 95%, #C4C4C4 100%);
-    background-image:-o-linear-gradient(right, #FFF 95%, #C4C4C4 100%);
-    background-image:linear-gradient(right, #FFF 95%, #C4C4C4 100%);
-    -webkit-box-shadow:inset 0 0 5px #666;
-    -moz-box-shadow:inset 0 0 5px #666;
-    -o-box-shadow:inset 0 0 5px #666;
-    -ms-box-shadow:inset 0 0 5px #666;
-    box-shadow:inset 0 0 5px #666;
-    
-}
-
-#flipbook .even{
-    background:-webkit-gradient(linear, left top, right top, color-stop(0.95, #fff), color-stop(1, #dadada));
-    background-image:-webkit-linear-gradient(left, #fff 95%, #dadada 100%);
-    background-image:-moz-linear-gradient(left, #fff 95%, #dadada 100%);
-    background-image:-ms-linear-gradient(left, #fff 95%, #dadada 100%);
-    background-image:-o-linear-gradient(left, #fff 95%, #dadada 100%);
-    background-image:linear-gradient(left, #fff 95%, #dadada 100%);
-    -webkit-box-shadow:inset 0 0 5px #666;
-    -moz-box-shadow:inset 0 0 5px #666;
-    -o-box-shadow:inset 0 0 5px #666;
-    -ms-box-shadow:inset 0 0 5px #666;
-    box-shadow:inset 0 0 5px #666;
-}
-p {
-    height: 20px;
-}
-.dragandrophandler {width:400px;color:#92AAB0;text-align:left;vertical-align:middle;padding: 10px 10px 10px 10px;margin-bottom:10px;font-size:200%;}</style></head>
+setInterval(function() {$('p').attr('contenteditable','false');}, 1000);</script><style type="text/css">body{    overflow:hidden;}#flipbook{    width:100%;    height:100%;}#flipbook .page{    width:100%;    height:100%;    background-color:white;    line-height:1em;    font-size:20px;    text-align:center;}#flipbook .page-wrapper{    -webkit-perspective:2000px;    -moz-perspective:2000px;    -ms-perspective:2000px;    -o-perspective:2000px;    perspective:2000px;}#flipbook .hard{    background:#ccc !important;    color:#333;    -webkit-box-shadow:inset 0 0 5px #666;    -moz-box-shadow:inset 0 0 5px #666;    -o-box-shadow:inset 0 0 5px #666;    -ms-box-shadow:inset 0 0 5px #666;    box-shadow:inset 0 0 5px #666;    font-weight:bold;}#flipbook .odd{    background:-webkit-gradient(linear, right top, left top, color-stop(0.95, #FFF), color-stop(1, #DADADA));    background-image:-webkit-linear-gradient(right, #FFF 95%, #C4C4C4 100%);    background-image:-moz-linear-gradient(right, #FFF 95%, #C4C4C4 100%);    background-image:-ms-linear-gradient(right, #FFF 95%, #C4C4C4 100%);    background-image:-o-linear-gradient(right, #FFF 95%, #C4C4C4 100%);    background-image:linear-gradient(right, #FFF 95%, #C4C4C4 100%);    -webkit-box-shadow:inset 0 0 5px #666;    -moz-box-shadow:inset 0 0 5px #666;    -o-box-shadow:inset 0 0 5px #666;    -ms-box-shadow:inset 0 0 5px #666;    box-shadow:inset 0 0 5px #666;    }#flipbook .even{    background:-webkit-gradient(linear, left top, right top, color-stop(0.95, #fff), color-stop(1, #dadada));    background-image:-webkit-linear-gradient(left, #fff 95%, #dadada 100%);    background-image:-moz-linear-gradient(left, #fff 95%, #dadada 100%);    background-image:-ms-linear-gradient(left, #fff 95%, #dadada 100%);    background-image:-o-linear-gradient(left, #fff 95%, #dadada 100%);    background-image:linear-gradient(left, #fff 95%, #dadada 100%);    -webkit-box-shadow:inset 0 0 5px #666;    -moz-box-shadow:inset 0 0 5px #666;    -o-box-shadow:inset 0 0 5px #666;    -ms-box-shadow:inset 0 0 5px #666;    box-shadow:inset 0 0 5px #666;}p {    height: 20px;}.dragandrophandler {    	    width:400px;    color:#92AAB0;    text-align:left;vertical-align:middle;font-size:200%;}canvas{    position: absolute;}#canvasdr{    position: relative;    overflow: hidden;    overflow-y: scroll;}.tabpage {    border: 1px solid black;    width: 210mm;    height: 297mm;    padding: 20px;    margin: auto;}.tabpage > .titulo, .titulo1, .titulo2, .titulo3, .titulo4, .titulo5, .titulo6, .titulo7 {	font-size: 32px;	text-align: center;}.titulo {       height: 30%; width: 90%;  margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;    	}.titulo1 {    float: left;    width: 50%;    height: 100%;    margin-top: 50px;}.titulo2 {    width: 200mm;    height: 70mm;    margin-top: 20px;}.titulo3 {	float: left;    width: 39%;    height: 40%;    margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;}.titulo4 {	float: left;    width: 40%;    height: 40%;    margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;}.titulo5 {	width: 90%;    height: 40%;    margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;}.titulo6 {	width: 90%;    height: 20%;    margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;}.titulo7 {	height: 30%; width: 90%;  margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;}img {	border: 1px solid black;                    -moz-box-shadow:    inset 0 0 5px #000000;    -webkit-box-shadow: inset 0 0 5px #000000;    box-shadow:         inset 0 0 5px #000000;}.tabpage > .image {    height: 160mm;	width: 200mm;    margin-top: 50px;}.image1 {     float: left;    height: 30%;	width: 30%;    margin-top: 50px;	margin-left: 30px;	margin-right: 30px;}.image2 {        margin-top: 50px;	margin-left: 30px;	margin-right: 30px;	height: 30%;	width: 30%;}.image3 {	float: left;    height: 40%;	width: 40%;    margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;}.image4 {	float: left;    height: 40%;	width: 39%;    margin-top: 5%;	margin-left: 5%;	margin-right: 5%;	margin-bottom: 5%;    }.image5 {	display: block;    margin: 0 auto;    height: 100mm;    margin-top: 50px;    width: 100mm;}.image6 {	display: block;    margin: 0 auto;    height: 90mm;    margin-top: 20px;    width: 90mm;}.conteudo {	margin-top: 50px;	margin-right: 500px;	margin-left: 50px;    width: 90%;    height: 90%;} .tabpage > div, .tabpagedraw > input {    width: 100%;    border: 1px solid black;                    -moz-box-shadow:    inset 0 0 5px #000000;    -webkit-box-shadow: inset 0 0 5px #000000;    box-shadow:         inset 0 0 5px #000000;}.tabpagedraw {    border: 1px solid black;    width: 210mm;    height: 297mm;    padding: 20px;    margin: auto;}.tabpagedraw > input {    height: 40px;    text-align: center;    font-size: xx-large;    margin-top: 50px;}.tabpagedraw > canvas {    border: 1px solid black;    width: 100%;    height: 700px;    margin-top: 30px;}input[type=file] {    display: none;}.empty {	float:left;	height: 0mm;    margin-top: 0px;    width: 200mm;	border: 0px;}body{background-color:#AAAAFF;}p {font-size:86%; margin-bottom: 3px;}</style></head>
 <body>
 	<div>
 		<div id="flipbook">
-		<div class="hard" style="line-height:300px"> Livro </div>
+		<div class="hard" style="line-height:2em"> <div id="tab1-input1" class="editable titulo tab1-input1" style="font-family: Verdana; font-size: 28px; text-align: center; color: rgb(0, 128, 0); background-color: rgb(255, 192, 203);"><p id="tab1-input1-1" class="281" contenteditable="" style="color: rgb(0, 128, 0);">ola mundo. eu sou andre mateus e coiso e tal e pardais</p></div><div><img id="tab1-image" class="dragandrophandler image" alt="" src=""></div></div>
 		<div class="hard"></div>
 		<div>
-			<div id="tab1-input1" class="editable titulo tab1-input1" style="font-size: 20px;"><p id="tab1-input1-1" class="sdvf" contenteditable=""></p></div><div><img id="tab1-image" class="dragandrophandler image1" alt="" src=""></div><div id="tab1-input2" class="editable titulo1 tab1-input2" style="font-size: 20px;"><p id="tab1-input2-1" class="sdvf" contenteditable=""></p></div>
+			<div><img id="tab2-image" class="dragandrophandler image3" alt="" src=""></div><div id="tab2-input1" class="editable titulo3 tab2-input1" style="font-family: Verdana; font-size: 28px; text-align: center; color: rgb(0, 128, 0); background-color: rgb(255, 192, 203);"><p id="tab2-input1-1" class="281" contenteditable=""></p></div><div id="tab2-input2" class="editable titulo4 tab2-input2" style="font-family: Verdana; font-size: 28px; text-align: center; color: rgb(0, 128, 0); background-color: rgb(255, 192, 203);"><p id="tab2-input2-1" class="281" contenteditable=""></p></div><div><img id="tab2-image1" class="dragandrophandler image4" alt="" src=""></div>
 		</div>
 		<div>
-			
+			<div><table><tr><th>Imagem</th><th>Nome</th></tr></table></div>
 		</div>
 
 <div class="hard"></div>
