@@ -396,10 +396,10 @@ $(document).ready(function () {
             success: function (data) {
                 switch (tipo) {
                     case "aluno":
-                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                        addLayoutToDiv("#contentor", "html", "GerirAlunos.html", socket);
                         break;
                     case "professor":
-                        addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                        addLayoutToDiv("#contentor", "html", "GerirProfessores.html", socket);
                         break;
                 }
             },
@@ -441,7 +441,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
 
-                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
+                    addLayoutToDiv("#contentor", "html", "GerirAlunos.html", socket); //Carrega o layout
                 },
                 error: function (error) {
                 }
@@ -478,7 +478,7 @@ $(document).ready(function () {
                 success: function (data) {
 
                     $(".voltarLayout").click();
-                    //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                    //addLayoutToDiv("#contentor", "html", "GerirProfessores.html", socket);
                 },
                 error: function (error) {
                 }
@@ -510,7 +510,7 @@ $(document).ready(function () {
                 success: function (data) {
 
                     $(".voltarLayout").click();
-                    //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                    //addLayoutToDiv("#contentor", "html", "GerirProfessores.html", socket);
                 },
                 error: function (error) {
                 }
@@ -536,7 +536,7 @@ $(document).ready(function () {
                 success: function (data) {
 
                     $(".voltarLayout").click();
-                    //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                    //addLayoutToDiv("#contentor", "html", "GerirProfessores.html", socket);
                 },
                 error: function (error) {
                 }
@@ -550,7 +550,7 @@ $(document).ready(function () {
             case "aluno":
                 $("body").append(wait);
                 if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
-                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket); //Carrega o layout
+                    addLayoutToDiv("#contentor", "html", "GerirAlunos.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
                     e.stopPropagation();
@@ -607,7 +607,7 @@ $(document).ready(function () {
             case "professor":
                 $("body").append(wait);
                 if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
-                    addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket); //Carrega o layout
+                    addLayoutToDiv("#contentor", "html", "GerirProfessores.html", socket); //Carrega o layout
                     $("#inputSearch").focus();
                 } else {
                     e.stopPropagation();
@@ -1826,7 +1826,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
 //                console.log(data);
-                var tableusers = "<table>";
+                var tableusers = "<table border='1'>";
                 tableusers += "<tr><th>Imagem</th><th>Nome</th></tr>";
                 for (var i in data) {
                     tableusers += "<tr><td><img alt='' src='" + data[i].avatar + "'></td><td>" + data[i].nome + "</td></tr>";
