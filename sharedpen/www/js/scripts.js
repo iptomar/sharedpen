@@ -58,7 +58,12 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $(".voltarLayout").click(); //se successo voltar atras
+                    if (data === 'false') { //verifica se o username existe
+                        alert("Este Utilizador ja existe!!");
+
+                    } else {
+                        $(".voltarLayout").click();
+                    }
                 },
                 error: function (error) {
                     console.log(JSON.stringify(error));
@@ -116,11 +121,16 @@ $(document).ready(function () {
                     nome: $("#Nome_Escola_edit").val(),
                     morada: $("#Morada_Escola_edit").val(),
                     contacto: $("#Contacto_Escola_edit").val(),
-                    id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
+                    id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val()
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $(".voltarLayout").click();
+                    if(data==='false'){
+                        alert("Esta Escola ja existe!");
+                    }
+                    else{
+                        $(".voltarLayout").click();
+                    }
                 },
                 error: function (error) {
                     console.log(JSON.stringify(error));
@@ -141,11 +151,17 @@ $(document).ready(function () {
                 url: "/updateAgrupamentos",
                 data: {
                     id: $("#Id_Agrupamento_edit").val(),
-                    nome: $("#Nome_Agrupamento_edit").val(),
+                    nome: $("#Nome_Agrupamento_edit").val()
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $(".voltarLayout").click();
+                    if(data==='false'){
+                        alert("Este Agrupamento ja existe!");
+                    }
+                    else{
+                        $(".voltarLayout").click();
+                    }
+                    
                 },
                 error: function (error) {
                     console.log(JSON.stringify(error));
