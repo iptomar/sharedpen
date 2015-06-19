@@ -1840,8 +1840,8 @@ $(document).ready(function () {
                 }
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
-                //socket.emit("saveAsHtml", pages);
-                //window.open("./livro/Livro.html");
+                socket.emit("saveAsHtml", pages);
+                window.open("./livro/Livro.html");
                 $("body").find("#loading").remove();
             },
             error: function (error) {
