@@ -31,326 +31,325 @@ var tmpModels = [];
 var currentPosition = 1;
 var pass;
 $(document).ready(function () {
-    
-//--------------------------BACKOFFICE----------------------------------------
-//fazer update a aluno
-$("body").on('click', "#guardarEditAluno", function (e) {
-    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
-        e.stopPropagation();
-        e.preventDefault();
-        //se a password nao foi alterada nao encripta, se foi incripta
-        if (pass != $("#password_aluno_edit").val()) {
-            pass = stringToMd5($("#password_aluno_edit").val());
-        }
-        //guardar os dados do aluno (updateAluno)
-        $.ajax({
-            type: "POST",
-            url: "/updateAluno",
-            data: {
-                image: $("#userImage").attr('src'),
-                id: $("#Id_aluno_edit").val(),
-                username: $("#username_aluno_edit").val(),
-                nomeAluno: $("#nome_aluno_edit").val(),
-                numAluno: $("#numero_aluno_edit").val(),
-                password: pass,
-                turma: $("#turma_aluno_edit option:selected").val(),
-                ano: $("#ano_aluno_edit option:selected").val(),
-                id_escola: $("#escola_aluno_edit option:selected").val()
-            },
-            dataType: 'json',
-            success: function (data) {
-                $(".voltarLayout").click();//se successo voltar atras
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error));
+    //--------------------------BACKOFFICE----------------------------------------
+    //fazer update a aluno
+    $("body").on('click', "#guardarEditAluno", function (e) {
+        $("body").find('.validForm').on('success.form.bv', function (e) { //validacao de dados no carregar de butao
+            e.stopPropagation();
+            e.preventDefault();
+            //se a password nao foi alterada nao encripta, se foi incripta
+            if (pass != $("#password_aluno_edit").val()) {
+                pass = stringToMd5($("#password_aluno_edit").val());
             }
+            //guardar os dados do aluno (updateAluno)
+            $.ajax({
+                type: "POST",
+                url: "/updateAluno",
+                data: {
+                    image: $("#userImage").attr('src'),
+                    id: $("#Id_aluno_edit").val(),
+                    username: $("#username_aluno_edit").val(),
+                    nomeAluno: $("#nome_aluno_edit").val(),
+                    numAluno: $("#numero_aluno_edit").val(),
+                    password: pass,
+                    turma: $("#turma_aluno_edit option:selected").val(),
+                    ano: $("#ano_aluno_edit option:selected").val(),
+                    id_escola: $("#escola_aluno_edit option:selected").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $(".voltarLayout").click(); //se successo voltar atras
+                },
+                error: function (error) {
+                    console.log(JSON.stringify(error));
+                }
+            });
         });
     });
-});
-    
-//fazer update a professor
-$("body").on('click', "#guardarEditProfessor", function (e) {
-    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
-        e.stopPropagation();
-        e.preventDefault();
-        //guardar os dados do professor (updateProfessores)        
-        $.ajax({
-            type: "POST",
-            url: "/updateProfessores",
-            data: {
-                avatar: $("#userImage").attr('src'),
-                id: $("#Id_Professor_edit").val(),
-                username: $("#username_Professor_edit").val(),
-                nome: $("#Nome_Professor_edit").val(),
-                password: stringToMd5($("#password_Professor_edit").val()),
-                id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
-                email: $("#Email_Professor_edit").val()
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data === 'false') {//verifica se o username existe
-                    alert("Este Utilizador ja existe!!");
 
-                } else {
+    //fazer update a professor
+    $("body").on('click', "#guardarEditProfessor", function (e) {
+        $("body").find('.validForm').on('success.form.bv', function (e) { //validacao de dados no carregar de butao
+            e.stopPropagation();
+            e.preventDefault();
+            //guardar os dados do professor (updateProfessores)        
+            $.ajax({
+                type: "POST",
+                url: "/updateProfessores",
+                data: {
+                    avatar: $("#userImage").attr('src'),
+                    id: $("#Id_Professor_edit").val(),
+                    username: $("#username_Professor_edit").val(),
+                    nome: $("#Nome_Professor_edit").val(),
+                    password: stringToMd5($("#password_Professor_edit").val()),
+                    id_agrupamento: $("#Agrupamento_Professor_edit option:selected").val(),
+                    email: $("#Email_Professor_edit").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data === 'false') { //verifica se o username existe
+                        alert("Este Utilizador ja existe!!");
+
+                    } else {
+                        $(".voltarLayout").click();
+                    }
+                },
+                error: function (error) {
+                    console.log(JSON.stringify(error));
+                }
+            });
+        });
+
+    });
+
+    //fazer update a escola
+    $("body").on('click', "#guardarEditEscola", function (e) {
+        $("body").find('.validForm').on('success.form.bv', function (e) { //validacao de dados no carregar de butao
+            e.stopPropagation();
+            e.preventDefault();
+            //guardar os dados da escola (updateEscolas)        
+            $.ajax({
+                type: "POST",
+                url: "/updateEscolas",
+                data: {
+                    id: $("#Id_Escola_edit").val(),
+                    nome: $("#Nome_Escola_edit").val(),
+                    morada: $("#Morada_Escola_edit").val(),
+                    contacto: $("#Contacto_Escola_edit").val(),
+                    id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
                     $(".voltarLayout").click();
+                },
+                error: function (error) {
+                    console.log(JSON.stringify(error));
                 }
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error));
-            }
+            });
+        });
+
+    });
+
+    //fazer update a agrupamento
+    $("body").on('click', "#guardarEditAgrupamento", function (e) {
+        $("body").find('.validForm').on('success.form.bv', function (e) { //validacao de dados no carregar de butao
+            e.stopPropagation();
+            e.preventDefault();
+            //guardar os dados da agrupamento (updateAgrupamentos)        
+            $.ajax({
+                type: "POST",
+                url: "/updateAgrupamentos",
+                data: {
+                    id: $("#Id_Agrupamento_edit").val(),
+                    nome: $("#Nome_Agrupamento_edit").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $(".voltarLayout").click();
+                },
+                error: function (error) {
+                    console.log(JSON.stringify(error));
+                }
+            });
         });
     });
 
-});
 
-//fazer update a escola
-$("body").on('click', "#guardarEditEscola", function (e) {
-    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
+    //editar aluno/professor/escola/agrupamento 
+    $("body").on('click', ".editInfo", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        //guardar os dados da escola (updateEscolas)        
-        $.ajax({
-            type: "POST",
-            url: "/updateEscolas",
-            data: {
-                id: $("#Id_Escola_edit").val(),
-                nome: $("#Nome_Escola_edit").val(),
-                morada: $("#Morada_Escola_edit").val(),
-                contacto: $("#Contacto_Escola_edit").val(),
-                id_agrupamento: $("#Agrupamento_Escola_edit option:selected").val(),
-            },
-            dataType: 'json',
-            success: function (data) {
-                $(".voltarLayout").click();
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error));
+        var type = $(this).data("type"); //verifica se é aluno/professor/escola/agrupamento ( no butao data-type="aluno")
+        switch (type) {
+        case "aluno":
+            addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
+            if (currentPosition != backArray.length) {
+                backArray.splice(currentPosition, backArray.length - currentPosition);
+                folderArray.splice(currentPosition, folderArray.length - currentPosition);
             }
-        });
+            backArray.push($(this).data("layout"));
+            folderArray.push($(this).data("folder"));
+            currentPosition += 1;
+            $("body").append(wait);
+            //adicionar informacao a dropdown (escolas)
+            $.ajax({
+                type: "GET",
+                url: "/getAllEscolas",
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar = "";
+                    for (var i = 0, max = data.length; i < max; i++) { //adicionar options a dropdown (escolas)
+                        htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                    }
+                    $("body").find("#loading").remove();
+                    $("body").find("#escola_aluno_edit").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+            //preencher campos de editar aluno
+            $.ajax({
+                type: "GET",
+                url: "/getAluno/" + $(this).attr("rel"),
+                dataType: 'json',
+                success: function (data) {
+                    $("#Id_aluno_edit").val(data[0].id_user);
+                    $("#userImage").attr("src", data[0].avatar);
+                    $("#username_aluno_edit").val(data[0].username);
+                    $("#nome_aluno_edit").val(data[0].nome_aluno);
+                    $("#numero_aluno_edit").val(data[0].num_aluno);
+                    $("#turma_aluno_edit").val(data[0].turma);
+                    $("#ano_aluno_edit").val(data[0].ano);
+                    $("#escola_aluno_edit").val(data[0].id_escola);
+                    $("#password_aluno_edit").val(data[0].password);
+                    pass = data[0].password;
+                    $("body").find("#loading").remove();
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+            break;
+
+        case "professor":
+            addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
+            if (currentPosition != backArray.length) {
+                backArray.splice(currentPosition, backArray.length - currentPosition);
+                folderArray.splice(currentPosition, folderArray.length - currentPosition);
+            }
+            backArray.push($(this).data("layout"));
+            folderArray.push($(this).data("folder"));
+            currentPosition += 1;
+            $("body").append(wait);
+            $.ajax({
+                type: "GET",
+                url: "/getsAllAgrupamentos",
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar = "";
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                    }
+                    $("body").find("#loading").remove();
+                    $("body").find("#Agrupamento_Professor_edit").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: "/getProfessores/" + $(this).attr("rel"),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $("#userImage").attr("src", data[0].avatar);
+                        $("#Id_Professor_edit").val(data[0].id);
+                    $("#username_Professor_edit").val(data[0].username);
+                    $("#Nome_Professor_edit").val(data[0].nome_professor);
+                    $("#Email_Professor_edit").val(data[0].email);
+                    $("#password_Professor_edit").val(data[0].password);
+                    $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
+                    $("body").find("#loading").remove();
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+            break;
+
+        case "escola":
+            addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
+            if (currentPosition != backArray.length) {
+                backArray.splice(currentPosition, backArray.length - currentPosition);
+                folderArray.splice(currentPosition, folderArray.length - currentPosition);
+            }
+            backArray.push($(this).data("layout"));
+            folderArray.push($(this).data("folder"));
+            currentPosition += 1;
+            $("body").append(wait);
+            $.ajax({
+                type: "GET",
+                url: "/getsAllAgrupamentos",
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar = "";
+                    for (var i = 0, max = data.length; i < max; i++) {
+                        htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
+                    }
+                    $("body").find("#loading").remove();
+                    $("body").find("#Agrupamento_Escola_edit").append(htmlVar);
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: "/getEscolas/" + $(this).attr("rel"),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $("#Id_Escola_edit").val(data[0].id);
+                    $("#Nome_Escola_edit").val(data[0].nome);
+                    $("#Morada_Escola_edit").val(data[0].morada);
+                    $("#Contacto_Escola_edit").val(data[0].contacto);
+                    $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
+                    $("body").find("#loading").remove();
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+            break;
+
+        case "agrupamento":
+            addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
+            if (currentPosition != backArray.length) {
+                backArray.splice(currentPosition, backArray.length - currentPosition);
+                folderArray.splice(currentPosition, folderArray.length - currentPosition);
+            }
+            backArray.push($(this).data("layout"));
+            folderArray.push($(this).data("folder"));
+            currentPosition += 1;
+            $("body").append(wait);
+            $.ajax({
+                type: "GET",
+                url: "/getAgrupamentos/" + $(this).attr("rel"),
+                dataType: 'json',
+                success: function (data) {
+                    var htmlVar;
+                    $("#Id_Agrupamento_edit").val(data[0].id);
+                    $("#Nome_Agrupamento_edit").val(data[0].nome);
+                    $("body").find("#loading").remove();
+                },
+                error: function (error) {
+                    $("body").find("#loading").remove();
+                    alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+        validacaoFormAll()
     });
 
-});
-
-//fazer update a agrupamento
-$("body").on('click', "#guardarEditAgrupamento", function (e) {
-    $("body").find('.validForm').on('success.form.bv', function (e) {//validacao de dados no carregar de butao
-        e.stopPropagation();
-        e.preventDefault();
-        //guardar os dados da agrupamento (updateAgrupamentos)        
-        $.ajax({
-            type: "POST",
-            url: "/updateAgrupamentos",
-            data: {
-                id: $("#Id_Agrupamento_edit").val(),
-                nome: $("#Nome_Agrupamento_edit").val(),
-            },
-            dataType: 'json',
-            success: function (data) {
-                $(".voltarLayout").click();
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error));
-            }
-        });
-    });
-});
-    
-    
-//editar aluno/professor/escola/agrupamento 
-$("body").on('click', ".editInfo", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var type = $(this).data("type");//verifica se é aluno/professor/escola/agrupamento ( no butao data-type="aluno")
-    switch (type) {
-    case "aluno":
-        addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        //adicionar informacao a dropdown (escolas)
-        $.ajax({
-            type: "GET",
-            url: "/getAllEscolas",
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {//adicionar options a dropdown (escolas)
-                    htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
-                }
-                $("body").find("#loading").remove();
-                $("body").find("#escola_aluno_edit").append(htmlVar);
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        //preencher campos de editar aluno
-        $.ajax({
-            type: "GET",
-            url: "/getAluno/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                $("#Id_aluno_edit").val(data[0].id_user);
-                $("#userImage").attr("src", data[0].avatar),
-                $("#username_aluno_edit").val(data[0].username);
-                $("#nome_aluno_edit").val(data[0].nome_aluno);
-                $("#numero_aluno_edit").val(data[0].num_aluno);
-                $("#turma_aluno_edit").val(data[0].turma);
-                $("#ano_aluno_edit").val(data[0].ano);
-                $("#escola_aluno_edit").val(data[0].id_escola);
-                $("#password_aluno_edit").val(data[0].password);
-                pass = data[0].password;
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        break;
-
-    case "professor":
-        addLayoutToDiv("#contentor", "html", "EditarProfessor.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getsAllAgrupamentos",
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
-                }
-                $("body").find("#loading").remove();
-                $("body").find("#Agrupamento_Professor_edit").append(htmlVar);
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/getProfessores/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                $("#userImage").attr("src", data[0].avatar),
-                    $("#Id_Professor_edit").val(data[0].id);
-                $("#username_Professor_edit").val(data[0].username);
-                $("#Nome_Professor_edit").val(data[0].nome_professor);
-                $("#Email_Professor_edit").val(data[0].email);
-                $("#password_Professor_edit").val(data[0].password);
-                $("#Agrupamento_Professor_edit").val(data[0].id_agrupamento);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        break;
-
-    case "escola":
-        addLayoutToDiv("#contentor", "html", "EditarEscola.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getsAllAgrupamentos",
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar = "";
-                for (var i = 0, max = data.length; i < max; i++) {
-                    htmlVar += "<option value=" + data[i].id + ">" + data[i].nome + "</option>";
-                }
-                $("body").find("#loading").remove();
-                $("body").find("#Agrupamento_Escola_edit").append(htmlVar);
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/getEscolas/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                $("#Id_Escola_edit").val(data[0].id);
-                $("#Nome_Escola_edit").val(data[0].nome);
-                $("#Morada_Escola_edit").val(data[0].morada);
-                $("#Contacto_Escola_edit").val(data[0].contacto);
-                $("#Agrupamento_Escola_edit").val(data[0].id_agrupamento);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-        break;
-
-    case "agrupamento":
-        addLayoutToDiv("#contentor", "html", "EditarAgrupamento.html", socket);
-        if (currentPosition != backArray.length) {
-            backArray.splice(currentPosition, backArray.length - currentPosition);
-            folderArray.splice(currentPosition, folderArray.length - currentPosition);
-        }
-        backArray.push($(this).data("layout"));
-        folderArray.push($(this).data("folder"));
-        currentPosition += 1;
-        $("body").append(wait);
-        $.ajax({
-            type: "GET",
-            url: "/getAgrupamentos/" + $(this).attr("rel"),
-            dataType: 'json',
-            success: function (data) {
-                var htmlVar;
-                $("#Id_Agrupamento_edit").val(data[0].id);
-                $("#Nome_Agrupamento_edit").val(data[0].nome);
-                $("body").find("#loading").remove();
-            },
-            error: function (error) {
-                $("body").find("#loading").remove();
-                alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                console.log(JSON.stringify(error));
-            }
-        });
-    }
-    validacaoFormAll()
-});
-    
 
 
 
-//editar estado de um utilizador
+    //editar estado de um utilizador
     $("body").on('click', ".editState", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -373,358 +372,353 @@ $("body").on('click', ".editInfo", function (e) {
             dataType: 'json',
             success: function (data) {
                 switch (tipo) {
-                    case "aluno":
-                        addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                        break;
-                    case "professor":
-                        addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-                        break;
+                case "aluno":
+                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                    break;
+                case "professor":
+                    addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                    break;
                 }
             },
-            error: function (error) {
-            }
+            error: function (error) {}
         });
     });
 
-//criar aluno
+    //criar aluno
     $("body").on('click', "#btnAdicionarEntity_aluno", function (e) {
         validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
 
-        e.stopPropagation();
-        e.preventDefault();
-        var tipo = $(this).data("type");
-        var avatar = $("#add-Entity-Image").attr('src');
-        var username = $("#username_aluno_add").val();
-        var password = stringToMd5($("#password_aluno_add").val());
-        var nome = $("#nome_aluno_add").val();
-        var numero = $("#numero_aluno_add").val();
-        var escola = $("#escola_aluno_add option:selected").val();
-        var ano = $("#ano_aluno_add").val();
-        var turma = $("#turma_aluno_add").val();
-        $.ajax({
-            type: "POST",
-            url: "/insertAluno",
-            data: {
-                //id: user,
-                type: tipo,
-                username: username,
-                password: password,
-                nome: nome,
-                numero: numero,
-                id_escola: escola,
-                ano: ano,
-                turma: turma,
-                avatar: avatar
-            },
-            // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
+            e.stopPropagation();
+            e.preventDefault();
+            var tipo = $(this).data("type");
+            var avatar = $("#add-Entity-Image").attr('src');
+            var username = $("#username_aluno_add").val();
+            var password = stringToMd5($("#password_aluno_add").val());
+            var nome = $("#nome_aluno_add").val();
+            var numero = $("#numero_aluno_add").val();
+            var escola = $("#escola_aluno_add option:selected").val();
+            var ano = $("#ano_aluno_add").val();
+            var turma = $("#turma_aluno_add").val();
+            $.ajax({
+                type: "POST",
+                url: "/insertAluno",
+                data: {
+                    //id: user,
+                    type: tipo,
+                    username: username,
+                    password: password,
+                    nome: nome,
+                    numero: numero,
+                    id_escola: escola,
+                    ano: ano,
+                    turma: turma,
+                    avatar: avatar
+                },
+                // contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
 
-                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-            },
-            error: function (error) {
-            }
+                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                },
+                error: function (error) {}
+            });
         });
     });
-    });
 
-//criar professor
+    //criar professor
     $("body").on('click', "#btnAdicionarEntity_professor", function (e) {
-         validacaoFormAll();
+        validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
             e.stopPropagation();
-        e.preventDefault();
-        var tipo = $(this).data("type");
-        var avatar = $("#add-Entity-Image").attr('src');
-        var username = $("#username_Professor_add").val();
-        var password = stringToMd5($("#password_Professor_add").val());
-        var nome = $("#Nome_Professor_add").val();
-        var email = $("#Email_Professor_add").val();
-        var agrupamento = $("#Agrupamento_Professor_add option:selected").val();
-        $.ajax({
-            type: "POST",
-            url: "/insertProfessor",
-            data: {
-                //id: user,
-                type: tipo,
-                username: username,
-                password: password,
-                nome: nome,
-                email: email,
-                agrupamento: agrupamento,
-                avatar: avatar
-            },
-            // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
+            e.preventDefault();
+            var tipo = $(this).data("type");
+            var avatar = $("#add-Entity-Image").attr('src');
+            var username = $("#username_Professor_add").val();
+            var password = stringToMd5($("#password_Professor_add").val());
+            var nome = $("#Nome_Professor_add").val();
+            var email = $("#Email_Professor_add").val();
+            var agrupamento = $("#Agrupamento_Professor_add option:selected").val();
+            $.ajax({
+                type: "POST",
+                url: "/insertProfessor",
+                data: {
+                    //id: user,
+                    type: tipo,
+                    username: username,
+                    password: password,
+                    nome: nome,
+                    email: email,
+                    agrupamento: agrupamento,
+                    avatar: avatar
+                },
+                // contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
 
-                $(".voltarLayout").click();
-                //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-            },
-            error: function (error) {
-            }
+                    $(".voltarLayout").click();
+                    //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                },
+                error: function (error) {}
+            });
         });
     });
-});
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_escola", function (e) {
-         validacaoFormAll();
+        validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
 
-        e.stopPropagation();
-        e.preventDefault();
-        //var avatar = $("#add-Entity-Image").attr('src');
-        var nome = $("#Nome_Escola_add").val();
-        var morada = $("#Morada_Escola_add").val();
-        var contacto = $("#Contacto_Escola_add").val();
-        var agrupamento = $("#Agrupamento_Escola_add option:selected").val();
-        $.ajax({
-            type: "POST",
-            url: "/insertEscola",
-            data: {
-                //id: user,
-                nome: nome,
-                morada: morada,
-                contacto: contacto,
-                agrupamento: agrupamento
-            },
-            // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
+            e.stopPropagation();
+            e.preventDefault();
+            //var avatar = $("#add-Entity-Image").attr('src');
+            var nome = $("#Nome_Escola_add").val();
+            var morada = $("#Morada_Escola_add").val();
+            var contacto = $("#Contacto_Escola_add").val();
+            var agrupamento = $("#Agrupamento_Escola_add option:selected").val();
+            $.ajax({
+                type: "POST",
+                url: "/insertEscola",
+                data: {
+                    //id: user,
+                    nome: nome,
+                    morada: morada,
+                    contacto: contacto,
+                    agrupamento: agrupamento
+                },
+                // contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
 
-                $(".voltarLayout").click();
-                //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-            },
-            error: function (error) {
-            }
+                    $(".voltarLayout").click();
+                    //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                },
+                error: function (error) {}
+            });
         });
     });
-});
     //criar escola
     $("body").on('click', "#btnAdicionarEntity_agrupamento", function (e) {
         validacaoFormAll();
         $("body").find('.validForm').on('success.form.bv', function (e) {
 
-        e.stopPropagation();
-        e.preventDefault();
-        //var avatar = $("#add-Entity-Image").attr('src');
-        var nome = $("#Nome_Agrupamento_add").val();
-        $.ajax({
-            type: "POST",
-            url: "/insertAgrupamento",
-            data: {
-                //id: user,
-                nome: nome
-            },
-            // contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            success: function (data) {
+            e.stopPropagation();
+            e.preventDefault();
+            //var avatar = $("#add-Entity-Image").attr('src');
+            var nome = $("#Nome_Agrupamento_add").val();
+            $.ajax({
+                type: "POST",
+                url: "/insertAgrupamento",
+                data: {
+                    //id: user,
+                    nome: nome
+                },
+                // contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
 
-                $(".voltarLayout").click();
-                //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-            },
-            error: function (error) {
-            }
+                    $(".voltarLayout").click();
+                    //addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                },
+                error: function (error) {}
+            });
         });
     });
-        });
-// procurar por Username de no aluno
+    // procurar por Username de no aluno
     $("body").on('input', "#inputSearch", function (e) {
         var type = $(this).data("type");
         switch (type) {
-            case "aluno":
-                $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
-                    $("#inputSearch").focus();
-                } else {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $.ajax({
-                        type: "GET",
-                        url: "/searchAluno/" + $("#inputSearch").val(),
-                        dataType: 'json',
-                        success: function (data) {
-                            var htmlVar;
-                            $('#gerirEntitiesTable tbody').empty();
-                            for (var i = 0, max = data.length; i < max; i++) {
-                                htmlVar += "<tr>";
-                                htmlVar += "<td>" + data[i].id + "</td>" +
-                                        "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                                        "<td>" + data[i].username + "</td>" +
-                                        "<td>" + data[i].nome_aluno + "</td>" +
-                                        "<td>" + data[i].num_aluno + "</td>" +
-                                        "<td>" + data[i].ano + "</td>" +
-                                        "<td>" + data[i].turma + "</td>" +
-                                        "<td>" + data[i].nome_escola + "</td>" +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                                        '<img class="text-center image" src="../img/edit_40.png">' +
-                                        '</div>' +
-                                        '</td>' +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                                        '<img class="text-center image" width="35"';
-                                if (data[i].active == "1") {
-                                    htmlVar += ' src="../img/green.png">';
-                                } else {
-                                    htmlVar += ' src="../img/red.png">';
-                                }
+        case "aluno":
+            $("body").append(wait);
+            if ($("#inputSearch").val() == "") {
+                addLayoutToDiv("#contentor", "html", "GerirAluno.html", socket);
+                $("#inputSearch").focus();
+            } else {
+                e.stopPropagation();
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "/searchAluno/" + $("#inputSearch").val(),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        $('#gerirEntitiesTable tbody').empty();
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                "<td>" + data[i].username + "</td>" +
+                                "<td>" + data[i].nome_aluno + "</td>" +
+                                "<td>" + data[i].num_aluno + "</td>" +
+                                "<td>" + data[i].ano + "</td>" +
+                                "<td>" + data[i].turma + "</td>" +
+                                "<td>" + data[i].nome_escola + "</td>" +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                '<img class="text-center image" src="../img/edit_40.png">' +
                                 '</div>' +
-                                        '</td>' +
-                                        "</tr>";
+                                '</td>' +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                                '<img class="text-center image" width="35"';
+                            if (data[i].active == "1") {
+                                htmlVar += ' src="../img/green.png">';
+                            } else {
+                                htmlVar += ' src="../img/red.png">';
                             }
-                            $("body").find("#loading").remove();
-                            $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        },
-                        error: function (error) {
-                            $("body").find("#loading").remove();
-                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                            console.log(JSON.stringify(error));
+                            '</div>' +
+                            '</td>' +
+                            "</tr>";
                         }
-                    });
-                }
-                $("body").find("#loading").remove();
-                break;
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+            }
+            $("body").find("#loading").remove();
+            break;
 
-            case "professor":
-                $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
-                    $("#inputSearch").focus();
-                } else {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $.ajax({
-                        type: "GET",
-                        url: "/searchProfessor/" + $("#inputSearch").val(),
-                        dataType: 'json',
-                        success: function (data) {
-                            var htmlVar;
-                            $('#gerirEntitiesTable tbody').empty();
-                            for (var i = 0, max = data.length; i < max; i++) {
-                                htmlVar += "<tr>";
-                                htmlVar += "<td>" + data[i].id + "</td>" +
-                                        "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
-                                        "<td>" + data[i].username + "</td>" +
-                                        "<td>" + data[i].nome_professor + "</td>" +
-                                        "<td>" + data[i].email + "</td>" +
-                                        "<td>" + data[i].nome_agrupamento + "</td>" +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                                        '<img class="text-center image" src="../img/edit_40.png">' +
-                                        '</div>' +
-                                        '</td>' +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
-                                        '<img class="text-center image" width="35"';
-                                if (data[i].active == "1") {
-                                    htmlVar += ' src="../img/green.png">';
-                                } else {
-                                    htmlVar += ' src="../img/red.png">';
-                                }
+        case "professor":
+            $("body").append(wait);
+            if ($("#inputSearch").val() == "") {
+                addLayoutToDiv("#contentor", "html", "GerirProfessor.html", socket);
+                $("#inputSearch").focus();
+            } else {
+                e.stopPropagation();
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "/searchProfessor/" + $("#inputSearch").val(),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        $('#gerirEntitiesTable tbody').empty();
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<tr>";
+                            htmlVar += "<td>" + data[i].id + "</td>" +
+                                "<td>" + '<img class="text-center avatar-mini" src="' + data[i].avatar + '"></td>' +
+                                "<td>" + data[i].username + "</td>" +
+                                "<td>" + data[i].nome_professor + "</td>" +
+                                "<td>" + data[i].email + "</td>" +
+                                "<td>" + data[i].nome_agrupamento + "</td>" +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                '<img class="text-center image" src="../img/edit_40.png">' +
                                 '</div>' +
-                                        '</td>' +
-                                        "</tr>";
+                                '</td>' +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id + ' class="editState" data-type="aluno">' +
+                                '<img class="text-center image" width="35"';
+                            if (data[i].active == "1") {
+                                htmlVar += ' src="../img/green.png">';
+                            } else {
+                                htmlVar += ' src="../img/red.png">';
                             }
-                            $("body").find("#loading").remove();
-                            $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        },
-                        error: function (error) {
-                            $("body").find("#loading").remove();
-                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                            console.log(JSON.stringify(error));
+                            '</div>' +
+                            '</td>' +
+                            "</tr>";
                         }
-                    });
-                }
-                $("body").find("#loading").remove();
-                break;
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+            }
+            $("body").find("#loading").remove();
+            break;
 
-            case "escola":
-                $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
-                    $("#inputSearch").focus();
-                } else {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $.ajax({
-                        type: "GET",
-                        url: "/searchEscola/" + $("#inputSearch").val(),
-                        dataType: 'json',
-                        success: function (data) {
-                            var htmlVar;
-                            $('#gerirEntitiesTable tbody').empty();
-                            for (var i = 0, max = data.length; i < max; i++) {
-                                htmlVar += "<tr>";
-                                htmlVar +=
-                                        "<td>" + data[i].id + "</td>" +
-                                        "<td>" + data[i].nome_escola + "</td>" +
-                                        "<td>" + data[i].morada + "</td>" +
-                                        "<td>" + data[i].contacto + "</td>" +
-                                        "<td>" + data[i].nome_agrupamento + "</td>" +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                                        '<img class="text-center image" src="../img/edit_40.png">' +
-                                        '</div>' +
-                                        '</td>' +
-                                        "</tr>";
-                            }
-                            $("body").find("#loading").remove();
-                            $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        },
-                        error: function (error) {
-                            $("body").find("#loading").remove();
-                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                            console.log(JSON.stringify(error));
+        case "escola":
+            $("body").append(wait);
+            if ($("#inputSearch").val() == "") {
+                addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
+                $("#inputSearch").focus();
+            } else {
+                e.stopPropagation();
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "/searchEscola/" + $("#inputSearch").val(),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        $('#gerirEntitiesTable tbody').empty();
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<tr>";
+                            htmlVar +=
+                                "<td>" + data[i].id + "</td>" +
+                                "<td>" + data[i].nome_escola + "</td>" +
+                                "<td>" + data[i].morada + "</td>" +
+                                "<td>" + data[i].contacto + "</td>" +
+                                "<td>" + data[i].nome_agrupamento + "</td>" +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                '<img class="text-center image" src="../img/edit_40.png">' +
+                                '</div>' +
+                                '</td>' +
+                                "</tr>";
                         }
-                    });
-                }
-                $("body").find("#loading").remove();
-                break;
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+            }
+            $("body").find("#loading").remove();
+            break;
 
-            case "agrupamento":
-                $("body").append(wait);
-                if ($("#inputSearch").val() == "") {
-                    addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
-                    $("#inputSearch").focus();
-                } else {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $.ajax({
-                        type: "GET",
-                        url: "/searchAgrupamento/" + $("#inputSearch").val(),
-                        dataType: 'json',
-                        success: function (data) {
-                            var htmlVar;
-                            $('#gerirEntitiesTable tbody').empty();
-                            for (var i = 0, max = data.length; i < max; i++) {
-                                htmlVar += "<tr>";
-                                htmlVar +=
-                                        "<td>" + data[i].id + "</td>" +
-                                        "<td>" + data[i].nome + "</td>" +
-                                        '<td class="image">' +
-                                        '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
-                                        '<img class="text-center image" src="../img/edit_40.png">' +
-                                        '</div>' +
-                                        '</td>' +
-                                        "</tr>";
-                            }
-                            $("body").find("#loading").remove();
-                            $("body").find("#gerirEntitiesTable").append(htmlVar);
-                        },
-                        error: function (error) {
-                            $("body").find("#loading").remove();
-                            alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
-                            console.log(JSON.stringify(error));
+        case "agrupamento":
+            $("body").append(wait);
+            if ($("#inputSearch").val() == "") {
+                addLayoutToDiv("#contentor", "html", "GerirAgrupamentos.html", socket);
+                $("#inputSearch").focus();
+            } else {
+                e.stopPropagation();
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "/searchAgrupamento/" + $("#inputSearch").val(),
+                    dataType: 'json',
+                    success: function (data) {
+                        var htmlVar;
+                        $('#gerirEntitiesTable tbody').empty();
+                        for (var i = 0, max = data.length; i < max; i++) {
+                            htmlVar += "<tr>";
+                            htmlVar +=
+                                "<td>" + data[i].id + "</td>" +
+                                "<td>" + data[i].nome + "</td>" +
+                                '<td class="image">' +
+                                '<div rel=' + data[i].id + ' class="editInfo" data-type="aluno" data-folder="html" data-layout="EditarAluno.html">' +
+                                '<img class="text-center image" src="../img/edit_40.png">' +
+                                '</div>' +
+                                '</td>' +
+                                "</tr>";
                         }
-                    });
-                }
-                $("body").find("#loading").remove();
+                        $("body").find("#loading").remove();
+                        $("body").find("#gerirEntitiesTable").append(htmlVar);
+                    },
+                    error: function (error) {
+                        $("body").find("#loading").remove();
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        console.log(JSON.stringify(error));
+                    }
+                });
+            }
+            $("body").find("#loading").remove();
         }
     });
-//--------------------------BACKOFFICE-END---------------------------------------
+    //--------------------------BACKOFFICE-END---------------------------------------
 
 
     $.ajaxSetup({async: false});
@@ -3212,10 +3206,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
     });
 }
 
-
-
 function validacaoFormAll(){
-    
      $("body").find('.validForm').bootstrapValidator({
              feedbackIcons: {
                  valid: 'glyphicon glyphicon-ok',
@@ -3248,10 +3239,7 @@ function validacaoFormAll(){
                              min: 3,
                              max: 40
                          },
-                         notEmpty: {},
-                         regexp: {
-                             regexp: /^[a-z\s]+$/i,
-                         }
+                         notEmpty: {}
                      }
                  },
                  input_email: {
