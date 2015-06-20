@@ -215,9 +215,14 @@ body, #div-login{
     box-shadow: 1px 1px 1px 0 lightgray inset;  
     font: -moz-field;
 	overflow-y: scroll;
+        font-size: 1.5vmax;
 	
 }
 
 .imguser {
     width: 15%;
+}
+
+#listaUsers > select {
+    width: 40%;
 }
