@@ -766,8 +766,8 @@ $(document).ready(function () {
 
 
     // cria a ligaÃ§Ã£o com o servidor que disponibiliza o socket
-    //    socket = io.connect('http://185.15.22.55:8080');
-    socket = io.connect(window.location.href);
+    socket = io.connect('http://185.15.22.55:8080');
+    //    socket = io.connect(window.location.href);
     // Carrega o dropdown com a liosta das cores
     $('#colorpicker').addAllColors(listaColor);
     // coloca o cursor para introduzir o nome do utilizador
@@ -1829,7 +1829,7 @@ $(document).ready(function () {
                 var tableusers = "<table border='1'>";
                 tableusers += "<tr><th>Imagem</th><th>Nome</th></tr>";
                 for (var i in data) {
-                    tableusers += "<tr><td><img alt='' src='" + data[i].avatar + "'></td><td>" + data[i].nome + "</td></tr>";
+                    tableusers += "<tr><td><img alt='' src='" + resizeImg(data[i].avatar) + "'></td><td>" + data[i].nome + "</td></tr>";
                 }
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
@@ -2311,7 +2311,7 @@ $(document).ready(function () {
         success: function (data) {
             
             for (var proj in data) {
-                console.log(data[proj].id);
+//                console.log(data[proj].id);
                     var htmlLine = "<tr class='active'>"+
                            '<td><a href="#AbrirProj" data-idProj=' + data[proj].id + ' data-folder="html_Work_Models" data-layout="Livro.html">'+data[proj].nome+'</a></td>'+
                             '<td>'+data[proj].tipo+'</td>'+
