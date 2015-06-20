@@ -126,10 +126,10 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if(data==='false'){
+                    if (data === 'false') {
                         alert("Esta Escola ja existe!");
                     }
-                    else{
+                    else {
                         $(".voltarLayout").click();
                     }
                 },
@@ -156,13 +156,13 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if(data==='false'){
+                    if (data === 'false') {
                         alert("Este Agrupamento ja existe!");
                     }
-                    else{
+                    else {
                         $(".voltarLayout").click();
                     }
-                    
+
                 },
                 error: function (error) {
                     console.log(JSON.stringify(error));
@@ -180,7 +180,7 @@ $(document).ready(function () {
         switch (type) {
             case "aluno":
                 addLayoutToDiv("#contentor", "html", "EditarAluno.html", socket); //Carrega o layout
-                if (currentPosition != backArray.length) { 
+                if (currentPosition != backArray.length) {
                     backArray.splice(currentPosition, backArray.length - currentPosition);
                     folderArray.splice(currentPosition, folderArray.length - currentPosition);
                 }
@@ -191,7 +191,7 @@ $(document).ready(function () {
                 //adicionar informacao a dropdown (escolas)
                 $.ajax({
                     type: "GET",
-                    url: "/getAllEscolas", 
+                    url: "/getAllEscolas",
                     dataType: 'json',
                     success: function (data) {
                         var htmlVar = "";
@@ -247,7 +247,7 @@ $(document).ready(function () {
                 $.ajax({
                     //preencher campos do dropdown de editar (Agrupamentos)
                     type: "GET",
-                    url: "/getsAllAgrupamentos", 
+                    url: "/getsAllAgrupamentos",
                     dataType: 'json',
                     success: function (data) {
                         var htmlVar = "";
@@ -563,7 +563,7 @@ $(document).ready(function () {
                             //Re-cria a tabela com os resultados de pesquisa
                             var htmlVar;
                             $('#gerirEntitiesTable tbody').empty();
-                             //Re-cria a tabela com os resultados de pesquisa
+                            //Re-cria a tabela com os resultados de pesquisa
                             for (var i = 0, max = data.length; i < max; i++) {
                                 htmlVar += "<tr>";
                                 htmlVar += "<td>" + data[i].id + "</td>" +
@@ -620,7 +620,7 @@ $(document).ready(function () {
                             //Re-cria a tabela com os resultados de pesquisa
                             var htmlVar;
                             $('#gerirEntitiesTable tbody').empty();
-                             //Re-cria a tabela com os resultados de pesquisa
+                            //Re-cria a tabela com os resultados de pesquisa
                             for (var i = 0, max = data.length; i < max; i++) {
                                 htmlVar += "<tr>";
                                 htmlVar += "<td>" + data[i].id + "</td>" +
@@ -662,7 +662,7 @@ $(document).ready(function () {
             case "escola":
                 $("body").append(wait);
                 if (($("#inputSearch").val() == "") || ($("#inputSearch").val() == " ")) {
-                    addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket); 
+                    addLayoutToDiv("#contentor", "html", "GerirEscolas.html", socket);
                     $("#inputSearch").focus();
                 } else {
                     e.stopPropagation();
@@ -1193,51 +1193,62 @@ $(document).ready(function () {
      */
 
     $("body").on('click', "#bt_guardar", function () {
-        var hashtoSave;
+//        var hashtoSave;
         var kk = Object.keys(hash);
         socket.emit('reqHashToSave', {
             id: hash[kk[0]].projID
         });
 
-        socket.on('getHashToSave', function (data) {
-            hashtoSave = data.hashh
+//        socket.on('getHashToSave', function (data) {
+//            hashtoSave = data.hashh
+//
+//            for (item in hashtoSave) {
+//                for (elem in hashtoSave[item].modelo.arrayElem) {
+//                    if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
+//                        var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+//
+//                        var newchar = '\\"'
+//                        conteudo = conteudo.split('"').join(newchar);
+//                        newchar = '\\/'
+//                        conteudo = conteudo.split('/').join(newchar);
+//                        hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
+//
+//                    }
+//                }
+//            }
+//
+//
+//            $.ajax({
+//                type: "POST",
+//                url: "/setArray",
+//                data: {
+//                    arrayy: JSON.stringify(hashtoSave)
+//                },
+//                dataType: 'json',
+//                success: function (data) {
+//                    //alert(data);
+//
+//                },
+//                error: function (error) {
+//                    // alert("ERRO HASH");
+//                    //console.log(JSON.stringify(error));
+//                }
+//            });
+//
+//        });
 
-            for (item in hashtoSave) {
-                for (elem in hashtoSave[item].modelo.arrayElem) {
-                    if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
-                        var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+    });
 
-                        var newchar = '\\"'
-                        conteudo = conteudo.split('"').join(newchar);
-                        newchar = '\\/'
-                        conteudo = conteudo.split('/').join(newchar);
-                        hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
-
-                    }
-                }
+    socket.on('saveHashStatus', function (data) {
+        var kk = Object.keys(hash);
+        if (typeof hash[kk[0]] != "undefined") {
+            var idProjAtual = hash[kk[0]].projID;
+            if (idProjAtual == data.id && data.sucess) {
+                alert("Projeto Gravado na base de dados");
             }
+        }
 
-
-            $.ajax({
-                type: "POST",
-                url: "/setArray",
-                data: {
-                    arrayy: JSON.stringify(hashtoSave)
-                },
-                dataType: 'json',
-                success: function (data) {
-                    //alert(data);
-
-                },
-                error: function (error) {
-                    // alert("ERRO HASH");
-                    //console.log(JSON.stringify(error));
-                }
-            });
-
-        });
-
-    })
+    });
 
     $("body").on('click', "#bt_getHash", function () {
         //alert(hash);
@@ -2301,39 +2312,38 @@ $(document).ready(function () {
 
     });
 
-     $("body").on("click", "#contentor > div > div[data-layout='MenuMeusProjectosAbertos.html']", function () {
-         //GET getProjParticipaByID
-         
-          $.ajax({
-        type: "GET",
-        url: "/getProjParticipaByID/" + userNumber,
-        dataType: 'json',
-        success: function (data) {
-            
-            for (var proj in data) {
-//                console.log(data[proj].id);
-                    var htmlLine = "<tr class='active'>"+
-                           '<td><a href="#AbrirProj" data-idProj=' + data[proj].id + ' data-folder="html_Work_Models" data-layout="Livro.html">'+data[proj].nome+'</a></td>'+
-                            '<td>'+data[proj].tipo+'</td>'+
+    $("body").on("click", "#contentor > div > div[data-layout='MenuMeusProjectosAbertos.html']", function () {
+        //GET getProjParticipaByID
+
+        $.ajax({
+            type: "GET",
+            url: "/getProjParticipaByID/" + userNumber,
+            dataType: 'json',
+            success: function (data) {
+
+                for (var proj in data) {
+                    var htmlLine = "<tr class='active'>" +
+                            '<td><a href="#AbrirProj" data-idProj=' + data[proj].id + ' data-folder="html_Work_Models" data-layout="Livro.html">' + data[proj].nome + '</a></td>' +
+                            '<td>' + data[proj].tipo + '</td>' +
                             '</tr>';
                     //faz o append do html gerado
                     $("body").find("#meusProjAbertosTable").append(htmlLine);
                 }
-            
-            //<tr class="active">
-            //<td><a href="">Exemplo de Livro</a></td>
-            //<td>Publico</td>
-            //</tr>
-            
-            
-        },
-        error: function (error) {
-            console.log(JSON.stringify(error));
-        }
+
+                //<tr class="active">
+                //<td><a href="">Exemplo de Livro</a></td>
+                //<td>Publico</td>
+                //</tr>
+
+
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+
+
     });
-         
-         
-     });
 
 
     // carregar lista de alunos
@@ -3301,7 +3311,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
 //Validação feita dos forms
 function validacaoFormAll() {
     $("body").find('.validForm').bootstrapValidator({
-        feedbackIcons: { //Ícones de validação (Gryphicons do bootstrap)
+        feedbackIcons: {//Ícones de validação (Gryphicons do bootstrap)
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
@@ -3310,7 +3320,7 @@ function validacaoFormAll() {
         fields: {
             input_username: {
                 validators: {
-                    stringLength: { // Tamanhho de string (chars)
+                    stringLength: {// Tamanhho de string (chars)
                         min: 3,
                         max: 20,
                     },
@@ -3335,7 +3345,7 @@ function validacaoFormAll() {
                     notEmpty: {}
                 }
             },
-            input_email: { //Validação de mail
+            input_email: {//Validação de mail
                 validators: {
                     emailAddress: {},
                     notEmpty: {}
@@ -3344,7 +3354,7 @@ function validacaoFormAll() {
             input_numero: {
                 validators: {
                     notEmpty: {},
-                    between: { //Intervalo de números
+                    between: {//Intervalo de números
                         min: 2,
                         max: 50
                     }
@@ -3371,7 +3381,7 @@ function validacaoFormAll() {
                     }
                 }
             },
-            select_choise: { //Validação de dropdown (se for val="" dá mensagem)
+            select_choise: {//Validação de dropdown (se for val="" dá mensagem)
                 validators: {
                     notEmpty: {}
                 }
