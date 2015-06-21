@@ -3412,8 +3412,14 @@ function ajustElements() {
     $("#contentor").css({
         height: $(window).height() * 0.89
     });
-<<<<<<< HEAD
+    $("body").find(".txtTab").css({
+        height: $("#contentor").height() * 0.82
+    });
 }
+
+    
+
+
 
 function save_html(data){
 
@@ -3437,9 +3443,5 @@ function save_html(data){
         //console.log(html);
         }
 
-=======
-    $("body").find(".txtTab").css({
-        height: $("#contentor").height() * 0.82
-    });
-}
->>>>>>> 7132ed193338a0d40efc46f8333ad0debdbe4843
+
+
