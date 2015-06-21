@@ -1,3 +1,11 @@
+/**
+ * Desenho corporativo
+ * @param {type} tabClass   class ende esta o canvas
+ * @param {type} page       tab do canvas
+ * @param {type} id
+ * @param {type} counter
+ * @returns {Draw}
+ */
 var Draw = function (tabClass, page, id, counter) {
     this.counter = counter;
     this.tabClass = tabClass;
@@ -16,6 +24,10 @@ var Draw = function (tabClass, page, id, counter) {
     this.apagarTodos = false;
 };
 
+/**
+ * Inicializa o canvas
+ * @returns {undefined}
+ */
 Draw.prototype.init = function () {
 
     var widthPai = $("#tab" + this.tabNumber + "-canvasdr").parent().width();
@@ -46,6 +58,11 @@ Draw.prototype.init = function () {
     this.ArrayCanvasClients = {};
 };
 
+/**
+ * Devolve o canvas do utilizador
+ * @param {type} socket
+ * @returns {Draw.ArrayCanvasClients}
+ */
 Draw.prototype.VerificaUser = function (socket) {
     if (typeof this.ArrayCanvasClients[socket] === "undefined") {
 
@@ -64,13 +81,25 @@ Draw.prototype.VerificaUser = function (socket) {
     return  this.ArrayCanvasClients[socket];
 };
 
+/**
+ * devolve a cor pretendida
+ * @returns {String}
+ */
 Draw.prototype.getColor = function () {
     return this.color;
 };
+/**
+ * devolve o estado para apagar a imagem em todos os canvas
+ * @returns {Boolean}
+ */
 Draw.prototype.getApagarTudo = function () {
     return this.apagarTodos;
 };
 
+/**
+ * devolve o tamanho do cursor
+ * @returns {Number}
+ */
 Draw.prototype.getSizeCursor = function () {
     return this.curSize;
 };
@@ -79,12 +108,23 @@ Draw.prototype.getApagar = function () {
     return this.apagar;
 };
 
+/**
+ * Devolve o canvas
+ * @returns {Element}
+ */
 Draw.prototype.getCanvas = function () {
     var canvas = document.getElementById(this.id);
     return canvas;
 };
 
-
+/**
+ * Desenha no canvas
+ * @param {type} x
+ * @param {type} y
+ * @param {type} type
+ * @param {type} sizecur
+ * @returns {undefined}
+ */
 Draw.prototype.draw = function (x, y, type, sizecur) {
 
     var canvas = document.getElementById(this.id);
@@ -133,6 +173,19 @@ Draw.prototype.paintThis = function (ctx, x, y, type, opt) {
     }
 };
 
+/**
+ * Desenha a imagem dos outros utilizadores
+ * @param {type} cor
+ * @param {type} sizecur
+ * @param {type} x
+ * @param {type} y
+ * @param {type} type
+ * @param {type} socket
+ * @param {type} image
+ * @param {type} apagar
+ * @param {type} apagarTudo
+ * @returns {undefined}
+ */
 Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image, apagar, apagarTudo) {
 
     var canvas = document.getElementById(this.id);
@@ -172,6 +225,11 @@ Draw.prototype.drawOtherUser = function (cor, sizecur, x, y, type, socket, image
     }
 };
 
+/**
+ * Altera a imagem de fundo do canvas
+ * @param {type} dataURL
+ * @returns {undefined}
+ */
 Draw.prototype.imageCanvas = function (dataURL) {
     $("#tab" + this.tabNumber + "-background").css({
         "background": "url(" + dataURL + ")  no-repeat center center",
@@ -179,6 +237,12 @@ Draw.prototype.imageCanvas = function (dataURL) {
     });
 };
 
+/**
+ * Adiciona a palete de selecaoao canvas
+ * @param {type} id
+ * @param {type} cnv
+ * @returns {undefined}
+ */
 Draw.prototype.setPallet = function (id, cnv) {
     $.get("./../html/pallet.html", function (data) {
         $(document.body).append(data);
@@ -187,6 +251,11 @@ Draw.prototype.setPallet = function (id, cnv) {
     });
 };
 
+/**
+ * altera o tamanho do crsor
+ * @param {type} val
+ * @returns {undefined}
+ */
 Draw.prototype.setSizePensil = function (val) {
     var canvas = document.getElementById(this.id);
     var ctx = canvas.getContext("2d");
@@ -194,6 +263,11 @@ Draw.prototype.setSizePensil = function (val) {
     ctx.lineWidth = val;
 };
 
+/**
+ * altera a cor do cursor
+ * @param {type} obj
+ * @returns {undefined}
+ */
 Draw.prototype.setColor = function (obj) {
     if (obj === "apagar") {
         this.apagar = true;
@@ -205,6 +279,12 @@ Draw.prototype.setColor = function (obj) {
     var ctx = canvas.getContext("2d");
     ctx.strokeStyle = this.color;
 };
+
+/**
+ * Ativa a funcionalidade de apagar em todos os canvas
+ * @param {type} obj
+ * @returns {undefined}
+ */
 Draw.prototype.setApagarTudo = function (obj) {
     console.log(obj);
     if (obj) {
