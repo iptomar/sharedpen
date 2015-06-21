@@ -79,6 +79,8 @@ TextEditor.prototype.getSizePUtilizado = function () {
 TextEditor.prototype.setTextToEditor = function (text) {
     var arrayTextp = text.split("</p>");
     if (arrayTextp.length > 1) {
+        this.valPId = 1;
+        $("#" + this.idpai + " > p").remove();
         for (var i in arrayTextp) {
             $("#" + this.idpai).append(arrayTextp[i] + "</p>");
             this.valPId++;

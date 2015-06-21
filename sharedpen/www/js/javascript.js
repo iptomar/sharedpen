@@ -164,16 +164,3 @@ $.fn.contextMenu = function (settings) {
 function stringToMd5(value) {
     return CryptoJS.MD5(value).toString();
 }
-
-function resizeImg(imageData) {
-    var image = document.createElement("img");
-    image.src = imageData;
-    var canvas = document.createElement("canvas");
-    canvas.width = 50;
-    canvas.height = 50;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(image, 0, 0);
-
-//    return canvas.toDataURL("image/png");
-    return imageData;
-}

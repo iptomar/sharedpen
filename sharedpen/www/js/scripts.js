@@ -1697,7 +1697,7 @@ $(document).ready(function () {
     //************************************************
     //****Esconder botoes do menu*********************
     //************************************************
-    $('#bt_PDF, #bt_PRE, #bt_HTML').css({
+    $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
         'visibility': "hidden"
     });
 
@@ -1837,10 +1837,15 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
 //                console.log(data);
-                var tableusers = "<table border='1'>";
+                var tableusers = "<h3>Alunos que contribuiram para a realização deste trabalho.</h3>" +
+                        "<table style='margin:20px' border='1'>";
                 tableusers += "<tr><th>Imagem</th><th>Nome</th></tr>";
                 for (var i in data) {
-                    tableusers += "<tr><td><img alt='' src='" + resizeImg(data[i].avatar) + "'></td><td>" + data[i].nome + "</td></tr>";
+                    tableusers += "<tr><td><img style='width: 70px;height: 70px;' alt='' src='" +
+                            data[i].avatar +
+                            "'></td><td><p style='width: 500px;font-size:30px;margin-left:20px;' >" +
+                            data[i].nome +
+                            "</p></td></tr>";
                 }
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
@@ -1920,7 +1925,7 @@ $(document).ready(function () {
         folderArray.push(listapages);
         currentPosition += 1;
 //        console.log(backArray);
-        $('#bt_PDF, #bt_PRE, #bt_HTML').css({
+        $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
             'visibility': "hidden"
         });
         LivroPoemas = new Array();
@@ -2047,7 +2052,7 @@ $(document).ready(function () {
             currentPosition -= 1;
             var aux = backArray[currentPosition - 1];
             if (aux == "home") {
-                $('#bt_PDF, #bt_PRE, #bt_HTML').css({
+                $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
                     'visibility': "hidden"
                 });
                 LivroPoemas = new Array();
@@ -2610,7 +2615,19 @@ $(document).ready(function () {
         var textHelp = $("#divTxtAjuda").text();
         var typeP = $("#contentor").attr("tipoproj");
         var hashtoSave = hash;
-
+        
+        for (var item in hashtoSave) {
+            for (var elem in hashtoSave[item].modelo.arrayElem) {
+                if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
+                    var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
+                    var newchar = '\\"';
+                    conteudo = conteudo.split('"').join(newchar);
+                    newchar = '\\/';
+                    conteudo = conteudo.split('/').join(newchar);
+                    hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo;
+                }
+            }
+        }
         hashtoSave = JSON.stringify(hashtoSave);
         $.ajax({
             type: "POST",
@@ -3080,13 +3097,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     });
                 }
 
-                $('#bt_PDF').css({
-                    'visibility': "visible"
-                });
-                $('#bt_PRE').css({
-                    'visibility': "visible"
-                });
-                $('#bt_HTML').css({
+                $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
                     'visibility': "visible"
                 });
                 break;
@@ -3299,13 +3310,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 break;
 
             default:
-                $('#bt_PDF').css({
-                    'visibility': "hidden"
-                });
-                $('#bt_PRE').css({
-                    'visibility': "hidden"
-                });
-                $('#bt_HTML').css({
+                $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
                     'visibility': "hidden"
                 });
                 break;
