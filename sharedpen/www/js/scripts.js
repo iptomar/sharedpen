@@ -1821,7 +1821,7 @@ $(document).ready(function () {
                     });
 
                     imagee.src = canvas.toDataURL();
-                    page += "<div><img alt= '' src='" + canvas.toDataURL() + "'></div>";                    
+                    page += "<div><img alt= '' src='" + canvas.toDataURL() + "'></div>";
 //                    page += "<div>" + drawCanvas.drawObj.getImgCanvas() + "</div>";
                 }
             });
@@ -3064,6 +3064,8 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         dataType: 'json',
                         success: function (data) {
                             if (data[0].tipo == "Livro" || data[0].tipo == "Poema") {
+                                if (data[0].texto.trim().length  > 0) {
+                                    
                                 //Reduzir tamanho da div das tabs
                                 $("#contentor > div.col-lg-12").removeClass("col-lg-12");
                                 $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
@@ -3093,6 +3095,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 }, 1000, function () {
                                     // Animation complete.
                                 });
+                                }
                             }
 
                         },
@@ -3102,9 +3105,12 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     });
                 }
 
-                $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
-                    'visibility': "visible"
-                });
+                if (backArray[backArray.length - 1] == "MenuGerirProjectos.html") {
+                    $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
+                        'visibility': "visible"
+                    });
+                }
+
                 break;
             case "CriarLivro.html":
                 $("body").append(wait);
