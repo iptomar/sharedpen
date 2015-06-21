@@ -20,10 +20,10 @@ var listaColor = [// array com as corres disponiveis para alterar o fundo
     ["pink", "Rosa"],
     ["green", "Verde"]
 ];
-var hash = {};
-var tabTest;
-var LivroPoemas = new Array();
-var listapages = [];
+var hash = {};              // array com as tabes atuais do projeto
+var tabTest;                // auxiliar para a criacao de uma nova tab
+var LivroPoemas = new Array(); // array para os poemas
+var listapages = [];            // lista de paginas
 var backArray = ["home"];
 var folderArray = [listapages];
 var tmpArrayProj = [];
@@ -366,11 +366,8 @@ $(document).ready(function () {
                     }
                 });
         }
-        validacaoFormAll()
+        validacaoFormAll();
     });
-
-
-
 
     //editar estado de um utilizador
     $("body").on('click', ".editState", function (e) {
@@ -745,6 +742,7 @@ $(document).ready(function () {
     //--------------------------BACKOFFICE-END---------------------------------------
 
 
+// coloca os pedidos do ajax async false
     $.ajaxSetup({async: false});
     /**
      * Configuracao das opcoes do popup de online / offline de novos clientes
@@ -779,7 +777,7 @@ $(document).ready(function () {
         }
     });
     /**
-     * FunÃ§Ãµes relacionadas com a autenticaÃ§Ã£o --------------------------------------------------------------------
+     * Funcoes relacionadas com a autenticacao --------------------------------------------------------------------
      */
 
     // evento de carregar no button para fazer o login
@@ -812,7 +810,7 @@ $(document).ready(function () {
                     alert("Esperimente\n" +
                             "User = a, pass = a => Aluno\n" +
                             "User = b, pass = b => Admin\n" +
-                            "User = c, pass = c => Professor")
+                            "User = c, pass = c => Professor");
                     $("#erro_name").html("Nome Incorreto ou Password!");
                     setTimeout(function () {
                         $("#erro_name").animate({
@@ -839,6 +837,8 @@ $(document).ready(function () {
             }
         });
     });
+
+    // ajusta os elementos na pagina
     ajustElements();
     // recebe as cordenadas dos outros utilizadores e movimenta a label dele
     // conforme as coordenadas recebidas
@@ -860,7 +860,7 @@ $(document).ready(function () {
         }
     });
     /**
-     * FunÃ§Ãµes relacionadas com o desenho -------------------------------------------------------------------------
+     * Funcoes relacionadas com o desenho -------------------------------------------------------------------------
      */
     /**
      * evento do socket para desenhar o que recebe pelo socket
@@ -915,12 +915,10 @@ $(document).ready(function () {
                     y = e.originalEvent.touches[0].pageY - offset.top;
                 } catch (err) {
                 }
-
             } else {
                 x = e.offsetX;
                 y = e.offsetY;
             }
-
             var cmv = hash[idToll].modelo.arrayElem[thisId].drawObj;
             var sizeCurs = hash[idToll].modelo.arrayElem["tab" + tabNumber + "-Mycanvas"].drawObj.getSizeCursor();
             cmv.draw(x, y, type, sizeCurs);
@@ -950,22 +948,27 @@ $(document).ready(function () {
                 menuSelector: "#toolbar",
                 menuSelected: function (invokedOn, selectedMenu) {
                     switch (selectedMenu.data("tipo")) {
+                        // apagar em todos os canvas
                         case "corTudo":
                             hash[idToll].modelo.arrayElem[thisId].drawObj.setApagarTudo(selectedMenu.data("cor"));
                             //                                alert(selectedMenu.data("cor"));
                             break;
+                            // selecionar cor
                         case "cor":
                             hash[idToll].modelo.arrayElem[thisId].drawObj.setColor(selectedMenu.data("cor"));
                             //                                alert(selectedMenu.data("cor"));
                             break;
+                            // selecionar cor do cursor
                         case "size":
                             hash[idToll].modelo.arrayElem[thisId].drawObj.setSizePensil(selectedMenu.data("size"));
                             //                                alert(selectedMenu.data("size"));
                             break;
+                            // coloca uma gem do pc
                         case "img":
                             $("#LoadImageCanvas").click();
                             //                                alert(selectedMenu.data("tipo"));
                             break;
+                            // coloca a imagem da galeria
                         case "galeria":
                             var vals = {
                                 folder: "galeria",
@@ -986,6 +989,10 @@ $(document).ready(function () {
 
 
     });
+
+    /**
+     * adiciona a imagem selecionada no canvas e envia-a aos outros utilizadores
+     */
     $("body").on('change', '#LoadImageCanvas', function (e) {
         var Thid = $("#LoadImageCanvas").attr('data-idpai');
         var parent = "txtTab" + Thid.match(/^\d+|\d+\b|\d+(?=\w)/);
@@ -1048,7 +1055,7 @@ $(document).ready(function () {
         $("#colorpicker").val(data.cor);
     });
     /*
-     * FunÃ§Ãµes relacionas com as Tabs e modelos --------------------------------------------------------------------------------
+     * Funcoes relacionas com as Tabs e modelos --------------------------------------------------------------------------------
      */
 
     // *******************************************************************
@@ -1098,12 +1105,18 @@ $(document).ready(function () {
         var listClassPAI = $(this).parent().parent().attr('class').split(' ')[1];
         // console.log(listClassPAI);
         var edit = hash["." + listClassPAI].modelo.arrayElem[listClass].editor;
+        // verifica se nao estou a criar um projeto
         if (backArray[backArray.length - 1] != "MenuCriarProjectos.html") {
+            // verifica se o pe e do utilizador
             if ($("#" + edit.idpai + " > #" + e.target.id).attr("class") != edit.userNum) {
+                // se for um evento do mouse coloca o cursor no fim do texto
                 if (e.handleObj.type.charAt(0) == 'm' || e.handleObj.type.charAt(0) == 'c') {
                     setCaretAtEditor(e.target.id, 0, $("#" + edit.idpai + " > #" + e.target.id).text().length);
                 } else {
+                    // se o utilizador carregar no enter constroi um novo 
+                    // // paragrafo e informa o servidor 
                     if (e.keyCode == edit.key.ENTER) {
+                        // verifica se tem espaco para crar mais outro paragrafo
                         if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
                             e.preventDefault(); //Prevent default browser behavior
                             edit.createPara(edit.userNum, e.target.id);
@@ -1119,6 +1132,7 @@ $(document).ready(function () {
                                 parent: $("#" + edit.idpai).parent().parent().attr('class').split(' ')[1],
                                 'Pid': hash[kk[0]].projID
                             });
+                            // se nao tiver espaco informa o utilizador
                         } else {
                             alert("Não pode colocar mais nenhum paragrafo.\nSe for necessário crie uma nova folha.");
                         }
@@ -1126,8 +1140,11 @@ $(document).ready(function () {
                         e.preventDefault();
                     }
                 }
+                // se for o dono do paragrafo escreve e podeefetuar toas as 
+                // operacoes no mesmo
             } else {
                 var newPara = false;
+                // valida se a tecla pressionada e o enter
                 if (e.handleObj.type.charAt(0) == 'k' && e.keyCode == edit.key.ENTER) {
                     if (e.handleObj.type == 'keypress') {
                         if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
@@ -1142,6 +1159,7 @@ $(document).ready(function () {
                 edit.atualPara = e.target.id;
 //            console.log(hash[".txtTab1"].projID)
                 var kk = Object.keys(hash);
+                // envia o seu paragrafo para o servidor
                 socket.emit('msgappend', {
                     html: $("#" + edit.idpai).html(),
                     textSinc: $(e.target).text(),
@@ -1157,6 +1175,8 @@ $(document).ready(function () {
             }
             edit.changeColorPUsers();
         } else {
+            // se estiver a criar um prijeto verifica se pressionou no enter 
+            // para cir um novo paragrsfo
             if (e.handleObj.type.charAt(0) == 'k' && e.keyCode == edit.key.ENTER) {
                 if (e.handleObj.type == 'keypress') {
                     if ($("#" + edit.idpai).height() > edit.getSizePUtilizado()) {
@@ -1174,7 +1194,7 @@ $(document).ready(function () {
 
     });
     /**
-     * Evento gerado quando ha alteraÃ§oes nas tabs
+     * Evento gerado quando ha alteracoes nas tabs
      */
     socket.on("TabsChanged", function (data) {
         var kk = Object.keys(hash);
@@ -1195,50 +1215,10 @@ $(document).ready(function () {
      */
 
     $("body").on('click', "#bt_guardar", function () {
-//        var hashtoSave;
         var kk = Object.keys(hash);
         socket.emit('reqHashToSave', {
             id: hash[kk[0]].projID
         });
-
-//        socket.on('getHashToSave', function (data) {
-//            hashtoSave = data.hashh
-//
-//            for (item in hashtoSave) {
-//                for (elem in hashtoSave[item].modelo.arrayElem) {
-//                    if (hashtoSave[item].modelo.arrayElem[elem].conteudo != "") {
-//                        var conteudo = hashtoSave[item].modelo.arrayElem[elem].conteudo;
-//
-//                        var newchar = '\\"'
-//                        conteudo = conteudo.split('"').join(newchar);
-//                        newchar = '\\/'
-//                        conteudo = conteudo.split('/').join(newchar);
-//                        hashtoSave[item].modelo.arrayElem[elem].conteudo = conteudo
-//
-//                    }
-//                }
-//            }
-//
-//
-//            $.ajax({
-//                type: "POST",
-//                url: "/setArray",
-//                data: {
-//                    arrayy: JSON.stringify(hashtoSave)
-//                },
-//                dataType: 'json',
-//                success: function (data) {
-//                    //alert(data);
-//
-//                },
-//                error: function (error) {
-//                    // alert("ERRO HASH");
-//                    //console.log(JSON.stringify(error));
-//                }
-//            });
-//
-//        });
-
     });
 
     socket.on('saveHashStatus', function (data) {
@@ -1276,11 +1256,12 @@ $(document).ready(function () {
                 //console.log(JSON.stringify(error));
             }
         });
+    });
 
-    })
-
+    /**
+     * evento de carrear para adicionar uma nova tab ao carregar no modelo pretendido
+     */
     $("body").on('click', ".btnmodels", function () {
-
         var modelo = $(this).data('idmodel');
         var idNum = (Object.keys(hash).length + 1);
         $("body").append(wait);
@@ -1322,8 +1303,9 @@ $(document).ready(function () {
             }
         });
     });
+
     /**
-     * Evento onClik que gera a criaÃ§ao de uma nova Tab e respectivo modelo
+     * Evento onClik que gera a criacao de uma nova Tab e respectivo modelo
      */
     $("body").on('click', 'a[href="#add-page"]', function (e) {
         var obj = Object.keys(hash)[Object.keys(hash).length - 1];
@@ -1398,8 +1380,9 @@ $(document).ready(function () {
             });
         }
     });
+
     /**
-     * FunÃ§ao que remove tabs
+     * evento que remove tabs
      */
     $("body").on('click', '.xtab', function () {
         liElem = $(this).attr('id');
@@ -1427,12 +1410,14 @@ $(document).ready(function () {
         ;
     });
 
-
+    /**
+     * evento para fechar o painel dos modelos
+     */
     $("body").on('click', '#btncancelmodels', function () {
         $("body").find("#divchangemodel").remove();
     });
     /*
-     * FunÃ§Ãµes relacionas com o Chat ---------------------------------------------------------------------------------------
+     * Funcoes relacionas com o Chat ---------------------------------------------------------------------------------------
      */
 
     /**
@@ -1452,7 +1437,7 @@ $(document).ready(function () {
         }
     });
     /**
-     * FunÃ§Ã£o para enviar uma mensagem no chat
+     * Funcao para enviar uma mensagem no chat
      */
     $('#btnSendChat').click(function () {
         var chatMessage = $('#msgChat').val();
@@ -1465,14 +1450,16 @@ $(document).ready(function () {
             });
         $('#msgChat').val('');
     });
+
     /**
-     * FunÃ§Ã£o para enviar mensagem com o enter
+     * Funcao para enviar mensagem com o enter
      */
     $('#msgChat').keydown(function (e) {
         if (e.keyCode == 13) {
             $('#btnSendChat').click();
         }
     });
+
     /**
      * Evento gerado quando um utilizador se liga, recebe todas as mensagens do chat
      */
@@ -1497,13 +1484,44 @@ $(document).ready(function () {
             scrollTop: $('#panelChat').prop("scrollHeight")
         }, 500);
     });
+
+    // *******************************************************************
+    // botao chat
+    // *******************************************************************
+    $('#bt_Chat').click(function () {
+        if ($("#divUsers").css("visibility") == "hidden") {
+            $("#divUsers").css({
+                'visibility': "visible"
+            });
+            $("#divUsers").animate({
+                "left": "74%"
+            }, 1000, "swing", function () {
+                $("#numMsg").animate({
+                    opacity: 0
+                }, 500, function () {
+                    $("#numMsg").css({
+                        visibility: "hidden",
+                        opacity: 1
+                    });
+                    countMsg = 0;
+                });
+            });
+        } else {
+            $("#divUsers").animate({
+                "left": "100%"
+            }, function () {
+                $("#divUsers").css({
+                    'visibility': "hidden"
+                });
+            });
+        }
+    });
+
     /*
-     * Fim FunÃ§Ãµes relacionas com o Chat -------------------------------------------------------------------------------
+     * Fim Funcoes relacionas com o Chat -------------------------------------------------------------------------------
      */
 
-
-
-    //Click para ver os meus projectos atravÃ©s do data-layout
+    //Click para ver os meus projectos atraves do data-layout
     $("body").on('click', "#contentor > div > div[data-layout='MenuGerirProjectos.html']", function () {
         var myID = userNumber;
         $("body").append(wait);
@@ -1546,8 +1564,9 @@ $(document).ready(function () {
         });
     });
 
-
-
+    /**
+     * evento para abrir um projeto especifico
+     */
     $("body").on('click', 'a[href="#AbrirProj"]', function () {
         var idProj = $(this).data("idproj");
         //tmpArrayProj[idProj] = tmpArrayProj[idProj].replace(/'/g, "");
@@ -1584,11 +1603,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
-
-
-
 
     /**
      * Funcoes para drag and drop de imagens -----------------------------------------
@@ -1678,24 +1692,7 @@ $(document).ready(function () {
     socket.on('user image', function (data) {
         $("body").find('#' + data.id).attr("src", data.imageData);
     });
-
-    /**
-     * FunÃ§oes de logout -----------------------------------------------------------------------------------------------
-     */
-    /**
-     * recebe o evento do socket com o socket id do cliente que se desligou
-     */
-
-    socket.on('diconnected', function (socketid) {
-        for (var item in users) {
-            if (users[item].getSocketId() == socketid) {
-                var numid = users[item].getdivid();
-                toastr.warning(users[item].getUsername(), 'Offline');
-                users.splice(users[item], 1);
-                $("." + numid).remove();
-            }
-        }
-    });
+    
     //************************************************
     //****Esconder botoes do menu*********************
     //************************************************
@@ -1763,7 +1760,6 @@ $(document).ready(function () {
     // *******************************************************************
     // Botao de HTML
     // *******************************************************************
-
     $('#bt_HTML').click(function () {
         var pages = [];
         var usercontributes = [];
@@ -1830,6 +1826,7 @@ $(document).ready(function () {
         pages.pop();
 //        console.log(usercontributes);
         $("body").append(wait);
+        // envia para o servidor a lista dos utilizadores e os seu cotributos
         $.ajax({
             type: "POST",
             url: "/saveContributes",
@@ -1839,6 +1836,8 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
 //                console.log(data);
+// recebe a lista dos utilizadores com o nome e o avatar de 
+// cada um e controi a tabela
                 var tableusers = "<h3>Alunos que contribuiram para a realização deste trabalho.</h3>" +
                         "<table style='margin:20px' border='1'>";
                 tableusers += "<tr><th>Imagem</th><th>Nome</th></tr>";
@@ -1852,7 +1851,6 @@ $(document).ready(function () {
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
 
-//////          
                 save_html(pages);
                 //socket.emit("saveAsHtml", pages);
                 //window.open("./livro/Livro.html");
@@ -1866,38 +1864,9 @@ $(document).ready(function () {
         });
     });
 
-    // *******************************************************************
-    // botao chat
-    // *******************************************************************
-    $('#bt_Chat').click(function () {
-        if ($("#divUsers").css("visibility") == "hidden") {
-            $("#divUsers").css({
-                'visibility': "visible"
-            });
-            $("#divUsers").animate({
-                "left": "74%"
-            }, 1000, "swing", function () {
-                $("#numMsg").animate({
-                    opacity: 0
-                }, 500, function () {
-                    $("#numMsg").css({
-                        visibility: "hidden",
-                        opacity: 1
-                    });
-                    countMsg = 0;
-                });
-            });
-        } else {
-            $("#divUsers").animate({
-                "left": "100%"
-            }, function () {
-                $("#divUsers").css({
-                    'visibility': "hidden"
-                });
-            });
-        }
-    });
-
+/**
+ * evento de selecionar uma imagem na galeria de imagens para adicionar ao canvas
+ */
     $("body").on("click", ".imageGaleria", function () {
         var Thid = $(this).attr('data-idpai').replace(".", "");
         var cnv = $(this).attr('data-idcnv');
@@ -1924,7 +1893,23 @@ $(document).ready(function () {
             });
         });
     });
+    
+/**
+ * evento dre fechar a galeria de imagens
+ */
+    $(".fecharGaleria").click(function () {
+        $("#divGaleria").animate({
+            "left": "-30%"
+        }, 1000, function () {
+            $("#divGaleria").css({
+                "visibility": "hidden"
+            });
+        });
+    });
 
+/**
+ * evento de voltar ao menu inicial
+ */
     $("#homemenu").click(function () {
         backArray.push("home");
         folderArray.push(listapages);
@@ -2028,16 +2013,9 @@ $(document).ready(function () {
         }
     });
 
-    $(".fecharGaleria").click(function () {
-        $("#divGaleria").animate({
-            "left": "-30%"
-        }, 1000, function () {
-            $("#divGaleria").css({
-                "visibility": "hidden"
-            });
-        });
-    });
-
+/**
+ * evento que coloca uma pagina num determiado local
+ */
     $("body").on("click", ".carregarLayout", function () {
         if (currentPosition != backArray.length) {
             backArray.splice(currentPosition, backArray.length - currentPosition);
@@ -2100,6 +2078,7 @@ $(document).ready(function () {
         //        };
         //        getFilesToFolder(socket, data);
     });
+    
     //Mostrar os imagens disponÃ­veis para o tema
     $("body").on("click", '.tema-img', function () {
         var self = this;
@@ -2121,6 +2100,9 @@ $(document).ready(function () {
         $("body").find("a[href^='#page']:last").click();
     });
 
+/**
+ * eventos das formatacoes para o modelo de livro
+ */
     $("body").on("click", ".dropdown-menu li a", function () {
         switch ($(this).data("type")) {
             case "font-family":
@@ -2257,6 +2239,9 @@ $(document).ready(function () {
 
     });
 
+/**
+ * seletor para selecionar a capa e a pagina seguinte para a criacao do projeto
+ */
     $("body").on("click", ".selectModelo", function () {
         if (($("form input[type='radio']:checked").val()).toUpperCase() == "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
@@ -2269,6 +2254,9 @@ $(document).ready(function () {
         }
     });
 
+/**
+ * guarda o projeto na base de dados
+ */
     $("body").on("click", "#guardarModeloLivro", function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
         var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
@@ -2322,6 +2310,10 @@ $(document).ready(function () {
 
     });
 
+/**
+ * consulta a base de daos para receber os projetos em qque o utilizador 
+ * esta iserido
+ */
     $("body").on("click", "#contentor > div > div[data-layout='MenuMeusProjectosAbertos.html']", function () {
         //GET getProjParticipaByID
 
@@ -2330,7 +2322,6 @@ $(document).ready(function () {
             url: "/getProjParticipaByID/" + userNumber,
             dataType: 'json',
             success: function (data) {
-
                 for (var proj in data) {
                     var htmlLine = "<tr class='active'>" +
                             '<td><a href="#AbrirProj" data-idProj=' + data[proj].id + ' data-folder="html_Work_Models" data-layout="Livro.html">' + data[proj].nome + '</a></td>' +
@@ -2339,20 +2330,11 @@ $(document).ready(function () {
                     //faz o append do html gerado
                     $("body").find("#meusProjAbertosTable").append(htmlLine);
                 }
-
-                //<tr class="active">
-                //<td><a href="">Exemplo de Livro</a></td>
-                //<td>Publico</td>
-                //</tr>
-
-
             },
             error: function (error) {
                 console.log(JSON.stringify(error));
             }
         });
-
-
     });
 
 
@@ -2481,11 +2463,11 @@ $(document).ready(function () {
         }
 
     });
+    
     $("body").on("click", "#addButtonProf", function () {
         $("#addedProfessores").append($("#alluserProfessores option:selected").get(0));
         $("#alluserProfessores option:selected").remove(); //css("display", "none");
     });
-
 
     // (des)selecionar user para participar no projeto
     $("body").on("click", "#removeButtonProf", function () {
@@ -2582,7 +2564,6 @@ $(document).ready(function () {
                         refactorTab(numCapa, idNum, data[0].texto);
                         addtohash(idNum);
 
-
                     } else if (data[i].id == numPagina) {
                         idNum = (Object.keys(hash).length + 1);
                         Addtab(numPagina, idNum);
@@ -2591,9 +2572,7 @@ $(document).ready(function () {
                         addtohash(idNum);
                     }
                 }
-
                 $("#contentor").attr("tab", idmodel);
-
                 $("body").find("a[href^='#page']:last").click();
 
 // remocao do botao de adicionar mais tabs
@@ -2609,7 +2588,9 @@ $(document).ready(function () {
         });
     });
 
-
+/**
+ * Guarda o projetp na base de dados
+ */
     $("body").on("click", "#btGuardarProjeto", function () {
 
         $("body").append(wait);
@@ -2665,16 +2646,27 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
-
-
-
-    /*
-     * Fim FunÃ§oes de logout -----------------------------------------------------------------------------------------------
+    
+    /**
+     * Funcoes de logout -----------------------------------------------------------------------------------------------
+     */
+    /**
+     * recebe o evento do socket com o socket id do cliente que se desligou
      */
 
+    socket.on('diconnected', function (socketid) {
+        for (var item in users) {
+            if (users[item].getSocketId() == socketid) {
+                var numid = users[item].getdivid();
+                toastr.warning(users[item].getUsername(), 'Offline');
+                users.splice(users[item], 1);
+                $("." + numid).remove();
+            }
+        }
+    });    
+    /*
+     * Fim Funcoes de logout -----------------------------------------------------------------------------------------------
+     */
 });
 $(window).resize(function () {
     ajustElements();
@@ -2686,7 +2678,7 @@ $(window).resize(function () {
 // Code taken from MatthewCrumley (http://stackoverflow.com/a/934925/298479)
 /**
  *
- 
+ recebe uma imagem e devolve o base64 da imagem
  * @param {type} img
  * @returns {unresolved} */
 function getBase64Image(img) {
@@ -2707,6 +2699,12 @@ function getBase64Image(img) {
     var dataURL = canvas.toDataURL("image/png");
     return dataURL;
 }
+
+/**
+ * Carrega as paginas do utilizador
+ * @param {type} vals paginas do utilizador
+ * @returns {undefined}
+ */
 function carregarPaginasLogin(vals) {
     var allPages = '<div class="col-xs-12 col-sm-12 col-md-12">';
     for (var i = 0, max = vals.length; i < max; i++) {
@@ -2757,7 +2755,7 @@ function castTab(tabToCast) {
 }
 
 /**
- *
+ *faz o pedido ao servidor dos lificheiros existentes dentro de uma pasta
  
  * @param {type} sckt
  * @param {type} data
@@ -2802,7 +2800,6 @@ function updateTab(i, key, creator) {
                             var ctx = dr.getContext('2d');
                             //pinta a imagem
                             ctx.drawImage(img, 0, 0);
-
                         }
                         //se tiver backgorund desenha o
                         if (hash[key].modelo.arrayElem[elemento].drawObj.bgImg != "") {
@@ -2868,7 +2865,8 @@ function Addtab(html, idNum) {
  
  * @param {type} html   pagina html a ser carregada
  * @param {type} idNum  numeor da tab para alterar os id's da tab
- * @returns {undefined} */
+ * @param {type} estilos Lista com os estilos aserem aplicasdos no texteditor
+ * * @returns {undefined} */
 
 function refactorTab(html, idNum, estilos) {
 
@@ -3048,14 +3046,15 @@ function addLayoutToDiv(local, folder, layout, stk) {
     var kk = Object.keys(hash);
     $(local).load("./" + folder + "/" + layout, function () {
         switch (layout) {
-
+            /**
+             * Livro com as tabes 
+             */
             case "Livro.html":
                 if (stk != null) {
                     stk.emit("getAllTabs", {
                         Pid: hash[kk[0]].projID
                     });
                 }
-
                 if (typeof hash[kk[0]] != "undefined") {
                     $.ajax({
                         type: "GET",
@@ -3084,26 +3083,24 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                 } else {
                                     tmpAjuda += data[0].texto;
                                 }
-
-
                                 tmpAjuda += "</div>" + "</div>";
                                 $("#contentor").append(tmpAjuda);
 
 
                                 $(".containerTxtAjuda").animate({
-                                    opacity: 1,
+                                    opacity: 1
                                 }, 1000, function () {
                                     // Animation complete.
                                 });
                                 }
                             }
-
                         },
                         error: function (error) {
                             console.log(JSON.stringify(error));
                         }
                     });
                 }
+
 
                 if (backArray[backArray.length - 1] == "MenuGerirProjectos.html") {
                     $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
@@ -3112,6 +3109,10 @@ function addLayoutToDiv(local, folder, layout, stk) {
                 }
 
                 break;
+
+                /**
+                 * criacao do livro para os modelos
+                 */
             case "CriarLivro.html":
                 $("body").append(wait);
                 $.ajax({
@@ -3141,16 +3142,11 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     }
                 });
                 break;
-            case "CriarPoema.html":
-
-                break;
-
-
                 /**
-                 * -----------------------------------------------------------BACKOFFICE--------------------------------------------------------------
+                 * --------------------BACKOFFICE-----------------------------
                  */
 
-                //-------------------------------GERIR-----------------------------------------
+                //------------------------GERIR-------------------------------
 
             case "GerirAlunos.html":
                 $("body").append(wait);
@@ -3184,19 +3180,15 @@ function addLayoutToDiv(local, folder, layout, stk) {
                             else {
                                 htmlVar += ' src="../img/red.png">';
                             }
-                            '</div>' +
-                                    '</td>' +
-                                    "</tr>";
+                            htmlVar += '</div>' + '</td>' + "</tr>";
                         }
                         $("body").find("#loading").remove();
                         $("#gerirEntitiesTable tbody").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
-
-
                     },
                     error: function (error) {
                         $("body").find("#loading").remove();
-                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.")
+                        alert("Erro ao tentar carregar os dados para paginas.\nTente Novamente.");
                         console.log(JSON.stringify(error));
                     }
                 });
@@ -3248,7 +3240,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
-
                 break;
 
             case "GerirEscolas.html":
@@ -3284,7 +3275,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         console.log(JSON.stringify(error));
                     }
                 });
-
                 break;
 
             case "GerirAgrupamentos.html":
@@ -3307,7 +3297,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                                     '</td>' +
                                     "</tr>";
                         }
-
                         $("body").find("#loading").remove();
                         $("#gerirEntitiesTable tbody").remove();
                         $("body").find("#gerirEntitiesTable").append(htmlVar);
@@ -3319,7 +3308,6 @@ function addLayoutToDiv(local, folder, layout, stk) {
                     }
                 });
                 break;
-
             default:
                 $('#bt_PDF, #bt_PRE, #bt_HTML, #bt_guardar').css({
                     'visibility': "hidden"
@@ -3328,6 +3316,7 @@ function addLayoutToDiv(local, folder, layout, stk) {
         }
     });
 }
+
 //Validação feita dos forms
 function validacaoFormAll() {
     $("body").find('.validForm').bootstrapValidator({
@@ -3407,10 +3396,8 @@ function validacaoFormAll() {
                 }
             }
         }
-    })
-
+    });
 }
-
 
 /**
  * Ajusta os elementos do ecram principal
@@ -3420,11 +3407,18 @@ function ajustElements() {
     $("#contentor").css({
         height: $(window).height() * 0.89
     });
+    // calcula a altura das tabes
     $("body").find(".txtTab").css({
         height: $("#contentor").height() * 0.82
     });
 }
 
+/**
+ * Fucao que recebe um array de paginas e constroi o livro e guarda-o no 
+ * cliente que fez o pedido do livro.
+ * @param {type} data
+ * @returns {undefined}
+ */
 function save_html(data) {
     var scriptStart = "<script type=\"text/javascript\">";
     var scriptEnd = "setInterval(function() {$('p').attr('contenteditable','false');}, 1000);</script>";
@@ -3441,7 +3435,7 @@ function save_html(data) {
     }
     html += "\n<div class=\"hard\"></div>\n<div class=\"hard\"></div>\n</div>\n</div>\n<script type=\"text/javascript\">\n$(\"#flipbook\").turn({width: \"100%\",height: \"100%\",autoCenter: true});\n</script>\n</body>\n</html>";
     //socket.emit("saveAsHtml", html);
-    download(html, "livro.html", "text/plain")
+    download(html, "livro.html", "text/plain");
     //console.log(html);
 }
 
