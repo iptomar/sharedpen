@@ -1598,7 +1598,7 @@ $(document).ready(function () {
                 reader = new FileReader(file);
         reader.onload = function (evt) {
             $("body").find('#' + imgId).attr('src', evt.target.result);
-            if (imgId != "userImage" && imgId != "image" && imgId != "add-Entity-Image") {
+            if (imgId != "userImage" && imgId != "image" && imgId != "add-Entity-Image" && imgId != "avatar-Image") {
                 // envia as informacoes da nova imagem para os outros clientes
                 var kk = Object.keys(hash);
                 socket.emit('msgappend', {
@@ -1654,7 +1654,7 @@ $(document).ready(function () {
 
             var reader = new FileReader(file);
             reader.onload = function (evt) {
-                if (idImg != "userImage" && idImg != "image") {
+                if (idImg != "userImage" && idImg != "image" && idImg != "add-Entity-Image" && idImg != "avatar-Image") {
                     // envia as informacoes da nova imagem para os outros clientes
                     var kk = Object.keys(hash);
                     socket.emit('msgappend', {
@@ -1843,7 +1843,7 @@ $(document).ready(function () {
                 for (var i in data) {
                     tableusers += "<tr><td><img style='width: 70px;height: 70px;' alt='' src='" +
                             data[i].avatar +
-                            "'></td><td><p style='width: 500px;font-size:30px;margin-left:20px;' >" +
+                            "'></td><td><p style='font-size:30px;margin:0 20px 0 20px;' >" +
                             data[i].nome +
                             "</p></td></tr>";
                 }
@@ -3408,5 +3408,8 @@ function validacaoFormAll() {
 function ajustElements() {
     $("#contentor").css({
         height: $(window).height() * 0.89
+    });
+    $("body").find(".txtTab").css({
+        height: $("#contentor").height() * 0.82
     });
 }

@@ -62,9 +62,13 @@ TextEditor.prototype.getTextEditor = function () {
 
 TextEditor.prototype.getTextEditorForHtml = function () {
     var alltextP = "";
-    $('#' + this.idpai).each(function () {
+    $('#' + this.idpai).children('p').each(function () {
+        $(this).removeAttr("style");    
+    });
+    $('#' + this.idpai).each(function () {        
         alltextP += this.outerHTML;
     });
+    this.changeColorPUsers();
     return alltextP;
 };
 
