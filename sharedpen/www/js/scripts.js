@@ -1066,17 +1066,19 @@ $(document).ready(function () {
     socket.on('msgappend', function (data) {
         //verificar se o projecto de onde foi emitido Ã© o meu
         var kk = Object.keys(hash);
-        if (data.Pid == hash[kk[0]].projID) {
-            switch (data.tipo) {
-                case "IMG":
-                    $("body").find('#' + data.id).attr('src', data.imageData);
-                    break;
-                default:
-                    if (typeof $("#" + data.id).parent().parent().attr('class') != "undefined") {
-                        var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1];
-                        var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
-                        editor.setTextEditor(data);
-                    }
+        if (typeof hash[kk[0]] != "undefined") {
+            if (data.Pid == hash[kk[0]].projID) {
+                switch (data.tipo) {
+                    case "IMG":
+                        $("body").find('#' + data.id).attr('src', data.imageData);
+                        break;
+                    default:
+                        if (typeof $("#" + data.id).parent().parent().attr('class') != "undefined") {
+                            var parentid = $("#" + data.id).parent().parent().attr('class').split(' ')[1];
+                            var editor = hash["." + parentid].modelo.arrayElem[data.id].editor;
+                            editor.setTextEditor(data);
+                        }
+                }
             }
         }
     });
@@ -1198,14 +1200,16 @@ $(document).ready(function () {
      */
     socket.on("TabsChanged", function (data) {
         var kk = Object.keys(hash);
-        if (hash[kk[0]].projID == data.Pid) {
-            if ($.trim(username) != "") {
-                if (data.op == "remover") {
-                    removeTab(data.id);
-                } else {
-                    Addtab(data.modelo, data.pos);
-                    hash[".txtTab" + data.pos] = castTab(data.tab);
-                    updateTab(data.pos, ".txtTab" + data.pos, data.creator);
+        if (typeof hash[kk[0]] != "undefined") {
+            if (hash[kk[0]].projID == data.Pid) {
+                if ($.trim(username) != "") {
+                    if (data.op == "remover") {
+                        removeTab(data.id);
+                    } else {
+                        Addtab(data.modelo, data.pos);
+                        hash[".txtTab" + data.pos] = castTab(data.tab);
+                        updateTab(data.pos, ".txtTab" + data.pos, data.creator);
+                    }
                 }
             }
         }
@@ -1692,7 +1696,7 @@ $(document).ready(function () {
     socket.on('user image', function (data) {
         $("body").find('#' + data.id).attr("src", data.imageData);
     });
-    
+
     //************************************************
     //****Esconder botoes do menu*********************
     //************************************************
@@ -1864,9 +1868,9 @@ $(document).ready(function () {
         });
     });
 
-/**
- * evento de selecionar uma imagem na galeria de imagens para adicionar ao canvas
- */
+    /**
+     * evento de selecionar uma imagem na galeria de imagens para adicionar ao canvas
+     */
     $("body").on("click", ".imageGaleria", function () {
         var Thid = $(this).attr('data-idpai').replace(".", "");
         var cnv = $(this).attr('data-idcnv');
@@ -1893,10 +1897,10 @@ $(document).ready(function () {
             });
         });
     });
-    
-/**
- * evento dre fechar a galeria de imagens
- */
+
+    /**
+     * evento dre fechar a galeria de imagens
+     */
     $(".fecharGaleria").click(function () {
         $("#divGaleria").animate({
             "left": "-30%"
@@ -1907,9 +1911,9 @@ $(document).ready(function () {
         });
     });
 
-/**
- * evento de voltar ao menu inicial
- */
+    /**
+     * evento de voltar ao menu inicial
+     */
     $("#homemenu").click(function () {
         backArray.push("home");
         folderArray.push(listapages);
@@ -2013,9 +2017,9 @@ $(document).ready(function () {
         }
     });
 
-/**
- * evento que coloca uma pagina num determiado local
- */
+    /**
+     * evento que coloca uma pagina num determiado local
+     */
     $("body").on("click", ".carregarLayout", function () {
         if (currentPosition != backArray.length) {
             backArray.splice(currentPosition, backArray.length - currentPosition);
@@ -2078,7 +2082,7 @@ $(document).ready(function () {
         //        };
         //        getFilesToFolder(socket, data);
     });
-    
+
     //Mostrar os imagens disponÃ­veis para o tema
     $("body").on("click", '.tema-img', function () {
         var self = this;
@@ -2100,9 +2104,9 @@ $(document).ready(function () {
         $("body").find("a[href^='#page']:last").click();
     });
 
-/**
- * eventos das formatacoes para o modelo de livro
- */
+    /**
+     * eventos das formatacoes para o modelo de livro
+     */
     $("body").on("click", ".dropdown-menu li a", function () {
         switch ($(this).data("type")) {
             case "font-family":
@@ -2239,9 +2243,9 @@ $(document).ready(function () {
 
     });
 
-/**
- * seletor para selecionar a capa e a pagina seguinte para a criacao do projeto
- */
+    /**
+     * seletor para selecionar a capa e a pagina seguinte para a criacao do projeto
+     */
     $("body").on("click", ".selectModelo", function () {
         if (($("form input[type='radio']:checked").val()).toUpperCase() == "capa".toUpperCase()) {
             $("body").find("#ModeloSelectCapa").attr("src", $(this).attr("src"));
@@ -2254,9 +2258,9 @@ $(document).ready(function () {
         }
     });
 
-/**
- * guarda o projeto na base de dados
- */
+    /**
+     * guarda o projeto na base de dados
+     */
     $("body").on("click", "#guardarModeloLivro", function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
         var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
@@ -2310,10 +2314,10 @@ $(document).ready(function () {
 
     });
 
-/**
- * consulta a base de daos para receber os projetos em qque o utilizador 
- * esta iserido
- */
+    /**
+     * consulta a base de daos para receber os projetos em qque o utilizador 
+     * esta iserido
+     */
     $("body").on("click", "#contentor > div > div[data-layout='MenuMeusProjectosAbertos.html']", function () {
         //GET getProjParticipaByID
 
@@ -2463,7 +2467,7 @@ $(document).ready(function () {
         }
 
     });
-    
+
     $("body").on("click", "#addButtonProf", function () {
         $("#addedProfessores").append($("#alluserProfessores option:selected").get(0));
         $("#alluserProfessores option:selected").remove(); //css("display", "none");
@@ -2588,9 +2592,9 @@ $(document).ready(function () {
         });
     });
 
-/**
- * Guarda o projetp na base de dados
- */
+    /**
+     * Guarda o projetp na base de dados
+     */
     $("body").on("click", "#btGuardarProjeto", function () {
 
         $("body").append(wait);
@@ -2646,7 +2650,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     /**
      * Funcoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -2663,7 +2667,7 @@ $(document).ready(function () {
                 $("." + numid).remove();
             }
         }
-    });    
+    });
     /*
      * Fim Funcoes de logout -----------------------------------------------------------------------------------------------
      */
@@ -3063,35 +3067,35 @@ function addLayoutToDiv(local, folder, layout, stk) {
                         dataType: 'json',
                         success: function (data) {
                             if (data[0].tipo == "Livro" || data[0].tipo == "Poema") {
-                                if (data[0].texto.trim().length  > 0) {
-                                    
-                                //Reduzir tamanho da div das tabs
-                                $("#contentor > div.col-lg-12").removeClass("col-lg-12");
-                                $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
+                                if (data[0].texto.trim().length > 0) {
 
-                                var tmpAjuda = "<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
-                                        "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
-                                        "<div id='divTxtAjuda'>";
-                                //Adicionar a div com o texto de ajuda		
+                                    //Reduzir tamanho da div das tabs
+                                    $("#contentor > div.col-lg-12").removeClass("col-lg-12");
+                                    $("#contentor > div").addClass("col-xs-8 col-sm-8 col-md-8");
 
-                                var tmpText = data[0].texto;
-                                if (data[0].tipo == "Poema") {
-                                    tmpText = tmpText.split(" ");
-                                    for (var i = 0, max = tmpText.length; i < max; i++) {
-                                        tmpAjuda += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + tmpText[i] + '</span></h3>';
+                                    var tmpAjuda = "<div class='containerTxtAjuda col-xs-4 col-sm-4 col-md-4'>" +
+                                            "<h2 class='text-center tabspace'>Texto de Ajuda</h1>" +
+                                            "<div id='divTxtAjuda'>";
+                                    //Adicionar a div com o texto de ajuda		
+
+                                    var tmpText = data[0].texto;
+                                    if (data[0].tipo == "Poema") {
+                                        tmpText = tmpText.split(" ");
+                                        for (var i = 0, max = tmpText.length; i < max; i++) {
+                                            tmpAjuda += '<h3><span class="label label-info" style="float:left; margin: 3px;">' + tmpText[i] + '</span></h3>';
+                                        }
+                                    } else {
+                                        tmpAjuda += data[0].texto;
                                     }
-                                } else {
-                                    tmpAjuda += data[0].texto;
-                                }
-                                tmpAjuda += "</div>" + "</div>";
-                                $("#contentor").append(tmpAjuda);
+                                    tmpAjuda += "</div>" + "</div>";
+                                    $("#contentor").append(tmpAjuda);
 
 
-                                $(".containerTxtAjuda").animate({
-                                    opacity: 1
-                                }, 1000, function () {
-                                    // Animation complete.
-                                });
+                                    $(".containerTxtAjuda").animate({
+                                        opacity: 1
+                                    }, 1000, function () {
+                                        // Animation complete.
+                                    });
                                 }
                             }
                         },
