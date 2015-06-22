@@ -438,7 +438,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
 
-                    addLayoutToDiv("#contentor", "html", "GerirAlunos.html", socket); //Carrega o layout
+                     $(".voltarLayout").click();
                 },
                 error: function (error) {
                 }
