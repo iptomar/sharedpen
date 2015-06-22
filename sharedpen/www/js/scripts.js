@@ -1,6 +1,6 @@
 /**
  *
- * Scrip com as FunÃ§oes de autenticação, tabs e modelos, desenho, chat, e cor de background
+ * Scrip com as Funcoes de autenticação, tabs e modelos, desenho, chat, e cor de background
  */
 
 var wait = '<div id="loading"><div><img alt="" src="./../img/wait.gif"></div></div>';
@@ -763,7 +763,7 @@ $(document).ready(function () {
     };
 
 
-    // cria a ligaÃ§Ã£o com o servidor que disponibiliza o socket
+    // cria a ligacoo com o servidor que disponibiliza o socket
     //    socket = io.connect('http://185.15.22.55:8080');
     socket = io.connect(window.location.href);
     // Carrega o dropdown com a liosta das cores
@@ -1019,7 +1019,7 @@ $(document).ready(function () {
         reader.readAsDataURL(input.files[0]);
     });
     /*
-     * FunÃ§oes relacionadas com as cores ----------------------------------------------------------------------
+     * Funcoes relacionadas com as cores ----------------------------------------------------------------------
      */
 
     /**

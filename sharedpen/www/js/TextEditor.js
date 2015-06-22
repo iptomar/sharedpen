@@ -1,3 +1,12 @@
+/**
+ * Editor de Texto
+ * @param {type} idpai      div do editor
+ * @param {type} user       nome do utilizador
+ * @param {type} cor        cor do utilizador
+ * @param {type} numCreator numero do utilizador que criou o paragrafo
+ * @param {type} userNum    numero do utilizador
+ * @returns {TextEditor}
+ */
 var TextEditor = function (idpai, user, cor, numCreator, userNum) {
     this.idpai = idpai;
     this.user = user;
@@ -16,7 +25,10 @@ var TextEditor = function (idpai, user, cor, numCreator, userNum) {
     };
 };
 
-
+/**
+ * Coloca a cor dos outro utilizadores diferente da do utilizador
+ * @returns {undefined}
+ */
 TextEditor.prototype.changeColorPUsers = function () {
     $("#" + this.idpai + " > p:not(." + this.userNum + ")").css({
         "color": "blue"
@@ -26,6 +38,12 @@ TextEditor.prototype.changeColorPUsers = function () {
     });
 };
 
+/**
+ * Constroi um paragrafo
+ * @param {type} sckid
+ * @param {type} idPara
+ * @returns {undefined}
+ */
 TextEditor.prototype.createPara = function (sckid, idPara) {
     $('<p  id="' +
             this.idpai + "-" +
@@ -40,6 +58,11 @@ TextEditor.prototype.createPara = function (sckid, idPara) {
     }
 };
 
+/**
+ * Coloca o texto no paragrafo do seu utilizador
+ * @param {type} data
+ * @returns {undefined}
+ */
 TextEditor.prototype.setTextEditor = function (data) {
     if (data.novoPara) {
         this.createPara(data.socketid, data.idPara);
@@ -52,6 +75,10 @@ TextEditor.prototype.setTextEditor = function (data) {
     this.changeColorPUsers();
 };
 
+/**
+ * Devolve o texto do editor
+ * @returns {String}
+ */
 TextEditor.prototype.getTextEditor = function () {
     var alltextP = "";
     $('#' + this.idpai).children('p').each(function () {
@@ -60,6 +87,10 @@ TextEditor.prototype.getTextEditor = function () {
     return alltextP;
 };
 
+/**
+ * Devolve o codigo html do editor
+ * @returns {String}
+ */
 TextEditor.prototype.getTextEditorForHtml = function () {
     var alltextP = "";
     $('#' + this.idpai).children('p').each(function () {
@@ -72,6 +103,10 @@ TextEditor.prototype.getTextEditorForHtml = function () {
     return alltextP;
 };
 
+/**
+ * Calcula o tamanhos dos paragrafos criados
+ * @returns {jQuery|Number}
+ */
 TextEditor.prototype.getSizePUtilizado = function () {
     var size = $('#' + this.idpai + "-" + 1).height() + 10;
     $('#' + this.idpai).children('p').each(function () {
@@ -80,6 +115,11 @@ TextEditor.prototype.getSizePUtilizado = function () {
     return size;
 };
 
+/**
+ * Coloca todo o texto rcebido no editor
+ * @param {type} text
+ * @returns {undefined}
+ */
 TextEditor.prototype.setTextToEditor = function (text) {
     var arrayTextp = text.split("</p>");
     if (arrayTextp.length > 1) {
@@ -94,6 +134,11 @@ TextEditor.prototype.setTextToEditor = function (text) {
     }
 };
 
+/**
+ * Constrou um array com os contributos dos intervenientes no editor
+ * @param {type} projId
+ * @returns {Array|TextEditor.prototype.contributes.contri}
+ */
 TextEditor.prototype.contributes = function (projId) {
     var contri = [];
     var pai = this.idpai;
@@ -109,6 +154,11 @@ TextEditor.prototype.contributes = function (projId) {
     return contri;
 };
 
+/**
+ * Configura o editor com os estilos defenidos
+ * @param {type} estilos
+ * @returns {undefined}
+ */
 TextEditor.prototype.styles = function (estilos) {
     if (typeof estilos != "undefined") {
         var estilosArray = estilos.split(";");
@@ -123,6 +173,11 @@ TextEditor.prototype.styles = function (estilos) {
     }
 };
 
+/**
+ * Devolve a posicao do cursor
+ * @param {type} editableDiv
+ * @returns {range@call;duplicate.text.length|Number|range.endOffset}
+ */
 function getCaretPosition(editableDiv) {
     var caretPos = 0, sel, range;
     if (window.getSelection) {
@@ -148,7 +203,7 @@ function getCaretPosition(editableDiv) {
 }
 
 /**
- * 
+ * coloca o cursor na posicao pretendida
  * @param {type} editor
  * @param {type} linha
  * @param {type} coluna
