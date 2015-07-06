@@ -13,6 +13,7 @@ canvas{
     height: 297mm;
     padding: 20px;
     margin: auto;
+	background: url(../img/Imagem_modelo.PNG) no-repeat center center;
 }
 
 .tabpage > .titulo, .titulo1, .titulo2, .titulo3, .titulo4, .titulo5, .titulo6, .titulo7 {
