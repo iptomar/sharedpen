@@ -1854,7 +1854,36 @@ $(document).ready(function () {
                 }
                 tableusers += "</table>";
                 pages.push("<div>" + tableusers + "</div>");
-
+				
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////				
+				$.ajax({
+            type: "POST",
+            url: "/saveContributesProf",
+            data: {
+                list: usercontributes
+            },
+            dataType: 'json',
+            success: function (data) {
+//                console.log(data);
+// recebe a lista dos utilizadores com o nome e o avatar de 
+// cada um e controi a tabela
+                var tableprofs = "<h3>Professores que participaram neste trabalho.</h3>" +
+                        "<table style='margin:20px' border='1'>";
+                tableusers += "<tr><th>Imagem</th><th>Nome</th></tr>";
+                for (var i in data) {
+                    tableprofs += "<tr><td><img style='width: 70px;height: 70px;' alt='' src='" +
+                            data[i].avatar +
+                            "'></td><td><p style='font-size:30px;margin:0 20px 0 20px;' >" +
+                            data[i].nome +
+                            "</p></td></tr>";
+                }
+                tableprofs += "</table>";
+                pages.push("<div>" + tableprofs + "</div>");
+            }
+           
+        });
+				
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 save_html(pages);
                 //socket.emit("saveAsHtml", pages);
                 //window.open("./livro/Livro.html");
