@@ -2307,6 +2307,7 @@ $(document).ready(function () {
         var nomeProj = $("body").find("#nomeProjeto").val();
         var modelProjC = $("body").find("#ModeloSelectCapa").attr("data-idmodel");
         var modelProjP = $("body").find("#ModeloSelectPagina").attr("data-idmodel");
+		var modelProjM = $("body").find("#MolduraSelectPagina").attr("data-idmodel");
         if (nomeProj.trim() == "") {
             alert("Introduza um nome para o Projeto.");
             return;
@@ -2315,6 +2316,11 @@ $(document).ready(function () {
             alert("Selecione um modelo para a capa ou para as paginas do livro.");
             return;
         }
+		if (typeof modelProjM == "undefined") {
+            alert("Selecione uma moldura para as paginas do livro.");
+            return;
+        }
+		
         var textAjuda = $("body").find("#textAjudaLivro").html();
         var fontName = $("body").find(".textResultado").css("font-family");
         fontName = fontName.replace("'", '');
@@ -2333,6 +2339,7 @@ $(document).ready(function () {
                 nomeProjeto: nomeProj,
                 numModeloC: modelProjC,
                 numModeloP: modelProjP,
+				numModeloM: modelProjM,
                 textHtml: textAjuda,
                 stylesLivro: formatText
             },
@@ -2605,14 +2612,14 @@ $(document).ready(function () {
 
                 for (var i in data) {
                     if (data[i].id == numCapa) {
-                        Addtab(numCapa, idNum);
+                        Addtab(numCapa, idNum,data[i].img);
                         $(".txtTab" + idNum).html(data[i].htmltext);
                         refactorTab(numCapa, idNum, data[0].texto);
                         addtohash(idNum);
 
                     } else if (data[i].id == numPagina) {
                         idNum = (Object.keys(hash).length + 1);
-                        Addtab(numPagina, idNum);
+                        Addtab(numPagina, idNum,data[i].img);
                         $(".txtTab" + idNum).html(data[i].htmltext);
                         refactorTab(numPagina, idNum, data[0].texto);
                         addtohash(idNum);
@@ -2881,7 +2888,7 @@ function updateTab(i, key, creator) {
  * @param {type} html
  * @param {type} idNum
  * @returns {undefined} */
-function Addtab(html, idNum) {
+function Addtab(html, idNum, mold) {
     //console.log(html);
     //console.log(idNum);
     //var idNum = (Object.keys(hash).length + 1);
@@ -2901,7 +2908,7 @@ function Addtab(html, idNum) {
     // Adiciona a pÃƒÂ¡gina depois da ÃƒÂºltima pÃƒÂ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' + idNum +
-            '"><div class="txtTab txtTab' + idNum + '"></div>' +
+            '"><div style="background:url('+mold+')" class="txtTab txtTab' + idNum + '"></div>' +
             '</div>');
 }
 
