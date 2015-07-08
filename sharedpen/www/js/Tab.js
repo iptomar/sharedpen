@@ -12,6 +12,7 @@ var Modelo = function (noElement) {
 
     this.arrayElem = {};
     this.noElement = noElement;
+	this.moldura;
 
 };
 

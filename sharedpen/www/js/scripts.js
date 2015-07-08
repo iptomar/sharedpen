@@ -1325,8 +1325,9 @@ $(document).ready(function () {
                 success: function (data) {
                     Addtab(modelo, idNum);
                     $(".txtTab" + idNum).html(data[0].htmltext);
-                    refactorTab(modelo, idNum, hash[obj].styles);
-                    addtohash(idNum);
+					
+                    refactorTab(modelo, idNum, hash[obj].styles, hash[obj].modelo.moldura);
+                    addtohash(idNum,hash[obj].modelo.moldura);
                     var kk = Object.keys(hash);
                     socket.emit('TabsChanged', {
                         //remover ou adicionar
@@ -1602,8 +1603,8 @@ $(document).ready(function () {
             var i = 0;
             for (var item in hash) {
                 i++;
-                Addtab(hash[item].modelo, i);
-                updateTab(i, ".txtTab" + i, null);
+                Addtab(hash[item].modelo, i );
+                updateTab(i, ".txtTab" + i, null, hash[item].modelo.moldura);
             }
         }
     });
@@ -2612,17 +2613,17 @@ $(document).ready(function () {
 
                 for (var i in data) {
                     if (data[i].id == numCapa) {
-                        Addtab(numCapa, idNum,data[i].img);
+                        Addtab(numCapa, idNum);
                         $(".txtTab" + idNum).html(data[i].htmltext);
-                        refactorTab(numCapa, idNum, data[0].texto);
-                        addtohash(idNum);
+                        refactorTab(numCapa, idNum, data[0].texto,data[i].img);
+                        addtohash(idNum,data[i].img);
 
                     } else if (data[i].id == numPagina) {
                         idNum = (Object.keys(hash).length + 1);
-                        Addtab(numPagina, idNum,data[i].img);
+                        Addtab(numPagina, idNum);
                         $(".txtTab" + idNum).html(data[i].htmltext);
-                        refactorTab(numPagina, idNum, data[0].texto);
-                        addtohash(idNum);
+                        refactorTab(numPagina, idNum, data[0].texto,data[i].img);
+                        addtohash(idNum,data[i].img);
                     }
                 }
                 $("#contentor").attr("tab", idmodel);
@@ -2824,14 +2825,16 @@ function getFilesToFolder(sckt, data) {
  * @param {type} i
  * @param {type} key
  * @returns {undefined} */
-function updateTab(i, key, creator) {
+function updateTab(i, key, creator,mold) {
+	
     $.ajax({
         type: "GET",
         url: "/getCodModel/" + hash[key].numModelo,
         dataType: 'json',
+		async: false,
         success: function (data) {
             $(".txtTab" + i).append(data[0].htmltext);
-            refactorTab(hash[key].numModelo, i);
+            refactorTab(hash[key].numModelo, i, null, mold);
             for (var elemento in hash[key].modelo.arrayElem) {
                 if (hash[key].modelo.arrayElem[elemento].elementType == "IMG") {
                     $("body").find("#" + hash[key].modelo.arrayElem[elemento].id).attr('src', hash[key].modelo.arrayElem[elemento].conteudo);
@@ -2888,7 +2891,7 @@ function updateTab(i, key, creator) {
  * @param {type} html
  * @param {type} idNum
  * @returns {undefined} */
-function Addtab(html, idNum, mold) {
+function Addtab(html, idNum) {
     //console.log(html);
     //console.log(idNum);
     //var idNum = (Object.keys(hash).length + 1);
@@ -2908,7 +2911,7 @@ function Addtab(html, idNum, mold) {
     // Adiciona a pÃƒÂ¡gina depois da ÃƒÂºltima pÃƒÂ¡gina (<div></div> markup after the last-child of the <div class="tab-content">)
     $('div.tab-content').append(
             '<div class="tab-pane fade" id="page' + idNum +
-            '"><div style="background:url('+mold+')" class="txtTab txtTab' + idNum + '"></div>' +
+            '"><div  class="txtTab txtTab' + idNum + '"></div>' +
             '</div>');
 }
 
@@ -2921,8 +2924,7 @@ function Addtab(html, idNum, mold) {
  * @param {type} estilos Lista com os estilos aserem aplicasdos no texteditor
  * * @returns {undefined} */
 
-function refactorTab(html, idNum, estilos) {
-
+function refactorTab(html, idNum, estilos, mold) {
     //depois de carregar o html, vai buscar o numero de filhos q a div tem
     var numElements = $(".txtTab" + (idNum)).children('div').children().length;
     //cria tab no array
@@ -2932,7 +2934,11 @@ function refactorTab(html, idNum, estilos) {
     }
     var i = 0;
     $(".txtTab" + idNum).children('div').attr("id", "tab" + idNum + "-" + $(".txtTab" + idNum).children('div').attr('id'));
+	
+	$(".txtTab" + idNum).children('div').attr("style", "background:url("+mold+")");
+	
     $(".txtTab" + idNum).children('div').children().each(function () {
+
         $(this).attr("id", "tab" + idNum + "-" + this.id);
         i++;
     });
@@ -2946,7 +2952,7 @@ function refactorTab(html, idNum, estilos) {
  *
  * @param {type} idNum
  * @returns {undefined} */
-function addtohash(idNum) {
+function addtohash(idNum,idmoldura) {
 
     $(".txtTab" + idNum).children('div').children().each(function () {
 
@@ -2955,6 +2961,7 @@ function addtohash(idNum) {
         var thType = $(this).prop("tagName");
         var tabNumber = thID.match(/\d+/)[0];
         var newElementID = "tab" + tabNumber + "-Mycanvas";
+
         if (typeof hash[".txtTab1"] != "undefined") {
             tabTest.styles = hash[".txtTab1"].styles;
         }
@@ -2979,6 +2986,7 @@ function addtohash(idNum) {
     hash[tabTest.id] = tabTest;
     hash[tabTest.id].projtipo = hash[".txtTab1"].projtipo;
     hash[tabTest.id].styles = hash[".txtTab1"].styles;
+	hash[tabTest.id].modelo.moldura = idmoldura;
 }
 
 /**
