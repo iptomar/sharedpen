@@ -132,3 +132,9 @@ figcaption {
     overflow: hidden;
     overflow-y: scroll;
 }
+
+#painelMolduras > div {
+    height: 170px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
