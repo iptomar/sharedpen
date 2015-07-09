@@ -1208,7 +1208,7 @@ $(document).ready(function () {
                     } else {
                         Addtab(data.modelo, data.pos);
                         hash[".txtTab" + data.pos] = castTab(data.tab);
-                        updateTab(data.pos, ".txtTab" + data.pos, data.creator);
+                        updateTab(data.pos, ".txtTab" + data.pos, data.creator,hash[Object.keys(hash)[0]].modelo.moldura);
                     }
                 }
             }
@@ -2889,6 +2889,8 @@ function updateTab(i, key, creator,mold) {
                             $("#" + elemento).addClass(elemento);
                             var txtedit = new TextEditor(elemento, username, userColor, (creator == null ? hash[key].modelo.arrayElem[elemento].editor.creator : creator), userNumber);
                             txtedit.styles(hash[key].styles);
+							
+							
                             hash[key].modelo.arrayElem[elemento].editor = txtedit;
                             //                        console.log(hash[key].modelo.arrayElem[elemento]);
                             txtedit.setTextToEditor(hash[key].modelo.arrayElem[elemento].conteudo);
@@ -2896,6 +2898,8 @@ function updateTab(i, key, creator,mold) {
                     }
                     $("#" + hash[key].modelo.arrayElem[elemento].id).val(hash[key].modelo.arrayElem[elemento].conteudo);
                 }
+				console.log(mold);
+							hash[key].modelo.moldura = mold;
             }
         },
         error: function (error) {
