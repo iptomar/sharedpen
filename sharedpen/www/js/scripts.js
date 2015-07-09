@@ -1776,7 +1776,7 @@ $(document).ready(function () {
                 if (idDiv.indexOf("tab") != -1) {
                     back_image = $(this).attr("style");
 				}
-				alert(back_image);
+				
 			});
             $($(this).attr("href")).children().children().children().each(function () {
                 var idDiv = this.id;
@@ -1893,7 +1893,7 @@ $(document).ready(function () {
         });
 				
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-					alert(back_image);
+					
                 save_html(pages, back_image);
                 //socket.emit("saveAsHtml", pages);
                 //window.open("./livro/Livro.html");
@@ -2485,6 +2485,8 @@ $(document).ready(function () {
                             "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].num_modeloCapa] +
                             "'/></td>" +
                             "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].num_modeloPagina] +
+                            "'/></td>" +
+						"<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + data[i].icon +
                             "'/></td>" +
                             "</tr>";
                 }
@@ -3519,7 +3521,7 @@ function ajustElements() {
  * @returns {undefined}
  */
 function save_html(data, back_image) {
-	alert(back_image);
+	
     var scriptStart = "<script type=\"text/javascript\">";
     var scriptEnd = "setInterval(function() {$('p').attr('contenteditable','false');}, 1000);</script>";
     var styleStart = "<style type=\"text/css\">";
