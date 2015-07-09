@@ -2480,14 +2480,22 @@ $(document).ready(function () {
                 var html = "";
                 for (var i = 0, max = data.length; i < max; i++) {
                     html += "<tr data-select='false' data-idmodel='" + data[i].idmodelo + "' data-modelCapa='" + data[i].num_modeloCapa + "' data-modelPagina='" + data[i].num_modeloPagina + "'>" +
-                            "<td class='bs-checkbox'><input name='radioName' type='radio'></td>" +
-                            "<td style='text-align: center;'>" + data[i].nome_livro + "</td>" +
-                            "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].num_modeloCapa] +
-                            "'/></td>" +
-                            "<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + tmpModels[data[i].num_modeloPagina] +
-                            "'/></td>" +
-						"<td style='text-align: right;'><img class='btnmodels-style img-responsive' alt='' src='" + data[i].icon +
-                            "'/></td>" +
+                            "<td class='bs-checkbox'><input name='radioName' type='radio' style='vertical-align:middle'></td>" +
+							"<td colspan='3' style='text-align: center;'>"+
+							"<table style='padding:8px;'>"+
+								"<tr>"+
+									"<td colspan='3' style='text-align:left; padding:5px; font-weight:bold;'>" + data[i].nome_livro + "</td>" +
+								"</tr>"+
+								"<tr>"+
+									"<td style='text-align:center; width:110px'><img class='btnmodels-style img-responsive' style='margin: auto auto' alt='' src='" + tmpModels[data[i].num_modeloCapa] +
+                            		"'/></td>" +
+                            		"<td style='text-align:center; width:110px'><img class='btnmodels-style img-responsive' style='margin: auto auto'  alt='' src='" + tmpModels[data[i].num_modeloPagina] +
+                            		"'/></td>" +
+									"<td style='text-align:center; width:110px'><img class='btnmodels-style img-responsive' style='margin: auto auto'  alt='' src='" + data[i].icon +
+                            		"'/></td>" +
+								"</tr>"+
+							"</table>"+
+							"</td>"
                             "</tr>";
                 }
                 $("body").find("#SelectPageStyle > table").append(html);
